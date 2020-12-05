@@ -121,4 +121,16 @@
   <data name="main_00000 (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main_00000 (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="writenotebg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\writenotebg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ixeobg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ixeobg1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WriteNoteBackGround" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WriteNoteBackGround1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IxeoBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IxeoBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

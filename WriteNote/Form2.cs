@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WriteNote
@@ -20,7 +14,8 @@ namespace WriteNote
 
         private void label1_Click(object sender, EventArgs e)
         {
-            Application.Run(new Snake());
+            Snake.Snake f1 = new Snake.Snake();
+            f1.Show();
         }
         private void label2_Click(object sender, EventArgs e)
         {
@@ -40,6 +35,19 @@ namespace WriteNote
                 label1.BackColor = Color.GhostWhite;
                 back.ForeColor = Color.Black;
                 back.BackColor = Color.GhostWhite;
+                StreamReader sr4 = new StreamReader("PearlDesign.WRProp");
+                var pearlDesign = sr4.ReadToEnd();
+                sr4.Close();
+                string s9 = "true";
+                bool b9 = pearlDesign.Contains(s9);
+                if (b == true)
+                {
+                    pictureBox1.Image = (Image)Properties.Resources.ResourceManager.GetObject("ixeobg");
+                }
+                if (b == false)
+                {
+                    pictureBox1.Image = (Image)Properties.Resources.ResourceManager.GetObject("writenotebg");
+                }
             }
         }
 
@@ -51,6 +59,16 @@ namespace WriteNote
         private void backToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void richTextBox1_Click(object sender, EventArgs e)
+        {
+            Snake.Snake f1 = new Snake.Snake();
+            f1.Show();
         }
     }
 }

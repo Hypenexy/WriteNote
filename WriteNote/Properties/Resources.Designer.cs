@@ -63,9 +63,49 @@ namespace WriteNote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IxeoBackground {
+            get {
+                object obj = ResourceManager.GetObject("IxeoBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ixeobg {
+            get {
+                object obj = ResourceManager.GetObject("ixeobg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap main_00000__2_ {
             get {
                 object obj = ResourceManager.GetObject("main_00000 (2)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WriteNoteBackGround {
+            get {
+                object obj = ResourceManager.GetObject("WriteNoteBackGround", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap writenotebg {
+            get {
+                object obj = ResourceManager.GetObject("writenotebg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

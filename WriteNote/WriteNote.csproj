@@ -16,22 +16,24 @@
     <PublishUrl>C:\Users\hypen\Desktop\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <SupportUrl>http://writenote.midelight.net</SupportUrl>
-    <ErrorReportUrl>http://writenote.midelight.net</ErrorReportUrl>
+    <UpdateUrl>http://midelight.net/WriteNoteDownload/</UpdateUrl>
+    <SupportUrl>http://midelight.net/writenote</SupportUrl>
+    <ErrorReportUrl>http://midelight.net/writenote</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>WriteNote</ProductName>
     <PublisherName>Hypenexy</PublisherName>
     <SuiteName>Midelight</SuiteName>
-    <AutorunEnabled>true</AutorunEnabled>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <ApplicationVersion>1.1.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -70,8 +72,13 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Writenote128.ico</ApplicationIcon>
+    <ApplicationIcon>writenotepearl.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -106,6 +113,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,15 +137,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <None Include="WriteNote_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -152,8 +160,53 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="writenotepearlnote_ScY_icon.ico" />
+    <None Include="Resources\IxeoBackground.png" />
+    <Content Include="Resources\ixeobg.png" />
+    <None Include="Resources\ixeobg1.png" />
+    <None Include="Resources\writenotebg.png" />
+    <Content Include="Resources\WriteNoteBackGround1.png" />
+    <Content Include="Resources\writenotepearl.ico" />
+    <Content Include="writenotebg.png" />
+    <Content Include="writenotepearl.ico" />
     <None Include="Resources\main_00000 %282%29.png" />
     <Content Include="Writenote128.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Snake\Snake\Snake.csproj">
+      <Project>{de689bc0-65b9-4768-97b0-17c7d72a09c4}</Project>
+      <Name>Snake</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FileAssociation Include=".note">
+      <Visible>False</Visible>
+      <Description>Creation of notes with WriteNote.</Description>
+      <Progid>Note</Progid>
+      <DefaultIcon>writenotepearlnote_ScY_icon.ico</DefaultIcon>
+    </FileAssociation>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Snake">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Writenote128.ico">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

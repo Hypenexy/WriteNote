@@ -74,7 +74,7 @@
             this.label1.Cursor = System.Windows.Forms.Cursors.Default;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Image = global::WriteNote.Properties.Resources.main_00000__2_;
+            this.label1.Image = global::WriteNote.Properties.Resources.writenotebg;
             this.label1.Location = new System.Drawing.Point(52, 82);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(230, 31);

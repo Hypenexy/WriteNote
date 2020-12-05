@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WriteNote
@@ -33,16 +27,30 @@ namespace WriteNote
             sr.Close();
             if (b == true)
             {
-                label1.BackColor = Color.GhostWhite;
+                label1.ForeColor = Color.LightBlue;
+                label1.Image = base.BackgroundImage;
+                label1.BackColor = Color.Black;
                 back.ForeColor = Color.Black;
                 back.BackColor = Color.GhostWhite;
                 button1.ForeColor = Color.Black;
                 button1.BackColor = Color.GhostWhite;
                 button2.ForeColor = Color.Black;
                 button2.BackColor = Color.GhostWhite;
+                StreamReader sr4 = new StreamReader("PearlDesign.WRProp");
+                var pearlDesign = sr4.ReadToEnd();
+                sr4.Close();
+                string s9 = "true";
+                bool b9 = pearlDesign.Contains(s9);
+                if (b == true)
+                {
+                    pictureBox1.Image = (Image)Properties.Resources.ResourceManager.GetObject("ixeobg");
+                }
+                if (b == false)
+                {
+                    pictureBox1.Image = (Image)Properties.Resources.ResourceManager.GetObject("writenotebg");
+                }
             }
         }
-
         private void back_Click(object sender, EventArgs e)
         {
             StreamWriter sw = new StreamWriter("YesButton.WRProp");
