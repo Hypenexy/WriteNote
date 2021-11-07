@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>WriteNote Preview</title>
+  <link rel="shortcut icon" href="../writenotepearl.ico">
+
+  <meta name="title" content="WriteNote">
+  <meta name="author" content="Midelight">
+  <meta name="description" content="Write, share, save notes with an upgraded online experience.">
+  <meta name="image" content="../writenotepearl.ico">
+
+  <meta property="og:site_name" content="WriteNote">
+  <meta property="og:title" content="WriteNote">
+  <meta property="og:description" content="Write, share, save notes with an upgraded online experience.">
+  <meta property="og:image" content="../writenotepearl.ico">
+
+  <link rel="stylesheet" href="../style.css">
+  <style>.wordCount{display: block}</style>
+</head>
+<body>
+    <div class="Header">
+        <a id="menu" class="HeaderLeft">
+          <svg class="threelines" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64">
+            <rect id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="cls-1" x="4" y="8" width="56" height="8" rx="4" ry="4"></rect>
+            <rect id="Rounded_Rectangle_1-2" data-name="Rounded Rectangle 1" class="cls-1" x="4" y="28" width="56" height="8" rx="4" ry="4"></rect>
+            <rect id="Rounded_Rectangle_1-3" data-name="Rounded Rectangle 1" class="cls-1" x="4" y="48" width="56" height="8" rx="4" ry="4"></rect>
+          </svg>
+          <img width=48px height=48px src="../writenotepearl.ico"/></a>
+        <div class="dropdown">
+          <a class="HeaderButtons HeaderLeft dropbtn" id="notebtn">Note</a>
+        </div>
+        <div class="dropdown">
+          <a class="HeaderButtons HeaderLeft dropbtn" id="editbtn">Edit</a>
+        </div>
+        <div class="dropdown">
+          <a class="HeaderButtons HeaderLeft dropbtn" id="viewbtn">View</a>
+        </div>
+        <img id="showprofilepanel" class="HeaderButtons HeaderRight" width="32px" src="profile.svg">
+        <img class="HeaderButtons HeaderRight" style="color:#fff; fill: #fff;" height="32px" src="bell.svg">
+        
+        
+    </div>
+    <div id="wordCountdiv" class="wordCount"><a id="wordCount"> Words 0 • Symbols 0</a><x class="wordCountX">×</x></div>
+  <textarea class="notearea" type="text" id="notearea" name="notearea">Hello, World!</textarea>
+  <script>
+    var notearea = document.getElementById("notearea"); 
+    var wordCounter = document.getElementById("wordCount");
+    var wordCounterdiv = document.getElementById("wordCountdiv");
+
+    notearea.addEventListener("input", function(){
+        if(notearea.value.length>0){
+            var letterCount = notearea.value.length;
+            var wordCount = notearea.value.match(/(\w+)/g).length;
+
+            wordCounter.innerHTML = '<a> Words ' + wordCount + ' • Symbols ' + letterCount + '</a>';
+        }
+        else{wordCounter.innerHTML = '<a> Words 0 • Symbols 0</a>';}
+});
+
+wordCounter.innerHTML = '<a> Words 2 • Symbols 13</a>';
+notearea.style.height = "calc(100vh - 108px)";
+  </script>
+</body>
+</html>
