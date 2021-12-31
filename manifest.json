@@ -1,9 +1,0 @@
-{
-    "manifest_version": 1,
-    "name": "WriteNote",
-    "version": "2.0",
-
-    "default_locale": "en",
-    "description": "Write, share, save notes with an upgraded online experience.",
-    "homepage_url": "http://midelight.net/WriteNote"
-}

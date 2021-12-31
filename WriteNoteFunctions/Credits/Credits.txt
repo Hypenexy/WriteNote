@@ -1,5 +1,0 @@
-Thank you for your open source libraries to
-------------------------------------------
-
-Swiping - https://github.com/john-doherty/swiped-events
-Highlight - https://github.com/lonekorean/highlight-within-textarea

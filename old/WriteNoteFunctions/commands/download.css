@@ -1,0 +1,110 @@
+.savef {
+	box-sizing: border-box;
+	display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 70%;
+    height: 70%;
+    padding: 20px;
+
+    color: #fff;
+    background: rgba( 0, 0, 0, 0.6 );
+    /* backdrop-filter: blur( 12px );
+    -webkit-backdrop-filter: blur( 12px ); */
+    border: 1px solid #ccc;
+    border-radius: 12px;
+  }
+.savef * {
+	box-sizing: border-box;
+    outline: none;
+	transition: 0.2s;
+}
+.savef h2 {
+	font-size: 32px;
+	font-weight: 400;
+	text-align: center;
+    margin:0;
+}
+.savef p{
+    color: #c8c8c8;
+	background: #1f1c1d;
+	margin: 0;
+	border-radius: 5px;
+	padding: 5px;
+	position: absolute;
+	bottom: 15px;
+	left: 15px;
+	right: 15px;
+}
+.savefc{
+	position: absolute;
+	width: 98%;
+    bottom: 16px;
+	left: 1%;
+}
+.savef input{
+	width: 80%;
+	color: #fff;
+	background-color: #1a1a1a;
+	border: none;
+	border-radius: 5px 0 0 5px;
+	border: 1px solid #808080;
+	padding: 12px 15px;
+}
+.savef input:focus{
+	border: 1px solid #fff;
+}
+.savef .lastel{
+	border-radius: 0 5px 5px 0;
+}
+.savef option{
+	color: #fff;
+    background-color: #111;
+}
+.savef option:selected{
+    background-color: #666;
+}
+.savef button, .savef select{
+	-webkit-appearance: none;
+	width: 10%;
+    cursor: pointer;
+	color: #eee;
+	background-color: #1a1a1a;
+	border: 1px solid #808080;
+	padding: 12px 0;
+}
+.savef button:focus, .savef select:focus {border: 1px solid #fff;}
+.savef button:hover, .savef select:hover {border: 1px solid #fff;}
+.savef button:active {background: #3a3436}
+
+@media only screen and (max-width: 526px){
+	.savef {
+		box-shadow: none;
+		border-radius: 0;
+		position: relative;
+
+		width: 100%;
+		height: 80%;
+		padding: 10px;
+
+		border-left: 0;
+		border-right: 0;
+	}
+	.savef input{
+		border-radius: 5px 5px 0 0;
+		width: 100%;
+		margin-bottom: -1px;
+	}  
+	.savef button, .savef select{
+		width: 50%;
+	}
+	.savef .lastel{
+		border-radius: 0 0 5px 0;
+	}
+	.savef select{
+		border-radius: 0 0 0 5px;
+	}
+}

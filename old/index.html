@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>WriteNote</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="shortcut icon" href="writenotepearl.ico">
+
+  <meta name="title" content="WriteNote">
+  <meta name="author" content="Midelight">
+  <meta name="description" content="The most refined online text editor.">
+  <meta name="image" content="writenotepearl.png">
+
+  <meta property="og:site_name" content="WriteNote">
+  <meta property="og:title" content="WriteNote">
+  <meta property="og:description" content="The most refined online text editor.">
+  <meta property="og:image" content="writenotepearl.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <!-- <link rel="stylesheet" href="./red.css"> -->
+  <link rel="stylesheet" href="WriteNoteFunctions/commands/upload.css">
+  <link rel="stylesheet" href="WriteNoteFunctions/commands/download.css">
+  <link rel="stylesheet" href="WriteNoteFunctions/commands/waitsave.css">
+  <link rel="stylesheet" href="glass.css">
+  <style>body{ margin: 0; background-color: #1a1a1a}.Header{ background-color: #1a1a1a; height: 50px}.HeaderButtons{ cursor: pointer; color: #c8c8c8; text-align: center}textarea{ border: 1px solid #222230; border-top: 1px solid #555; border-radius: 0; cursor: auto; resize: none; outline: none; color: white; font-size: 24px; background-color: #222230; width: calc(100% - 6px); height: calc(100vh - 66px); margin-bottom: -5px}</style>
+</head>
+<body>
+  <div id="context-menu">
+    <div onclick="undo()" class="item">Undo</div>
+    <div onclick="redo()" class="item">Redo</div>
+    <hr>
+    <div onclick="cut()" class="item">Cut</div>
+    <div onclick="copy()" class="item">Copy</div>
+    <div onclick="paste()" class="item">Paste</div>
+    <hr>
+    <div onclick="showfind()" class="item">Find</div>
+    <div onclick="selectText()" class="item">Select All</div>
+    <div onclick="spellcheck()" class="item">Select All</div>
+  </div>
+
+  <div id="modal" class="modalbackground">
+
+  <div id="otherwindow" class="otherwindow">
+    <x onclick="hideAll()">×</x>
+
+    <div class="optionsmain">
+      <div class="optionssidebar">
+          <div class="items">
+            <div id="accountitems" style="display: none">
+              <a onclick="panel('account')" id="accountbtn">Account</a>
+              <a onclick="panel('profile')" id="profilebtn">Profile</a>
+              <a onclick="panel('privacy')" id="privacybtn">Privacy</a>
+              <a onclick="panel('devices')" id="devicesbtn">Devices</a>
+              <a style="color:rgb(167, 44, 255)" onclick="panel('premium')" id="premiumbtn">Premium</a>
+              <hr>
+            </div>
+              <a onclick="panel('appearance')" id="appearancebtn">Appearance</a>
+              <a onclick="panel('sidepanel')" id="sidepanelbtn">Sidepanel</a>
+              <a onclick="panel('language')" id="languagebtn">Language</a>
+              <a onclick="panel('theme')" id="themebtn">Theme</a>
+              <a onclick="panel('font')" id="fontbtn">Font</a>
+              <hr>
+              <a onclick="panel('about')" id="aboutbtn">About</a>
+              <a onclick="panel('help')" id="helpbtn">Support</a>
+              <a onclick="panel('feedback')" id="feedbackbtn">Feedback</a>
+              <a onclick="panel('info')" id="infobtn">Version</a>
+              <div id="logoutbtn" style="display: none">
+                <hr>
+                <a style="color: #961f1f" onclick="logout()">Sign out</a>
+              </div>
+          </div>
+      </div>
+      <div class="optionspanel">
+          <div class="mdblock">
+              <mdsettingpanel id="account">
+                  <h1>Account</h1>
+                      <h2>Personal details</h2>
+                      <div class="profiledetails">
+                          <hr>
+                          <div class="profiledetailspfp"><a onclick="panel('profile')"><h3>Profile Picture</h3><img width="64px" height="64px" src=""></a></div>
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Email</p> <p class="profiledetailsdetail">hypenexy@gmail.com</p><i class="fa fa-pencil-square-o profiledetailsedit"></i></a>
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Username</p> <p class="profiledetailsdetail">Hypenexy</p><i class="fa fa-pencil-square-o profiledetailsedit"></i></a>
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Password</p> <p class="profiledetailsdetail">********</p><i class="fa fa-pencil-square-o profiledetailsedit"></i></a>
+                          <hr>
+                      </div>
+                      <h2>Real info</h2>
+                      <div class="profiledetails">
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Real name</p> <p class="profiledetailsdetail">hype nexy</p><i class="fa fa-pencil-square-o profiledetailsedit"></i></a>
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Date of birth</p> <p class="profiledetailsdetail">19 April 2005</p><i class="fa fa-pencil-square-o profiledetailsedit"></i></a>
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Gender</p> <p class="profiledetailsdetail">Male</p><i class="fa fa-pencil-square-o profiledetailsedit"></i></a>
+                      </div>
+
+                  <button class="disableaccount">Disable Account</button>
+                  <button class="deleteaccount">Delete Account</button>
+              </mdsettingpanel>
+              <mdsettingpanel id="profile">
+                  <h1>Profile</h1>
+                  <h3>Profile Picture</h3>
+                  <button class="profilebutton">Change Profile Picture</button><button class="profileremovebutton">Remove Profile Picture</button>
+                  <h3>Banner</h3>
+                  <button class="profilebutton">Change Banner</button><button class="profileremovebutton">Remove Banner</button>
+                  <h3>Bio</h3>
+                  <div class="biocontainer">
+                      <textarea maxlength="120" class="bio" style="font-size: 16px" oninput="biomaxlength(this.value.length)"></textarea>
+                      <a id="biomaxlength">120</a>
+                  </div>
+                  <h2>Preview</h2>
+                  <div class="publicprofile">
+                      <div class="profilepicturebyname">
+                          <div></div>
+                      </div>
+                  </div>
+              </mdsettingpanel>
+              <mdsettingpanel id="privacy">
+                  <h1>Privacy</h1>
+                      <div class="profiledetails">
+                          <hr>
+                          <a><p class="profiledetailsdetailindex">Display name</p> <p>Real Name <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label> Nickname</p>UNTRUE Using a real name instead of your nickname will make your account safer</a>
+                          <hr>
+                          <label><a><p>Hide everything except username</p> <p class="profiledetailsdetail">Other people will only see your name.</p><input class="profiledetailsedit" type="checkbox"></a></label>
+                          <hr>
+                      </div>
+                      <h1>Security</h1>
+                      <div class="profiledetails">
+                          <hr>
+                          <label><a><p>2fa</p> <p class="profiledetailsdetail">Two-Factor Authentication is an extra level of protection to your account.</p><input class="profiledetailsedit" type="checkbox"></a></label>
+                          <hr>
+                          <label><a><p>Prefer not to stay logged in</p> <p class="profiledetailsdetail">Session cookies will only store your login session until you exit your browser.<br>This requires you login every time you start your browser. </p><input class="profiledetailsedit" type="checkbox"></a></label>
+                          <hr>
+                      </div>
+              </mdsettingpanel>
+              <mdsettingpanel id="devices">
+                  <h1>Devices</h1>
+                  <div class="devices">
+                      <div class="device">
+                          <h3>Device</h3>
+                          <h2>Windows</h2>
+                          <h4>DESKTOP-4PU0FEQ</h4>
+                          <h3>Location</h3>
+                          <h2>Bulgaria</h2>
+                          <h3>Browser</h3>
+                          <h2>Chrome</h2>
+                      </div>
+                      <div class="device">
+                          <h3>Device</h3>
+                          <h2>Samsung A8</h2>
+                          <h3>Location</h3>
+                          <h2>Bulgaria</h2>
+                          <h3>Browser</h3>
+                          <h2>Chrome Mobile</h2>
+                      </div>
+                  </div>
+              </mdsettingpanel>
+              <mdsettingpanel id="premium">
+                <h1>WriteNote Premium</h1>
+              </mdsettingpanel>
+              <mdsettingpanel id="appearance">
+
+              </mdsettingpanel>
+              <mdsettingpanel id="sidepanel">
+                <h1>Sidepanel</h1>
+                <label class="option">
+                  <hr>
+                  <a>Show weather info in the sidepanel</a><br>
+                  <p>This shows the weather in your general location.</p>
+                  <div class="switch">
+                    <input type="checkbox" id="showweatheroption" />
+                    <div class="slider round"></div>
+                  </div>
+                  <hr>
+                </label>
+                <label class="option">
+                  <a>Show remaining online storage</a><br>
+                  <p>Displays the storage left in your plan.</p>
+                  <div class="switch">
+                    <input type="checkbox" id="showonlineoption" />
+                    <div class="slider round"></div>
+                  </div>
+                  <hr>
+                </label>
+                <label class="option">
+                  <a>Show Midelight logo</a><br>
+                  <p>Displays the Midelight logo.</p>
+                  <div class="switch">
+                    <input type="checkbox" id="showlogooption" />
+                    <div class="slider round"></div>
+                  </div>
+                  <hr>
+                </label>
+              </mdsettingpanel>
+              <mdsettingpanel id="language">
+
+              </mdsettingpanel>
+              <mdsettingpanel id="theme">
+              </mdsettingpanel>
+              <mdsettingpanel id="font">
+                <h1>Font</h1>
+                <hr>
+                <div class="fontsize">
+                  <a>Font</a><br>
+                  <select id="select" onchange="fontChange('font')">
+                    <option>Midelight's default</option>
+                  </select>
+                </div>
+                <hr>
+                <div class="fontsize">
+                  <a>Size</a><br>
+                  <input id="fontsize" type="number" value="24" oninput="fontChange('size')">
+                </div>
+                <hr>
+                <div class="fontsize">
+                  <a>Style</a><br>
+                  <select id="selectStyle" onchange="fontChange('style')">
+                    <option style="font-weight: 100">Light</option>
+                    <option selected="selected" style="font-weight: 400">Regular</option>
+                    <option style="font-weight: 700">Bold</option>
+                  </select>
+                </div>
+                <hr>
+              </mdsettingpanel>
+              <mdsettingpanel id="about">
+
+              </mdsettingpanel>
+              <mdsettingpanel id="help">
+
+              </mdsettingpanel>
+              <mdsettingpanel id="feedback">
+
+              </mdsettingpanel>
+              <mdsettingpanel id="info">
+
+                <div class="infocontent">
+                  <img width=48px height=48px src="writenotepearl.ico"/><h1>WriteNote</h1> <h2>by</h2> <img width=48px height=48px src="lowpolyc.png"/><h1 style="font-size: 34px;font-weight: 300">Midelight</h1>
+                </div>
+                  <div class="infocontentver">
+                    <a>Build: <span id="versiondisplay">2.0.0 DEV</span></a><br>
+                    <a>Author: <span>Hypenexy</span></a><br>
+                    <a>By: <span>Midelight</span></a>
+                  </div>
+
+              </mdsettingpanel>
+          </div>
+      </div>
+    </div>
+  </div>
+    
+
+  <div id="WaitSave" class="WaitSave">
+    <x onclick="hideAll()">×</x>
+    <h2>Wait! You haven't saved.</h2>
+    <div class="WaitSaveButtons">
+      <button id="waitsavebutton1">Save</button>
+      <button id="waitsavebutton2">Continue</button>
+      <button onclick="hideAll()">Cancel</button>
+    </div>
+  </div>
+
+  <div id="fileHistory" class="fileHistory">
+    <h2>File History.</h2>
+    <p>Coming soon</p>
+  </div>
+
+  <div id="mainWelcome" class="mainWelcome">
+    <a class="closebtn" onclick="hideWelcome()">×</a>
+
+    <div id="unsigned">
+      <div class="mainWelcomeLogo"><img width="64px" height="64px" src="writenotepearl.ico"><a href="http://midelight.net/WriteNote"><h1>WriteNote</h1></a></div>
+
+      <div class="mainWelcomesidebarUnsigned">
+        <h2>Do more with an account</h2>
+        <li>Save and load notes entirely online</li>
+        <li>Share files with others</li>
+        <li>Customize to your liking</li>
+      </div>
+
+      <div class="mainWelcomeMainUnsigned">
+        <img width="512px" height="512px" src="signinlight.png">
+      </div>
+
+      <div class="mainWelcomeButtonsUnsigned">
+        <button class="mainWelcomeGrayUnsigned" onclick="hideWelcome()">No, Thanks</button> <button class="mainWelcomeBlueUnsigned" onclick="hideWelcome();login()"><img width="32px" src="profile.svg">Sign In</button> 
+      </div>
+    </div>
+
+    <div id="loggedwelcome" style="display: none">
+    <h2 id="welcomemessage">Good day!</h2>
+    <div class="mainWelcomesidebar">
+      <a onclick="newonlinenote()"><img src="plus.png">New Note</a><br>
+      <a onclick="openonlinenote()"><img src="open.png">Open Note</a>
+    </div>
+    <div class="mainWelcomeMain">
+        <table id="tablenotes">
+          <tr>
+              <th>Name</th>
+              <th>Last Opened</th>
+              <th>Created</th>
+          </tr>
+        </table>
+    </div>
+    <div class="mainWelcomeButtonNest"><a onclick="hideAll()" class="mainWelcomeButton">Continue to WriteNote</a></div>
+    <!--<p>The file couldn't be found ;(</p>-->
+    </div>
+    <div id="newnote" style="display: none">
+      <h2>Name your project</h2>
+      <input id="newnotename" autocomplete="off" placeholder="A unique name"><p id="newnotenametext" style="display: none;">Name is already taken.</p><br>
+      <a onclick="startanew()">Start anew</a><br>
+      <a onclick="hideAll(),openNote(),openpanels('upload')">Upload a file</a>
+    </div>
+  </div>
+    
+    <div id="loginform" class="form">
+			<form id="login" method="post" enctype="multipart/form-data">
+        <x onclick="hideAll()">×</x>
+        <div class="formlogo"><a href="http://midelight.net"><img width="64px" height="64px" src="lowpolyc.png"></a><h2>Midelight</h2></div>
+				<h1>Sign In</h1>
+				<div class="reginput">
+					<a class="details">Username or Email</a>
+					<input id="username" type="text" name="username" required/>
+					<a class="details">Password</a>
+					<div class="passwordeye" style="position: relative;"><input id="password" type="password" name="password" required/><i onclick="showpassword()" id="logineye" class="eye fa fa-eye"></i></div>
+					<div><a class="links">Forgotten password or email?</a></div>
+					<div id="logininfo">Wrong credentials!</div>
+					<br><br><br><br>
+					<button name="submit" type="submit">Login</button>
+					<div class="already"><p>Don't have an account? <a class="links loginbtn" href="http://midelight.net/register">Register</a></p></div>
+				</div>
+			</form>
+    </div>
+
+    <div id="uploadform" class="uploadform">
+      <div class="choices">
+        <a onclick="openpanels('open')" id="opensectionbtn">Open</a><a onclick="openpanels('upload')" id="uploadsectionbtn">Load</a><x onclick="hideAll()">×</x>
+      </div>
+      <div id="opensection">
+        <h2>Open a file</h2>
+        <div class="mainWelcomeMain browse">
+          <table id="tablenotes2">
+          <tr>
+              <th>Name</th>
+              <th>Last Opened</th>
+              <th>Created</th>
+          </tr>
+          </table>
+      </div>
+      </div>
+      <div id="uploadsection">
+        <h2>Load a text file</h2>
+        <div id="dropContainer">
+          Drop Here
+        </div>
+
+        <label class="uploadformInput">
+          <input type="file" multiple="" id="fileElem" name="fileElem[]" onchange="loadSpecificFile()">
+          Select file
+        </label><a>or drop above.</a>
+      </div>
+    </div>
+
+    <div id="savef" class="savef">
+      <h2>Save note</h2>
+      <div class="savefc">
+        <input id="downloadName" placeholder="File name" autocomplete="off"><select id="filetype"><option>.txt</option><option>.note</option></select><button class="lastel" onclick="downloadNote()">Save</button>
+      </div>
+    </div>
+  </div>
+  <div id="menuPanel" class="sidepanel">
+    <input id="notename" value="Untitled"><p id="notenametext" style="display: none;">Name is already taken.</p>
+    <a class="closebtn" onclick="closeNav()">×</a>
+    <div class="smallMenuPanelElements">
+      <a onclick="dropdown()">Note</a>
+      <a onclick="dropdown()">Edit</a>
+      <a onclick="dropdown()">View</a>
+      <a id="anotherloginbtn" onclick="login(); closeNav()">Sign In</a>
+      <hr style="width: 80%;">
+    </div>
+    <a onclick="openotherwindow('account')">Profile</a>
+    <a onclick="openotherwindow('theme')">Theme</a>
+    <!--<hr style="width: 90%;">-->
+    <a onclick="openotherwindow('about')">About</a>
+    <a onclick="openotherwindow('info')">Version</a>
+
+    <div id="weather" class="weather">
+      <div id="weatherinfo">
+        <a class="link" onclick="openotherwindow('sidepanel')">Options</a>
+      </div>
+    </div>
+    <div class="unsignedAnnotation" id="unsignedAnnotation">
+      <h2>You are not signed in.</h2>
+      <h3>WriteNote is better with an account!</h3>
+      <button onclick="loginannotation()">Sign In</button> <button onclick="noplzno()">Dismiss</button>
+    </div>
+    <div id="spaceleft" class="prograssdiv">
+      <spacey id="spacetext">0 GB of 5 GB used.</spacey>
+      <div class="progress">
+          <div id="spacepercentage" class="progress-bar" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="logo" onclick="logo()"><a href="http://midelight.net"><img width="64px" height="64px" src="lowpolyc.png"></a><h2>Midelight</h2></div>
+  </div>
+    <div class="Header">
+        <a id="menu" onclick="openNav()" class="HeaderLeft">
+          <svg class="threelines" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64">
+            <rect id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" class="cls-1" x="4" y="8" width="56" height="8" rx="4" ry="4"></rect>
+            <rect id="Rounded_Rectangle_1-2" data-name="Rounded Rectangle 1" class="cls-1" x="4" y="28" width="56" height="8" rx="4" ry="4"></rect>
+            <rect id="Rounded_Rectangle_1-3" data-name="Rounded Rectangle 1" class="cls-1" x="4" y="48" width="56" height="8" rx="4" ry="4"></rect>
+          </svg>
+          <img width=48px height=48px src="writenotepearl.ico"/></a>
+        <div class="dropdown">
+        <a class="HeaderButtons HeaderLeft dropbtn" id="notebtn" onclick="dropdown(1)">Note</a>
+          <div class="dropdown-content" id="note">
+            <a onclick="newNote()">New</a>
+            <hr>
+            <a onclick="openNote()">Open</a>
+            <a onclick="saveNote()">Save</a>
+            <hr>
+            <a onclick="fileHistory()">File History</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a class="HeaderButtons HeaderLeft dropbtn" id="editbtn" onclick="dropdown(2)">Edit</a>
+            <div class="dropdown-content" id="edit">
+              <a onclick="showfind()">Find</a>
+              <hr>
+              <a onclick="undo()">Undo</a>
+              <a onclick="redo()">Redo</a>
+              <hr>
+              <a onclick="cut()">Cut</a>
+              <a onclick="copy()">Copy</a>
+              <a onclick="paste()">Paste</a>
+              <hr>
+              <a onclick="selectText()">Select All</a>
+            </div>
+        </div>
+        <div class="dropdown">
+          <a class="HeaderButtons HeaderLeft dropbtn" id="viewbtn" onclick="dropdown(3)">View</a>
+            <div class="dropdown-content readjust1" id="view">
+              <a onclick="toggleCounter()">Word Counter<tick id="wordcountercheckmark"></tick></a>
+              <a onclick="toggleCalculator()">Calculator<tick id="calculatorcheckmark"></tick></a>
+              <a onclick="toggleTimer()">Timer<tick id="timercheckmark"></tick></a>
+              <hr>
+              <a onclick="togglefullscreen()">Full Screen<tick id="fullscreencheckmark"></tick></a>
+              <!-- <a onclick="togglespellcheck()">Spell Check<tick id="spellcheckcheckmark"></tick></a> -->
+              <a onclick="togglewordwrap()">Word Wrap<tick id="wordwrapcheckmark"></tick></a>
+              <a onclick="showdirection()" class="writingdirection">Writing Direction <i class="fa fa-caret-right"></i></a>
+              <div id="directions" class="extmenu writingdirectionmenu">
+                <a onclick="direction(false)">Left to Right<tick id="ltrcheckmark"></tick></a>
+                <a onclick="direction(true)">Right to Left<tick id="rtlcheckmark"></tick></a>
+              </div>
+              <a onclick="openotherwindow('font')" class="writingdirection">Change Font</a>
+              <a onclick="openotherwindow('theme')">Theme</a>
+            </div>
+        </div>
+        <a id="unsavedchangesnotice">Unsaved changes</a>
+        <a onclick="login()" id="loginbtn" style="padding: 11px" class="HeaderButtons HeaderRight">Login</a>
+        <img onclick="profilepaneltoggle()" id="showprofilepanel" class="HeaderButtons HeaderRight" width="32px" height="32px" style="border-radius: 50%; object-fit: cover;" src="profile.svg">
+        <img id="notificationsbell" class="HeaderButtons HeaderRight" style="color:#fff; fill: #fff;" height="32px" src="bell.svg">
+        
+        <div id="profilepanel" class="profilepanel">
+          <a id="usernameplaceone" onclick="openotherwindow('account')"><i class="fa fa-user-circle-o"></i> Profile</a>
+          <hr>
+          <a onclick="openotherwindow('theme')"><i class="fa fa-moon-o"></i> Theme</a>
+          <a onclick="openotherwindow('language')"><i class="fa fa-language"></i> Language</a>
+          <a onclick="openotherwindow('help')"><i class="fa fa-question-circle"></i> Support</a>
+          <a onclick="openotherwindow('feedback')"><i class="fa fa-commenting-o"></i> Feedback</a>
+        </div>
+        
+       <div id="findbox" class="search">
+         <!--Make autocomplete="off" a toggable option-->
+        <input onkeydown="" autocomplete="off" id="searchnote" placeholder="Search in note"><button id="findbutton" onclick="find()"><i class="fa fa-search"></i></button><button id="searchnotebtn" onclick="showreplace()"><i class="fa fa-angle-down"></i></button><button id="searchnotex" class="searchcancel" onclick="hidefind()"><i class="fa fa-times"></i></button>
+        <div id="replacebox" class="replace">
+          <input id="replacement" autocomplete="off" placeholder="Replace with"><button id="replacebtn" onclick="findAndReplace();">Replace</button><button id="replacementx" class="searchcancel" onclick="hidereplace()"><i class="fa fa-times"></i></button>
+        </div>
+       </div>
+       <div id="calculator" class="draggablecalculator">
+        <div id="calculatorheader">Calculator<x onclick="hideCalculator()">×</x></div>
+          <div class="calculator">
+            <p onclick="evalc('l')" id="CalculatorlastExpression"></p>
+            <input id="calculatorinput" autocomplete="off">
+            <a class="link">Fact about this number</a>
+            <div class="calculatornumbers">
+              <button onclick="evalc('/')">÷</button>
+              <button onclick="evalc('*')">×</button>
+              <button onclick="evalc('c')">c</button>
+              <button onclick="evalc('7')">7</button>
+              <button onclick="evalc('8')">8</button>
+              <button onclick="evalc('9')">9</button>
+              <button onclick="evalc('4')">4</button>
+              <button onclick="evalc('5')">5</button>
+              <button onclick="evalc('6')">6</button>
+              <button onclick="evalc('1')">1</button>
+              <button onclick="evalc('2')">2</button>
+              <button onclick="evalc('3')">3</button>
+              <button onclick="evalc('+/-')">+/-</button>
+              <button onclick="evalc('0')">0</button>
+              <button onclick="evalc('.')">.</button>
+            </div>
+            <div class="calculatornumbersright">
+              <button style="transform: scale(-1, 1);" onclick="evalc('<')">⌦</button>
+              <button onclick="evalc('-')">-</button>
+              <button onclick="evalc('+')">+</button>
+              <button style="height: 122px;" onclick="evalc('=')">=</button>
+            </div>
+          </div>
+       </div>
+       <div id="timer" class="draggabletimer">
+        <div id="timerheader">Timer<a onclick="hideTimer()">×</a></div>
+          <div class="timer">
+            <h1 id="timercount">0:02:30</h1>
+            <h1 id="timerset"><input id="timerHours" placeholder="0" type="number" min="0" max="99">:<input id="timerMinutes" placeholder="00" type="number" min="0" max="59">:<input id="timerSeconds" placeholder="00" type="number" min="0" max="59"></h1>
+            <a onclick="startTimer()" class="link" id="timerStart">Start</a>
+            <a onclick="pauseTimer()" class="link" id="timerPause">Pause</a>
+            <a onclick="playTimer()" class="link" id="timerPlay">Play</a>
+            <a onclick="resetTimer()" class="link" id="timerReset">Reset</a>
+          </div>
+       </div>
+    </div>
+    <!--<div class="nummycookie">This site uses cookies in order to make the site’s features work. <a onclick="closecookie()">ok</a></div>-->
+    <div id="tooltip" class="tooltip"></div>
+    <div id="wordCountdiv" class="wordCount"><a id="wordCount"> Words 0 • Symbols 0</a><x class="wordCountX" onclick="hideCounter()">×</x></div>
+  <textarea class="notearea" type="text" id="notearea" name="notearea"></textarea>
+  <div style="display: none;" id="devspace"><div id="dev"></div><div id="devoptions"><button>Run</button><label><input checked type="checkbox">Autorun</label><br>Console<hr> <div id="devConsole"></div></div></div>
+  <!--<div class="tabletnav">
+    Maybe add like swipe up to show this thing?
+    <div><i class="fa fa-sticky-note-o"></i><a></a></div>
+    <div><i class="fa fa-calculator"></i><a></a></div>
+    <div><i class="fa fa-comments-o"></i><a></a></div>
+  </div>-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="swiped-events.min.js"></script>
+  <script src="WriteNoteFunctions/find/find.js"></script>
+  <script src="WriteNoteFunctions/commands/editFunctions.js"></script>
+  <script src="WriteNoteFunctions/commands/upload.js"></script>
+  <script src="WriteNoteFunctions/commands/count.js"></script>
+  <script src="WriteNoteFunctions/commands/utlities.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

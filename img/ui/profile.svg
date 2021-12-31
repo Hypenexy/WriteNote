@@ -1,0 +1,7 @@
+<svg stroke="#c8c8c8" width="185.5" height="185.5" xmlns="http://www.w3.org/2000/svg">
+ <g>
+    <ellipse ry="87.5" rx="87.5" cy="92.5" cx="93" stroke-width="7" fill="none"/>
+    <ellipse fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" ry="28" rx="28" cy="61" cx="92.5"/>
+    <path fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" d="m43.5,146l98.5,0m-98.5,0a49.5,42.5 0 0 1 0,-3.5a49.57,42.5 0 0 1 49.5,-42.5a49.5,42.5 0 0 1 49.5,42.5l0,0a49.5,42.5 0 0 1 0,3.5"/>
+  </g>
+</svg>
