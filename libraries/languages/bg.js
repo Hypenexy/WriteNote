@@ -1,15 +1,60 @@
-<!DOCTYPE html>
-<html style="background: #111" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WriteNote</title>
-    <link rel="shortcut icon" href="writenotepearl.ico">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <app>
+
+function theallelementsmethod(){
+    var all = document.getElementsByTagName("*");
+
+    for (let i = 0; i < all.length; i++) {
+        console.log(all[i].innerText)
+        var n = all[i].innerText
+        //console.log(i)
+        if(n=="Appearance"){
+            all[i].innerText = "Изглед"
+        }
+        if(n=="Sidepanel"){
+            all[i].innerText = "Страничен панел"
+        }
+        if(n=="Change options for the sidepanel."){
+            all[i].innerText = "Промени опцийте за страничният панел."
+        }
+        if(n=="Language"){
+            all[i].innerText = "Език"
+        }
+        if(n=="Switch to your prefered language."){
+            all[i].innerText = "Смени на предпочитаният ти език."
+        }
+        if(n=="Theme"){
+            all[i].innerText = "Тема"
+        }
+        if(n=="Change to your prefered theme."){
+            all[i].innerText = "Смени на предпочитанията ти тема."
+        }
+        if(n=="Change the size, boldness and font of the text."){
+            all[i].innerText = "Промени големината, дебелината и стила на текста."
+        }
+        if(n=="Note"){
+            all[i].innerText = "Ноут"
+        }
+        if(n=="Edit"){
+            all[i].innerText = "Едит"
+        }
+        if(n=="View"){
+            all[i].innerText = "Виел"
+        }
+        if(n=="Profile"){
+            all[i].innerText = "Профил"
+        }
+        if(n=="About"){
+            all[i].innerText = "Относно"
+        }
+        if(n=="Version"){
+            all[i].innerText = "Версия"
+        }
+
+        console.log(all.length)
+    }
+}
+
+function replaceHTML(){
+    document.getElementsByTagName("app")[0].innerHTML = `
   <div id="settingsbrowser">
     <span onclick="closesettings()" class="x m-i">close</span>
     <div class="settings">
@@ -17,13 +62,13 @@
         <img src="IMG_2363.jpg">
         <user>Hypenexy</user>
       </div>
-      <input placeholder="Find an option">
-      <a onclick="opensetting('account', event)"><span class="m-i">person</span>Account</a>
-      <a onclick="opensetting('appearance', event)"><span class="m-i">style</span>Appearance</a>
-      <a onclick="opensetting('about', event)"><span class="m-i">info</span>About</a>
-      <a style="color: #c54848;"><span class="m-i">logout</span>Log Out</a>
+      <input placeholder="Потърси настройка">
+      <a onclick="opensetting('account', event)"><span class="m-i">person</span>Акаунт</a>
+      <a onclick="opensetting('appearance', event)"><span class="m-i">style</span>Изглед</a>
+      <a onclick="opensetting('about', event)"><span class="m-i">info</span>Относно</a>
+      <a style="color: #c54848;"><span class="m-i">logout</span>Излез от профил</a>
     </div>
-    <div id="selectedsettings">Hey there!</div>
+    <div id="selectedsettings">Хей там!</div>
   </div>
   <div id="notepreview"></div>
   <div id="profilepanel"></div>
@@ -35,16 +80,16 @@
         <div class="mainWelcomeLogo"><img width="64px" height="64px" src="writenotepearl.ico"><a href="http://midelight.net/WriteNote"><h1>WriteNote</h1></a></div>
 
         <div class="mainWelcomesidebarUnsigned">
-          <h2>Do more with an account</h2>
-          <li>Save and load notes entirely online</li>
-          <li>Share files with others</li>
-          <li>Customize to your liking</li>
+          <h2>Прави повече с акаунт</h2>
+          <li>Запазвай и зареждай бележки изцяло онлайн</li>
+          <li>Споделай файлове с други</li>
+          <li>Персонализирай по твое харесване</li>
         </div>
 
         <img class="key" width="512px" src="img/ui/signinlight.png">
 
         <div class="unsignedbtn">
-          <button onclick="hideWelcome()">No, Thanks</button> 
+          <button onclick="hideWelcome()">Не, Благодаря</button> 
           <button class="blue" onclick="hideWelcome();login()">
             <svg stroke="#c8c8c8" viewBox="0 0 185.5 185.5" width="185.5" height="185.5" xmlns="http://www.w3.org/2000/svg">
               <g>
@@ -53,39 +98,39 @@
                 <path stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" d="m43.5,146l98.5,0m-98.5,0a49.5,42.5 0 0 1 0,-3.5a49.57,42.5 0 0 1 49.5,-42.5a49.5,42.5 0 0 1 49.5,42.5l0,0a49.5,42.5 0 0 1 0,3.5"/>
               </g>
            </svg>
-           Sign In
+           Впиши се
           </button>
         </div>
       </div>
       <div id="options">
-        <h1>Good night, Hypenexy</h1>
+        <h1>Лека вечер, Hypenexy</h1>
         <div class="flex">
           <div class="creativity">
-            <a onclick="createproject()"><span class="m-i">add</span> Create Project</a>
-            <a onclick="openproject()"><span class="m-i">file_open</span> Open Project</a>
+            <a onclick="createproject()"><span class="m-i">add</span> Създай Проект</a>
+            <a onclick="openproject()"><span class="m-i">file_open</span> Отвори Проект</a>
           </div>
           <div id="files">
-            <input id="searchfiles" placeholder="Search in projects">
+            <input id="searchfiles" placeholder="Търси из проекти">
             <filters>
               <span class="op m-i">sort</span>
-              <select><option>Last opened</option><option>Earliest opened</option><option>Alphabetically</option><option>Size</option></select>
+              <select><option>Последно отворени</option><option>Най-рано отворени</option><option>Азбучно</option><option>Големина</option></select>
               <span id="gridview" class="o m-i">grid_view</span>
               <span id="lineview" class="o m-i">view_headline</span>
             </filters>
             <div>
-              <type><span class="m-i">description</span> Note</type>
+              <type><span class="m-i">description</span> Бележка</type>
               <span onclick="fileoptions('My summer diary', event)" class="more m-i">more_vert</span>
               <ti>My summer diary</ti>
               <p>Welcome to the only place i feel okay. In todays note...</p>
             </div>
             <div>
-              <type><span class="m-i">web</span> Web Site</type>
+              <type><span class="m-i">web</span> Уеб Сайт</type>
               <span onclick="fileoptions('cool site', event)" class="more m-i">more_vert</span>
               <ti>cool site</ti>
               <p>imagine an html text here</p>
             </div>
             <div>
-              <type><span class="m-i">article</span> Text</type>
+              <type><span class="m-i">article</span> Тескт</type>
               <span onclick="fileoptions('pari', event)" class="more m-i">more_vert</span>
               <ti>pari</ti>
               <p><- nqkoi: 10 lv kiko: 1.20 - 2 lv</p>
@@ -95,7 +140,7 @@
       </div>
       <div id="create">
         <div class="name">
-          <p>Name your new project</p>
+          <p>Найменувай твоя проект</p>
           <input id="createname"  placeholder="Untitled">
           <p>Store your project</p>
           <button id="createcloud"><span class="m-i">cloud</span> Cloud</button>
@@ -185,51 +230,51 @@
             </svg>
         </c>
         <div class="dropdown">
-            <a id="notebtn">Note</a>
+            <a id="notebtn">Бележка</a>
             <div id="notedrp">
-                <v onclick="newNote()"><span class="m-i">note_add</span> New</v>
+                <v onclick="newNote()"><span class="m-i">note_add</span> Нова</v>
                 <hr>
-                <v onclick="openNote()"><span class="m-i">file_open</span> Open</v>
-                <v onclick="saveNote()"><span class="m-i">save</span> Save</v>
-                <v id="saveasbtn" onclick="saveAsNote()"><span class="m-i">save_as</span> Save As</v>
-                <v onclick="shareNote()"><span class="m-i">share</span> Share</v>
+                <v onclick="openNote()"><span class="m-i">file_open</span> Отвори</v>
+                <v onclick="saveNote()"><span class="m-i">save</span> Запази</v>
+                <v id="saveasbtn" onclick="saveAsNote()"><span class="m-i">save_as</span> Запази Като</v>
+                <v onclick="shareNote()"><span class="m-i">share</span> Сподели</v>
                 <hr>
-                <v onclick="fileHistory()"><span class="m-i">history</span> File History</v>
+                <v onclick="fileHistory()"><span class="m-i">history</span> Файл История</v>
             </div>
         </div>
         <div class="dropdown">
-            <a id="editbtn">Edit</a>
+            <a id="editbtn">Редакция</a>
             <div id="editdrp">
-                <v onclick="showfind()"><span class="m-i">search</span> Find</v>
+                <v onclick="showfind()"><span class="m-i">search</span> Търси</v>
                 <hr>
-                <v onclick="undo()"><span class="m-i">undo</span> Undo</v>
-                <v onclick="redo()"><span class="m-i">redo</span> Redo</v>
+                <v onclick="undo()"><span class="m-i">undo</span> Отмяна</v>
+                <v onclick="redo()"><span class="m-i">redo</span> Преправи</v>
                 <hr>
-                <v onclick="cut()"><span class="m-i">cut</span> Cut</v>
-                <v onclick="copy()"><span class="m-i">copy</span> Copy</v>
-                <v onclick="paste()"><span class="m-i">paste</span> Paste</v>
-                <v id="pastewoformat" onclick="paste()"><span class="m-i">content_paste_go</span> Paste Text</v>
+                <v onclick="cut()"><span class="m-i">cut</span> Одрежи</v>
+                <v onclick="copy()"><span class="m-i">copy</span> Копирай</v>
+                <v onclick="paste()"><span class="m-i">paste</span> Постави</v>
+                <v id="pastewoformat" onclick="paste()"><span class="m-i">content_paste_go</span> Постави Текст</v>
                 <hr>
-                <v onclick="selectText()"><span class="m-i">select_all</span> Select All</v>
+                <v onclick="selectText()"><span class="m-i">select_all</span> Избери Всичко</v>
             </div>
         </div>
         <div class="dropdown">
-            <a id="viewbtn">View</a>
+            <a id="viewbtn">Изглед</a>
             <div id="viewdrp">
-                <v onclick="toggleCounter()"><span class="m-i">pin</span> Word Counter<tick id="wordcountercheckmark"></tick></v>
-                <v onclick="toggleCalculator()"><span class="m-i">calculate</span> Calculator<tick id="calculatorcheckmark"></tick></v>
-                <v onclick="toggleTimer()"><span class="m-i">timer</span> Timer<tick id="timercheckmark"></tick></v>
+                <v onclick="toggleCounter()"><span class="m-i">pin</span> Думо Брояч<tick id="wordcountercheckmark"></tick></v>
+                <v onclick="toggleCalculator()"><span class="m-i">calculate</span> Калкулатор<tick id="calculatorcheckmark"></tick></v>
+                <v onclick="toggleTimer()"><span class="m-i">timer</span> Таймер<tick id="timercheckmark"></tick></v>
                 <hr>
-                <v onclick="togglefullscreen()"><span class="m-i">fullscreen</span> Full Screen<tick id="fullscreencheckmark"></tick></v>
-                <!-- <v onclick="togglespellcheck()"><span class="m-i">spellcheck</span> Spell Check<tick id="spellcheckcheckmark"></tick></v> -->
+                <v onclick="togglefullscreen()"><span class="m-i">fullscreen</span> Цял Екран<tick id="fullscreencheckmark"></tick></v>
+                <!-- <v onclick="togglespellcheck()"><span class="m-i">spellcheck</span>Проверка на Правописа<tick id="spellcheckcheckmark"></tick></v> -->
                 <v onclick="togglewordwrap()"><span class="m-i">wrap_text</span> Word Wrap<tick id="wordwrapcheckmark"></tick></v>
-                <v onclick="showdirection()" class="writingdirection"><span class="m-i">format_textdirection_l_to_r</span> Writing Directio<span style="float: right" class="m-i">chevron_right</span>n</v>
+                <v onclick="showdirection()" class="writingdirection"><span class="m-i">format_textdirection_l_to_r</span> Дирекция на Писан<span style="float: right" class="m-i">chevron_right</span>е</v>
                 <div id="directions" class="extmenu writingdirectionmenu">
-                  <v onclick="direction(false)">Left to Right<tick id="ltrcheckmark"></tick></v>
-                  <v onclick="direction(true)">Right to Left<tick id="rtlcheckmark"></tick></v>
+                  <v onclick="direction(false)">От Ляво на Дясно<tick id="ltrcheckmark"></tick></v>
+                  <v onclick="direction(true)">От Дясно на Ляво<tick id="rtlcheckmark"></tick></v>
                 </div>
-                <v onclick="openotherwindow('font')" class="writingdirection"><span class="m-i">text_fields</span> Change Font</v>
-                <v onclick="openotherwindow('theme')"><span class="m-i">style</span> Theme</v>
+                <v onclick="openotherwindow('font')" class="writingdirection"><span class="m-i">text_fields</span> Промени Фонта</v>
+                <v onclick="openotherwindow('theme')"><span class="m-i">style</span> Тема</v>
             </div>
         </div>
         <svg id="profilepanelbtn" width="50" height="50" viewBox="0 0 185.5 185.5" xmlns="http://www.w3.org/2000/svg">
@@ -271,21 +316,21 @@
         <a id="anotherloginbtn" onclick="login(); closeNav()">Sign In</a>
         <hr style="width: 80%;">
       </div>
-      <a onclick="openotherwindow('account')">Profile</a>
-      <a onclick="openotherwindow('theme')">Theme</a>
-      <a onclick="openotherwindow('about')">About</a>
-      <a onclick="openotherwindow('info')">Version</a>
+      <a onclick="openotherwindow('account')">Профил</a>
+      <a onclick="openotherwindow('theme')">Тема</a>
+      <a onclick="openotherwindow('about')">Относно</a>
+      <a onclick="openotherwindow('info')">Версия</a>
 
       <div id="weather">
         <div id="weatherinfo">
-          <a class="link" onclick="openotherwindow('sidepanel')">Options</a>
+          <a class="link" onclick="openotherwindow('sidepanel')">Настройки</a>
         </div>
       </div>
 
       <div class="unsignedAnnotation" id="unsignedAnnotation">
-        <h2>You are not signed in.</h2>
-        <h3>WriteNote is better with an account!</h3>
-        <button onclick="loginannotation()">Sign In</button> <button onclick="noplzno()">Dismiss</button>
+        <h2>Не си вписан.</h2>
+        <h3>WriteNote е по-добър с акаунт!</h3>
+        <button onclick="loginannotation()">Впиши се</button> <button onclick="noplzno()">Отхвърляне</button>
       </div>
 
       <div id="spaceleft" class="prograssdiv">
@@ -298,14 +343,11 @@
       <div class="logo" onclick="logo()"><a><img width="64px" height="64px" src="lowpolyc.png"></a><h2>Midelight</h2></div>
     </div>
     
-    <div id="wordCountdiv"><a id="wordCount"> Words 0 • Symbols 0</a><span onclick="hideCounter()" class="x m-i">close</span><span class="x o m-i">open_in_new</span></div>
+    <div id="wordCountdiv"><a id="wordCount"> Думи 0 • Символи 0</a><span onclick="hideCounter()" class="x m-i">close</span><span class="x o m-i">open_in_new</span></div>
 
     <div id="apps"></div>
 
-    <div contenteditable id="notearea"></div>
+    <div contenteditable id="notearea"></div>`
+}
 
-    </app>
-    <script src="libraries/languages/bg.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+replaceHTML()

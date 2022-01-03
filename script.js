@@ -118,13 +118,12 @@ var wordCounter = document.getElementById("wordCount");
 var wordCounterdiv = document.getElementById("wordCountdiv");
 var wordcountercheckmark = document.getElementById("wordcountercheckmark");
 
-
 function showCounter(){
     //settings = {...settings, wordcounter: "show"};
     //saveSettings();
-    if (notearea.value.length){
-        var letterCount = notearea.value.length;
-        var wordCount = notearea.value.split(" ").length;
+    if (notearea.innerText.length){
+        var letterCount = notearea.innerText.length;
+        var wordCount = notearea.innerText.split(" ").length;
         wordCounter.innerHTML = '<a> Words ' + wordCount + ' • Symbols ' + letterCount + '</a>';
     }
     else{
@@ -132,14 +131,14 @@ function showCounter(){
     }
     wordCounterdiv.style.display = "block";
     wordcountercheckmark.style.display = "block";
-    notearea.style.height = "calc(100% - 108px)";
+    //notearea.style.height = "calc(100% - 108px)";
 }
 function hideCounter(){
     //delete settings.wordcounter;
     //saveSettings();
     wordcountercheckmark.style.display = "none";
     wordCounterdiv.style.display = "none";
-    notearea.style.height = "calc(100% - 66px)";
+    //notearea.style.removeProperty("height");
 }
 
 function toggleCounter(){
@@ -329,6 +328,10 @@ function fileoptions(note, event, mouse){
         //maybe there should be a really small delay cause if it's too fast the animation could not show
         var element = event.path[1]
         var rect = element.getBoundingClientRect();
+        notepreview.style.removeProperty("top")
+        notepreview.style.removeProperty("left")
+        notepreview.style.removeProperty("right")
+        notepreview.style.removeProperty("bottom")
         if(mouse == true){
             notepreview.style.top = event.y + "px"
             notepreview.style.left = event.x + "px"
@@ -348,7 +351,7 @@ function hidefileoptions(){
     notepreview.style.removeProperty("display")
 }
 
-// function fileoptionhover(e){ Leaving this for a later date, not really useful and might have a different menu on hover and stay.
+// function fileoptionhover(e){ Leaving this for a later date, not really useful and might have a different menu on hover and stay. // Like a preview instead
 //     setTimeout(function (){ 
 //         fileoptions((e.path[0].getElementsByTagName("ti")[0].innerText), e)
 //     }, 1000);
@@ -417,9 +420,184 @@ function closeHome(){
 
 //end of home
 
+//profile
+
+var profilepanelbtn = document.getElementById("profilepanelbtn")
+var profilepanel = document.getElementById("profilepanel")
+
+function openprofilepanel(){
+    profilepanel.style.visibility = "visible"
+    profilepanel.style.opacity = 1
+    profilepanel.style.transform = "translate(0)"
+    profilepanel.innerHTML = "<a onclick='opensetting(\"Account\")'><span class='m-i'>person</span>Hypenexy</a>"+
+    "<hr>"+
+    "<a><span class='m-i'>style</span>Theme</a>"+
+    "<a><span class='m-i'>translate</span>Language</a>"+
+    "<hr>"+
+    "<a><span class='m-i'>support</span>Support</a>"+
+    "<a><span class='m-i'>feedback</span>Feedback</a>"
+    
+    setTimeout(function () {
+        if(profilepanel.style.visibility == "visible"){
+            profilepanel.style.lol = "true"
+        }//weird fix but it works!
+    }, 50);
+}
+
+function closeprofilepanel(){
+    profilepanel.style.removeProperty("opacity")
+    profilepanel.style.removeProperty("transform")
+    profilepanel.style.lol = "false"
+    profilepanel.style.removeProperty("visibility")
+}
+
+profilepanelbtn.onclick = function(){
+    openprofilepanel()
+}
+
+//end of profile
+
+//notifications
+
+var notificationsbtn = document.getElementById("notificationsbtn")
+var notifications = document.getElementById("notifications")
+
+var activenotifications = []
+
+function opennotifications(){
+    notifications.style.visibility = "visible"
+    notifications.style.opacity = 1
+    notifications.style.transform = "translate(0)"
+    notifications.innerHTML = "<h1>Notifications</h1>"
+    for (let i = 0; i < activenotifications.length; i++) {
+        var div = "<div>"
+        if(activenotifications[i].type=="warn"){
+            div = "<div style='border: 1px solid #c54848'>"
+        }
+        notifications.innerHTML += div + "<ti>" + activenotifications[i].title + "</ti><co>" + activenotifications[i].content + "</co></div>"
+    }
+    
+    setTimeout(function () {
+        if(notifications.style.visibility == "visible"){
+            notifications.style.lol = "true"
+        }//weird fix but it works!
+    }, 50);
+}
+
+function closenotifications(){
+    notifications.style.removeProperty("opacity")
+    notifications.style.removeProperty("transform")
+    notifications.style.lol = "false"
+    notifications.style.removeProperty("visibility")
+}
+
+notificationsbtn.onclick = function(){
+    opennotifications()
+}
+
+function pushNotification(title, content, type){
+    activenotifications.push({"title":title,"content":content, "type":type})
+}
+
+pushNotification("File saved with different settings","Would you like to load these settings?","info")
+pushNotification("Security issue","Lmao you logged in from a different location.","warn")
+
+//end of notifications
+
+//settings
+
+var settingsbrowser = document.getElementById("settingsbrowser")
+var selectedsettings = document.getElementById("selectedsettings")
+var lastselectedsetting
+
+function opensettings(){
+    settingsbrowser.style.visibility = "visible"
+    settingsbrowser.style.transform = "translate(-50%, -50%)"
+    settingsbrowser.style.opacity = 1
+}
+
+function opensetting(panel, event){//might have to use ids cuz i can't access it or i can just simulate a click but how? I SIMULATED THE CLICK
+    if(settingsbrowser.style.visibility != "visible"){
+        opensettings()
+    }
+    selectedsettings.style.transition = "0s"
+    selectedsettings.style.transform = "translateY(50px)"
+    selectedsettings.innerHTML = ""
+    if(event == undefined){
+        simulateopensetting(panel)
+        return;
+    }
+    if(lastselectedsetting){
+        lastselectedsetting.style.removeProperty("color")
+        lastselectedsetting.style.removeProperty("background")
+    }
+    event.path[0].style.color = "#000"
+    event.path[0].style.background = "#fff"
+    lastselectedsetting = event.path[0]
+    if(panel=="account"){
+        selectedsettings.innerHTML = "<h1>Account</h1>" +
+        "<div class='profile'><div class='banner'></div><div class='avatar'></div><h2>Hypenexy</h2></div>" +
+        "<div onclick='opensubsetting(\"account\")' class='optionsubsection'><ti>Account</ti><co>Change username, password and email.</co></div>"+
+        "<div class='optionsubsection'><ti>Profile</ti><co>A place to edit your public picture picture, banner or status.</co></div>"+
+        "<div class='optionsubsection'><ti>Privacy</ti><co>Change your privacy preferences.</co></div>"+
+        "<div class='optionsubsection'><ti>Devices</ti><co>Preview and choose which devices you should stay logged in from.</co></div>"
+    }
+    if(panel=="appearance"){
+        selectedsettings.innerHTML = "<h1>Appearance</h1>" +
+        "<div class='hepreview'></div><div class='wnpreview'>Hey there, Hypenexy!</div>" +
+        "<div onclick='opensubsetting(\"sidepanel\")' class='optionsubsection'><ti><span class='m-i'>menu</span>Sidepanel</ti><co>Change options for the sidepanel.</co></div>"+
+        "<div class='optionsubsection'><ti><span class='m-i'>translate</span>Language</ti><co>Switch to your prefered language.</co></div>"+
+        "<div class='optionsubsection'><ti><span class='m-i'>style</span>Theme</ti><co>Change to your prefered theme.</co></div>"+
+        "<div class='optionsubsection'><ti><span class='m-i'>text_fields</span>Font</ti><co>Change the size, boldness and font of the text.</co></div>"
+        var wnpreview = selectedsettings.getElementsByClassName("wnpreview")[0]
+        var hepreview = selectedsettings.getElementsByClassName("hepreview")[0]
+        copyNodeStyle(document.getElementById("notearea"), wnpreview)
+        copyNodeStyle(document.getElementsByTagName("header")[0], hepreview)
+        wnpreview.style.removeProperty("position")
+        wnpreview.style.width = "100%"
+        wnpreview.style.height = "300px"
+        wnpreview.style.padding = "8px 4px"
+        wnpreview.style.borderRadius = "0 0 8px 8px"
+        hepreview.style.width = "100%"
+        hepreview.style.marginTop = "20px"
+        hepreview.style.borderRadius = "8px 8px 0 0"
+    }
+    setTimeout(function (){
+        selectedsettings.style.transition = "0.3s"
+        selectedsettings.style.transform = "translateY(0)"
+    }, 10);
+}
 
 
+function simulateopensetting(panel){
+    var aelements = settingsbrowser.getElementsByTagName("a")
+    for (let i = 0; i < aelements.length; i++) {
+        var text = aelements[i].innerHTML.toString()
+        if(text.includes(panel)){
+            aelements[i].click()
+        }
+    }
+}
 
+function closesettings(){
+    settingsbrowser.style.removeProperty("transform")
+    settingsbrowser.style.removeProperty("opacity")
+    settingsbrowser.style.removeProperty("visibility")
+}
+
+function opensubsetting(panel){
+    if(panel=="account"){
+        var section = selectedsettings.getElementsByTagName("h1")[0].innerText
+        selectedsettings.innerHTML = "<h1><a onclick='simulateopensetting(\""+section+"\")'>"+section+"</a> > Details</h1>" +
+        "Username"
+    }
+}
+
+opensettings()
+opensetting("Appearance")
+
+
+//end of settings
 
 //site builder
 
@@ -637,15 +815,57 @@ function todokeydown(e){
 
 function addtodo(type, text){
     var todos = document.getElementById("todos")
-    todos.innerHTML = "<div><todotick></todotick><co contenteditable='true'>" + text + "</co><span onclick=\"editTodo('My summer diary', event)\" class=\"more m-i\">more_vert</span></div>" + todos.innerHTML
+    todos.innerHTML = "<div oncontextmenu='editTodo(this.parentElement, event, true)'><todotick></todotick><co contenteditable='true'>" + text + "</co><span onclick=\"editTodo(this.parentElement, event)\" class=\"more m-i\">more_vert</span></div>" + todos.innerHTML
 }
 
-loadTodo()
+var selectedtodo
+
+function editTodo(todo, event, mouse){
+    if (notepreview.classList.contains("active") && lastnotepreview==todo){
+        hidefileoptions()
+    }
+    else{
+        selectedtodo = todo.getElementsByTagName("co")[0]
+        lastnotepreview = todo
+        notepreview.style.display = "block"
+        //maybe there should be a really small delay cause if it's too fast the animation could not show
+        var element = event.path[1]
+        var rect = element.getBoundingClientRect();
+        notepreview.style.removeProperty("top")
+        notepreview.style.removeProperty("left")
+        notepreview.style.removeProperty("right")
+        notepreview.style.removeProperty("bottom")
+        if(mouse == true){
+            event.preventDefault()
+            notepreview.style.top = event.y + "px"
+            notepreview.style.left = event.x + "px"
+        }
+        else{
+            notepreview.style.top = rect.top + 40 + "px"
+            notepreview.style.right = rect.left + 40 + "px"
+        }
+        notepreview.innerHTML = "<input disabled value=\"" + todo.innerText.slice(0,-9) + "\">" +
+        "<a style='margin-bottom: 5px;color: #4ee398'><span class='m-i'>task_alt</span> Mark as done</a>"+"<a onclick='selectedtodo.focus()'><span class='m-i'>edit</span> Edit</a>" + "<a style='margin-top: 5px;color: #c54848'><span class='m-i'>delete</span> Delete</a><hr>" +
+        "<p>Finished 21 days ago 12:23 AM 12/25/2021</p><p>Created 32 days ago 12:23 AM 12/25/2021</p>"
+        notepreview.classList.add("active")
+    }
+}
+
+
+
+//loadTodo()
 
 //end of to do list
 
 
 //WriteNote Editor Functions
+
+//copy elements' style
+
+function copyNodeStyle(sourceNode, targetNode) {
+    const computedStyle = window.getComputedStyle(sourceNode);
+    Array.from(computedStyle).forEach(key => targetNode.style.setProperty(key, computedStyle.getPropertyValue(key), computedStyle.getPropertyPriority(key)))
+}
 
 //load elements
 
@@ -725,11 +945,11 @@ notearea.addEventListener('input', function (e) {
   
 //   clearTimeout(timeoutsave);
 //   timeoutsave = setTimeout(function () {
-//     if(notearea.value!=lastText){
+//     if(notearea.innerText!=lastText){
 //       if(currentOnlineNote){
 //         saveonlinenote();
 //       }
-//       lastText = notearea.value;
+//       lastText = notearea.innerText;
 
 //       if(devMode){
 //         runCode();
@@ -785,6 +1005,15 @@ window.addEventListener('click', function (e) {
         }
     }
     catch{}
+
+    //profile menus
+    if(profilepanel.style.lol == "true"){
+        closeprofilepanel()
+    }
+
+    if(notifications.style.lol == "true"){
+        closenotifications()
+    }
 })
 
 window.addEventListener('touchstart', function (e) {

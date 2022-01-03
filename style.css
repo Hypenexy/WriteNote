@@ -1,8 +1,8 @@
-*{box-sizing: border-box;font-family: 'Roboto'}
+*{box-sizing: border-box;font-family: 'Roboto', sans-serif}
 @font-face{font-family:'Roboto';font-style:normal;font-weight:100;src:url('img/fonts/roboto-v29-latin-100.eot');src:local(''),url('img/fonts/roboto-v29-latin-100.eot?#iefix') format('embedded-opentype'),url('img/fonts/roboto-v29-latin-100.woff2') format('woff2'),url('img/fonts/roboto-v29-latin-100.woff') format('woff'),url('img/fonts/roboto-v29-latin-100.ttf') format('truetype'),url('img/fonts/roboto-v29-latin-100.svg#Roboto') format('svg')}@font-face{font-family:'Roboto';font-style:normal;font-weight:300;src:url('img/fonts/roboto-v29-latin-300.eot');src:local(''),url('img/fonts/roboto-v29-latin-300.eot?#iefix') format('embedded-opentype'),url('img/fonts/roboto-v29-latin-300.woff2') format('woff2'),url('img/fonts/roboto-v29-latin-300.woff') format('woff'),url('img/fonts/roboto-v29-latin-300.ttf') format('truetype'),url('img/fonts/roboto-v29-latin-300.svg#Roboto') format('svg')}@font-face{font-family:'Roboto';font-style:normal;font-weight:400;src:url('img/fonts/roboto-v29-latin-regular.eot');src:local(''),url('img/fonts/roboto-v29-latin-regular.eot?#iefix') format('embedded-opentype'),url('img/fonts/roboto-v29-latin-regular.woff2') format('woff2'),url('img/fonts/roboto-v29-latin-regular.woff') format('woff'),url('img/fonts/roboto-v29-latin-regular.ttf') format('truetype'),url('img/fonts/roboto-v29-latin-regular.svg#Roboto') format('svg')}@font-face{font-family:'Roboto';font-style:normal;font-weight:500;src:url('img/fonts/roboto-v29-latin-500.eot');src:local(''),url('img/fonts/roboto-v29-latin-500.eot?#iefix') format('embedded-opentype'),url('img/fonts/roboto-v29-latin-500.woff2') format('woff2'),url('img/fonts/roboto-v29-latin-500.woff') format('woff'),url('img/fonts/roboto-v29-latin-500.ttf') format('truetype'),url('img/fonts/roboto-v29-latin-500.svg#Roboto') format('svg')}@font-face{font-family:'Roboto';font-style:normal;font-weight:700;src:url('img/fonts/roboto-v29-latin-700.eot');src:local(''),url('img/fonts/roboto-v29-latin-700.eot?#iefix') format('embedded-opentype'),url('img/fonts/roboto-v29-latin-700.woff2') format('woff2'),url('img/fonts/roboto-v29-latin-700.woff') format('woff'),url('img/fonts/roboto-v29-latin-700.ttf') format('truetype'),url('img/fonts/roboto-v29-latin-700.svg#Roboto') format('svg')}@font-face{font-family:'Roboto';font-style:normal;font-weight:900;src:url('img/fonts/roboto-v29-latin-900.eot');src:local(''),url('img/fonts/roboto-v29-latin-900.eot?#iefix') format('embedded-opentype'),url('img/fonts/roboto-v29-latin-900.woff2') format('woff2'),url('img/fonts/roboto-v29-latin-900.woff') format('woff'),url('img/fonts/roboto-v29-latin-900.ttf') format('truetype'),url('img/fonts/roboto-v29-latin-900.svg#Roboto') format('svg')}
   
 html,body{height: 100%;}
-body{margin: 0;}/*overflow: hidden;} fix for iphone scroll*/
+body{margin: 0; overflow: hidden;} /*fix for iphone scroll*/
 #notearea{
     position: fixed;
     overflow: auto;
@@ -144,7 +144,8 @@ button{
 }
 
 
-#welcome .x {
+.x {
+    z-index: 2;
     user-select: none;
     cursor: pointer;
     position: absolute;
@@ -156,13 +157,13 @@ button{
     transition: 0.2s;
 }
 
-#welcome .x:hover {
+.x:hover {
     background: #55555533;
     border-radius: 50%;
 }
 
 
-#welcome .x:active {
+.x:active {
     background: #55555555;
     border-radius: 45%;
 }
@@ -268,7 +269,7 @@ button{
     transition: 0.2s;
 }
 
-#create input, #create select, #files input{
+#create input, #create select, #files input, #settingsbrowser .settings input{
     color: #fff;
     background: none;
     border: 1px solid #222;
@@ -290,7 +291,7 @@ button{
     background: #a78de4;
 }
 
-#create input:focus, #files input:focus{
+#create input:focus, #files input:focus, #settingsbrowser .settings input:focus{
     border-bottom: 1px solid #a78de4;
 }
 
@@ -502,7 +503,7 @@ button{
     padding: 12px;
     color: #eee;
     background: #111;
-    border: 1px solid #bbb;
+    border: 1px solid #333;
     border-radius: 4px;
     opacity: 0;
     transform: translateY(6px);
@@ -595,9 +596,7 @@ button{
 
 
 
-
-
-header a, header #navBtn svg, .dropdown v{
+header a, header #navBtn svg, .dropdown v, #profilepanelbtn, #notificationsbtn{
     transition: 0.2s;
 }
 
@@ -624,9 +623,25 @@ header a{
     font-weight: 400;
 }
 
-header a:hover{
+header a:hover, #profilepanelbtn:hover, #notificationsbtn:hover{
+    stroke: #fff;
     color: #fff;
+    fill: #fff;
     background-color: #101010;
+}
+
+#profilepanelbtn, #notificationsbtn{
+    stroke: #c8c8c8;
+    fill: #c8c8c8;
+    cursor: pointer;
+    float: right;
+    border-radius: 5px;
+    padding: 6px;
+    margin-left: 5px;
+}
+
+#profilepanelbtn{
+    border-radius: 50%;
 }
 
 header #navBtn svg {
@@ -701,8 +716,8 @@ tick {
     box-sizing: initial;
     display: none;
     position: absolute;
-    right: 14px;
-    top: 13px;
+    right: 20px;
+    top: 15px;
     transform: rotate(45deg);
     height: 12px;
     width: 6px;
@@ -956,13 +971,13 @@ tick {
 
 
 
-.wordCount {
+#wordCountdiv {
     display: none;
-    z-index: 2;
+    z-index: 5;
     position: absolute;
     left: 0;
     bottom: 0;
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
 
     background: #1a1a1a; /*181818*/
@@ -970,15 +985,20 @@ tick {
     color: white;
     transition: all 0.4s;
 }
-.wordCountX {
+#wordCountdiv .x {
+    padding: 10px;
+    margin: -5px 2px;
 	cursor: pointer;
-	position: absolute;
-	right: 4px;
-	top: 4px;
+	position: relative;
+    top: 0;
+    right: 0;
+    float: right;
+    font-size: initial
 }
-
-
-
+#wordCountdiv a{
+    display: inline-block;
+    padding: 1px;
+}
 
 #siteexplorer{
     width: 200px;
@@ -1219,6 +1239,361 @@ todotick{
     border-bottom: 4px solid #a78de4;
     border-right: 4px solid #a78de4;
 }
+
+
+
+
+
+#profilepanel, #notifications{
+    visibility: hidden;
+    z-index: 10;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    min-width: 185px;
+    padding: 12px;
+    color: #eee;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+    opacity: 0;
+    transform: translateY(-6px);
+    box-shadow: 0 5px 4px #0b0b0b;
+    transition: transform 0.3s, opacity 0.2s;
+}
+
+#notifications{
+    min-width: 225px;
+    right: 55px;
+}
+
+#profilepanel hr, #notifications hr{
+    border:0;
+    margin: 16px 0;
+    border-top: 1px solid #666
+}
+#profilepanel a, #notifications a {
+    user-select: none;
+    display: block;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 18px;
+    color: #eee;
+    transition: 0.2s;
+}
+#profilepanel a span, #notifications a span {
+    transform: translateY(7px);
+    margin: -99% 4px 0 -6px
+}
+#profilepanel a:hover, #notifications a:hover {
+    background:#55555555;
+}
+#profilepanel a:active, #notifications a:active {
+    background:#55555599;
+}
+
+#notifications h1{
+    margin: 0;
+    font-size: 20px
+}
+
+#notifications div{
+    border: 1px solid #252525;
+    background: #252525;
+    margin: 12px 0;
+    padding: 8px;
+    border-radius: 4px;
+}
+#notifications ti{
+    display: block;
+    font-weight: 600;
+}
+
+#notifications co{
+    display: inline-block;
+    padding: 7px 2px;
+}
+
+@media screen and (max-width: 495px){
+    #notifications{
+        width: 90%;
+        left: 5%;
+    }
+}
+
+
+#settingsbrowser{
+    position: absolute;
+    height: 80%;
+    min-height: 530px;
+    width: 70%;
+    min-width: 820px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%)scale(0.95);
+
+    z-index: 10;
+    visibility: hidden;
+    opacity: 0;
+    overflow: hidden;
+
+    color: #fff;
+    background: #100f11;
+    border-radius: 8px;
+    transition: transform 0.3s, opacity 0.1s;
+}
+@media screen and (max-width: 820px) {
+    #settingsbrowser{
+        border-radius: 0;
+        width: 100%;
+        min-width: initial;
+    }
+}
+@media screen and (max-height: 530px) {
+    #settingsbrowser{
+        border-radius: 0;
+        height: 100%;
+        min-height: initial;
+    }
+}
+#settingsbrowser *::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+}
+#settingsbrowser .x {
+    top: 20px;
+    right: 4px;
+}
+#settingsbrowser .account{
+    padding: 8px;
+    background: #222;
+}
+#settingsbrowser .account *{
+    display: inline;
+    vertical-align: middle;
+}
+#settingsbrowser .account img{
+    border-radius: 50%;
+    height: 64px;
+    width: 64px;
+}
+#settingsbrowser .account user{
+    font-size: 16px;
+    margin-left: 15px
+}
+
+#settingsbrowser .settings{
+    float: left;
+    width: 30%;
+    height: 100%;
+    overflow: auto;
+}
+#settingsbrowser .settings a, #settingsbrowser .settings input, #settingsbrowser .account{
+    user-select: none;
+    display: block;
+    margin: 30px 10%;
+    width: 80%;
+    border-radius: 8px;
+    font-size: 20px;
+}
+#settingsbrowser .settings a, #settingsbrowser .settings input{
+    padding: 12px 6px;
+    margin: 30px 10%;
+}
+#settingsbrowser .settings a{
+    cursor: pointer;
+    margin: 8px 10%;
+    transition: 0.2s;
+}
+
+#settingsbrowser .settings a:hover{
+    background: #55555533;
+}
+
+#settingsbrowser .settings a:active{
+    background: #55555555;
+}
+
+#selectedsettings{
+    float: right;
+    padding: 30px;
+    padding-left: 0;
+    width: 70%;
+    height: 100%;
+    transform: translateY(100px);
+    transition: 0.3s;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#settingsbrowser span{
+    float: left;
+    margin-right: 6px;
+}
+
+#selectedsettings h1{
+    user-select: none;
+    margin: 0;
+    font-weight: 400;
+}
+
+#selectedsettings .profile{
+    width: 100%;
+    height: auto;
+    background: #222;
+    border-radius: 8px;
+    text-align: center
+}
+
+#selectedsettings .banner{
+    height: 250px;
+    background: url("skyeyes.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    border-radius: 8px 8px 0 0;
+    margin-top: 20px;
+}
+#selectedsettings .avatar{
+    display: inline-block;
+    height: 128px;
+    width: 128px;
+    background: url("IMG_2363.jpg");
+    background-size: cover;
+    border-radius: 50%;
+    transform: translateY(-64px);
+}
+#selectedsettings .profile h2{
+    user-select: none;
+    margin: -72px;
+    margin-bottom: 0;
+    padding: 16px;
+}
+
+#selectedsettings .optionsubsection{
+    display: block;
+    user-select: none;
+    cursor: pointer;
+    background: #252525;
+    width: 45%;
+    height: 100px;
+    float: left; /*how the fuck did float left fix my inline-block issue????*/
+    margin: 0 2.5%;
+    margin-top: 30px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #252525;
+    transition: 0.2s;
+}
+
+@media screen and (max-width: 1310px) {
+    #selectedsettings .optionsubsection{
+        width: 100%;
+        height: 100px;
+        margin: 30px 0;
+        float: none;
+    }
+}
+
+#selectedsettings .optionsubsection ti{
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 8px 0;
+}
+#selectedsettings .optionsubsection co{
+    color: #ddd
+}
+
+#selectedsettings .optionsubsection:hover{
+    border: 1px solid #555;
+}
+#selectedsettings .optionsubsection:active{
+    border: 1px solid #555;
+    background: #555;
+}
+
+#selectedsettings h1 a{
+    cursor: pointer;
+}
+#selectedsettings h1 a:hover{
+    color: #ddd
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
