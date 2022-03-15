@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html style="background: #111" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WriteNote</title>
-    <link rel="shortcut icon" href="writenotepearl.ico">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WriteNote</title>
+  <style>loader,loader:after{border-radius: 50%; width: 10em; height: 10em;} loader{ position: absolute; z-index: 99; left: 50%; top: 50%; display: block; margin: -30px -50px; font-size: 10px; text-indent: -9999em; border-top: 1.1em solid rgba(255, 255, 255, 0.2); border-right: 1.1em solid rgba(255, 255, 255, 0.2); border-bottom: 1.1em solid rgba(255, 255, 255, 0.2); border-left: 1.1em solid #ffffff; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); -webkit-animation: load8 1.1s infinite linear; animation: load8 1.1s infinite linear;} @-webkit-keyframes load8{ 0%{ -webkit-transform: rotate(0deg); transform: rotate(0deg);} 100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg);}} @keyframes load8{ 0%{ -webkit-transform: rotate(0deg); transform: rotate(0deg);} 100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg);}}</style>
+  <link rel="shortcut icon" href="wn.png">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <loader></loader>
   <app>
+  <div class="linkinfo"></div>
+  <div class="context"></div>
   <div id="settingsbrowser">
     <span onclick="closesettings()" class="x m-i">close</span>
     <div class="settings">
@@ -18,9 +22,9 @@
         <user>Hypenexy</user>
       </div>
       <input placeholder="Find an option">
-      <a onclick="opensetting('account', event)"><span class="m-i">person</span>Account</a>
-      <a onclick="opensetting('appearance', event)"><span class="m-i">style</span>Appearance</a>
-      <a onclick="opensetting('about', event)"><span class="m-i">info</span>About</a>
+      <a onclick="opensetting('account', this)"><span class="m-i">person</span>Account</a>
+      <a onclick="opensetting('appearance', this)"><span class="m-i">style</span>Appearance</a>
+      <a onclick="opensetting('about', this)"><span class="m-i">info</span>About</a>
       <a style="color: #c54848;"><span class="m-i">logout</span>Log Out</a>
     </div>
     <div id="selectedsettings">Hey there!</div>
@@ -28,35 +32,11 @@
   <div id="notepreview"></div>
   <div id="profilepanel"></div>
   <div id="notifications"></div>
+  <div id="shownnotifications"></div>
   <div id="modal">
     <div id="welcome">
       <span onclick="closeHome()" class="x m-i">close</span>
-      <div id="unsigned">
-        <div class="mainWelcomeLogo"><img width="64px" height="64px" src="writenotepearl.ico"><a href="http://midelight.net/WriteNote"><h1>WriteNote</h1></a></div>
-
-        <div class="mainWelcomesidebarUnsigned">
-          <h2>Do more with an account</h2>
-          <li>Save and load notes entirely online</li>
-          <li>Share files with others</li>
-          <li>Customize to your liking</li>
-        </div>
-
-        <img class="key" width="512px" src="img/ui/signinlight.png">
-
-        <div class="unsignedbtn">
-          <button onclick="hideWelcome()">No, Thanks</button> 
-          <button class="blue" onclick="hideWelcome();login()">
-            <svg stroke="#c8c8c8" viewBox="0 0 185.5 185.5" width="185.5" height="185.5" xmlns="http://www.w3.org/2000/svg">
-              <g>
-                <ellipse ry="87.5" rx="87.5" cy="92.5" cx="93" stroke-width="7"/>
-                <ellipse stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" ry="28" rx="28" cy="61" cx="92.5"/>
-                <path stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" d="m43.5,146l98.5,0m-98.5,0a49.5,42.5 0 0 1 0,-3.5a49.57,42.5 0 0 1 49.5,-42.5a49.5,42.5 0 0 1 49.5,42.5l0,0a49.5,42.5 0 0 1 0,3.5"/>
-              </g>
-           </svg>
-           Sign In
-          </button>
-        </div>
-      </div>
+    
       <div id="options">
         <h1>Good night, Hypenexy</h1>
         <div class="flex">
@@ -88,7 +68,7 @@
               <type><span class="m-i">article</span> Text</type>
               <span onclick="fileoptions('pari', event)" class="more m-i">more_vert</span>
               <ti>pari</ti>
-              <p><- nqkoi: 10 lv kiko: 1.20 - 2 lv</p>
+              <p><- nqkoi: 10 lv koki: 1.20 - 2 lv</p>
             </div>
           </div>
         </div>
@@ -99,7 +79,7 @@
           <input id="createname"  placeholder="Untitled">
           <p>Store your project</p>
           <button id="createcloud"><span class="m-i">cloud</span> Cloud</button>
-          <button id="createbrowser"><span class="m-i">web</span> Browser</button>
+          <button id="createbrowser"><span class="m-i">web</span> App</button>
           <button id="createdevice"><span class="m-i">desktop_windows</span> Device</button>
           <div id="createcloudfolder">
             <p style="margin-top: 9px">Folder</p>
@@ -108,11 +88,11 @@
               <option>folderche</option>
               <option>homework</option>
             </select>
-            <div class="flex"><input id="createaddfoldername" style="border-left: 1px solid #bbb;" placeholder="Folder name"><button id="createaddfolder" style="width:180px;height: 39px;padding:0;border-top:0">Add folder</button></div>
+            <div class="flex"><input id="createaddfoldername" style="border-left: 1px solid #bbb;" autocomplete="off" placeholder="Folder name"><button id="createaddfolder" style="width:180px;height: 39px;padding:0;border-top:0">Add folder</button></div>
           </div>
           <div class="bottom">
             <!-- <p>Create the project</p> -->
-            <button class="blue"><span class="m-i">add</span> Create</button> <button onclick="openhome()"><span class="m-i">close</span> Cancel</button>
+            <button class="blue"><span class="m-i">add</span> Create</button> <button onclick="openHome()"><span class="m-i">close</span> Cancel</button>
           </div>
         </div>
         <div class="type">
@@ -163,149 +143,199 @@
           </div>
         </div>
       </div>
-      <div id="open">
+      <div id="openexisting">
         <p>Store your project</p>
         <button id="createcloud"><span class="m-i">cloud</span> Cloud</button>
-        <button id="createbrowser"><span class="m-i">web</span> Browser</button>
+        <button id="createbrowser"><span class="m-i">web</span> App</button>
         <button id="createdevice"><span class="m-i">desktop_windows</span> Device</button>
         <div class="bottom">
           <!-- <p>Create the project</p> -->
-          <button class="blue"><span class="m-i">add</span> Create</button> <button onclick="openhome()"><span class="m-i">close</span> Cancel</button>
+          <button class="blue"><span class="m-i">add</span> Create</button> <button onclick="openHome()"><span class="m-i">close</span> Cancel</button>
         </div>
       </div>
     </div>
   </div>
 
-    <header>
-        <c id="navBtn" onclick="openNav()">
-            <svg width="32" height="32" viewBox="0 0 64 64">
-                <rect x="4" y="8" width="56" height="8" rx="4" ry="4"></rect>
-                <rect x="4" y="28" width="56" height="8" rx="4" ry="4"></rect>
-                <rect x="4" y="48" width="56" height="8" rx="4" ry="4"></rect>
-            </svg>
-        </c>
-        <div class="dropdown">
-            <a id="notebtn">Note</a>
-            <div id="notedrp">
-                <v onclick="newNote()"><span class="m-i">note_add</span> New</v>
-                <hr>
-                <v onclick="openNote()"><span class="m-i">file_open</span> Open</v>
-                <v onclick="saveNote()"><span class="m-i">save</span> Save</v>
-                <v id="saveasbtn" onclick="saveAsNote()"><span class="m-i">save_as</span> Save As</v>
-                <v onclick="shareNote()"><span class="m-i">share</span> Share</v>
-                <hr>
-                <v onclick="fileHistory()"><span class="m-i">history</span> File History</v>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a id="editbtn">Edit</a>
-            <div id="editdrp">
-                <v onclick="showfind()"><span class="m-i">search</span> Find</v>
-                <hr>
-                <v onclick="undo()"><span class="m-i">undo</span> Undo</v>
-                <v onclick="redo()"><span class="m-i">redo</span> Redo</v>
-                <hr>
-                <v onclick="cut()"><span class="m-i">cut</span> Cut</v>
-                <v onclick="copy()"><span class="m-i">copy</span> Copy</v>
-                <v onclick="paste()"><span class="m-i">paste</span> Paste</v>
-                <v id="pastewoformat" onclick="paste()"><span class="m-i">content_paste_go</span> Paste Text</v>
-                <hr>
-                <v onclick="selectText()"><span class="m-i">select_all</span> Select All</v>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a id="viewbtn">View</a>
-            <div id="viewdrp">
-                <v onclick="toggleCounter()"><span class="m-i">pin</span> Word Counter<tick id="wordcountercheckmark"></tick></v>
-                <v onclick="toggleCalculator()"><span class="m-i">calculate</span> Calculator<tick id="calculatorcheckmark"></tick></v>
-                <v onclick="toggleTimer()"><span class="m-i">timer</span> Timer<tick id="timercheckmark"></tick></v>
-                <hr>
-                <v onclick="togglefullscreen()"><span class="m-i">fullscreen</span> Full Screen<tick id="fullscreencheckmark"></tick></v>
-                <!-- <v onclick="togglespellcheck()"><span class="m-i">spellcheck</span> Spell Check<tick id="spellcheckcheckmark"></tick></v> -->
-                <v onclick="togglewordwrap()"><span class="m-i">wrap_text</span> Word Wrap<tick id="wordwrapcheckmark"></tick></v>
-                <v onclick="showdirection()" class="writingdirection"><span class="m-i">format_textdirection_l_to_r</span> Writing Directio<span style="float: right" class="m-i">chevron_right</span>n</v>
-                <div id="directions" class="extmenu writingdirectionmenu">
-                  <v onclick="direction(false)">Left to Right<tick id="ltrcheckmark"></tick></v>
-                  <v onclick="direction(true)">Right to Left<tick id="rtlcheckmark"></tick></v>
-                </div>
-                <v onclick="openotherwindow('font')" class="writingdirection"><span class="m-i">text_fields</span> Change Font</v>
-                <v onclick="openotherwindow('theme')"><span class="m-i">style</span> Theme</v>
-            </div>
-        </div>
-        <svg id="profilepanelbtn" width="50" height="50" viewBox="0 0 185.5 185.5" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <ellipse ry="87.5" rx="87.5" cy="92.5" cx="93" stroke-width="7" fill="none"/>
-            <ellipse fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" ry="28" rx="28" cy="61" cx="92.5"/>
-            <path fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" d="m43.5,146l98.5,0m-98.5,0a49.5,42.5 0 0 1 0,-3.5a49.57,42.5 0 0 1 49.5,-42.5a49.5,42.5 0 0 1 49.5,42.5l0,0a49.5,42.5 0 0 1 0,3.5"/>
-          </g>
-        </svg>
-        <svg id="notificationsbtn" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 611.999 611.999">
-          <path d="M570.107,500.254c-65.037-29.371-67.511-155.441-67.559-158.622v-84.578c0-81.402-49.742-151.399-120.427-181.203
-            C381.969,34,347.883,0,306.001,0c-41.883,0-75.968,34.002-76.121,75.849c-70.682,29.804-120.425,99.801-120.425,181.203v84.578
-            c-0.046,3.181-2.522,129.251-67.561,158.622c-7.409,3.347-11.481,11.412-9.768,19.36c1.711,7.949,8.74,13.626,16.871,13.626
-            h164.88c3.38,18.594,12.172,35.892,25.619,49.903c17.86,18.608,41.479,28.856,66.502,28.856
-            c25.025,0,48.644-10.248,66.502-28.856c13.449-14.012,22.241-31.311,25.619-49.903h164.88c8.131,0,15.159-5.676,16.872-13.626
-            C581.586,511.664,577.516,503.6,570.107,500.254z M484.434,439.859c6.837,20.728,16.518,41.544,30.246,58.866H97.32
-            c13.726-17.32,23.407-38.135,30.244-58.866H484.434z M306.001,34.515c18.945,0,34.963,12.73,39.975,30.082
-            c-12.912-2.678-26.282-4.09-39.975-4.09s-27.063,1.411-39.975,4.09C271.039,47.246,287.057,34.515,306.001,34.515z
-             M143.97,341.736v-84.685c0-89.343,72.686-162.029,162.031-162.029s162.031,72.686,162.031,162.029v84.826
-            c0.023,2.596,0.427,29.879,7.303,63.465H136.663C143.543,371.724,143.949,344.393,143.97,341.736z M306.001,577.485
-            c-26.341,0-49.33-18.992-56.709-44.246h113.416C355.329,558.493,332.344,577.485,306.001,577.485z"/>
-        </svg>
-    </header>
 
-    <header id="documenttools">
-      <a><span class="m-i">format_color_fill</span></a>
-      <a><span class="m-i">format_color_text</span></a>
-      <a><span class="m-i">format_color_reset</span></a>
-    </header>
+  <modal>
+    <welcome></welcome>
+    <version></version>
+    <div id="login"></div>
+    <div id="sharegui"></div>
+    <confirm></confirm>
+  </modal>
 
+  <header>
+      <c tabindex="0" id="navBtn" onclick="openNav()">
+          <svg width="32" height="32" viewBox="0 0 64 64">
+              <rect x="4" y="8" width="56" height="8" rx="4" ry="4"></rect>
+              <rect x="4" y="28" width="56" height="8" rx="4" ry="4"></rect>
+              <rect x="4" y="48" width="56" height="8" rx="4" ry="4"></rect>
+          </svg>
+      </c>
+      <div class="dropdown">
+          <a id="notebtn">Note</a>
+          <div id="notedrp">
+              <v onclick="newNote()"><span class="m-i">note_add</span> New</v>
+              <hr>
+              <v onclick="openNote()"><span class="m-i">file_open</span> Open</v>
+              <v onclick="saveNote()"><span class="m-i">save</span> Save</v>
+              <v id="saveasbtn" onclick="saveAsNote()"><span class="m-i">save_as</span> Save As</v>
+              <v onclick="showshare()"><span class="m-i">share</span> Share</v>
+              <v onclick="printwn()"><span class="m-i">print</span> Print</v>
+              <hr>
+              <v onclick="fileHistory()"><span class="m-i">history</span> File History</v>
+          </div>
+      </div>
+      <div class="dropdown">
+          <a id="editbtn">Edit</a>
+          <div id="editdrp">
+              <v onclick="event.cancelBubble = true" class="writingdirection"><span class="m-i">add_to_photos</span> Insert<span style="float: right" class="m-i">chevron_right</span></v>
+              <div id="directions" class="writingdirectionmenu writingdirectionmenu2">
+                <v onclick=""><span class="m-i">image</span>Image</v>
+                <v onclick=""><span class="m-i">description</span>File</v>
+                <v onclick="InsertLink()"><span class="m-i">link</span>Link</v>
+                <v onclick="ShowAddDate()"><span class="m-i">event</span>Date</v>
+                <v onclick=""><span class="m-i">audiotrack</span>Audio</v>
+                <v onclick=""><span class="m-i">phone</span>Contact</v>
+                <v onclick=""><span class="m-i">calculate</span>Calculation</v>
+              </div>
+              <v onclick="ShowFind()"><span class="m-i">search</span> Find</v>
+              <hr>
+              <v onclick="Undo()"><span class="m-i">undo</span> Undo</v>
+              <v onclick="Redo()"><span class="m-i">redo</span> Redo</v>
+              <hr>
+              <v onclick="Cut()"><span class="m-i">cut</span> Cut</v>
+              <v onclick="Copy()"><span class="m-i">copy</span> Copy</v>
+              <v onclick="Paste()"><span class="m-i">paste</span> Paste</v>
+              <v onclick="Paste()"><span class="m-i">content_paste_search</span> Paste Styled</v>
+              <v id="pastewoformat" onclick="paste()"><span class="m-i">content_paste_go</span> Paste Text</v>
+              <hr>
+              <v onclick="SelectAll()"><span class="m-i">select_all</span> Select All</v>
+          </div>
+      </div>
+      <div class="dropdown">
+          <a id="viewbtn">View</a>
+          <div id="viewdrp">
+              <v onclick="toggleCounter()"><span class="m-i">pin</span> Word Counter<tick id="wordcountercheckmark"></tick></v>
+              <v onclick="toggleCalculator()"><span class="m-i">calculate</span> Calculator<tick id="calculatorcheckmark"></tick></v>
+              <v onclick="toggleTimer()"><span class="m-i">timer</span> Timer<tick id="timercheckmark"></tick></v>
+              <hr>
+              <v onclick="togglefullscreen()"><span class="m-i">fullscreen</span> Full Screen<tick id="fullscreencheckmark"></tick></v>
+              <!-- <v onclick="togglespellcheck()"><span class="m-i">spellcheck</span> Spell Check<tick id="spellcheckcheckmark"></tick></v> -->
+              <v onclick="togglewordwrap()"><span class="m-i">wrap_text</span> Word Wrap<tick id="wordwrapcheckmark"></tick></v>
+              <v onclick="togglelines()"><span class="m-i">toc</span> Show Lines<tick id="linescheckmark"></tick></v>
+              <v onclick="event.cancelBubble = true" class="writingdirection"><span class="m-i">format_textdirection_l_to_r</span> Writing Directio<span style="float: right" class="m-i">chevron_right</span>n</v>
+              <div id="directions" class="writingdirectionmenu">
+                <v onclick="direction(false)">Left to Right<tick id="ltrcheckmark"></tick></v>
+                <v onclick="direction(true)">Right to Left<tick id="rtlcheckmark"></tick></v>
+              </div>
+              <v onclick="event.cancelBubble = true" class="menupos"><span class="m-i">widgets</span> Menu Positio<span style="float: right" class="m-i">chevron_right</span>n</v>
+              <div id="directions" class="menuposmenu">
+                <v onclick="HeaderLocation()">Top (Default)<tick id="ptcheckmark"></tick></v>
+                <v onclick="HeaderLocation(1)">Left<tick id="plcheckmark"></tick></v>
+                <v onclick="HeaderLocation(2)">Right<tick id="prcheckmark"></tick></v>
+                <v onclick="HeaderLocation(3)">Bottom<tick id="pbcheckmark"></tick></v>
+              </div>
+              <v onclick="opensetting('Appearance'),opensubsetting('font')" class="writingdirection"><span class="m-i">text_fields</span> Change Font</v>
+              <v onclick="opensetting('Appearance'),opensubsetting('theme')"><span class="m-i">style</span> Theme</v>
+          </div>
+      </div>
+      <svg id="profilepanelbtn" width="50" height="50" viewBox="0 0 185.5 185.5" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <ellipse ry="87.5" rx="87.5" cy="92.5" cx="93" stroke-width="7" fill="none"/>
+          <ellipse fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" ry="28" rx="28" cy="61" cx="92.5"/>
+          <path fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" d="m43.5,146l98.5,0m-98.5,0a49.5,42.5 0 0 1 0,-3.5a49.57,42.5 0 0 1 49.5,-42.5a49.5,42.5 0 0 1 49.5,42.5l0,0a49.5,42.5 0 0 1 0,3.5"/>
+        </g>
+      </svg>
+      <svg id="notificationsbtn" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 611.999 611.999">
+        <path d="M570.107,500.254c-65.037-29.371-67.511-155.441-67.559-158.622v-84.578c0-81.402-49.742-151.399-120.427-181.203
+          C381.969,34,347.883,0,306.001,0c-41.883,0-75.968,34.002-76.121,75.849c-70.682,29.804-120.425,99.801-120.425,181.203v84.578
+          c-0.046,3.181-2.522,129.251-67.561,158.622c-7.409,3.347-11.481,11.412-9.768,19.36c1.711,7.949,8.74,13.626,16.871,13.626
+          h164.88c3.38,18.594,12.172,35.892,25.619,49.903c17.86,18.608,41.479,28.856,66.502,28.856
+          c25.025,0,48.644-10.248,66.502-28.856c13.449-14.012,22.241-31.311,25.619-49.903h164.88c8.131,0,15.159-5.676,16.872-13.626
+          C581.586,511.664,577.516,503.6,570.107,500.254z M484.434,439.859c6.837,20.728,16.518,41.544,30.246,58.866H97.32
+          c13.726-17.32,23.407-38.135,30.244-58.866H484.434z M306.001,34.515c18.945,0,34.963,12.73,39.975,30.082
+          c-12.912-2.678-26.282-4.09-39.975-4.09s-27.063,1.411-39.975,4.09C271.039,47.246,287.057,34.515,306.001,34.515z
+            M143.97,341.736v-84.685c0-89.343,72.686-162.029,162.031-162.029s162.031,72.686,162.031,162.029v84.826
+          c0.023,2.596,0.427,29.879,7.303,63.465H136.663C143.543,371.724,143.949,344.393,143.97,341.736z M306.001,577.485
+          c-26.341,0-49.33-18.992-56.709-44.246h113.416C355.329,558.493,332.344,577.485,306.001,577.485z"/>
+      </svg>
+
+      
+  </header>
+  <headerspace>
+    <find></find>
     
-    <div id="menuPanel" class="sidepanel">
-      <input id="notename" value="Untitled"><p id="notenametext" style="display: none">Name is already taken.</p>
-      <a class="closebtn" onclick="closeNav()">×</a>
-      <div class="smallMenuPanelElements">
-        <a onclick="dropdown('note');closeNav()">Note</a>
-        <a onclick="dropdown('edit');closeNav()">Edit</a>
-        <a onclick="dropdown('view');closeNav()">View</a>
-        <a id="anotherloginbtn" onclick="login(); closeNav()">Sign In</a>
-        <hr style="width: 80%;">
-      </div>
-      <a onclick="openotherwindow('account')">Profile</a>
-      <a onclick="openotherwindow('theme')">Theme</a>
-      <a onclick="openotherwindow('about')">About</a>
-      <a onclick="openotherwindow('info')">Version</a>
+  </headerspace>
 
-      <div id="weather">
-        <div id="weatherinfo">
-          <a class="link" onclick="openotherwindow('sidepanel')">Options</a>
-        </div>
-      </div>
+  <widgets>
+    <calculator></calculator>
+  </widgets>
 
-      <div class="unsignedAnnotation" id="unsignedAnnotation">
-        <h2>You are not signed in.</h2>
-        <h3>WriteNote is better with an account!</h3>
-        <button onclick="loginannotation()">Sign In</button> <button onclick="noplzno()">Dismiss</button>
-      </div>
+  <header id="documenttools">
+    <a><span class="m-i">format_color_fill</span></a>
+    <a><span class="m-i">format_color_text</span></a>
+    <a><span class="m-i">format_color_reset</span></a>
+  </header>
 
-      <div id="spaceleft" class="prograssdiv">
-        <spacey id="spacetext">0 GB of 5 GB used.</spacey>
-        <div class="progress">
-          <div id="spacepercentage" class="progress-bar" style="width: 0%"></div>
-        </div>
-      </div>
-
-      <div class="logo" onclick="logo()"><a><img width="64px" height="64px" src="lowpolyc.png"></a><h2>Midelight</h2></div>
+  
+  <div id="menuPanel" class="sidepanel">
+    <input id="notename" value="Untitled"><p id="notenametext" style="display: none">Name is already taken.</p>
+    <span onclick="closeNav()" class="m-i x">close</span>
+    <div class="smallMenuPanelElements">
+      <a onclick="dropdown('note');closeNav()">Note</a>
+      <a onclick="dropdown('edit');closeNav()">Edit</a>
+      <a onclick="dropdown('view');closeNav()">View</a>
+      <a id="anotherloginbtn" onclick="login(); closeNav()">Sign In</a>
+      <hr style="width: 80%;">
     </div>
-    
-    <div id="wordCountdiv"><a id="wordCount"> Words 0 • Symbols 0</a><span onclick="hideCounter()" class="x m-i">close</span><span class="x o m-i">open_in_new</span></div>
+    <a onclick="opensetting('Account'),opensubsetting('profile')">Profile</a>
+    <a onclick="opensetting('About')">About</a>
 
-    <div id="apps"></div>
+    maybe remove those links/buttons overall?
 
-    <div contenteditable id="notearea"></div>
+    <div id="weather">
+      <div id="weatherinfo">
+        <a class="link" onclick="openotherwindow('sidepanel')">Options</a>
+      </div>
+    </div>
 
-    </app>
-    <script src="libraries/languages/bg.js"></script>
-    <script src="script.js"></script>
+    <div class="unsignedAnnotation" id="unsignedAnnotation">
+      <h2>You are not signed in.</h2>
+      <h3>WriteNote is better with an account!</h3>
+      <button onclick="loginannotation()">Sign In</button> <button onclick="noplzno()">Dismiss</button>
+    </div>
+
+    <div id="spaceleft" class="prograssdiv">
+      <spacey id="spacetext">0 GB of 5 GB used.</spacey>
+      <div class="progress">
+        <div id="spacepercentage" class="progress-bar" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="logo" onclick="logo()"><a><img width="64px" height="64px" src="lowpolyc.png"></a><h2>Midelight</h2></div>
+  </div>
+  
+  <div id="wordCountdiv"><a id="wordCount"> Words 0 • Symbols 0</a><span onclick="hideCounter()" class="x m-i">close</span><span class="x o m-i">open_in_new</span></div>
+
+  <div id="apps"></div>
+
+  <div id="openfiles"></div>
+
+  <div id="lines"></div>
+
+  <div contenteditable style="background-color:#111" id="notearea"></div>
+
+  </app>
+  <!-- <script src="libraries/languages/bg.js"></script> -->
+  <script src="libraries/jquery.min.js"></script>
+  <script src="libraries/rangy-core.js"></script>
+  <script src="libraries/rangy-selectionsaverestore.js"></script>
+  <script src="write.js"></script>
+  <script src="errors.js"></script>
+  <script src="file.js"></script>
+  <script src="find.js"></script>
+  <script src="blur.js"></script>
 </body>
 </html>
