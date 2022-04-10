@@ -158,6 +158,7 @@
 
 
   <modal>
+    <startup></startup>
     <welcome></welcome>
     <version></version>
     <div id="login"></div>
@@ -281,40 +282,7 @@
 
   
   <div id="menuPanel" class="sidepanel">
-    <input id="notename" value="Untitled"><p id="notenametext" style="display: none">Name is already taken.</p>
-    <span onclick="closeNav()" class="m-i x">close</span>
-    <div class="smallMenuPanelElements">
-      <a onclick="dropdown('note');closeNav()">Note</a>
-      <a onclick="dropdown('edit');closeNav()">Edit</a>
-      <a onclick="dropdown('view');closeNav()">View</a>
-      <a id="anotherloginbtn" onclick="login(); closeNav()">Sign In</a>
-      <hr style="width: 80%;">
-    </div>
-    <a onclick="opensetting('Account'),opensubsetting('profile')">Profile</a>
-    <a onclick="opensetting('About')">About</a>
-
-    maybe remove those links/buttons overall?
-
-    <div id="weather">
-      <div id="weatherinfo">
-        <a class="link" onclick="openotherwindow('sidepanel')">Options</a>
-      </div>
-    </div>
-
-    <div class="unsignedAnnotation" id="unsignedAnnotation">
-      <h2>You are not signed in.</h2>
-      <h3>WriteNote is better with an account!</h3>
-      <button onclick="loginannotation()">Sign In</button> <button onclick="noplzno()">Dismiss</button>
-    </div>
-
-    <div id="spaceleft" class="prograssdiv">
-      <spacey id="spacetext">0 GB of 5 GB used.</spacey>
-      <div class="progress">
-        <div id="spacepercentage" class="progress-bar" style="width: 0%"></div>
-      </div>
-    </div>
-
-    <div class="logo" onclick="logo()"><a><img width="64px" height="64px" src="lowpolyc.png"></a><h2>Midelight</h2></div>
+    
   </div>
   
   <div id="wordCountdiv"><a id="wordCount"> Words 0 • Symbols 0</a><span onclick="hideCounter()" class="x m-i">close</span><span class="x o m-i">open_in_new</span></div>
@@ -332,10 +300,13 @@
   <script src="libraries/jquery.min.js"></script>
   <script src="libraries/rangy-core.js"></script>
   <script src="libraries/rangy-selectionsaverestore.js"></script>
+  <script src="MDUtils.js"></script>
   <script src="write.js"></script>
   <script src="errors.js"></script>
   <script src="file.js"></script>
   <script src="find.js"></script>
   <script src="blur.js"></script>
+  <script src="mobile.js"></script>
+  <script src="project.js"></script>
 </body>
 </html>

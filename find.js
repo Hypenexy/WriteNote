@@ -1,6 +1,5 @@
 var find = document.getElementsByTagName("find")[0]
 
-
 function ShowFind(){
     if(find.style.visibility == "visible"){
         if(document.activeElement == notearea){
@@ -13,11 +12,6 @@ function ShowFind(){
     find.innerHTML = "<input autocomplete='off'><span class='m-i f x'>search</span>"+
     "<findpanel></findpanel>"
 
-    function close(){
-        find.style = ""
-        ClearFound()
-    }
-
     var findInput = find.getElementsByTagName("input")[0]
 
     find.style = "visibility:visible;opacity:1;transform:translate(-50%,-50%)"
@@ -28,7 +22,7 @@ function ShowFind(){
 
     find.onkeydown = function(e){
         if(e.key=="Escape"){
-            close()
+            HideFind()
         }
     }
     var findpanel = find.getElementsByTagName("findpanel")[0]
@@ -132,6 +126,26 @@ function ShowFind(){
         }
     }
 }
+
+function HideFind(){
+    find.style = ""
+    ClearFound()
+}
+
+function HideAdditionalFind(){
+    var findInput = find.getElementsByTagName("input")[0]
+    var findpanel = find.getElementsByTagName("findpanel")[0]
+    if(findInput != document.activeElement){
+        findpanelactive = false
+        findpanel.style = ""
+    }
+}
+
+notearea.addEventListener("focus", function(){
+    if(find.style.visibility == "visible"){
+        HideAdditionalFind()
+    }
+})
 
 function MarkFound(Term, CaseSensitive, WholeWord, Replacee, All){
     //var RegexTerm = "/"+term+"/ig";

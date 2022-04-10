@@ -3,7 +3,7 @@ var mobile, interacted = false
 var electron = false
 var online = false
 var workspace = "note"
-var server = "http://localhost/"
+var server = "http://localhost/WriteNoteApp/"
 var loggedin = false
 var settings = { version: "3.0.0" };
 var themes = [{ti : "Default", desc : "Easy on the eyes."}, {ti : "Light", desc : "Enlightening and blinding.", location : "img/ui/themes/light/"}, {ti : "XP", desc : "Nostalgic and alive.", location : "img/ui/themes/xp/", co : "img/ui/themes/previews/xp.jpg"}];
@@ -131,42 +131,48 @@ function dropdown(n){
 
 //end of dropdowns
 
-//test
+// //test
 
-var savefile;
+// var savefile;
 
-function savetext(){
-    savefile = notearea.innerHTML
-}
-function previewtext(){
-    console.log(savefile)
-}
-function loadtext(){
-    notearea.innerHTML = savefile
-    document.getElementById("saveasbtn").style.display = "block"
-}
+// function savetext(){
+//     savefile = notearea.innerHTML
+// }
+// function previewtext(){
+//     console.log(savefile)
+// }
+// function loadtext(){
+//     notearea.innerHTML = savefile
+//     document.getElementById("saveasbtn").style.display = "block"
+// }
 
 //success of test
 
 //sidepanel
 var sidepanelOpen = false;
-function openNav() {
-  sidepanelOpen = true;
-  document.getElementById("menuPanel").style.width = "300px";
-  document.getElementById("menuPanel").style.borderRight = "solid 1px "+ white;
+var sidepanel = document.getElementById("menuPanel")
+function toggleNav(){
+    if(sidepanelOpen){
+        closeNav()
+    }
+    else{
+        openNav()
+    }
 }
-function closeNav() {
-  if (sidepanelOpen) {
-    sidepanelOpen = false;
-    document.getElementById("menuPanel").style.width = "0";
-    document.getElementById("menuPanel").style.borderRight = "solid 1px #767676";
-    setTimeout(function (){ document.getElementById("menuPanel").style.borderRight = "0"; }, 450);
-  }
+function openNav(){
+    sidepanelOpen = true
+    sidepanel.style.width = "300px"
+    sidepanel.style.borderRight = "solid 1px #eeeeee33"
+}
+function closeNav(){
+    sidepanelOpen = false
+    sidepanel.style.width = "0"
+    sidepanel.style.borderRight = "solid 0px #111"
 }
 
-function logo() {
-    window.open("https://midelight.net");
-  }
+// function logo(){
+//     window.open("https://midelight.net");
+// }
 //end of sidepanel
 
 
@@ -383,6 +389,11 @@ function openHome(){
     openexisting.style.removeProperty("display")
 }
 
+
+
+//function ButtonEvent
+//?Moved to MDUtils.js
+
 function ShowWelcome(){
     function close(){
         welcome.style.removeProperty("opacity")
@@ -455,11 +466,6 @@ function ShowWelcome(){
 
     function download(){
         open("https://writenote.midelight.net/download")
-    }
-    function ButtonEvent(element, event){
-        element.onclick = function(){
-            event()
-        }
     }
     function secondanim(){
         second(true)
@@ -1891,14 +1897,7 @@ function copyNodeStyle(sourceNode, targetNode) {
 
 //load elements
 
-function loadScript(url, id) {
-    var script = document.createElement("script")
-    if(id){
-        script.id = id
-    }
-    script.src = url
-    document.body.appendChild(script)
-}
+//?Moved to MDUtils.js  
 
 //calculate
 
@@ -2198,13 +2197,35 @@ window.addEventListener('click', function (e) {
     }
 
     //sidepanel
-    if (document.getElementById('menuPanel').contains(e.target)) {
-        } else {
-        if (document.getElementById('navBtn').contains(e.target)) { }
-        else {
-            closeNav();
+    if(sidepanelOpen){
+        // if (document.getElementById('menuPanel').contains(e.target)) {
+        //     } else {
+        //     if (document.getElementById('navBtn').contains(e.target)) { }
+        //     else {
+        //         closeNav();
+        //     }
+        // }
+        if (!document.getElementById('menuPanel').contains(e.target) && !document.getElementById('navBtn').contains(e.target)) {
+            if(e.target.classList.value!='m-i x'){
+                closeNav();
+            }
         }
     }
+    // if(sidepanelOpen){
+    //     var sidepanelElements = sidepanel.getElementsByTagName("*")
+    //     var isTargetted = false
+    //     for (let i = 0; i < sidepanelElements.length; i++) {
+    //         if(sidepanelElements[i] == e.target){
+    //             isTargetted = true
+    //         }
+    //     }
+    //     if(sidepanel==e.target || document.getElementById('navBtn').contains(e.target)){
+    //         isTargetted = true
+    //     }
+    //     if(!isTargetted){
+    //         closeNav()
+    //     }
+    // }
     //context menus
     try{
         if (!e.composedPath[0].matches("span.more") && !e.composedPath[1].matches("div#notepreview.active") &&! e.composedPath[0].matches("div#notepreview.active")){
@@ -2291,7 +2312,7 @@ function printwn() {
     //maybe there's more efficient solution?! Nope, but u should probably make this fancier.
     var oPrntWin = window.open("","_blank","width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
     oPrntWin.document.open();
-    oPrntWin.document.write("<!doctype html><html><head><title>Print<\/title><style>*{box-sizing: border-box;font-family: 'Roboto', sans-serif}<\/style><\/head><body onload=\"print();\">" + notearea.innerHTML + "<\/body><\/html>");
+    oPrntWin.document.write("<!doctype html><html><head><title>WriteNote Print<\/title><style>*{box-sizing: border-box;font-family: 'Roboto', sans-serif}<\/style><\/head><body onload=\"print();\">" + notearea.innerHTML + "<\/body><\/html>");
     oPrntWin.document.close();
 }
 
@@ -2765,8 +2786,8 @@ function CheckConnectivity(){
         error: function() {
             wrapup("<a>Could not reach server!</a>")
         }    
-    })    
-}    
+    })
+}
 
 window.addEventListener("load", function(){
     notearea.style.removeProperty("background-color")
