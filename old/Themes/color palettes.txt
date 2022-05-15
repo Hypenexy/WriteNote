@@ -1,8 +1,0 @@
-just think of them plz.
-
-red{
-    background: #000
-    color: #aa0000
-    darkcolor: #5a0101
-    transparentdarkcolor: #5a01019c
-}
