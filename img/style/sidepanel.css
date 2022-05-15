@@ -1,0 +1,35 @@
+sidepanel {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 0;
+    position: fixed;
+    z-index: 4;
+    height: 100%;
+    top: 0;
+    left: -1px;
+    color: #fff;
+    background: #1a1a1a;
+    border-right: solid 1px #111;
+    padding-top: 60px;
+    transition: 0.5s;
+
+    background: rgba( 16, 16, 16, 0.6 );
+    backdrop-filter: blur( 16px );
+    -webkit-backdrop-filter: blur( 16px );
+}
+sidepanel::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+}
+sidepanel::-webkit-scrollbar {
+    width: 10px
+}
+sidepanel::-webkit-scrollbar-track {
+    background: initial;
+}
+sidepanel .x{
+    fill: #bbb
+}
+sidepanel .x:hover{
+    border-radius: 45%;
+    fill: #fff
+}

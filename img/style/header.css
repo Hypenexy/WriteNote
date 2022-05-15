@@ -1,0 +1,125 @@
+header a, header c svg, header dropdown v, #profilepanelbtn, #notificationsbtn{
+    transition: 0.2s;
+}
+
+header {
+    width: 100%;
+    user-select: none;
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #555;
+    padding: 5px 5px;
+    height: 60px;
+    transition: 0.2s;
+}
+
+header a, header c{
+    cursor: pointer;
+    margin-left: 5px;
+    float: left;
+}
+
+header c svg {
+    margin-right: 6px;
+    margin-left: 2px;
+    margin-top: 8px;
+    fill: #969696;
+}
+
+header c:hover svg, header c:focus-visible svg {
+    fill: #fff;
+}
+
+header a{
+    cursor: pointer;
+    color: #c8c8c8;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 5px;
+    border: 1px solid #1a1a1a;
+    font-weight: 400;
+    /* position: relative; //If I ever decide to center it.
+    top:50%;
+    transform: translateY(-50%); */
+}
+
+header a:hover, #profilepanelbtn:hover, #notificationsbtn:hover{
+    stroke: #fff;
+    color: #fff;
+    fill: #fff;
+    background-color: #101010;
+}
+
+#profilepanelbtn, #notificationsbtn{
+    stroke: #c8c8c8;
+    fill: #c8c8c8;
+    cursor: pointer;
+    float: right;
+    border-radius: 5px;
+    padding: 6px;
+    margin-left: 5px;
+}
+
+#profilepanelbtn{
+    border-radius: 50%;
+}
+
+header dropdown, header subdropdown{
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(0, -20px) translateX(-74px);/*removed scaleY(0.9)*/
+    /* max-height: 1%; */
+    transition: all 0.3s;
+
+    overflow: hidden;
+
+    padding: 8px 0;
+    /* border-radius: 0 4px 4px 4px; */
+    border-radius: 4px;
+    position: absolute;
+    margin-top: 50px;
+    margin-left: 4px;
+    border: solid 1px #333;
+    background-color: #1a1a1a;
+    min-width: 160px;
+    box-shadow: 4px 8px 12px 0 #00000033;
+    z-index: 2;
+}
+
+header dropdown v {
+    white-space: nowrap;
+    font-size: 18px;
+    position: relative;
+    float: none;
+    padding: 14px 8px;
+    width: 100%;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    text-align: left;
+}
+
+header dropdown v:hover, header dropdown v:focus-visible {
+    background-color: #ddd;
+    color: #000;
+    transform: translate(4px, 0);
+    width: calc(100% - 4px);
+}
+
+header dropdown p{
+    float: left;
+    padding: 0 6px 0 0;
+}
+
+header dropdown hr {
+    width: 90%;
+    margin: 4px 0;
+    margin-left: 5%;
+    border: 0;
+    border-top: 1px solid #555;
+}
+
+header subdropdown{
+    position: absolute;
+}
