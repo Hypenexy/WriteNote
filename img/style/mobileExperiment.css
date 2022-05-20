@@ -1,0 +1,60 @@
+header .mobilebutton{
+    color: #ddd;
+    padding: 12px;
+    border-radius: 12px;
+    background: #2f2f2f;
+    float: right;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    /* box-shadow: 1px 2px 3px #bbbbbb22; */
+}
+
+header .mobilebutton p{
+    font-size: 18px;
+    margin: -10px 0;
+    transform: translateY(2px);
+}
+
+header .mobilemenu{
+    z-index: 3;
+    position: absolute;
+    top: 58px;
+    padding-top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    /* width: calc(100% - 20px); */
+    width: 100%;
+
+    visibility: hidden;
+    height: 0px;
+    overflow: hidden;
+
+    background: #1a1a1a;
+    box-shadow: 0 2px 2px #111;
+
+    border-radius: 0 0 12px 12px;
+
+    transition: .4s;
+}
+
+header .mobilemenu vs{
+    color: #ddd;
+    display: inline-block;
+    background: #2f2f2f;
+    padding: 12px;
+    margin-left: 12px;
+    border-radius: 99px;
+}
+
+header .mobilemenu mv{
+    font-size: 18px;
+    padding: 14px 8px;
+    color: #fff;
+    display: inline-block;
+    background: #2f2f2f;
+    width: 50%;
+    margin: 12px;
+    border-radius: 12px;
+}

@@ -21,7 +21,7 @@ header.innerHTML = `
 </dropdown>
 <a>Edit</a>
 <dropdown>
-    <v onclick="event.cancelBubble = true" class="writingdirection"><p class="m-i">add_to_photos</p> Insert<p style="float: right" class="m-i">chevron_right</p></v>
+    <v class="subdropdownbtns"><p class="m-i">add_to_photos</p> Insert<p style="float: right" class="m-i">chevron_right</p></v>
     <v onclick="ShowFind()"><p class="m-i">search</p> Find</v>
     <hr>
     <v onclick="Undo()"><p class="m-i">undo</p> Undo</v>
@@ -36,7 +36,7 @@ header.innerHTML = `
     <v onclick="SelectAll()"><p class="m-i">select_all</p> Select All</v>
 </dropdown>
 
-<subdropdown id="directions" class="writingdirectionmenu writingdirectionmenu2">
+<subdropdown id="directions" class="subdropdownmenu subdropdownmenu2">
     <v onclick=""><p class="m-i">image</p>Image</v>
     <v onclick=""><p class="m-i">description</p>File</v>
     <v onclick="InsertLink()"><p class="m-i">link</p>Link</v>
@@ -56,18 +56,18 @@ header.innerHTML = `
     <!-- <v onclick="togglespellcheck()"><p class="m-i">spellcheck</p> Spell Check<tick id="spellcheckcheckmark"></tick></v> -->
     <v onclick="togglewordwrap()"><p class="m-i">wrap_text</p> Word Wrap<tick id="wordwrapcheckmark"></tick></v>
     <v onclick="togglelines()"><p class="m-i">toc</p> Show Lines<tick id="linescheckmark"></tick></v>
-    <v onclick="event.cancelBubble = true" class="writingdirection"><p class="m-i">format_textdirection_l_to_r</p> Writing Directio<p style="float: right" class="m-i">chevron_right</p>n</v>
-    <v onclick="event.cancelBubble = true" class="menupos"><p class="m-i">widgets</p> Menu Positio<p style="float: right" class="m-i">chevron_right</p>n</v>
+    <v class="subdropdownbtns"><p class="m-i">format_textdirection_l_to_r</p> Writing Directio<p style="float: right" class="m-i">chevron_right</p>n</v>
+    <v class="subdropdownbtns"><p class="m-i">widgets</p> Menu Positio<p style="float: right" class="m-i">chevron_right</p>n</v>
     <v onclick="opensetting('Appearance'),opensubsetting('font')" class="writingdirection"><p class="m-i">text_fields</p> Change Font</v>
     <v onclick="opensetting('Appearance'),opensubsetting('theme')"><p class="m-i">style</p> Theme</v>
 </dropdown>
 
-<subdropdown id="directions" class="writingdirectionmenu">
+<subdropdown id="directions" class="subdropdownmenu">
     <v onclick="direction(false)">Left to Right<tick id="ltrcheckmark"></tick></v>
     <v onclick="direction(true)">Right to Left<tick id="rtlcheckmark"></tick></v>
 </subdropdown>
 
-<subdropdown id="directions" class="menuposmenu">
+<subdropdown id="directions" class="subdropdownmenu">
     <v onclick="HeaderLocation()">Top (Default)<tick id="ptcheckmark"></tick></v>
     <v onclick="HeaderLocation(1)">Left<tick id="plcheckmark"></tick></v>
     <v onclick="HeaderLocation(2)">Right<tick id="prcheckmark"></tick></v>
@@ -135,6 +135,7 @@ function hoverDropdown(e, element){
     }
 }
 function hideHeaderDropdowns(){
+    lastHeaderElement = ""
     headerDropdownactive = false
     for (let i = 0; i < headerdropdowns.length; i++) {
         hideHeaderDropdown(headerdropdowns[i], headeratags[i])
@@ -155,13 +156,10 @@ function hideHeaderDropdown(element, btn){
 }
 var lastHeaderElement = ""
 function headerDropdown(event, element, hover){
-    console.log(lastHeaderElement)
-    console.log(element)
-    console.log(hover)
     if(lastHeaderElement!=element || hover == true){
-        lastHeaderElement = element
         var lastOpacity = element.style.opacity
         hideHeaderDropdowns()
+        lastHeaderElement = element
         if(headerDropdownactive==false||mobile==true){
             headerDropdownactive = true
             element.style.visibility = "visible"
@@ -203,8 +201,48 @@ function headerDropdown(event, element, hover){
     }
 }
 
+var subdropdownbtns = header.getElementsByClassName("subdropdownbtns")
+
+for (let i = 0; i < subdropdownbtns.length; i++) {
+    const element = subdropdownbtns[i]
+    element.onclick = function(e){
+        e.cancelBubble = true
+    }
+    element.onmouseenter = element.onfocus = function(){
+        showSubDropdowns(i)
+    }
+    element.onmouseleave = element.onblur = function(){
+        hideSubDropdowns(i)
+    }
+}
+
+var subdropdowns = header.getElementsByTagName("subdropdown")
+
+var subdropdownActive = -1
+for (let i = 0; i < subdropdowns.length; i++) {
+    const element = subdropdowns[i]
+    element.onmouseenter = function(){
+        subdropdownActive = i
+    }
+}
+
+function showSubDropdowns(n){
+    subdropdowns[n].style.visibility = "visible"
+    subdropdowns[n].style.opacity = 1
+    subdropdowns[n].style.transform = "initial"
+    //do stuff!
+}
+function hideSubDropdowns(n){
+    subdropdowns[n].style = ""
+}
+
 window.addEventListener('click', function (e){
     if(!e.target.matches('a')&&!e.target.matches('dropdown')){
         hideHeaderDropdowns()
     }
 })
+
+
+
+var profilepanelbtn = document.getElementById("profilepanelbtn")
+var notificationsbtn = document.getElementById("notificationsbtn")

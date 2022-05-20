@@ -1,4 +1,4 @@
-header a, header c svg, header dropdown v, #profilepanelbtn, #notificationsbtn{
+header a, header c svg, header v, #profilepanelbtn, #notificationsbtn{
     transition: 0.2s;
 }
 
@@ -43,7 +43,7 @@ header a{
     transform: translateY(-50%); */
 }
 
-header a:hover, #profilepanelbtn:hover, #notificationsbtn:hover{
+header a:hover, header a:focus-visible, #profilepanelbtn:hover, #profilepanelbtn:focus-visible, #notificationsbtn:hover, #notificationsbtn:focus-visible{
     stroke: #fff;
     color: #fff;
     fill: #fff;
@@ -86,7 +86,7 @@ header dropdown, header subdropdown{
     z-index: 2;
 }
 
-header dropdown v {
+header v{
     white-space: nowrap;
     font-size: 18px;
     position: relative;
@@ -100,19 +100,19 @@ header dropdown v {
     text-align: left;
 }
 
-header dropdown v:hover, header dropdown v:focus-visible {
+header v:hover, header v:focus-visible{
     background-color: #ddd;
     color: #000;
     transform: translate(4px, 0);
     width: calc(100% - 4px);
 }
 
-header dropdown p{
+header dropdown p, header subdropdown p{
     float: left;
     padding: 0 6px 0 0;
 }
 
-header dropdown hr {
+header dropdown hr, header subdropdown hr{
     width: 90%;
     margin: 4px 0;
     margin-left: 5%;
@@ -121,5 +121,20 @@ header dropdown hr {
 }
 
 header subdropdown{
+    transform: translateX(-7px);
     position: absolute;
+}
+
+.subdropdownmenu{
+    top: 290px;
+    left: 398px;
+}
+.subdropdownmenu2{
+    top: 6px;
+    left: 274px;
+}
+.subdropdownmenu:hover{
+    visibility: visible;
+    opacity: 1;
+    transform: none;
 }
