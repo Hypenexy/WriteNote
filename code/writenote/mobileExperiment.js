@@ -1,5 +1,7 @@
 var mobileHeaderButton = document.createElement("button")
 
+var mobileHeaderButtonFile = "Untitled <p class='m-i'>cloud</p> • "
+
 function getTime(){
     var time = new Date()
 
@@ -19,7 +21,7 @@ function getMobileStatus(){
 }
 
 function UpdateMobileStatus(){
-    mobileHeaderButton.innerHTML = getMobileStatus()
+    mobileHeaderButton.innerHTML = mobileHeaderButtonFile + getMobileStatus()
     setTimeout(UpdateMobileStatus, 2000);
 }
 
@@ -38,11 +40,11 @@ var mobileHeaderMenu = document.createElement("div")
 
 mobileHeaderMenu.classList.add("mobilemenu")
 mobileHeaderMenu.innerHTML = "<vs class='m-i'>account_circle</vs><vs class='m-i'>settings</vs><br><mv>Hypenexy</mv>"
-header.appendChild(mobileHeaderMenu)
+app.appendChild(mobileHeaderMenu)
 
 
 function toggleHeaderMobileMenu(){
-    if(mobileHeaderMenu.style.visibility != "visible"){
+    if(!mobileHeaderMenu.classList.contains("mobilemenuactive")){
         showHeaderMobileMenu()
     }
     else{
@@ -50,20 +52,17 @@ function toggleHeaderMobileMenu(){
     }
 }
 function showHeaderMobileMenu(){
-    mobileHeaderMenu.style.visibility = "visible"
-    mobileHeaderMenu.style.height = "calc(90% - 40px)"
-    mobileHeaderMenu.style.paddingTop = "12px"
-    mobileHeaderButton.style.border = "1px solid #bbb"
-    mobileHeaderButton.style.marginRight = "-1px"
+    mobileHeaderMenu.classList.add("mobilemenuactive")
+    mobileHeaderButton.classList.add("mobilebuttonactive")
 }
 function hideHeaderMobileMenu(){
-    mobileHeaderMenu.style = ""
-    mobileHeaderButton.style = ""
+    mobileHeaderMenu.classList.remove("mobilemenuactive")
+    mobileHeaderButton.classList.remove("mobilebuttonactive")
 }
 
 
 window.addEventListener('click', function (e){
-    if(mobileHeaderMenu.style.visibility == "visible"){
+    if(mobileHeaderMenu.classList.contains("mobilemenuactive")){
         if(!mobileHeaderMenu.contains(e.target) && !mobileHeaderButton.contains(e.target)){
             hideHeaderMobileMenu()
         }

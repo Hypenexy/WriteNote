@@ -68,7 +68,7 @@ header.innerHTML = `
 </subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
-    <v onclick="HeaderLocation()">Top (Default)<tick id="ptcheckmark"></tick></v>
+    <v onclick="HeaderLocation()">Top<tick id="ptcheckmark"></tick></v>
     <v onclick="HeaderLocation(1)">Left<tick id="plcheckmark"></tick></v>
     <v onclick="HeaderLocation(2)">Right<tick id="prcheckmark"></tick></v>
     <v onclick="HeaderLocation(3)">Bottom<tick id="pbcheckmark"></tick></v>
@@ -148,12 +148,14 @@ function hideHeaderDropdown(element, btn){
         element.style.removeProperty("visibility")
         element.style.removeProperty("transform")
         element.style.removeProperty("max-height")
+        element.style.removeProperty("height")
         element.style.removeProperty("opacity")
         btn.style.removeProperty("color")
         element.style.removeProperty("overflow")
         element.style.removeProperty("padding-bottom")
     }
 }
+var lastHeaderspaceenough = true
 var lastHeaderElement = ""
 function headerDropdown(event, element, hover){
     if(lastHeaderElement!=element || hover == true){
@@ -179,18 +181,21 @@ function headerDropdown(event, element, hover){
             }
             element.style.opacity = 1
             event.target.style.color = "#fff"
-            
-            // setTimeout(function (){
-            //     if(window.innerHeight<=element.offsetHeight+80){
-            //         //element.style.transform = "translateY(-60px)"
-            //         element.style.overflow = "auto"
-            //         element.style.paddingBottom = "60px"
-            //     }
-            //     if(settings.hl == 3){
-            //         element.style.height = "1000px"//why
-            //         element.style.transform = "translateY(-"+element.offsetHeight+"px)"
-            //     }
-            // }, 300);
+
+            setTimeout(function (){
+                if(window.innerHeight<=element.offsetHeight+80){
+                    lastHeaderspaceenough = false
+                    element.style.overflow = "auto"
+                    element.style.height = window.innerHeight - 60 + "px"
+                }
+                else{
+                    lastHeaderspaceenough = true
+                }
+                // if(settings.hl == 3){
+                //     element.style.height = "1000px"//why
+                //     element.style.transform = "translateY(-"+element.offsetHeight+"px)"
+                // }
+            }, 300);
         }
         else{
             headerDropdownactive = false
@@ -208,8 +213,13 @@ for (let i = 0; i < subdropdownbtns.length; i++) {
     element.onclick = function(e){
         e.cancelBubble = true
     }
-    element.onmouseenter = element.onfocus = function(){
-        showSubDropdowns(i)
+    element.onmouseenter = element.onfocus = function(e){
+        if(lastHeaderspaceenough){
+            showSubDropdowns(i)
+        }
+        else{
+            showSubDropdowns(i, e)
+        }
     }
     element.onmouseleave = element.onblur = function(){
         hideSubDropdowns(i)
@@ -226,14 +236,22 @@ for (let i = 0; i < subdropdowns.length; i++) {
     }
 }
 
-function showSubDropdowns(n){
+function showSubDropdowns(n, event){
     subdropdowns[n].style.visibility = "visible"
     subdropdowns[n].style.opacity = 1
     subdropdowns[n].style.transform = "initial"
-    //do stuff!
+    if(event){
+        // console.log(event.screenY) Maybe fix this?
+        subdropdowns[n].style.top = event.screenY-350 + "px"
+    }
+    else{
+        subdropdowns[n].style.top = ""
+    }
 }
 function hideSubDropdowns(n){
-    subdropdowns[n].style = ""
+    subdropdowns[n].style.visibility = ""
+    subdropdowns[n].style.opacity = ""
+    subdropdowns[n].style.transform = ""
 }
 
 window.addEventListener('click', function (e){

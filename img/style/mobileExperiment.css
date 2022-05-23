@@ -1,4 +1,4 @@
-header .mobilebutton{
+.mobilebutton{
     color: #ddd;
     padding: 12px;
     border-radius: 12px;
@@ -8,16 +8,23 @@ header .mobilebutton{
     top: 50%;
     transform: translateY(-50%);
     font-size: 18px;
+    border: 1px solid #2f2f2f;
+    transition: 0.2s;
     /* box-shadow: 1px 2px 3px #bbbbbb22; */
 }
+.mobilebuttonactive{
+    border: 1px solid #bbb;
+    /* margin-right: -1px  Use this only if you 
+    dont have a border beforehand*/
+}
 
-header .mobilebutton p{
+.mobilebutton p{
     font-size: 18px;
     margin: -10px 0;
     transform: translateY(2px);
 }
 
-header .mobilemenu{
+.mobilemenu{
     z-index: 3;
     position: absolute;
     top: 58px;
@@ -38,8 +45,13 @@ header .mobilemenu{
 
     transition: .4s;
 }
+.mobilemenuactive{
+    visibility: visible;
+    height: calc(90% - 40px);
+    padding-top: 12px;
+}
 
-header .mobilemenu vs{
+.mobilemenu vs{
     color: #ddd;
     display: inline-block;
     background: #2f2f2f;
@@ -48,7 +60,7 @@ header .mobilemenu vs{
     border-radius: 99px;
 }
 
-header .mobilemenu mv{
+.mobilemenu mv{
     font-size: 18px;
     padding: 14px 8px;
     color: #fff;
