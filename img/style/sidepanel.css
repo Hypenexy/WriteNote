@@ -33,3 +33,7 @@ sidepanel .x:hover{
     border-radius: 45%;
     fill: #fff
 }
+.sidepanelactive{
+    width: 300px;
+    border-right: solid 1px #eeeeee33
+}

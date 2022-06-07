@@ -33,5 +33,17 @@ window.addEventListener('click', function (e) {
     }
 })
 
+document.addEventListener('swiped-left', function(e) {
+    if(sidepanelOpen){
+        closeSidepanel()
+    }
+})
+
+document.addEventListener('swiped-right', function(e) {
+    if(e.detail.xStart < 100){
+        openSidepanel()
+    }
+})
+
 var SidePanelXBtn = sidepanel.getElementsByTagName("svg")[0]
 ButtonEvent(SidePanelXBtn, closeSidepanel)

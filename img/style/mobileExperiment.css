@@ -52,12 +52,45 @@
 }
 
 .mobilemenu vs{
+    cursor: pointer;
+    user-select: none;
     color: #ddd;
     display: inline-block;
     background: #2f2f2f;
+    box-shadow: 0 2px 0 #555;
     padding: 12px;
     margin-left: 12px;
     border-radius: 99px;
+    transition: .2s;
+}
+
+.mobilemenu vs:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 #555;
+}
+
+.mobilemenu vs:active{
+    transition: .1s;
+    transform: translateY(2px);
+    box-shadow: 0 0 0 #555;
+}
+
+.mobilemenu vs:focus-visible{
+    outline: 1px solid #fff;
+}
+
+.mobilemenu vs:last-child:hover{
+    transform: rotate(60deg);
+    box-shadow: 1.8px .9px 0 #555;
+}
+.mobilemenu vs:last-child:active{
+    transition: .1s;
+    transform: translateY(2px);
+    box-shadow: 0 0 0 #555;
+}
+
+.mobilemenu actionmenu{
+    display: block;
 }
 
 .mobilemenu mv{
@@ -69,4 +102,15 @@
     width: 50%;
     margin: 12px;
     border-radius: 12px;
+}
+
+.mobilemenu helper{
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+
+    color: #999;
+    font-weight: 500;
+    opacity: 0.5;
 }

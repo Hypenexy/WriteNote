@@ -5,11 +5,20 @@ var workspace = "note"
 
 notearea.contentEditable = "true"
 
-document.execCommand("defaultParagraphSeparator", false, "p");
+document.execCommand("defaultParagraphSeparator", false, "p")
+
+notearea.addEventListener('focus', function (e) {
+    if(!notearea.innerHTML.includes("<p")){
+        setTimeout(() => {
+            document.execCommand('formatBlock', false, "p") // Probably a stupid fix for my iPhone, really should think about this when smarter.
+        }, 20);
+    }
+})
+
 
 notearea.addEventListener('input', function (e) {
     if(!notearea.innerHTML.includes("<p")){
-        document.execCommand('formatBlock', false, "p");
+        document.execCommand('formatBlock', false, "p")
     }
 })
 

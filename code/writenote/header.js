@@ -1,4 +1,5 @@
 var header = document.createElement("header")
+header.classList.add("headeractive")
 header.innerHTML = `
 <c tabindex="0">
 <svg width="32" height="32" viewBox="0 0 64 64">
@@ -63,8 +64,8 @@ header.innerHTML = `
 </dropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
-    <v onclick="direction(false)">Left to Right<tick id="ltrcheckmark"></tick></v>
-    <v onclick="direction(true)">Right to Left<tick id="rtlcheckmark"></tick></v>
+    <v onclick="direction(false)"><p class="m-i">format_textdirection_l_to_r</p> Left to Right<tick id="ltrcheckmark"></tick></v>
+    <v onclick="direction(true)"><p class="m-i">format_textdirection_r_to_l</p> Right to Left<tick id="rtlcheckmark"></tick></v>
 </subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
@@ -95,6 +96,12 @@ header.innerHTML = `
     c-26.341,0-49.33-18.992-56.709-44.246h113.416C355.329,558.493,332.344,577.485,306.001,577.485z"/>
 </svg>
 `
+notearea.addEventListener("blur", function(){
+    header.classList.add("headeractive")
+})
+notearea.addEventListener("focus", function(){
+    header.classList.remove("headeractive")
+})
 
 var headeratags = header.getElementsByTagName("a")
 var headerdropdowns = header.getElementsByTagName("dropdown")
