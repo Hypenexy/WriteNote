@@ -40,3 +40,20 @@ header *{
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
+
+header dropdown, header subdropdown{
+    background: initial;
+    backdrop-filter: blur(4px);
+}
+
+header a:hover, header a:focus-visible, #profilepanelbtn:hover, #profilepanelbtn:focus-visible, #notificationsbtn:hover, #notificationsbtn:focus-visible{
+    stroke: #000;
+    color: #000;
+    fill: #000;
+    background-color: #00000055;
+}
+
+header a{
+    margin: 1px;
+    border: 0;
+}
