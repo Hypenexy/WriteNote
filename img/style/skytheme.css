@@ -1,0 +1,42 @@
+header{
+    background-image: url(../images/BeautifulSky.jpeg);
+    background-size: cover;
+    background-position: center;
+}
+notearea{
+    background-image: url(../images/BeautifulSky.jpeg);
+    background-size: cover;
+    background-position: center;
+    /* background-blend-mode: saturation; */
+}
+notearea p{
+    padding: 2px 12px;
+    background: #00000055;
+}
+notearea p:first-child{
+    border-radius: 12px 12px 0 0;
+}
+notearea p:last-child{
+    border-radius: 0 0 12px 12px;
+}
+notearea p:only-child{
+    border-radius: 12px 12px 12px 12px;
+}
+
+header *{
+    color: #000!important;
+    fill: #000;
+}
+
+.mobilebutton{
+    background: #22222222;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+
+.mobilemenu{
+    background: initial;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}

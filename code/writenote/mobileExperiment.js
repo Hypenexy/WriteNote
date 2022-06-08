@@ -24,7 +24,7 @@ function setMobileStatus(){
     }
     if(batteryIsSupported){//could i optimize all of this if i set the vars beforehand? yes
         if(batterystatus.empty == false){
-            if(batterystatus.charging==0&&batterystatus.chargingTime==0&&batterystatus.dischargingTime==0){
+            if(batterystatus.charging==true&&batterystatus.chargingTime==0){
                 batterystatusprocessed = ""
             }
             else{
