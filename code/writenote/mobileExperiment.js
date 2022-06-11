@@ -1,6 +1,6 @@
-var mobileHeaderButton = document.createElement("button")
+var mobileHeaderButton = document.createElement("button") // Consider removing the background and border, gets more clean!
 
-var mobileHeaderButtonFile = "Untitled <p class='m-i'>cloud</p> • "
+var mobileHeaderButtonFile = ""
 
 function getTime(){
     var time = new Date()
@@ -15,6 +15,25 @@ function getTime(){
 var batterystatus = {empty:true}
 var onlinestatus = ""
 var batterystatusprocessed = ""
+function setMobileStatusFile(name, space){
+    var statusProcessed = name
+    //e.g. "Untitled <p class='m-i'>cloud</p> • "
+    switch (space) {
+        case "localstorage":
+            statusProcessed += " <p class='m-i'>web</p> • "
+            break;
+        case "online":
+            statusProcessed += " <p class='m-i'>cloud</p> • "
+            break;
+        case "device":
+            statusProcessed += " <p class='m-i'>desktop_windows</p> • "
+            break;
+        default:
+            break;
+    }
+    mobileHeaderButtonFile = statusProcessed
+    UpdateMobileStatus(false)
+}
 function setMobileStatus(){
     if(online){
         onlinestatus = "<p class='m-i'>wifi</p>"
@@ -22,7 +41,7 @@ function setMobileStatus(){
     else{
         onlinestatus = "<p class='m-i'>wifi_off</p>"
     }
-    if(batteryIsSupported){//could i optimize all of this if i set the vars beforehand? yes
+    if(batteryIsSupported){
         if(batterystatus.empty == false){
             if(batterystatus.charging==true&&batterystatus.chargingTime==0){
                 batterystatusprocessed = ""
@@ -32,7 +51,33 @@ function setMobileStatus(){
                     batterystatusprocessed = "<p class='m-i'>battery_charging_full</p>"
                 }
                 else{
-                    batterystatusprocessed = "<p class='m-i'>battery_full</p>" + batterystatus.level*100 + "%"
+                    var batterylevel = batterystatus.level*100
+                    var batteryicon = "<p class='m-i'>battery_full</p>"
+                    if(batterylevel<87.5){//is there a better way to do this?? maybe
+                        batteryicon = "<p class='m-i'>battery_6_bar</p>"
+                        if(batterylevel<75){
+                            batteryicon = "<p class='m-i'>battery_5_bar</p>"
+                            if(batterylevel<62.5){
+                                batteryicon = "<p class='m-i'>battery_4_bar</p>"
+                                if(batterylevel<50){
+                                    batteryicon = "<p class='m-i'>battery_3_bar</p>"
+                                    if(batterylevel<37.5){
+                                        batteryicon = "<p class='m-i'>battery_2_bar</p>"
+                                        if(batterylevel<25){
+                                            batteryicon = "<p class='m-i'>battery_1_bar</p>"
+                                            if(batterylevel<12.5){
+                                                batteryicon = "<p class='m-i'>battery_0_bar</p>"
+                                                if(batterylevel<1){
+                                                    batteryicon = "<p class='m-i'>battery_alert</p>"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    batterystatusprocessed = batteryicon + batterylevel + "%"
                 }
             }
         }
@@ -93,9 +138,11 @@ if(batteryIsSupported){
 }
 
 
-function UpdateMobileStatus(){
+function UpdateMobileStatus(loop){
     mobileHeaderButton.innerHTML = mobileHeaderButtonFile + getMobileStatus()
-    setTimeout(UpdateMobileStatus, 2000);
+    if(loop!=false){
+        setTimeout(UpdateMobileStatus, 2000);
+    }
 }
 
 setMobileStatus()

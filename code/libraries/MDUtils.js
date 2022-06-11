@@ -262,3 +262,53 @@ function shuffle(array) {
 
     return array;
 }
+
+/**
+ * Tries to parse a string safely without errors.
+ * Wait maybe this is a bad idea and you should just fix your code!
+ * @param {*} jsonString 
+ * @returns A parsed JSON or false if it failed parsing.
+ */
+function safeJSONparse(jsonString) {
+    try {
+        json = JSON.parse(jsonString)
+        return json
+    } catch (e) {
+        return false
+    }
+}
+
+/**
+ * This function isn't mine it's shamelessly stolen by thomas-peter on stackoverflow, thank you!
+ * @param {*} object Any object
+ * @returns A number of the approximate size of the parameter in bytes.
+ */
+function roughSizeOfObject(object){
+    var objectList = []
+    var stack = [object]
+    var bytes = 0
+    while (stack.length) {
+        var value = stack.pop()
+
+        if ( typeof value === 'boolean' ) {
+            bytes += 4
+        }
+        else if ( typeof value === 'string' ) {
+            bytes += value.length * 2
+        }
+        else if ( typeof value === 'number' ) {
+            bytes += 8
+        }
+        else if(
+            typeof value === 'object'
+            && objectList.indexOf(value) === -1
+        ){
+            objectList.push( value )
+
+            for( var i in value ) {
+                stack.push(value[i])
+            }
+        }
+    }
+    return bytes;
+}

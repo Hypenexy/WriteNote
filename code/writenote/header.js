@@ -69,10 +69,10 @@ header.innerHTML = `
 </subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
-    <v onclick="HeaderLocation()">Top<tick id="ptcheckmark"></tick></v>
-    <v onclick="HeaderLocation(1)">Left<tick id="plcheckmark"></tick></v>
-    <v onclick="HeaderLocation(2)">Right<tick id="prcheckmark"></tick></v>
-    <v onclick="HeaderLocation(3)">Bottom<tick id="pbcheckmark"></tick></v>
+    <v onclick="HeaderLocation()"><p class="m-i">border_top</p>Top<tick id="ptcheckmark"></tick></v>
+    <v onclick="HeaderLocation(1)"><p class="m-i">border_left</p>Left<tick id="plcheckmark"></tick></v>
+    <v onclick="HeaderLocation(2)"><p class="m-i">border_right</p>Right<tick id="prcheckmark"></tick></v>
+    <v onclick="HeaderLocation(3)"><p class="m-i">border_bottom</p>Bottom<tick id="pbcheckmark"></tick></v>
 </subdropdown>
 
 <svg id="profilepanelbtn" width="50" height="50" viewBox="0 0 185.5 185.5" xmlns="http://www.w3.org/2000/svg">
