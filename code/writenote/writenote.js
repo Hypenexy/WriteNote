@@ -98,3 +98,10 @@ function noteParse(note){
 //         rangy.restoreSelection(savedSel)
 //     }
 // }
+
+// document.addEventListener("keydown", function(){
+//     console.log(document.activeElement)
+//     if(document.activeElement==document.body){
+//         notearea.focus()
+//     }
+// }) Maybe use if you can fix the selection!

@@ -160,7 +160,8 @@ notificationsbtn.remove()
 var mobileHeaderMenu = document.createElement("div")
 
 mobileHeaderMenu.classList.add("mobilemenu")
-mobileHeaderMenu.innerHTML = "<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu><mv>Hypenexy</mv>"
+mobileHeaderMenu.innerHTML = "<account><img src='temp/pfp.jpeg'><name>Hypenexy</name><bio>the world is beautiful by your side</bio><img src='temp/banner.jpeg'></account>"
+mobileHeaderMenu.innerHTML += "<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu>"
 if(!settings.ft){
     if(mobile){
         mobileHeaderMenu.innerHTML += "<helper>Swipe Up to close</helper>"

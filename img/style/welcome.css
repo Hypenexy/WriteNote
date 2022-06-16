@@ -1,0 +1,364 @@
+.welcome{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top .4s, opacity .5s;
+
+    height: 80%;
+    width: 70%;
+    min-width: 1100px;
+
+    user-select: none;
+    color: #fff;
+    box-shadow: 1px 2px 3px #111;
+    background: #100f11;
+    padding: 24px 36px;
+    border-radius: 12px;
+    overflow: auto;
+}
+.welcome::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+}
+@media screen and (max-width: 1100px) {
+    .welcome{
+        width: 100%;
+        min-width: initial;
+    }
+}
+.welcometransitioned{
+    opacity: 1;
+    top: 50%;
+}
+.welcometransitionout{
+    opacity: 0;
+    top: 52%;
+}
+content{
+    position: relative;
+    display: block;
+    transition: transform .3s, opacity .3s;
+}
+.onlineloaderspiny{
+    animation: Rotate 8s infinite;
+}
+.onlineloader{
+    margin: auto;
+    margin-top: 15%;
+    animation: rotateScale 2s infinite;
+    height: 50px;
+    width: 50px;
+}
+.onlineloader:before,
+.onlineloader:after{
+    border-radius: 50%;
+    content: '';
+    display: block;
+    height: 20px;
+    width: 20px;
+}
+.onlineloader:before{
+    animation: ball1 2s infinite;
+    background-color: #b876ff;
+    box-shadow: 30px 0 0 #65baff;
+    margin-bottom: 10px;
+}
+.onlineloader:after{
+    animation: ball2 2s infinite;
+    background-color: #ebfc5c;
+    box-shadow: 30px 0 0 #ff8383;
+}
+
+@keyframes Rotate{
+    0%{ 
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+    }
+    100%{ 
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+    }
+}
+@keyframes rotateScale{
+    0%{ 
+        -webkit-transform: rotate(0deg)scale(0.8);
+        -moz-transform: rotate(0deg)scale(0.8);
+    }
+    50%{ 
+        -webkit-transform: rotate(360deg)scale(1.2);
+        -moz-transform: rotate(360deg)scale(1.2);
+    }
+    100%{ 
+        -webkit-transform: rotate(720deg)scale(0.8);
+        -moz-transform: rotate(720deg)scale(0.8);
+    }
+}
+@keyframes ball1{
+    0%{
+        box-shadow: 30px 0 0 #65baff;
+    }
+    50%{
+        box-shadow: 0 0 0 #65baff;
+        margin-bottom: 0;
+        -webkit-transform: translate(15px,15px);
+        -moz-transform: translate(15px, 15px);
+    }
+    100%{
+        box-shadow: 30px 0 0 #65baff;
+        margin-bottom: 10px;
+    }
+}
+@keyframes ball2{
+    0%{
+        box-shadow: 30px 0 0 #ff8383;
+    }
+    50%{
+        background-color: #b876ff;
+        box-shadow: 0 0 0 #ff8383;
+        margin-top: -20px;
+        -webkit-transform: translate(15px, 15px);
+        -moz-transform: translate(15px, 15px);
+    }
+    100%{
+        box-shadow: 30px 0 0 #ff8383;
+        margin-top: 0;
+    }
+}
+content x{
+    top:0;
+    right:0
+}
+content h1{
+    font-size: 32px;
+    font-weight: 300;
+    padding: 8px;
+    text-align: center;
+}
+
+
+content search{
+    position: relative;
+}
+content search i{
+    color: #999;
+    position: absolute;
+    top: -5px;
+    left: 10px
+}
+content search input{
+    color: #fff;
+    background: #222;
+    border: 0;
+    border-radius: 8px;
+    width: 100%;
+    padding: 8px;
+    padding-left: 36px;
+    margin: 10px 0;
+    font-size: 24px;
+    outline:0;
+    margin-bottom: 16px;
+    transition: 0.2s;
+}
+
+content info{
+    /* background: red; */
+    position: absolute;
+    display: block;
+    width: 20%;
+}
+.widget{
+    position: relative;
+    display: block;
+    background: #222;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+content info create .m-i{
+    font-size: 20px;
+    float: left;
+}
+content weather{
+    text-align: left!important;
+}
+content weather img{
+    display: block;
+    position: relative;
+    width: calc(100% + 24px);
+    margin: -12px;
+    margin-bottom: 0px;
+    height: 80px;
+    object-fit: cover;
+
+    border-radius: 8px 8px 0 0;
+    mask-image: linear-gradient(#000 5%, transparent 90%);
+    mask-mode: alpha;
+    -webkit-mask-image: linear-gradient(#000 79%, transparent 100%);
+}
+content weather w{
+    color: #87ceeb;
+    font-size: 20px;
+}
+content weather p{
+    color: #e1e7f1;
+}
+content account a, content info create a{
+    user-select: none;
+    cursor: pointer;
+    display: block;
+    padding: 6px;
+    margin: 6px;
+    margin-bottom: 0;
+    border-radius: 8px;
+    background: #111;
+    outline: 0;
+    border: 1px solid #111;
+    transition: 0.2s;
+}
+content info create a{
+    padding: 12px 6px;
+}
+content account a:hover, content account a:focus-visible, content info create a:hover, content info create a:focus-visible{
+    border: 1px solid #999;
+}
+content account a:active, content info create a:active{
+    color: #111;
+    background: #999;
+}
+content account img{
+    position: relative;
+    display: block;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+@media screen and (max-width: 850px) {
+    content info{
+        width: 100%;
+        margin: 15px 0;
+    }
+    .widget{
+        position: relative;
+        float: left;
+        width: calc(50% - 12px);
+        margin-right: 12px;
+    }
+    .widget:last-child{
+        margin-right: initial;
+    }
+}
+
+content filesside{
+    display: block;
+    float: right;
+    padding: 24px;
+    width: 80%;
+}
+
+content files{
+    display: block;
+    transition: .2s;
+}
+content .filestransitionforward{
+    opacity: 0.3;
+    transform: translateX(20px);
+    transition: 0s;
+}
+content .filestransitionbackward{
+    opacity: 0.3;
+    transform: translateX(-20px);
+    transition: 0s;
+}
+
+content .lineview button{
+    width: 100%;
+}
+
+content files button{
+    background: #222;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+    margin-right: 24px;
+    transition: .2s;
+}
+content files button:not(.folder, .currentfolder):hover, content files button:not(.folder, .currentfolder):focus-visible{
+    background: #555;
+}
+content files button:not(.folder, .currentfolder):active{
+    outline: 1px solid #a78de4;
+}
+content files button:last-child{
+    margin-right: initial;
+}
+
+content files .currentfolder{
+    width: 100%;
+    user-select: text;
+    cursor: initial;
+    font-weight: 500;
+    font-size: 18px;
+    box-shadow: 0 2px 2px #bbbbbb55;
+}
+content files .folder{
+    position: relative;
+    background: #111;
+    outline: 1px solid #555;
+    padding: 23px;
+    padding-left: 40px;
+}
+content files .folder:hover, content files .folder:focus-visible{
+    outline: 1px solid #bbb;
+}
+content files .folder:active{
+    color: #111;
+    background: #bbb;
+}
+content files .folder i{
+    position: absolute;
+    left: 12px;
+    /* top: 22px; */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 
+input, filters{
+    flex-basis: 100%;
+    border-radius: 4px;
+    font-size: 20px;
+    height: 40px;
+} what's this */
+filters select{
+    cursor: pointer;
+    color: #bbb;
+    background: none;
+    border: 1px solid #222;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 16px;
+    outline:0;
+    transition: 0.2s;
+    transform: translateY(-5px);
+}
+filters select option{
+    background: #111;
+}
+filters .o{
+    user-select: none;
+    cursor: pointer;
+    margin-left: 5px;
+    float: right;
+}
+filters .oselected{
+    color: #a78de4
+}
+filters .op{
+    user-select: none;
+}

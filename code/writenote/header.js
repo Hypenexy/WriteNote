@@ -10,10 +10,10 @@ header.innerHTML = `
 </c>
 <a>Note</a>
 <dropdown>
-    <v onclick="newNote()"><p class="m-i">note_add</p> New</v>
+    <v onclick="NewFileGui()"><p class="m-i">note_add</p> New</v>
     <hr>
     <v onclick="openNote()"><p class="m-i">file_open</p> Open</v>
-    <v onclick="saveNote()"><p class="m-i">save</p> Save</v>
+    <v onclick="SaveFile()"><p class="m-i">save</p> Save</v>
     <v id="saveasbtn" onclick="saveAsNote()"><p class="m-i">save_as</p> Save As</v>
     <v onclick="showshare()"><p class="m-i">share</p> Share</v>
     <v onclick="printwn()"><p class="m-i">print</p> Print</v>

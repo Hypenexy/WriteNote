@@ -2,7 +2,11 @@ var app = document.getElementsByTagName("app")[0]
 var mobile = false
 var online
 var server = "http://localhost/WriteNoteApp/"
-var settings = { version: "3.0.0" }
+var settings = {}
+if(localStorage.getItem("options")){
+    settings = JSON.parse(localStorage.getItem("options"))
+}
+settings.version = "3.0.0"
 // background: rgb(112,91,128); background: linear-gradient(36deg, rgba(112,91,128,1) 0%, rgba(239,183,229,1) 47%, rgba(34,34,66,1) 100%);
 
 
@@ -27,7 +31,7 @@ function connectToMidelight(){
         success: function (response) {
             response = JSON.parse(response)
             startupInfo = response
-            load(response)
+            load(response) //detect unparsable json with a try catch!
         },
         error: function() {
             load({status:'offline'})
@@ -66,4 +70,11 @@ function load(response){
         }
     }
     setMobileStatus()
+}
+
+function SaveSettings(space){
+    //save in different places with the space argument
+    //but for now!
+
+    localStorage.setItem("options", JSON.stringify(settings))
 }

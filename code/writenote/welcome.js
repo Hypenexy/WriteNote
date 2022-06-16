@@ -1,9 +1,366 @@
 // make the background a hot water
 
+
+function WelcomeGui(response, element){
+    var content = element.getElementsByTagName("content")[0]
+
+    /**
+     * Imported from WriteNote 2.0.0,
+     * used to display a welcoming message!
+     * @param {*} name User's username
+     * Midnight Doesn't work on chrome but on safari!
+     */
+     function createMOTD(name){
+        var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });
+        var hour = parseInt(now24.slice(0, 2));
+        var welcomemessage = "Good morning, " + name;
+        if(hour>13&&hour<18){
+          welcomemessage = "Good afternoon, " + name;
+        }
+        if(hour>17&&hour<23){
+          welcomemessage = "Good evening, " + name;
+        }
+        if(hour>22||hour<6){
+          welcomemessage = "Good night, " + name;
+        }
+        console.log(hour)
+        if(hour==0||hour==24){
+          welcomemessage = "Enjoy the midnight, " + name;
+        }
+        return welcomemessage;
+    }
+
+    var motd = document.createElement("h1")
+    if(response.status!='offline'){
+        motd.innerHTML = createMOTD(response.user.username)
+    }
+    else{
+        motd.innerHTML = createMOTD("")
+    }
+
+    function welcomeClose(){
+        welcome.classList.remove("welcometransitioned")
+        setTimeout(() => {
+            element.remove()
+        }, 500)
+    }
+    if(element.classList[0]=="welcome"){
+        var closebtn = document.createElement("x")
+        closebtn.classList.add("m-i")
+        closebtn.innerText = "close"
+        ButtonEvent(closebtn, function(){
+            welcomeClose()
+        })
+    }
+
+    var search = document.createElement("search")
+    var searchinput = document.createElement("input")
+    searchinput.placeholder = "Search"
+    searchinput.addEventListener("input", function(){
+        var everything = files.getElementsByTagName("button")
+        for (let i = 0; i < everything.length; i++) {
+            const element = everything[i];
+            if(element!=searchinput||element!=search){
+                try {
+                    if(!element.innerText.toLocaleLowerCase().includes(searchinput.value.toLocaleLowerCase())){
+                        element.style.display = "none" // Improve this cuz it's shit!
+                    }
+                    else{
+                        element.style.removeProperty("display")
+                    }
+                } catch (e) {
+                    
+                }
+            }
+        }
+    })
+    search.innerHTML = "<i class='m-i'>search</i>"
+    search.appendChild(searchinput)
+
+    var info = document.createElement("info")
+    info.innerHTML = "<account class='widget'><img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a></account>"+
+    "<weather class='widget'><img src='temp/banner.jpeg'><w>Clear 26°C</w><p>It's a nice morning in Plovdiv</p></weather>"+
+    "<create class='widget'><a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a></create>"+
+    "<space class='widget'>2 GB used of 5 GB</space>"
+
+
+    var filesside = document.createElement("filesside")
+
+    var filters = document.createElement("filters")
+    filters.innerHTML ="<span class='op m-i'>sort</span>"+
+        "<select><option>Last opened</option><option>Earliest opened</option><option>Alphabetically</option><option>Size</option></select>"+
+        "<span class='o m-i'>grid_view</span>"+
+        "<span class='o m-i'>view_headline</span>"
+
+    var fileviews = filters.getElementsByClassName("o")
+    ButtonEvent(fileviews[0], function(){
+        delete settings.lineview
+        SaveSettings()
+        fileviews[1].classList.remove("oselected")
+        fileviews[0].classList.add("oselected")
+        files.classList.remove("lineview")
+    })
+    ButtonEvent(fileviews[1], function(){
+        settings.lineview = true
+        SaveSettings()
+        fileviews[0].classList.remove("oselected")
+        fileviews[1].classList.add("oselected")
+        files.classList.add("lineview")
+    })
+
+    var files = document.createElement("files")
+    if(settings.lineview){
+        fileviews[1].click()
+    }
+    else{
+        fileviews[0].classList.add("oselected")
+    }
+    var existing = CheckExisting()
+
+    var filesButtons = []
+
+    var lastFolderAnim = ""
+    function FilesSort(folder){
+        files.innerHTML = ""
+        if(folder){
+            var lastFolder = document.createElement("button")
+            var folders = []
+            if(folder.includes('/')){
+                folders = folder.split('/')
+            }
+            else{
+                folders.push(folder)
+            }
+            folders.unshift("Home")
+            var lastFolderFolder = folders[folders.length-2]
+            lastFolder.innerHTML = "<i class='m-i'>chevron_left</i> " + lastFolderFolder
+            lastFolder.classList.add("folder")
+            files.appendChild(lastFolder)
+            var displayFolders = folders
+            displayFolders.shift()
+            lastFolder.outerHTML = "<div style='display: flex'>" + lastFolder.outerHTML + '<button class="currentfolder">'+displayFolders.join(' / ')+'</button></div>'
+            lastFolder = files.getElementsByTagName("button")[0]
+            ButtonEvent(lastFolder, function(){
+                if(lastFolderFolder=="Home"){
+                    FilesSort()
+                }
+                else{
+                    folders.pop()
+                    folders = folders.join('/')
+                    FilesSort(folders)
+                }
+            })
+
+            var transition
+            if(folder.includes(lastFolderAnim)){
+                transition = "filestransitionforward"
+            }
+            else{
+                transition = "filestransitionbackward"
+            }
+            files.classList.add(transition)
+            setTimeout(() => {
+                files.classList.remove(transition)
+            }, 0);
+
+            lastFolderAnim = folder
+        }
+        filesButtons = []
+        var foldersSet = []
+
+        for(let i = 0; i < existing.length; i++){
+            var parts = existing[i].split(":")
+            var space = parts[0]
+            var pathname = parts[1]
+            pathname = pathname.split("*").slice(1).join('*')
+            var path = pathname.split("*")[0]
+            var name = pathname.split("*").slice(1).join('*')
+
+            var displayName
+            if(!folder){
+                if(path&&path.includes('/')){
+                    path = path.split('/')[0]
+                }
+            }
+            else{
+                if(path){
+                    displayName = path.split('/')
+                    var lastFolder = folder
+                    if(folder.includes("/")){
+                        lastFolder = folder.split('/')
+                        lastFolder = lastFolder.pop()
+                    }
+                    var index = path.split('/').indexOf(lastFolder)
+                    displayName = displayName[index+1]
+                }
+            }
+
+            if(path&&foldersSet.includes(path)){}
+            else{
+                // console.log(foldersSet)
+                if(path){
+                    foldersSet.push(path)
+                }
+                if(folder){
+                    if(path.includes(folder)){
+                        // console.log(path)
+                        if(!foldersSet.includes(displayName)){
+                            foldersSet.push(displayName)
+                            filesButtons.push({path, name, space})
+                        }
+                    }
+                }
+                else{
+                    filesButtons.push({path, name, space})
+                }
+            }
+        }
+
+        filesButtons.sort(function(a,b){
+            const nameA = a.name.toUpperCase()
+            const nameB = b.name.toUpperCase()
+            if (nameA < nameB){
+                return 1
+            }
+            if (nameA > nameB){
+                return -1
+            }
+            return 0;
+        })
+
+        filesButtons.sort(function(a,b){
+            const folderA = a.path.toUpperCase()
+            const folderB = b.path.toUpperCase()
+            if (folderA < folderB){
+                return 1
+            }
+            if (folderA > folderB){
+                return -1
+            }
+            return 0;
+        })
+
+        //console.log(filesButtons)
+        for(let i = 0; i < filesButtons.length; i++){
+            function createButton(path, name, space){
+                var button = document.createElement("button")
+                if(path&&path!=folder){
+                    var folderName = path
+
+                    if(folderName.includes("/")){
+                        var folderName = folderName.split("/")
+                        var displayFolder = folder
+                        if(displayFolder.includes("/")){
+                            displayFolder = displayFolder.split("/")
+                            displayFolder = displayFolder.pop()
+                        }
+                        if(folderName.includes(displayFolder)){
+                            var index = folderName.indexOf(displayFolder)
+                            folderName = folderName[index + 1]
+                        }
+                    }
+                    // if(path.includes('/')){
+                    //     folderName = path.split('/')[0]
+                    // }
+                    // if(!foldersSet.includes(folderName)){
+                    //     foldersSet.push(folderName)
+                        button.classList.add("folder")
+                        button.innerHTML = "<i class='m-i'>folder</i> " + folderName
+                    // }
+                    // else{
+                    //     console.log(path)
+                    //     button.innerHTML = "duck"
+                    //     button.remove()
+                    // }
+                }
+                else{
+                    button.innerHTML = name
+                }
+                ButtonEvent(button, function(){
+                    if(path&&path!=folder){
+                        FilesSort(path)
+                    }
+                    else{
+                        LoadFile(space, path, name)
+                        if(element.classList[0]=="welcome"){
+                            welcomeClose()
+                        }
+                    }
+                })
+                return button;
+            }
+
+            files.appendChild(createButton(filesButtons[i].path, filesButtons[i].name, filesButtons[i].space))
+            
+            if(!folder){
+                files.classList.add("filestransitionbackward")
+                setTimeout(() => {
+                    files.classList.remove("filestransitionbackward")
+                }, 0);
+            }
+        }
+    }
+
+    FilesSort()
+
+
+    //finally load
+
+    content.style.transform = "translateY(20px)"
+    content.style.opacity = 0
+
+    setTimeout(() => {
+        content.style.transition = "initial"
+        content.style.transform = "translateY(-20px)"
+        setTimeout(() => {
+            content.style.removeProperty("transition")
+            content.style.removeProperty("transform")
+            content.style.opacity = 1
+            content.innerHTML = ""
+            content.appendChild(closebtn)
+            content.appendChild(motd)
+            content.appendChild(search)
+            content.appendChild(info)
+            filesside.appendChild(filters)
+            filesside.appendChild(files)
+            content.appendChild(filesside)
+        }, 10)
+    }, 300)
+}
+
+
+var storedResponse
 var welcome = document.createElement("div")
 if(!settings.ft){
     welcome.classList.add("welcome")
-    welcome.innerHTML = "<content><div class='startuploader'></div><content>"
+
+
+    $.ajax({
+        url: server + "app/startup.php",
+        type: "post",
+        //timeout: 1500,
+        timeout: 2300,
+        data: "steal user data ;)",
+        success: function (response) {
+            response = JSON.parse(response)
+            storedResponse = response
+            WelcomeGui(response, welcome)
+        },
+        error: function() {
+            var response = {status:"offline"}
+            storedResponse = response
+            WelcomeGui(response, welcome)
+        }
+    })
+
+
+    welcome.innerHTML = "<content><div class='onlineloaderspiny'><div class='onlineloader'></div></div></content>"
+
+
+    app.appendChild(welcome)
+    setTimeout(() => {
+        welcome.classList.add("welcometransitioned")
+    }, 0);
 }
 
 

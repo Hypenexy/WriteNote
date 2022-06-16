@@ -29,10 +29,10 @@
     position: absolute;
     top: 58px;
     padding-top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 0;
     /* width: calc(100% - 20px); */
     width: 100%;
+    max-width: 500px;
 
     visibility: hidden;
     height: 0px;
@@ -79,6 +79,10 @@
     outline: 1px solid #fff;
 }
 
+.mobilemenu vs:first-child{
+    margin-left: 0;
+}
+
 .mobilemenu vs:last-child:hover{
     transform: rotate(60deg);
     box-shadow: 1.8px .9px 0 #555;
@@ -91,6 +95,7 @@
 
 .mobilemenu actionmenu{
     display: block;
+    margin: 20px;
 }
 
 .mobilemenu mv{
@@ -113,4 +118,45 @@
     color: #999;
     font-weight: 500;
     opacity: 0.5;
+}
+
+.mobilemenu account{
+    position: relative;
+    display: block;
+    margin: 20px;
+    width: calc(100% - 40px);
+    height: 144px;
+    border-radius: 12px;
+}
+.mobilemenu account name{
+    position: absolute;
+    left: 144px;
+    top: calc(50% - 10px);
+    transform: translateY(-50%);
+    color: rgb(88, 60, 60);
+    mix-blend-mode: difference;
+    font-size: 24px;
+    font-weight: 500;
+}
+.mobilemenu account bio{
+    position: absolute;
+    left: 144px;
+    top: 76px;
+    color: rgb(83, 43, 43);
+    mix-blend-mode: difference;
+    font-size: 18px;
+}
+.mobilemenu account img:first-child{
+    width: 115px;
+    height: 115px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    margin: 15px;
+}
+.mobilemenu account img:last-child{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
 }

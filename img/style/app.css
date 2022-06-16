@@ -11,7 +11,14 @@ button{
 	padding: 0;
 	font: inherit;
 	cursor: pointer;
-	outline: inherit;
+}
+
+input{
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
 }
 
 @font-face {
@@ -91,4 +98,18 @@ tick {
     margin-left: 60%; 
     border-bottom: 4px solid #913fb1;
     border-right: 4px solid #913fb1;
+}
+
+modal{
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #00000033;
+    transition: 0.3s, visibility 0s;
 }
