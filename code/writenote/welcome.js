@@ -79,7 +79,16 @@ function WelcomeGui(response, element){
     search.appendChild(searchinput)
 
     var info = document.createElement("info")
-    info.innerHTML = "<account class='widget'><img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a></account>"+
+    
+    var accountstuff
+    if(response.status!='offline'){
+        accountstuff = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a>"
+    }
+    else{
+        accountstuff = "No connection <a tabindex='0'>Retry</a>"
+    }
+
+    info.innerHTML = "<account class='widget'>"+accountstuff+"</account>"+
     "<weather class='widget'><img src='temp/banner.jpeg'><w>Clear 26°C</w><p>It's a nice morning in Plovdiv</p></weather>"+
     "<create class='widget'><a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a></create>"+
     "<space class='widget'>2 GB used of 5 GB</space>"

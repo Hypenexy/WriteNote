@@ -56,11 +56,11 @@ function setMobileStatus(){
                     if(batterylevel<87.5){//is there a better way to do this?? maybe
                         batteryicon = "<p class='m-i'>battery_6_bar</p>"
                         if(batterylevel<75){
-                            batteryicon = "<p class='m-i'>battery_5_bar</p>"
+                            batteryicon = "<p class='m-i'>battery_5_bar</p>"//This doesn't load!
                             if(batterylevel<62.5){
-                                batteryicon = "<p class='m-i'>battery_4_bar</p>"
+                                batteryicon = "<p class='m-i'>battery_4_bar</p>"//This as well
                                 if(batterylevel<50){
-                                    batteryicon = "<p class='m-i'>battery_3_bar</p>"
+                                    batteryicon = "<p class='m-i'>battery_3_bar</p>"//Also it shows 57.9999999999999999% ??
                                     if(batterylevel<37.5){
                                         batteryicon = "<p class='m-i'>battery_2_bar</p>"
                                         if(batterylevel<25){
