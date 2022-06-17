@@ -55,6 +55,10 @@
     border-radius: 4px;
     box-shadow: -1px 2px 2px #111;
     padding: 6px;
+    transition: .2s;
+}
+.newfile input:focus{
+    border-bottom: 1px solid #de99f3;
 }
 .newfile buttons{
     display: flex;
@@ -67,8 +71,12 @@
     border: 1px solid #393939;
     border-radius: 8px;
     margin-right: 8px;
+    margin-bottom: 8px;
     padding: 12px;
     transition: .2s;
+}
+.newfile buttons button{
+    margin-bottom: initial
 }
 .newfile buttons button:hover, 
 .newfile buttons button:focus-visible{
@@ -137,10 +145,15 @@
 .savechanges ti{
     margin-top: 30px;
 }
-.savechanges button:hover, .savechanges button:focus-visible{
+.newfile button:hover, .newfile button:focus-visible{
     border: 1px solid #bbb;
 }
-.savechanges button:active{
+.newfile button:active{
     background: #bbb;
+    color: #111;
+}
+
+.newfile .folderselected{
+    background: #de99f3;
     color: #111;
 }

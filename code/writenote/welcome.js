@@ -1,6 +1,6 @@
 // make the background a hot water
 
-
+var WelcomeGuiinteractable = true
 function WelcomeGui(response, element){
     var content = element.getElementsByTagName("content")[0]
 
@@ -8,7 +8,7 @@ function WelcomeGui(response, element){
      * Imported from WriteNote 2.0.0,
      * used to display a welcoming message!
      * @param {*} name User's username
-     * Midnight Doesn't work on chrome but on safari!
+     * It actually shows up as 24th hour on chrome lol
      */
      function createMOTD(name){
         var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });
@@ -23,7 +23,6 @@ function WelcomeGui(response, element){
         if(hour>22||hour<6){
           welcomemessage = "Good night, " + name;
         }
-        console.log(hour)
         if(hour==0||hour==24){
           welcomemessage = "Enjoy the midnight, " + name;
         }
@@ -39,9 +38,11 @@ function WelcomeGui(response, element){
     }
 
     function welcomeClose(){
+        WelcomeGuiinteractable = false
         welcome.classList.remove("welcometransitioned")
         setTimeout(() => {
             element.remove()
+            WelcomeGuiinteractable = true
         }, 500)
     }
     if(element.classList[0]=="welcome"){
@@ -228,7 +229,7 @@ function WelcomeGui(response, element){
             return 0;
         })
 
-        filesButtons.sort(function(a,b){
+        filesButtons.sort(function(a,b){ //idk if folers are sorted alphabetically?
             const folderA = a.path.toUpperCase()
             const folderB = b.path.toUpperCase()
             if (folderA < folderB){
@@ -277,13 +278,15 @@ function WelcomeGui(response, element){
                     button.innerHTML = name
                 }
                 ButtonEvent(button, function(){
-                    if(path&&path!=folder){
-                        FilesSort(path)
-                    }
-                    else{
-                        LoadFile(space, path, name)
-                        if(element.classList[0]=="welcome"){
-                            welcomeClose()
+                    if(WelcomeGuiinteractable){
+                        if(path&&path!=folder){
+                            FilesSort(path)
+                        }
+                        else{
+                            LoadFile(space, path, name)
+                            if(element.classList[0]=="welcome"){
+                                welcomeClose()
+                            }
                         }
                     }
                 })

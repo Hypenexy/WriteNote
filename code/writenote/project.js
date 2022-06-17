@@ -27,32 +27,32 @@ function setSizes(space){
 
 function InitFile(path, name, space, content, metadata){
 
+    function execute(){
+        setSizes(space)
 
-    SaveChangesQuestion
+        if(metadata){
+            activefile.fD = metadata.fD
+            activefile.fM = metadata.fM
+        }
 
 
+        activefile.path = path
+        
+        activefile.fO = Date.now()
 
-    setSizes(space)
+        // var notename = document.getElementById("notename")
+        // notename.value = name
+        activefile.name = name
+        activefile.space = space
+        if(workspace="note"){
+            notearea.innerHTML = noteParse(content)
+        }
 
-    if(metadata){
-        activefile.fD = metadata.fD
-        activefile.fM = metadata.fM
+        setMobileStatusFile(name, space)
     }
 
+    SaveChangesQuestion(execute)
 
-    activefile.path = path
-    
-    activefile.fO = Date.now()
-
-    // var notename = document.getElementById("notename")
-    // notename.value = name
-    activefile.name = name
-    activefile.space = space
-    if(workspace="note"){
-        notearea.innerHTML = noteParse(content)
-    }
-
-    setMobileStatusFile(name, space)
 }
 
 function CheckExisting(){
@@ -241,6 +241,8 @@ window.onbeforeunload = function(e) {
             saved = true
             close()//Idk if I need a timeout just in case.
             //There's no (easy) way to detect refresh
+
+            //add a modal that allows u to close or refresh the tab! like windows xp shutdown menu
         })
         return "";
     }
@@ -248,40 +250,45 @@ window.onbeforeunload = function(e) {
 
 var savechanges
 function SaveChangesQuestion(nextStep){
-    function close(){
-        savechanges.classList.remove("newfiletransitioned")
-        setTimeout(() => {
-            savechanges.remove()
-        }, 200);
+    if(saved==true){
+        nextStep()
     }
-    savechanges = document.createElement("div")
-    savechanges.innerHTML += "<x class='m-i'>close</x>"+
-    '<ti>You have unsaved changes to '+activefile.name+'!</ti>'+
-    "<co>Do you want to save them?</co>"+
-    "<div style='text-align:center;margin-top:20px'><button>Save</button><button>Don't save</button><button>Cancel</button></div>"
-
-    ButtonEvent(savechanges.getElementsByTagName('x')[0], close)
-
-    var buttons = savechanges.getElementsByTagName("button")
-
-    ButtonEvent(buttons[0], function(){
-        SaveFile()
-        close()
-        nextStep()
-    })
-    ButtonEvent(buttons[1], function(){
-        close()
-        nextStep()
-    })
-    ButtonEvent(buttons[2], function(){
-        close()
-    })
-
-    savechanges.classList.add("newfile", "savechanges")
-    app.appendChild(savechanges)
-    setTimeout(() => {
-        savechanges.classList.add("newfiletransitioned")
-    }, 0);
+    else{
+        function close(){
+            savechanges.classList.remove("newfiletransitioned")
+            setTimeout(() => {
+                savechanges.remove()
+            }, 200);
+        }
+        savechanges = document.createElement("div")
+        savechanges.innerHTML += "<x class='m-i'>close</x>"+
+        '<ti>You have unsaved changes to '+activefile.name+'!</ti>'+
+        "<co>Do you want to save them?</co>"+
+        "<div style='text-align:center;margin-top:20px'><button>Save</button><button>Don't save</button><button>Cancel</button></div>"
+    
+        ButtonEvent(savechanges.getElementsByTagName('x')[0], close)
+    
+        var buttons = savechanges.getElementsByTagName("button")
+    
+        ButtonEvent(buttons[0], function(){
+            SaveFile()
+            close()
+            nextStep()
+        })
+        ButtonEvent(buttons[1], function(){
+            close()
+            nextStep()
+        })
+        ButtonEvent(buttons[2], function(){
+            close()
+        })
+    
+        savechanges.classList.add("newfile", "savechanges")
+        app.appendChild(savechanges)
+        setTimeout(() => {
+            savechanges.classList.add("newfiletransitioned")
+        }, 0);
+    }
 }
 
 var newfile
@@ -293,91 +300,134 @@ function NewFileGui(close){
         }, 200);
         return;
     }
-    var isNameSet = false
-    var isOptionSelected = false
-    function isChecks(name, option){
-        if(name){
-            isNameSet = name
-        }
-        if(option){
-            isOptionSelected = option
-        }
-        if(isNameSet==true&&isOptionSelected==true){
-            completebtn.classList.add("completebtnallowed")
-        }
-        else{
-            completebtn.classList.remove("completebtnallowed")
-        }
-    }
-
-    newfile = document.createElement("div")
-    newfile.innerHTML += "<x class='m-i'>close</x>"+
-    "<ti>Create a new project</ti>" +
-    "<p>Name</p><input>"+
-    //"add folers"+
-    "<p>Storage</p>"
-
-    var closebtn = newfile.getElementsByTagName("x")[0]
-    ButtonEvent(closebtn, NewFileGui, true)
-
-    var newfilename = newfile.getElementsByTagName("input")[0]
-    newfilename.addEventListener("input", function(){
-        if(newfilename.value!=""){
-            isChecks(true)
-        }
-        else{
-            isChecks(false)
-        }
-    })
-
-    var buttonsDiv = document.createElement("buttons")
-    buttonsDiv.innerHTML = "<button><i class='m-i'>cloud</i> Cloud</button>"+
-    "<button><i class='m-i'>web</i> App</button>"+
-    "<button><i class='m-i'>desktop_windows</i> Device</button>"
-
-    var buttons = buttonsDiv.getElementsByTagName("button")
-    var buttonoptions = ['online', 'localstorage', 'device']
-    var buttonselected
-    for (let i = 0; i < buttons.length; i++) {
-        const element = buttons[i];
-        ButtonEvent(element, function(){
-            isChecks(undefined, true)
-            buttonselected = i
-            for (let i = 0; i < buttons.length; i++) {
-                const element = buttons[i];
-                element.classList.remove("buttonSelected")
+    function execute(){
+        var isNameSet = false
+        var isOptionSelected = false
+        function isChecks(name, option){
+            if(name){
+                isNameSet = name
             }
-            element.classList.add("buttonSelected")
+            if(option){
+                isOptionSelected = option
+            }
+            if(isNameSet==true&&isOptionSelected==true){
+                completebtn.classList.add("completebtnallowed")
+            }
+            else{
+                completebtn.classList.remove("completebtnallowed")
+            }
+        }
+
+        newfile = document.createElement("div")
+        newfile.innerHTML += "<x class='m-i'>close</x>"+
+        "<ti>Create a new project</ti>" +
+        "<p>Name</p><input>"+
+        //"add folers"+
+        "<p>Storage</p>"
+
+        var closebtn = newfile.getElementsByTagName("x")[0]
+        ButtonEvent(closebtn, NewFileGui, true)
+
+        var newfilename = newfile.getElementsByTagName("input")[0]
+        newfilename.addEventListener("input", function(){
+            if(newfilename.value!=""){
+                isChecks(true)
+            }
+            else{
+                isChecks(false)
+            }
         })
+
+        var buttonsDiv = document.createElement("buttons")
+        buttonsDiv.innerHTML = "<button><i class='m-i'>cloud</i> Cloud</button>"+
+        "<button><i class='m-i'>web</i> App</button>"+
+        "<button><i class='m-i'>desktop_windows</i> Device</button>"
+
+        var buttons = buttonsDiv.getElementsByTagName("button")
+        var buttonoptions = ['online', 'localstorage', 'device']
+        var buttonselected
+        for (let i = 0; i < buttons.length; i++) {
+            const element = buttons[i];
+            ButtonEvent(element, function(){
+                isChecks(undefined, true)
+                buttonselected = i
+                for (let i = 0; i < buttons.length; i++) {
+                    const element = buttons[i];
+                    element.classList.remove("buttonSelected")
+                }
+                element.classList.add("buttonSelected")
+            })
+        }
+
+        newfile.appendChild(buttonsDiv)
+
+
+        var selectedPath = ""
+
+        var folderselect = document.createElement("div")
+        folderselect.classList.add("folderselect")
+        folderselect.innerHTML = "<p>Folder</p>"
+
+        var existing = CheckExisting()
+        existing.unshift("localStorage:*Home*")
+
+        for(let i = 0; i < existing.length; i++){
+            var parts = existing[i].split(":")
+            var space = parts[0]
+            var pathname = parts[1]
+            pathname = pathname.split("*").slice(1).join('*')
+            var path = pathname.split("*")[0]
+            var name = pathname.split("*").slice(1).join('*')
+
+            function createButton(){
+                var folder = document.createElement("button")
+                folder.innerText = path
+                ButtonEvent(folder, function(){
+                    folder.classList.add("folderselected")
+                })
+                return folder
+            }
+            if(path!=""){
+                folderselect.appendChild(createButton())
+            }
+        }
+
+        newfile.appendChild(folderselect)
+
+
+
+
+
+
+
+
+        var completebtn = document.createElement("button")
+        completebtn.innerText = "Create"
+        completebtn.classList.add("completebtn")
+        ButtonEvent(completebtn, function(){
+            if(isNameSet == false || isOptionSelected == false){
+                completebtn.classList.add("completebtnerror")
+                setTimeout(() => {
+                    completebtn.classList.remove("completebtnerror")
+                }, 400);
+            }
+            else{
+                NewFile("", newfilename.value, buttonoptions[buttonselected])
+                newfile.classList.add("newfiletransitionout")
+                setTimeout(() => {
+                    newfile.remove()
+                }, 300);
+            }
+        })
+        newfile.appendChild(completebtn)
+
+        newfile.classList.add("newfile")
+        app.appendChild(newfile)
+        setTimeout(() => {
+            newfile.classList.add("newfiletransitioned")
+        }, 0);
     }
-
-    newfile.appendChild(buttonsDiv)
-
-    var completebtn = document.createElement("button")
-    completebtn.innerText = "Create"
-    completebtn.classList.add("completebtn")
-    ButtonEvent(completebtn, function(){
-        if(isNameSet == false || isOptionSelected == false){
-            completebtn.classList.add("completebtnerror")
-            setTimeout(() => {
-                completebtn.classList.remove("completebtnerror")
-            }, 400);
-        }
-        else{
-            NewFile("", newfilename.value, buttonoptions[buttonselected])
-            newfile.classList.add("newfiletransitionout")
-            setTimeout(() => {
-                newfile.remove()
-            }, 300);
-        }
-    })
-    newfile.appendChild(completebtn)
-
-    newfile.classList.add("newfile")
-    app.appendChild(newfile)
-    setTimeout(() => {
-        newfile.classList.add("newfiletransitioned")
-    }, 0);
+    SaveChangesQuestion(execute)
 }
 
 var loadfile
