@@ -85,8 +85,10 @@ function WelcomeGui(response, element){
     search.appendChild(searchinput)
 
     var info = document.createElement("info")
+    var widgets = []
     
     var account = document.createElement("account")
+    widgets.push(account)
     if(response.status!='offline'){
         account.innerHTML = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a>"
     }
@@ -174,24 +176,28 @@ function WelcomeGui(response, element){
     
     var weather = document.createElement("weather")
     if(response.weather){
+        widgets.push(weather)
         weather.innerHTML = WeatherStyled(response.weather)
     }
     // weather.innerHTML = "<img src='temp/banner.jpeg'><w>Clear 26°C</w><p>It's a nice morning in Plovdiv</p>"
 
-    var create = document.createElement("create")
-    create.innerHTML = "<a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a>"
-    var createbtns = create.getElementsByTagName('a')
-    ButtonEvent(createbtns[1], function(){
-        sidepanel.classList.add("sidepanelmoreactive")
-        setTimeout(() => {
-            sidepanel.classList.add("sidepanelmostactive")
-        }, 300);
-    })
+    if(element.classList[0]!="welcome"){
+        var create = document.createElement("create")
+        widgets.push(create)
+        create.innerHTML = "<a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a>"
+        var createbtns = create.getElementsByTagName('a')
+        ButtonEvent(createbtns[1], function(){
+            sidepanel.classList.add("sidepanelmoreactive")
+            setTimeout(() => {
+                sidepanel.classList.add("sidepanelmostactive")
+            }, 300);
+        })
+    }
 
     var space = document.createElement("space")
+    widgets.push(space)
     space.innerHTML = "2 GB used of 5 GB"
 
-    var widgets = [account, weather, create, space]
     for (let i = 0; i < widgets.length; i++) {
         widgets[i].classList.add("widget")
         info.appendChild(widgets[i])
