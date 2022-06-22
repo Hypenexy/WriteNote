@@ -1,9 +1,12 @@
 // make the background a hot water
+// inspired by Posy
 
 var WelcomeGuiinteractable = true
 function WelcomeGui(response, element){
     var content = element.getElementsByTagName("content")[0]
-
+    if(element.classList[0]=="welcome"){
+        content.classList.add("contentfull")
+    }
     /**
      * Imported from WriteNote 2.0.0,
      * used to display a welcoming message!
@@ -13,6 +16,9 @@ function WelcomeGui(response, element){
      function createMOTD(name){
         var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });
         var hour = parseInt(now24.slice(0, 2));
+        if(name){
+            name = "<br>" + name
+        }
         var welcomemessage = "Good morning, " + name;
         if(hour>13&&hour<18){
           welcomemessage = "Good afternoon, " + name;
@@ -80,19 +86,119 @@ function WelcomeGui(response, element){
 
     var info = document.createElement("info")
     
-    var accountstuff
+    var account = document.createElement("account")
     if(response.status!='offline'){
-        accountstuff = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a>"
+        account.innerHTML = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a>"
     }
     else{
-        accountstuff = "No connection <a tabindex='0'>Retry</a>"
+        account.innerHTML = "No connection <a tabindex='0'>Retry</a>"
+        
+        ButtonEvent(account.getElementsByTagName("a")[0], function(){
+            connectToMidelightTemporary()
+        })
     }
 
-    info.innerHTML = "<account class='widget'>"+accountstuff+"</account>"+
-    "<weather class='widget'><img src='temp/banner.jpeg'><w>Clear 26°C</w><p>It's a nice morning in Plovdiv</p></weather>"+
-    "<create class='widget'><a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a></create>"+
-    "<space class='widget'>2 GB used of 5 GB</space>"
+    function WeatherStyled(info){//reconsider these 💫 cute names ✨
+        if(info.altdesc=="Thunderstorm"){
+            info.desc = "Thunderstorm"
+        }
+        if(info.altdesc=="Drizzle"){
+            info.desc = "Rainy"
+        }
+        if(info.altdesc=="Rain"){
+            info.desc = "Rainy"
+        }
+        if(info.altdesc=="Snow"){
+            info.desc = "Snowing"
+        }
+        if(info.altdesc=="Clouds"){
+            info.desc = "Cloudy"
+        }
+        if(info.desc=="clear sky"){
+            info.desc = "Clear sky"
+        }
+        if(info.desc=="few clouds"){
+            info.desc = "A little cloudy"
+        }
+        if(info.desc=="scattered clouds"){
+            info.desc = "Somewhat cloudy"
+        }
+        if(info.desc=="very heavy rain"||info.desc=="extreme rain"||info.desc=="heavy intensity rain"){
+            info.desc = "Heavy rain"
+        }
+        if(info.desc=="Rain and snow"||info.desc=="Light rain and snow"){
+            info.desc = "Snowing & raining"
+        }
+        if(info.altdesc=="Mist"){
+            info.desc = "Mist"
+        }
+        
+        var now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })
+        var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })
+        var hour = parseInt(now24.slice(0, 2))
+        var timedescription = info.city
+        var temp = parseInt(info.temp.toString().slice(0, 2))
+        var feel = "a nice"
+        if(Math.floor(Math.random() * 4)==2){
+            feel = "a peaceful"
+        }
+        if(temp<1){
+            feel="a freezing"
+        }
+        if(temp<14){
+            feel="a cold"
+        }
+        if(temp>20){
+            feel="a mild"
+        }
+        if(temp>28){
+            feel="a hot"
+        }
+        if(temp>36){
+            feel="an extremely hot"
+        }
+        if(hour>13&&hour<18){
+            timedescription = "It's " + feel + " afternoon in " + info.city
+        }
+        if(hour>17&&hour<23){
+            timedescription = "It's " + feel + " evening in " + info.city
+        }
+        if(hour>22||hour<6){
+            timedescription = "It's " + feel + " night in " + info.city
+        }
+        if(hour==0){
+            timedescription = "It's " + feel + " midnight in " + info.city
+        }
+        return '<img src="temp/banner.jpeg"><timed> Last updated ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
+    }
+    
+    var weather = document.createElement("weather")
+    if(response.weather){
+        weather.innerHTML = WeatherStyled(response.weather)
+    }
+    // weather.innerHTML = "<img src='temp/banner.jpeg'><w>Clear 26°C</w><p>It's a nice morning in Plovdiv</p>"
 
+    var create = document.createElement("create")
+    create.innerHTML = "<a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a>"
+    var createbtns = create.getElementsByTagName('a')
+    ButtonEvent(createbtns[1], function(){
+        sidepanel.classList.add("sidepanelmoreactive")
+        setTimeout(() => {
+            sidepanel.classList.add("sidepanelmostactive")
+        }, 300);
+    })
+
+    var space = document.createElement("space")
+    space.innerHTML = "2 GB used of 5 GB"
+
+    var widgets = [account, weather, create, space]
+    for (let i = 0; i < widgets.length; i++) {
+        widgets[i].classList.add("widget")
+        info.appendChild(widgets[i])
+    }
+
+    
+    // sidepanel.classList.add("sidepanelmoreactive")
 
     var filesside = document.createElement("filesside")
 
@@ -159,6 +265,9 @@ function WelcomeGui(response, element){
                     folders = folders.join('/')
                     FilesSort(folders)
                 }
+            })
+            lastFolder.addEventListener("click", function(e){
+                e.stopPropagation();
             })
 
             var transition
@@ -296,8 +405,17 @@ function WelcomeGui(response, element){
                             if(element.classList[0]=="welcome"){
                                 welcomeClose()
                             }
+                            else{
+                                closeSidepanel()
+                                setTimeout(() => {
+                                    closeSidepanel()
+                                }, 301);
+                            }
                         }
                     }
+                })
+                button.addEventListener("click", function(e){
+                    e.stopPropagation();
                 })
                 return button;
             }
@@ -324,12 +442,15 @@ function WelcomeGui(response, element){
     setTimeout(() => {
         content.style.transition = "initial"
         content.style.transform = "translateY(-20px)"
+        content.style.removeProperty("overflow")
         setTimeout(() => {
             content.style.removeProperty("transition")
             content.style.removeProperty("transform")
             content.style.opacity = 1
             content.innerHTML = ""
-            content.appendChild(closebtn)
+            if(element.classList[0]=="welcome"){
+                content.appendChild(closebtn)
+            }
             content.appendChild(motd)
             content.appendChild(search)
             content.appendChild(info)
@@ -343,39 +464,40 @@ function WelcomeGui(response, element){
 
 var storedResponse
 var welcome = document.createElement("div")
-if(!settings.ft){
-    welcome.classList.add("welcome")
-
-
-    $.ajax({
-        url: server + "app/startup.php",
-        type: "post",
-        //timeout: 1500,
-        timeout: 2300,
-        data: "steal user data ;)",
-        success: function (response) {
-            response = JSON.parse(response)
-            storedResponse = response
-            WelcomeGui(response, welcome)
-        },
-        error: function() {
-            var response = {status:"offline"}
-            storedResponse = response
-            WelcomeGui(response, welcome)
-        }
-    })
-
-
-    welcome.innerHTML = "<content><div class='onlineloaderspiny'><div class='onlineloader'></div></div></content>"
-
-
-    app.appendChild(welcome)
-    setTimeout(() => {
-        welcome.classList.add("welcometransitioned")
-    }, 0);
+function connectToMidelightTemporary(){
+    if(!settings.ft){//This should be used the other way around, it's for "first time"
+        welcome.classList.add("welcome")
+    
+        $.ajax({
+            url: server + "app/startup.php",
+            type: "post",
+            //timeout: 1500,
+            timeout: 2300,
+            data: "steal user data ;)",
+            success: function (response) {
+                response = JSON.parse(response)
+                storedResponse = response
+                WelcomeGui(response, welcome)
+            },
+            error: function() {
+                var response = {status:"offline"}
+                storedResponse = response
+                WelcomeGui(response, welcome)
+            }
+        })
+    
+    
+        welcome.innerHTML = "<content><div class='onlineloaderspiny'><div class='onlineloader'></div></div></content>"
+        welcome.getElementsByTagName("content")[0].style.overflow = "hidden"
+    
+        app.appendChild(welcome)
+        setTimeout(() => {
+            welcome.classList.add("welcometransitioned")
+        }, 0);
+    }
 }
 
-
+connectToMidelightTemporary()
 
 
 

@@ -96,6 +96,17 @@ header.innerHTML = `
     c-26.341,0-49.33-18.992-56.709-44.246h113.416C355.329,558.493,332.344,577.485,306.001,577.485z"/>
 </svg>
 `
+
+var headerbtns = header.getElementsByTagName("v")
+
+ButtonEvent(headerbtns[1], function(){
+    openSidepanel("open")
+})
+headerbtns[1].addEventListener("click", function(e){
+    hideHeaderDropdowns()
+    e.cancelBubble = true
+})
+
 notearea.addEventListener("blur", function(){
     header.classList.add("headeractive")
 })

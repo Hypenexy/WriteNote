@@ -17,7 +17,7 @@
     background: #100f11;
     padding: 24px 36px;
     border-radius: 12px;
-    overflow: auto;
+    overflow: hidden;
 }
 .welcome::-webkit-scrollbar-thumb, content::-webkit-scrollbar-thumb{
     border-radius: 8px;
@@ -42,7 +42,15 @@ content{
     display: block;
     transition: transform .3s, opacity .3s;
     overflow: auto;
+    padding-right: 6px;
+    white-space: nowrap;
 }
+
+.contentfull{
+    padding-right: initial;
+    white-space: initial;
+}
+
 .onlineloaderspiny{
     animation: Rotate 8s infinite;
 }
@@ -138,6 +146,9 @@ content h1{
     padding: 8px;
     text-align: center;
 }
+.contentfull h1 br{
+    display: none;
+}
 
 
 content search{
@@ -151,7 +162,7 @@ content search i{
 }
 content search input{
     color: #fff;
-    background: #222;
+    background: #22222288;
     border: 0;
     border-radius: 8px;
     width: 100%;
@@ -163,8 +174,14 @@ content search input{
     margin-bottom: 16px;
     transition: 0.2s;
 }
+.contentfull search input{
+    background: #222;
+}
 
 content info{
+    transition: .3s;
+}
+.contentfull info{
     /* background: red; */
     position: absolute;
     display: block;
@@ -175,11 +192,14 @@ content info{
 .widget{
     position: relative;
     display: block;
-    background: #222;
+    background: #22222255;
     padding: 12px;
     margin-bottom: 12px;
     border-radius: 8px;
     text-align: center;
+}
+.contentfull .widget{
+    background: #222;
 }
 content info create .m-i{
     font-size: 20px;
@@ -208,6 +228,16 @@ content weather w{
 }
 content weather p{
     color: #e1e7f1;
+}
+content weather:hover timed{
+    opacity: 1;
+}
+content weather timed{
+    position: absolute;
+    top: 9px;
+    font-size: 14px;
+    opacity: 0;
+    transition: .4s;
 }
 content account a, content info create a{
     user-select: none;
@@ -243,22 +273,27 @@ content account img{
     transform: translateX(-50%);
 }
 @media screen and (max-width: 850px) {
-    content info{
+    .contentfull info{
         width: 100%;
         margin: 15px 0;
     }
-    .widget{
+    .contentfull .widget{
         position: relative;
         float: left;
         width: calc(50% - 12px);
         margin-right: 12px;
     }
-    .widget:last-child{
+    .contentfull .widget:last-child{
         margin-right: initial;
     }
 }
 
-content filesside{
+filesside{
+    white-space: normal;
+    display: none;
+    transition: .3s;
+}
+.contentfull filesside{
     display: block;
     float: right;
     padding: 24px;

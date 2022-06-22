@@ -13,22 +13,42 @@ function toggleSidepanel(){
     }
 }
 
-function openSidepanel(){
+function openSidepanel(menu){
+    if(storedResponse){
+        if(sidepanel.innerText==""){
+            sidepanel.innerHTML += "<content></content>"
+            WelcomeGui(storedResponse, sidepanel)
+        }
+        if(menu=="open"){
+            sidepanel.classList.add("sidepanelmoreactive")
+            sidepanel.classList.add("sidepanelmostactive")
+        }
+    }
+    ButtonEvent(sidepanel.getElementsByTagName("svg")[0], closeSidepanel)
     sidepanelOpen = true
-    sidepanel.style.width = "300px"
-    sidepanel.style.borderRight = "solid 1px #eeeeee33"
+    sidepanel.classList.add("sidepanelactive")
 }
 
 function closeSidepanel(){
-    sidepanelOpen = false
-    sidepanel.style.width = "0"
-    sidepanel.style.borderRight = "solid 0px #111"
+    if(sidepanel.classList.contains("sidepanelmoreactive")){
+        sidepanel.classList.remove("sidepanelmostactive")
+        setTimeout(() => {
+            sidepanel.classList.remove("sidepanelmoreactive")
+            sidepanel.classList.add("sidepanelactive")
+        }, 300);
+    }
+    else{
+        sidepanel.classList = ""
+        sidepanelOpen = false
+    }
 }
 
 window.addEventListener('click', function (e) {
     if(sidepanelOpen){
-        if (!sidepanel.contains(e.target) && !SidePanelButton.contains(e.target)) {
+        if (!sidepanel.contains(e.target) && !SidePanelButton.contains(e.target)){
+            // if(!e.target.classList.contains("folder") || !e.target.parentNode.classList.contains("folder")){   
             closeSidepanel()
+            // }
         }
     }
 })
@@ -44,6 +64,3 @@ document.addEventListener('swiped-right', function(e) {
         openSidepanel()
     }
 })
-
-var SidePanelXBtn = sidepanel.getElementsByTagName("svg")[0]
-ButtonEvent(SidePanelXBtn, closeSidepanel)
