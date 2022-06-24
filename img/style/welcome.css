@@ -302,6 +302,7 @@ filesside{
 
 content files{
     display: block;
+    padding: 1px; /*This fixes outline shit but idk if it breaks other shit*/
     transition: .2s;
 }
 content .filestransitionforward{
@@ -388,6 +389,10 @@ filters select{
 }
 filters select option{
     background: #111;
+}
+filters .o:focus-visible{
+    outline: 2px solid #fff;
+    border-radius: 4px;
 }
 filters .o{
     user-select: none;

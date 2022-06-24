@@ -185,7 +185,7 @@ function WelcomeGui(response, element){
         if(hour>22||hour<6){
             timedescription = "It's " + feel + " night in " + info.city
         }
-        if(hour==0){
+        if(hour==0&&hour==24){
             timedescription = "It's " + feel + " midnight in " + info.city
         }
         return '<img src="temp/banner.jpeg"><timed> Last updated ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
@@ -202,8 +202,6 @@ function WelcomeGui(response, element){
         var create = document.createElement("create")
         widgets.push(create)
         create.innerHTML = "<a><span class='m-i'>add</span> Create Project</a><a><span class='m-i'>file_open</span> Open Project</a>"
-        //probablynotthe best idea to edit oldercode on aschool chromebook that doesn't detect half myspaces
-        //removed thd tabindex=0 prob remove this comment too
         var createbtns = create.getElementsByTagName('a')
         ButtonEvent(createbtns[1], function(){
             sidepanel.classList.add("sidepanelmoreactive")

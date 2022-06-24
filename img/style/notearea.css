@@ -17,6 +17,12 @@ notearea{
     padding-bottom: calc(100vh - 95px);
     transition: 0.2s;
 }
+notearea i:hover{/*experiment*/
+    background-color: #65baff22;
+}
+notearea b:hover{
+    background-color: #65baff22;
+}
 /* notearea p:last-child{   //Tried something like this. But it's weird..
     padding-bottom: 100%;
 } */
