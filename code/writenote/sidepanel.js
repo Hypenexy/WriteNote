@@ -53,6 +53,15 @@ window.addEventListener('click', function (e) {
     }
 })
 
+document.addEventListener("keydown", function(e){
+    if(sidepanelOpen){
+        if(e.key == "Escape"){
+            closeSidepanel()
+            notearea.focus()
+        }
+    }
+})
+
 document.addEventListener('swiped-left', function(e) {
     if(sidepanelOpen){
         closeSidepanel()

@@ -38,6 +38,7 @@ sidepanel .x:hover{
     padding-top: 60px;
     padding-right: 4px;
     width: 300px;
+    max-width: 300px;
     border-right: solid 1px #eeeeee33
 }
 .sidepanelmoreactive{
@@ -59,4 +60,15 @@ sidepanel .x:hover{
 }
 .sidepanelmostactive info{
     display: none
+}
+@media screen and (max-width:300px){
+    .sidepanelactive{
+        width: 100%
+    }
+    sidepanel content h1{
+        font-size: 18px
+    }
+    sidepanel content input{
+        font-size: 16px
+    }
 }

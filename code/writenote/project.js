@@ -303,14 +303,18 @@ function NewFileGui(close){
     function execute(){
         var isNameSet = false
         var isOptionSelected = false
-        function isChecks(name, option){
+        var doesMatch = false
+        function isChecks(name, option, matches){
             if(name){
                 isNameSet = name
             }
             if(option){
                 isOptionSelected = option
             }
-            if(isNameSet==true&&isOptionSelected==true){
+            if(matches){
+                doesMatch = matches
+            }
+            if(isNameSet==true&&isOptionSelected==true&&doesMatch==false){
                 completebtn.classList.add("completebtnallowed")
             }
             else{

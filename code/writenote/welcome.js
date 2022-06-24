@@ -46,11 +46,28 @@ function WelcomeGui(response, element){
     function welcomeClose(){
         WelcomeGuiinteractable = false
         welcome.classList.remove("welcometransitioned")
+        
+        if(storedResponse){
+            if(sidepanel.innerText==""){
+                sidepanel.innerHTML += "<content></content>"
+                WelcomeGui(storedResponse, sidepanel)
+            }
+        }
         setTimeout(() => {
             element.remove()
+            welcome.classList = ""
             WelcomeGuiinteractable = true
         }, 500)
     }
+
+    document.addEventListener("keydown", function(e){
+        if(welcome.classList[0] == "welcome"){
+            if(e.key == "Escape"){
+                welcomeClose()
+            }
+        }
+    })    
+
     if(element.classList[0]=="welcome"){
         var closebtn = document.createElement("x")
         closebtn.classList.add("m-i")
@@ -191,6 +208,10 @@ function WelcomeGui(response, element){
             setTimeout(() => {
                 sidepanel.classList.add("sidepanelmostactive")
             }, 300);
+        })
+        ButtonEvent(createbtns[0], function(){
+            closeSidepanel()
+            NewFileGui()
         })
     }
 
@@ -439,6 +460,12 @@ function WelcomeGui(response, element){
 
     FilesSort()
 
+    var createnewbutton = document.createElement("button")
+    createnewbutton.classList.add("folder")
+    createnewbutton.innerHTML = "<i class='m-i'>add</i> Create new"
+    ButtonEvent(createnewbutton, NewFileGui)
+    files.appendChild(createnewbutton)
+
 
     //finally load
 
@@ -466,6 +493,7 @@ function WelcomeGui(response, element){
         }, 10)
     }, 300)
 }
+
 
 
 var storedResponse
