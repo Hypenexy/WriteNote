@@ -184,7 +184,9 @@ function WelcomeGui(response, element){
     if(element.classList[0]!="welcome"){
         var create = document.createElement("create")
         widgets.push(create)
-        create.innerHTML = "<a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a>"
+        create.innerHTML = "<a><span class='m-i'>add</span> Create Project</a><a><span class='m-i'>file_open</span> Open Project</a>"
+        //probablynotthe best idea to edit oldercode on aschool chromebook that doesn't detect half myspaces
+        //removed thd tabindex=0 prob remove this comment too
         var createbtns = create.getElementsByTagName('a')
         ButtonEvent(createbtns[1], function(){
             sidepanel.classList.add("sidepanelmoreactive")
