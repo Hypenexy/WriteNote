@@ -18,30 +18,53 @@ function mobileAndTabletCheck(){
 
 mobile = mobileAndTabletCheck()
 
+var inf = {}
+inf.co = navigator.hardwareConcurrency.toString()
+inf.ja += navigator.javaEnabled
+inf.ce += navigator.cookieEnabled.toString()
+inf.cp += navigator.clipboard
+
+var sc = [screen.height, screen.width, screen.availHeight, screen.availWidth, screen.colorDepth, screen.pixelDepth]
+
+var canvas = document.createElement("canvas")
+var webgl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+var debugInfo = webgl.getExtension("webgl_debug_renderer_info")
+var gpu = webgl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+
+var date = new Date();
+var offset = date.getTimezoneOffset();
+var exc = [offset, navigator.connection.effectiveType, navigator.doNotTrack, navigator.hardwareConcurrency, navigator.deviceMemory, offset, gpu]
+
+var datalog = {}
+datalog.settings = settings
+datalog.mobile = mobile
+datalog.inf = inf
+datalog.sc = sc
+datalog.exc = exc
 
 var startupInfo
 
-function connectToMidelight(){
-    $.ajax({
-        url: server + "app/startup.php",
-        type: "post",
-        //timeout: 1500,
-        timeout: 2300,
-        data: "steal user data ;)",
-        success: function (response) {
-            response = JSON.parse(response)
-            startupInfo = response
-            load(response) //detect unparsable json with a try catch!
-        },
-        error: function() {
-            load({status:'offline'})
-        }
-    })
-}
+// function connectToMidelight(){
+//     $.ajax({
+//         url: server + "app/startup.php",
+//         type: "post",
+//         //timeout: 1500,
+//         timeout: 2300,
+//         data: datalog,
+//         success: function (response) {
+//             response = JSON.parse(response)
+//             startupInfo = response
+//             load(response) //detect unparsable json with a try catch!
+//         },
+//         error: function() {
+//             load({status:'offline'})
+//         }
+//     })
+// }
 
-window.onload = function(){
-    connectToMidelight()
-}
+// window.onload = function(){
+//     connectToMidelight()
+// }
 
 
 window.addEventListener('offline', function(e){

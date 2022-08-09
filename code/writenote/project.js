@@ -132,7 +132,13 @@ function SaveFile(updateOpen){
             }
 
             localStorage.setItem("*" + activefile.path + "*" + activefile.name, JSON.stringify(DataToSave))
-            SavedStatus(true)
+            if(localStorage.getItem("*" + activefile.path + "*" + activefile.name) == JSON.stringify(DataToSave)){
+                //saved successfully
+                SavedStatus(true)
+            }
+            else{
+                alert("Error, file hasn't saved!")
+            }
             break;
         case "device":
             // file = OpenFileDialog()

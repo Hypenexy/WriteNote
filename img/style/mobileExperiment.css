@@ -36,7 +36,7 @@
 
     visibility: hidden;
     height: 0px;
-    overflow: hidden;
+    overflow: auto;
 
     background: #1a1a1a;
     box-shadow: 0 2px 2px #111;
@@ -44,6 +44,9 @@
     border-radius: 0 0 12px 12px;
 
     transition: .4s;
+}
+.mobilemenu::-webkit-scrollbar-thumb{
+    border-radius: 8px;
 }
 .mobilemenuactive{
     visibility: visible;

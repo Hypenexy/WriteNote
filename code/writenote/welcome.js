@@ -2,8 +2,46 @@
 // inspired by Posy
 
 var WelcomeGuiinteractable = true
-function WelcomeGui(response, element){
+function WelcomeGui(response, element, error){
     var content = element.getElementsByTagName("content")[0]
+    if(response=="error"){
+
+        
+        $.ajax({
+            url: server + "app/errorlog.php",
+            type: "post",
+            data: {clienterror: error[0], serverresponse: error[1]},
+            success: function (response) {
+            },
+            error: function() {
+            }
+        })
+        
+        content.style.transform = "translateY(20px)"
+        content.style.opacity = 0
+
+        setTimeout(() => {
+            content.style.transition = "initial"
+            content.style.transform = "translateY(-20px)"
+            content.style.removeProperty("overflow")
+            setTimeout(() => {
+                content.innerHTML = "<p class='error'>Oops an error occured!</p> <err><b>Client Error</b> " + error[0] + "</err><err><b>Server Response</b> " + error[1] + "</err><div class='error'><button>Retry</button><button>Continue to WriteNote offline</button></div>"
+                var buttons = content.getElementsByTagName("button")
+                ButtonEvent(buttons[0], connectToMidelightTemporary)
+                ButtonEvent(buttons[1], function(){
+                    var response = {status:"offline"}
+                    storedResponse = response
+                    WelcomeGui(response, welcome)
+                })
+                content.style.removeProperty("transition")
+                content.style.removeProperty("transform")
+                content.style.opacity = 1
+                return;
+            }, 10)
+        }, 300)
+
+
+    }
     if(element.classList[0]=="welcome"){
         content.classList.add("contentfull")
     }
@@ -113,6 +151,7 @@ function WelcomeGui(response, element){
         account.innerHTML = "No connection <a tabindex='0'>Retry</a>"
         
         ButtonEvent(account.getElementsByTagName("a")[0], function(){
+            sidepanel.innerHTML = sidepanelHTML
             connectToMidelightTemporary()
         })
     }
@@ -188,7 +227,8 @@ function WelcomeGui(response, element){
         if(hour==0&&hour==24){
             timedescription = "It's " + feel + " midnight in " + info.city
         }
-        return '<img src="temp/banner.jpeg"><timed> Last updated ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
+
+        return '<img src="data:image/png;base64,'+info.image+'"><timed> Last updated ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
     }
     
     var weather = document.createElement("weather")
@@ -507,9 +547,13 @@ function connectToMidelightTemporary(){
             type: "post",
             //timeout: 1500,
             timeout: 2300,
-            data: "steal user data ;)",
+            data: datalog,
             success: function (response) {
-                response = JSON.parse(response)
+                try {
+                    response = JSON.parse(response)
+                } catch (error) {
+                    WelcomeGui("error", welcome, [error, response])
+                }
                 storedResponse = response
                 WelcomeGui(response, welcome)
             },

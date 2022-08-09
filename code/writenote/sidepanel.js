@@ -1,6 +1,7 @@
 var sidepanelOpen = false
 var sidepanel = document.createElement("sidepanel")
-sidepanel.innerHTML = '<svg class="x" width="48" height="48" viewBox="0 0 64 64"><rect x="4" y="8" width="56" height="8" rx="4" ry="4"></rect><rect x="4" y="28" width="56" height="8" rx="4" ry="4"></rect><rect x="4" y="48" width="56" height="8" rx="4" ry="4"></rect></svg>'
+var sidepanelHTML = '<svg class="x" width="48" height="48" viewBox="0 0 64 64"><rect x="4" y="8" width="56" height="8" rx="4" ry="4"></rect><rect x="4" y="28" width="56" height="8" rx="4" ry="4"></rect><rect x="4" y="48" width="56" height="8" rx="4" ry="4"></rect></svg>'
+sidepanel.innerHTML = sidepanelHTML
 app.appendChild(sidepanel)
 
 //This function is not used anywhere.

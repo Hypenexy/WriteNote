@@ -165,7 +165,7 @@ function ButtonEventStyled(element, action, hoverstyle, clickstyle){
 /**
  * Get's an element's offset.
  * @param {*} el Any element
- * @returns An array of the top and left pixels offset of the element.
+ * @returns A JSON of the top and left pixels offset, in a number, of the element.
  */
 function getOffset(el){
     var _x = 0

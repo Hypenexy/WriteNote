@@ -108,7 +108,7 @@ headerbtns[1].addEventListener("click", function(e){
 })
 
 notearea.addEventListener("blur", function(){
-    header.classList.add("headeractive")
+    header.classList.add("headeractive") //Should I instead make it responsive to the scroll?? I've done it before!
 })
 notearea.addEventListener("focus", function(){
     header.classList.remove("headeractive")

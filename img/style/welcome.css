@@ -150,6 +150,33 @@ content h1{
     display: none;
 }
 
+content .error{
+    font-size: 24px;
+    margin: 20px;
+}
+
+content err, content b{
+    user-select: text;
+    display: block;
+    margin: 16px 0 2px 0
+}
+
+content .error button{
+    font-size: 16px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px;
+    transition: .2s;
+}
+content .error button:hover, content .error button:focus-visible{
+    border: 1px solid #eee;
+    box-shadow: 1px 2px 3px #55555555;
+}
+content .error button:active{
+    background: #eee;
+    color: #000;
+}
 
 content search{
     position: relative;
