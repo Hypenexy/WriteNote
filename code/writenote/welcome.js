@@ -25,7 +25,7 @@ function WelcomeGui(response, element, error){
             content.style.transform = "translateY(-20px)"
             content.style.removeProperty("overflow")
             setTimeout(() => {
-                content.innerHTML = "<p class='error'>Oops an error occured!</p> <err><b>Client Error</b> " + error[0] + "</err><err><b>Server Response</b> " + error[1] + "</err><div class='error'><button>Retry</button><button>Continue to WriteNote offline</button></div>"
+                content.innerHTML = "<p class='error'>"+locale.oops+"</p> <err><b>"+locale.clienterr+"</b> " + error[0] + "</err><err><b>"+locale.serverres+"</b> " + error[1] + "</err><div class='error'><button>"+locale.retry+"</button><button>"+locale.continueoffline+"</button></div>"
                 var buttons = content.getElementsByTagName("button")
                 ButtonEvent(buttons[0], connectToMidelightTemporary)
                 ButtonEvent(buttons[1], function(){
@@ -57,19 +57,20 @@ function WelcomeGui(response, element, error){
         if(name){
             name = "<br>" + name
         }
-        var welcomemessage = "Good morning, " + name;
+        var welcomemessage = locale.goodmorning
         if(hour>13&&hour<18){
-          welcomemessage = "Good afternoon, " + name;
+          welcomemessage = locale.goodafternoon
         }
         if(hour>17&&hour<23){
-          welcomemessage = "Good evening, " + name;
+          welcomemessage = locale.goodevening
         }
         if(hour>22||hour<6){
-          welcomemessage = "Good night, " + name;
+          welcomemessage = locale.goodnight
         }
         if(hour==0||hour==24){
-          welcomemessage = "Enjoy the midnight, " + name;
+          welcomemessage = locale.goodmidnight
         }
+        welcomemessage += ", " + name
         return welcomemessage;
     }
 
@@ -99,9 +100,14 @@ function WelcomeGui(response, element, error){
     }
 
     document.addEventListener("keydown", function(e){
-        if(welcome.classList[0] == "welcome"){
-            if(e.key == "Escape"){
-                welcomeClose()
+        if(e.key == "Escape"){ //am i optimizing?
+            if(welcome.classList[0] == "welcome"){
+                if(newfile && newfile.nodeType){
+                    
+                }
+                else{
+                    welcomeClose()
+                }
             }
         }
     })    
@@ -117,7 +123,7 @@ function WelcomeGui(response, element, error){
 
     var search = document.createElement("search")
     var searchinput = document.createElement("input")
-    searchinput.placeholder = "Search"
+    searchinput.placeholder = locale.search
     searchinput.addEventListener("input", function(){
         var everything = files.getElementsByTagName("button")
         for (let i = 0; i < everything.length; i++) {
@@ -145,10 +151,10 @@ function WelcomeGui(response, element, error){
     var account = document.createElement("account")
     widgets.push(account)
     if(response.status!='offline'){
-        account.innerHTML = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>Switch account</a>"
+        account.innerHTML = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>"+locale.switchacc+"</a>"
     }
     else{
-        account.innerHTML = "No connection <a tabindex='0'>Retry</a>"
+        account.innerHTML = "No connection <a tabindex='0'>"+locale.retry+"</a>"
         
         ButtonEvent(account.getElementsByTagName("a")[0], function(){
             sidepanel.innerHTML = sidepanelHTML
@@ -158,37 +164,37 @@ function WelcomeGui(response, element, error){
 
     function WeatherStyled(info){//reconsider these 💫 cute names ✨
         if(info.altdesc=="Thunderstorm"){
-            info.desc = "Thunderstorm"
+            info.desc = locale.thunderstorm
         }
         if(info.altdesc=="Drizzle"){
-            info.desc = "Rainy"
+            info.desc = locale.rainy
         }
         if(info.altdesc=="Rain"){
-            info.desc = "Rainy"
+            info.desc = locale.rainy
         }
         if(info.altdesc=="Snow"){
-            info.desc = "Snowing"
+            info.desc = locale.snow
         }
         if(info.altdesc=="Clouds"){
-            info.desc = "Cloudy"
+            info.desc = locale.cloudy
         }
         if(info.desc=="clear sky"){
-            info.desc = "Clear sky"
+            info.desc = locale.clearsky
         }
         if(info.desc=="few clouds"){
-            info.desc = "A little cloudy"
+            info.desc = locale.fewclouds
         }
         if(info.desc=="scattered clouds"){
-            info.desc = "Somewhat cloudy"
+            info.desc = locale.scatteredclouds
         }
         if(info.desc=="very heavy rain"||info.desc=="extreme rain"||info.desc=="heavy intensity rain"){
-            info.desc = "Heavy rain"
+            info.desc = locale.veryrain
         }
         if(info.desc=="Rain and snow"||info.desc=="Light rain and snow"){
-            info.desc = "Snowing & raining"
+            info.desc = locale.snowrain
         }
         if(info.altdesc=="Mist"){
-            info.desc = "Mist"
+            info.desc = locale.mist
         }
         
         var now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })
@@ -196,39 +202,44 @@ function WelcomeGui(response, element, error){
         var hour = parseInt(now24.slice(0, 2))
         var timedescription = info.city
         var temp = parseInt(info.temp.toString().slice(0, 2))
-        var feel = "a nice"
+        var feel = locale.feel
         if(Math.floor(Math.random() * 4)==2){
-            feel = "a peaceful"
+            feel = locale.peaceful
         }
         if(temp<1){
-            feel="a freezing"
+            feel = locale.freezing
         }
         if(temp<14){
-            feel="a cold"
+            feel = locale.cold
         }
         if(temp>20){
-            feel="a mild"
+            feel = locale.mild
         }
         if(temp>28){
-            feel="a hot"
+            feel = locale.hot
         }
         if(temp>36){
-            feel="an extremely hot"
-        }
-        if(hour>13&&hour<18){
-            timedescription = "It's " + feel + " afternoon in " + info.city
-        }
-        if(hour>17&&hour<23){
-            timedescription = "It's " + feel + " evening in " + info.city
-        }
-        if(hour>22||hour<6){
-            timedescription = "It's " + feel + " night in " + info.city
-        }
-        if(hour==0&&hour==24){
-            timedescription = "It's " + feel + " midnight in " + info.city
+            feel = locale.extremelyhot
         }
 
-        return '<img src="data:image/png;base64,'+info.image+'"><timed> Last updated ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
+        timedescription = `${locale.its} ${feel} `
+
+        if(hour>13&&hour<18){
+            timedescription += locale.afternoonin
+        }
+        if(hour>17&&hour<23){
+            timedescription += locale.eveningin
+        }
+        if(hour>22||hour<6){
+            timedescription += locale.nightin
+        }
+        if(hour==0&&hour==24){
+            timedescription += locale.midnightin
+        }
+
+        timedescription += " " + info.city
+
+        return '<img src="data:image/png;base64,'+info.image+'"><timed> '+locale.lastupdated+' ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
     }
     
     var weather = document.createElement("weather")
@@ -241,7 +252,7 @@ function WelcomeGui(response, element, error){
     if(element.classList[0]!="welcome"){
         var create = document.createElement("create")
         widgets.push(create)
-        create.innerHTML = "<a><span class='m-i'>add</span> Create Project</a><a><span class='m-i'>file_open</span> Open Project</a>"
+        create.innerHTML = "<a><span class='m-i'>add</span> "+locale.createproject+"</a><a><span class='m-i'>file_open</span> "+locale.openproject+"</a>"
         var createbtns = create.getElementsByTagName('a')
         ButtonEvent(createbtns[1], function(){
             sidepanel.classList.add("sidepanelmoreactive")
@@ -257,7 +268,7 @@ function WelcomeGui(response, element, error){
 
     var space = document.createElement("space")
     widgets.push(space)
-    space.innerHTML = "2 GB used of 5 GB"
+    space.innerHTML = "2 GB "+locale.usedof+" 5 GB"
 
     for (let i = 0; i < widgets.length; i++) {
         widgets[i].classList.add("widget")
@@ -271,7 +282,7 @@ function WelcomeGui(response, element, error){
 
     var filters = document.createElement("filters")
     filters.innerHTML ="<span class='op m-i'>sort</span>"+
-        "<select><option>Last opened</option><option>Earliest opened</option><option>Alphabetically</option><option>Size</option></select>"+
+        "<select><option>"+locale.lastopened+"</option><option>"+locale.earliestopened+"</option><option>"+locale.alphabetically+"</option><option>"+locale.size+"</option></select>"+
         "<span class='o m-i'>grid_view</span>"+
         "<span class='o m-i'>view_headline</span>"
 
@@ -502,7 +513,7 @@ function WelcomeGui(response, element, error){
 
     var createnewbutton = document.createElement("button")
     createnewbutton.classList.add("folder")
-    createnewbutton.innerHTML = "<i class='m-i'>add</i> Create new"
+    createnewbutton.innerHTML = "<i class='m-i'>add</i> " + locale.createnew
     ButtonEvent(createnewbutton, NewFileGui)
     files.appendChild(createnewbutton)
 
@@ -942,7 +953,7 @@ function Startup(){
             content.style = "display:block;transform: translateY(50px);transition: 0s"
             content.innerHTML = "<span tabindex='0' class='m-i x'>close</span>"+
             "<motd>"+createMOTD(response.name)+"</motd>"+
-            "<search><span class='m-i'>search</span><input placeholder='Search'></search>"+
+            "<search><span class='m-i'>search</span><input placeholder='Search'></search>"+//im confusedm, does this element exist?
             "<other>"+
             "</other>"
 

@@ -22,7 +22,7 @@ notearea.addEventListener('input', function (e) {
     }
 })
 
-notearea.addEventListener('paste', function(e){
+notearea.addEventListener('paste', function(e){ // i also need to sanitize drag and drop text from other tabs!
     var isImage = false
     var items = (e.clipboardData || e.originalEvent.clipboardData).items;
     for (var index in items) {
@@ -55,7 +55,7 @@ notearea.addEventListener('paste', function(e){
 
 
 function noteCompress(){//find out if <p> </p> are useless
-    return notearea.innerHTML.replaceAll("</p><p>", "<->").replaceAll(' alt=""', "").replaceAll("<p><br></p>", "<n>").replaceAll("<p> </p>", "")
+    return notearea.innerHTML.replaceAll("<p><br></p>", "<n>").replaceAll("<p> </p>", "").replaceAll("<p></p>", "").replaceAll("</p><p>", "<->").replaceAll(' alt=""', "")
 }
 
 function noteParse(note){
@@ -105,3 +105,20 @@ function noteParse(note){
 //         notearea.focus()
 //     }
 // }) Maybe use if you can fix the selection!
+
+
+document.addEventListener("dragover", dropChange, false) // work on this lol
+document.addEventListener("dragleave", dropChangeBack, false)
+document.addEventListener("drop", dropChangeBack, false)//it's flashing?
+
+var dropeffect = document.createElement("dropeffect")
+dropeffect.innerHTML = "<headerfx>Drop here to open as a new file</headerfx><noteareafx>Drop here to insert in current file</noteareafx>" //add a choice to insert contents or a file! if it's a file lol
+app.appendChild(dropeffect)
+
+function dropChange(){
+    dropeffect.classList.add("dropeffectvisible")
+}
+
+function dropChangeBack(){
+    dropeffect.classList.remove("dropeffectvisible")
+}

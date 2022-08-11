@@ -6,7 +6,7 @@ var strings = ["welcome", "heythere"]
 
 var welcome = document.createElement("div")
 welcome.classList.add("translate")
-welcome.innerHTML = "<h1>WriteNote <b>Translations</b></h1><h2>Welcome, to the translations page.</h2>"
+welcome.innerHTML = "<h1>WriteNote <b>Translations</b></h1><h2>Welcome, to the translations page.</h2><div class='bouncy m-i'>language</div><div class='bouncy2 m-i'>translate</div>"
 //<i class='m-i'>language</i>
 app.appendChild(welcome)
 
@@ -25,17 +25,19 @@ for (let i = 0; i < languages.length; i++) {
 }
 
 function initLanguageEditor(){
+    welcome.getElementsByClassName("bouncy")[0].classList.add("bouncyfadeout")
+    welcome.getElementsByClassName("bouncy2")[0].classList.add("bouncyfadeout")
     welcome.getElementsByTagName("h2")[0].classList.add("h2fadeout")
     // welcome.innerHTML = "<h1>WriteNote <b>Translations</b></h1>"
     var tooltipElement = document.createElement("p")
     tooltipElement.classList.add("tooltip")
     app.appendChild(tooltipElement)
     function Tooltip(element, tooltip){
-        element.addEventListener("mouseover", function(){
+        function focused(){
             tooltipElement.classList.add("tooltipvisible")
             tooltipElement.innerHTML = tooltip
             var xy = getOffset(element)
-            var left = xy.left - tooltipElement.clientWidth/3
+            var left = xy.left - tooltipElement.clientWidth/3 //i think this works? No
             var top = xy.top + element.clientHeight + 10
             if(left<5){
                 left = 5
@@ -43,22 +45,64 @@ function initLanguageEditor(){
             if(left>window.innerWidth){
                 left = left - tooltipElement.clientWidth/3*2
             }
-            tooltipElement.style.left = left + "px" //i think this works? No
+            tooltipElement.style.left = left + "px"
             tooltipElement.style.top = top + "px"
-        })
-        element.addEventListener("mouseout", function(){
+        }
+        function blurred(){
             tooltipElement.classList.remove("tooltipvisible")
-        })
+        }
+        element.addEventListener("mouseover", focused)
+        element.addEventListener("focus", focused)
+        element.addEventListener("mouseout", blurred)
+        element.addEventListener("blur", blurred)
 
     }
     
     var tipElement = document.createElement("div")
     tipElement.classList.add("tip")
     app.appendChild(tipElement)
-    function tip(tip, pos, num){
-        tipElement.innerHTML = "<h1>Tip</h1><h2>"+num+"</h2><p>"+tip+"</p>"
+    var tipnextfunction
+    function tip(tip, pos, num, next, alt){
+        tipElement.style.left = pos[0] + "px"
+        tipElement.style.top = pos[1] + "px"
+        var arrow = "<div class='arrow-left-border'></div><div class='arrow-left'></div>"
+        if(alt){
+            arrow = "<div class='arrow-down-border'></div><div class='arrow-down'></div>"
+        }
+        tipElement.innerHTML = arrow+"<h1>Tip</h1><i class='m-i'>close</i><h2>"+num[0]+"/"+num[1]+"</h2><p>"+tip+"</p>"
+        tipElement.classList.add("tipvisible")
+        var closebtn = tipElement.getElementsByClassName("m-i")[0]
+        if(next){
+            tipnextfunction = next
+            ButtonEvent(closebtn, next)
+        }
+        else{
+            function closetip(){
+                tipElement.classList.remove("tipvisible")
+            }
+            tipnextfunction = closetip
+            ButtonEvent(closebtn, closetip)   
+        }
     }
-    tip("This is your workspace, to exit and return to last menu you can click here.")
+    // document.addEventListener("click", function(){
+    //     if(tipElement.innerHTML){
+    //         tipnextfunction()
+    //     }
+    // }) not sure
+    setTimeout(() => {
+        function next(){
+            function next(){
+                tip("Here you write in the language you've selected. Remember to be as close as possible to the references.", [402, 223], [3, 3], null, true)
+            }
+            tip("Click here to add another language to reference from.", [102, 223], [2, 3], next)
+        }
+        tip("To exit and return to the language selection, you can click here.", [102, 145], [1, 3], next)
+        setTimeout(() => {
+            if(tipnextfunction == next){
+                next()
+            }
+        }, 4000);
+    }, 900);
 
     translations.classList.remove("translationsdone")
     translations.classList.add("translationnextchapter")

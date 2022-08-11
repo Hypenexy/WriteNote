@@ -21,6 +21,46 @@
     opacity: 0;
     transition: opacity .4s;
 }
+.bouncy, .bouncy2{
+    position: absolute;
+    font-size: 60px;
+    color: #999;
+}
+.bouncy2{
+    animation: MoveUpDown2 3s ease-in-out infinite;
+    transition: .4s;
+    left: 10px;
+    bottom: 40px;
+}
+.bouncy{
+    position: absolute;
+    animation: MoveUpDown 5s ease-in-out infinite;
+    transition: .4s;
+    left: 80px;
+    bottom: 10px;
+}
+@keyframes MoveUpDown {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+@keyframes MoveUpDown2 {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+.bouncyfadeout{
+    color: #111;
+    visibility: hidden;
+    transition: .5s;
+}
+  
 .translations{
     position: relative;
     display: block;
@@ -171,14 +211,77 @@
     padding: 12px;
     color: #eee;
 }
-.tooltipvisible{
+.tooltipvisible, .tipvisible{
     visibility: visible;
     opacity: 1;
     transition: opacity .3s;
 }
 .tip{
     width: 250px;
+    transition: opacity .3s;
 }
-.tipvisible{
+.tip h1, .tip h2{
+    color: #bbb;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 500;
+}
+.tip h2{
+    float: right;
+}
+.tip i{
+    cursor: pointer;
+    user-select: none;
+    float: right;
+    margin-left: 5px;
+    padding: 4px;
+    font-size: 16px;
+}
+.tip i:hover, .tip i:focus-visible{
+    background: #2d2d2d;
+    border-radius: 24px;
+}
+.tip i:active{
+    color: #111;
+    background: #bbb;
+}
+.arrow-left, .arrow-left-border {
+    position: absolute;
+    top: 40px;
+    left: -10px;
 
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent; 
+    
+    border-right:10px solid #222; 
+}
+.arrow-left-border{
+    top: 39px;
+    left: -11px;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent; 
+    
+    border-right:11px solid #555; 
+}
+.arrow-down, .arrow-down-border {
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent; 
+    
+    border-top:10px solid #222; 
+}
+.arrow-down-border{
+    bottom: -11px;
+    left: 19px;
+    border-right: 11px solid transparent;
+    border-left: 11px solid transparent; 
+    
+    border-top:11px solid #555; 
 }

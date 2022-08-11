@@ -453,7 +453,9 @@ document.addEventListener("keydown", function(e){
             setTimeout(() => {
                 node.remove()
             }, 200);
-            notearea.focus()
+            if(welcome.classList[0] != "welcome"){
+                notearea.focus()
+            }
         }
         if(newfile && newfile.nodeType){
             closeNode(newfile)

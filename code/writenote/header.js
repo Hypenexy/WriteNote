@@ -8,71 +8,71 @@ header.innerHTML = `
     <rect x="4" y="48" width="56" height="8" rx="4" ry="4"></rect>
 </svg>
 </c>
-<a>Note</a>
+<a>${locale.note}</a>
 <dropdown>
-    <v onclick="NewFileGui()"><p class="m-i">note_add</p> New</v>
+    <v onclick="NewFileGui()"><p class="m-i">note_add</p> ${locale.new}</v>
     <hr>
-    <v onclick="openNote()"><p class="m-i">file_open</p> Open</v>
-    <v onclick="SaveFile()"><p class="m-i">save</p> Save</v>
-    <v id="saveasbtn" onclick="saveAsNote()"><p class="m-i">save_as</p> Save As</v>
-    <v onclick="showshare()"><p class="m-i">share</p> Share</v>
-    <v onclick="printwn()"><p class="m-i">print</p> Print</v>
+    <v onclick="openNote()"><p class="m-i">file_open</p> ${locale.open}</v>
+    <v onclick="SaveFile()"><p class="m-i">save</p> ${locale.save}</v>
+    <v id="saveasbtn" onclick="saveAsNote()"><p class="m-i">save_as</p> ${locale.saveas}</v>
+    <v onclick="showshare()"><p class="m-i">share</p> ${locale.share}</v>
+    <v onclick="printwn()"><p class="m-i">print</p> ${locale.print}</v>
     <hr>
-    <v onclick="fileHistory()"><p class="m-i">history</p> File History</v>
+    <v onclick="fileHistory()"><p class="m-i">history</p> ${locale.filehistory}</v>
 </dropdown>
-<a>Edit</a>
+<a>${locale.edit}</a>
 <dropdown>
-    <v class="subdropdownbtns"><p class="m-i">add_to_photos</p> Insert<p style="float: right" class="m-i">chevron_right</p></v>
-    <v onclick="ShowFind()"><p class="m-i">search</p> Find</v>
+    <v class="subdropdownbtns"><p class="m-i">add_to_photos</p> ${locale.insert}<p style="float: right" class="m-i">chevron_right</p></v>
+    <v onclick="ShowFind()"><p class="m-i">search</p> ${locale.find}</v>
     <hr>
-    <v onclick="Undo()"><p class="m-i">undo</p> Undo</v>
-    <v onclick="Redo()"><p class="m-i">redo</p> Redo</v>
+    <v onclick="Undo()"><p class="m-i">undo</p> ${locale.undo}</v>
+    <v onclick="Redo()"><p class="m-i">redo</p> ${locale.redo}</v>
     <hr>
-    <v onclick="Cut()"><p class="m-i">cut</p> Cut</v>
-    <v onclick="Copy()"><p class="m-i">copy</p> Copy</v>
-    <v onclick="Paste()"><p class="m-i">paste</p> Paste</v>
-    <v onclick="Paste()"><p class="m-i">content_paste_search</p> Paste Styled</v>
-    <v id="pastewoformat" onclick="paste()"><p class="m-i">content_paste_go</p> Paste Text</v>
+    <v onclick="Cut()"><p class="m-i">cut</p> ${locale.cut}</v>
+    <v onclick="Copy()"><p class="m-i">copy</p> ${locale.copy}</v>
+    <v onclick="Paste()"><p class="m-i">paste</p> ${locale.paste}</v>
+    <v onclick="Paste()"><p class="m-i">content_paste_search</p> ${locale.pastestyled}</v>
+    <v id="pastewoformat" onclick="paste()"><p class="m-i">content_paste_go</p> ${locale.pastetext}</v>
     <hr>
-    <v onclick="SelectAll()"><p class="m-i">select_all</p> Select All</v>
+    <v onclick="SelectAll()"><p class="m-i">select_all</p> ${locale.selectall}</v>
 </dropdown>
 
 <subdropdown id="directions" class="subdropdownmenu subdropdownmenu2">
-    <v onclick=""><p class="m-i">image</p>Image</v>
-    <v onclick=""><p class="m-i">description</p>File</v>
-    <v onclick="InsertLink()"><p class="m-i">link</p>Link</v>
-    <v onclick="ShowAddDate()"><p class="m-i">event</p>Date</v>
-    <v onclick=""><p class="m-i">audiotrack</p>Audio</v>
-    <v onclick=""><p class="m-i">phone</p>Contact</v>
-    <v onclick=""><p class="m-i">calculate</p>Calculation</v>
+    <v onclick=""><p class="m-i">image</p>${locale.image}</v>
+    <v onclick=""><p class="m-i">description</p>${locale.file}</v>
+    <v onclick="InsertLink()"><p class="m-i">link</p>${locale.link}</v>
+    <v onclick="ShowAddDate()"><p class="m-i">event</p>${locale.date}</v>
+    <v onclick=""><p class="m-i">audiotrack</p>${locale.audio}</v>
+    <v onclick=""><p class="m-i">phone</p>${locale.contact}</v>
+    <v onclick=""><p class="m-i">calculate</p>${locale.calculation}</v>
 </subdropdown>
 
-<a>View</a>
+<a>${locale.view}</a>
 <dropdown>
-    <v onclick="toggleCounter()"><p class="m-i">pin</p> Word Counter<tick id="wordcountercheckmark"></tick></v>
-    <v onclick="toggleCalculator()"><p class="m-i">calculate</p> Calculator<tick id="calculatorcheckmark"></tick></v>
-    <v onclick="toggleTimer()"><p class="m-i">timer</p> Timer<tick id="timercheckmark"></tick></v>
+    <v onclick="toggleCounter()"><p class="m-i">pin</p> ${locale.wordcounter}<tick id="wordcountercheckmark"></tick></v>
+    <v onclick="toggleCalculator()"><p class="m-i">calculate</p> ${locale.calculator}<tick id="calculatorcheckmark"></tick></v>
+    <v onclick="toggleTimer()"><p class="m-i">timer</p> ${locale.timer}<tick id="timercheckmark"></tick></v>
     <hr>
-    <v onclick="togglefullscreen()"><p class="m-i">fullscreen</p> Full Screen<tick id="fullscreencheckmark"></tick></v>
-    <!-- <v onclick="togglespellcheck()"><p class="m-i">spellcheck</p> Spell Check<tick id="spellcheckcheckmark"></tick></v> -->
-    <v onclick="togglewordwrap()"><p class="m-i">wrap_text</p> Word Wrap<tick id="wordwrapcheckmark"></tick></v>
-    <v onclick="togglelines()"><p class="m-i">toc</p> Show Lines<tick id="linescheckmark"></tick></v>
-    <v class="subdropdownbtns"><p class="m-i">format_textdirection_l_to_r</p> Writing Directio<p style="float: right" class="m-i">chevron_right</p>n</v>
-    <v class="subdropdownbtns"><p class="m-i">widgets</p> Menu Positio<p style="float: right" class="m-i">chevron_right</p>n</v>
-    <v onclick="opensetting('Appearance'),opensubsetting('font')" class="writingdirection"><p class="m-i">text_fields</p> Change Font</v>
-    <v onclick="opensetting('Appearance'),opensubsetting('theme')"><p class="m-i">style</p> Theme</v>
+    <v onclick="togglefullscreen()"><p class="m-i">fullscreen</p> ${locale.fullscreen}<tick id="fullscreencheckmark"></tick></v>
+    <!-- <v onclick="togglespellcheck()"><p class="m-i">spellcheck</p> ${locale.spellcheck}<tick id="spellcheckcheckmark"></tick></v> -->
+    <v onclick="togglewordwrap()"><p class="m-i">wrap_text</p> ${locale.wordwrap}<tick id="wordwrapcheckmark"></tick></v>
+    <v onclick="togglelines()"><p class="m-i">toc</p> ${locale.showlines}<tick id="linescheckmark"></tick></v>
+    <v class="subdropdownbtns"><p class="m-i">format_textdirection_l_to_r</p> ${locale.writingdirectio}<p style="float: right" class="m-i">chevron_right</p>${locale.n}</v>
+    <v class="subdropdownbtns"><p class="m-i">widgets</p> ${locale.menupositio}<p style="float: right" class="m-i">chevron_right</p>${locale.n}</v>
+    <v onclick="opensetting('Appearance'),opensubsetting('font')" class="writingdirection"><p class="m-i">text_fields</p> ${locale.changefont}</v>
+    <v onclick="opensetting('Appearance'),opensubsetting('theme')"><p class="m-i">style</p> ${locale.theme}</v>
 </dropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
-    <v onclick="direction(false)"><p class="m-i">format_textdirection_l_to_r</p> Left to Right<tick id="ltrcheckmark"></tick></v>
-    <v onclick="direction(true)"><p class="m-i">format_textdirection_r_to_l</p> Right to Left<tick id="rtlcheckmark"></tick></v>
+    <v onclick="direction(false)"><p class="m-i">format_textdirection_l_to_r</p> ${locale.lefttoright}<tick id="ltrcheckmark"></tick></v>
+    <v onclick="direction(true)"><p class="m-i">format_textdirection_r_to_l</p> ${locale.righttoleft}<tick id="rtlcheckmark"></tick></v>
 </subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
-    <v onclick="HeaderLocation()"><p class="m-i">border_top</p>Top<tick id="ptcheckmark"></tick></v>
-    <v onclick="HeaderLocation(1)"><p class="m-i">border_left</p>Left<tick id="plcheckmark"></tick></v>
-    <v onclick="HeaderLocation(2)"><p class="m-i">border_right</p>Right<tick id="prcheckmark"></tick></v>
-    <v onclick="HeaderLocation(3)"><p class="m-i">border_bottom</p>Bottom<tick id="pbcheckmark"></tick></v>
+    <v onclick="HeaderLocation()"><p class="m-i">border_top</p>${locale.top}<tick id="ptcheckmark"></tick></v>
+    <v onclick="HeaderLocation(1)"><p class="m-i">border_left</p>${locale.left}<tick id="plcheckmark"></tick></v>
+    <v onclick="HeaderLocation(2)"><p class="m-i">border_right</p>${locale.right}<tick id="prcheckmark"></tick></v>
+    <v onclick="HeaderLocation(3)"><p class="m-i">border_bottom</p>${locale.bottom}<tick id="pbcheckmark"></tick></v>
 </subdropdown>
 
 <svg id="profilepanelbtn" width="50" height="50" viewBox="0 0 185.5 185.5" xmlns="http://www.w3.org/2000/svg">
