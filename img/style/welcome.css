@@ -224,6 +224,7 @@ content info{
     margin-bottom: 12px;
     border-radius: 8px;
     text-align: center;
+    min-width: 200px;
 }
 .contentfull .widget{
     background: #222;

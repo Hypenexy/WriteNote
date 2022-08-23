@@ -106,19 +106,142 @@ function noteParse(note){
 //     }
 // }) Maybe use if you can fix the selection!
 
+//my attempt at dropfx
+// document.addEventListener("dragover", function(e){
+//     dropChange()
+//     console.log(e.dataTransfer)
+    
+// }, false) // work on this lol
+// document.addEventListener("dragleave", dropChangeBack, false)
+// document.addEventListener("drop", dropChangeBack, false)//it's flashing? yes because ur stupid and when the element appears u hover on it then it dissapears and u hover on the notearea and it returns causing an infinite loop bro
 
-document.addEventListener("dragover", dropChange, false) // work on this lol
-document.addEventListener("dragleave", dropChangeBack, false)
-document.addEventListener("drop", dropChangeBack, false)//it's flashing?
+// var dropeffect = document.createElement("dropeffect")
+// dropeffect.innerHTML = "<headerfx>Drop here to open as a new file</headerfx><noteareafx>Drop here to insert in current file</noteareafx>" //add a choice to insert contents or a file! if it's a file lol
+// app.appendChild(dropeffect)
 
-var dropeffect = document.createElement("dropeffect")
-dropeffect.innerHTML = "<headerfx>Drop here to open as a new file</headerfx><noteareafx>Drop here to insert in current file</noteareafx>" //add a choice to insert contents or a file! if it's a file lol
-app.appendChild(dropeffect)
+// function dropChange(){
+//     dropeffect.classList.add("dropeffectvisible")
+// }
 
-function dropChange(){
-    dropeffect.classList.add("dropeffectvisible")
-}
+// function dropChangeBack(){
+//     dropeffect.classList.remove("dropeffectvisible")
+// }
 
-function dropChangeBack(){
-    dropeffect.classList.remove("dropeffectvisible")
-}
+
+/**
+ * This function has been stolen from stackoverflow,
+ * so love <3 goes out to RobM and chiliNUT.
+ * It also uses jquery which i dont work with lmao
+ */
+$(document).ready(function() {
+    var handleDrag = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    };
+    var handleDrop = function(e) {
+        //kill any default behavior
+        e.stopPropagation();
+        e.preventDefault();
+        //console.log(e);
+        //get x and y coordinates of the dropped item
+        x = e.clientX;
+        y = e.clientY;
+        //drops are treated as multiple files. Only dealing with single files right now, so assume its the first object you're interested in
+        var file = e.dataTransfer.files[0];
+        //don't try to mess with non-image files
+        if (file.type.match('image.*')) {
+            //then we have an image,
+
+            //we have a file handle, need to read it with file reader!
+            var reader = new FileReader();
+
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                //get the data uri
+                var dataURI = theFile.target.result;
+                //make a new image element with the dataURI as the source
+                var img = document.createElement("image")
+                img.contentEditable = false
+                var image = document.createElement("img");
+                image.src = dataURI;
+                img.appendChild(image)
+
+                //Insert the image at the carat
+
+                // Try the standards-based way first. This works in FF
+                if (document.caretPositionFromPoint) {
+                    var pos = document.caretPositionFromPoint(x, y);
+                    range = document.createRange();
+                    range.setStart(pos.offsetNode, pos.offset);
+                    range.collapse();
+                    range.insertNode(img);
+                }
+                // Next, the WebKit way. This works in Chrome.
+                else if (document.caretRangeFromPoint) {
+                    range = document.caretRangeFromPoint(x, y);
+                    range.insertNode(img);
+                }
+                else
+                {
+                    //not supporting IE right now.
+                    console.log('could not find carat'); // make this into a PushError!
+                }
+
+
+            });
+            //this reads in the file, and the onload event triggers, which adds the image to the div at the carat
+            reader.readAsDataURL(file);
+        }
+        if (file.type.match('audio.*')) {
+            var reader = new FileReader();
+
+            reader.onload = (function(theFile) {
+                var dataURI = theFile.target.result;
+
+                var img = document.createElement("audio");
+                img.controls = true
+                var audio = document.createElement("source");
+                audio.src = dataURI;
+                audio.type = file.type
+                img.appendChild(audio)
+
+                if (document.caretPositionFromPoint) {
+                    var pos = document.caretPositionFromPoint(x, y);
+                    range = document.createRange();
+                    range.setStart(pos.offsetNode, pos.offset);
+                    range.collapse();
+                    range.insertNode(img);
+                }
+                else if (document.caretRangeFromPoint) {
+                    range = document.caretRangeFromPoint(x, y);
+                    range.insertNode(img);
+                }
+                else
+                {
+                    console.log('could not find carat'); // make this into a PushError!
+                }
+
+
+            });
+            //this reads in the file, and the onload event triggers, which adds the image to the div at the carat
+            reader.readAsDataURL(file);
+        }
+        else{
+            console.log("not an image but a")
+            console.log(file.type)
+        }
+    };
+
+   
+    notearea.addEventListener('dragover', handleDrag, false);
+    notearea.addEventListener('drop', handleDrop, false);
+});
+
+//change this to context menu lol
+notearea.addEventListener("click", function(e){
+    if(e.target.tagName == "IMG"){
+        var img = e.target
+        var image = e.target.parentNode
+        openimageEditor(img, image)
+    }
+})

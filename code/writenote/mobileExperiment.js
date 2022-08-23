@@ -184,8 +184,12 @@ function toggleHeaderMobileMenu(){
 function showHeaderMobileMenu(){
     mobileHeaderMenu.classList.add("mobilemenuactive")
     mobileHeaderButton.classList.add("mobilebuttonactive")
+    setTimeout(function(){
+        mobileHeaderMenu.classList.add("mobilemenuoverflow")
+    }, 210);
 }
 function hideHeaderMobileMenu(){
+    mobileHeaderMenu.classList.remove("mobilemenuoverflow")
     mobileHeaderMenu.classList.remove("mobilemenuactive")
     mobileHeaderButton.classList.remove("mobilebuttonactive")
 }
@@ -228,3 +232,26 @@ document.addEventListener('swiped-down', function(e) {
         showHeaderMobileMenu()
     }
 })
+
+
+var notificationspace = document.createElement("notificationspace")
+app.appendChild(notificationspace)
+
+/**
+ * 
+ * @param {String} ti Title
+ * @param {HTMLElement} desc Contents
+ * @param {String} type Type, either null or "warn" 
+ * @param {ArrayWithFunctions} action Array of actions for button elements
+ */
+function PushNotification(ti, desc, type, action){
+    var notification = document.createElement("notification")
+    notification.innerHTML = "<i></i><ti>"+ti+"</ti><desc>"+desc+"</desc>"
+    notificationspace.appendChild(notification)
+    
+}
+
+// Just realized I could remove the background and add smooth appearing animation to all elements and
+// make it like Chrome OS and Windows 11 notifications. But why would i
+PushNotification("Hey there!", "You've successfully installed WriteNote!")
+PushNotification("A second one?!", "Whoa there can be a lot of notifications right? I mean what am I thinking.")

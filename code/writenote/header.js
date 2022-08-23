@@ -15,6 +15,8 @@ header.innerHTML = `
     <v onclick="openNote()"><p class="m-i">file_open</p> ${locale.open}</v>
     <v onclick="SaveFile()"><p class="m-i">save</p> ${locale.save}</v>
     <v id="saveasbtn" onclick="saveAsNote()"><p class="m-i">save_as</p> ${locale.saveas}</v>
+    <hr>
+    <v onclick="showmedia()"><p class="m-i">perm_media</p> ${locale.media}</v>
     <v onclick="showshare()"><p class="m-i">share</p> ${locale.share}</v>
     <v onclick="printwn()"><p class="m-i">print</p> ${locale.print}</v>
     <hr>

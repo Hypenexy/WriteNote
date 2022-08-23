@@ -36,7 +36,7 @@
 
     visibility: hidden;
     height: 0px;
-    overflow: auto;
+    overflow: hidden;
 
     background: #1a1a1a;
     box-shadow: 0 2px 2px #111;
@@ -52,6 +52,10 @@
     visibility: visible;
     height: calc(90% - 40px);
     padding-top: 12px;
+}
+
+.mobilemenuoverflow{
+    overflow: auto;
 }
 
 .mobilemenu vs{
@@ -162,4 +166,37 @@
     height: 100%;
     object-fit: cover;
     border-radius: 12px;
+}
+notificationspace{
+    position: fixed;
+    z-index: 30;
+    right: 0;
+    /* pointer-events: none; */
+}
+notificationspace notification{
+    position: relative;
+    right: 0;
+}
+notification{
+    display: block;
+    background: #2c2c2c;
+    color: #eee;
+    padding: 12px;
+    border-radius: 12px;
+    margin: 20px;
+    width: calc(100% - 40px);
+    transition: .3s;
+}
+notification:hover{
+    margin: 10px;
+    padding: 30px 22px;
+    width: calc(100% - 20px);
+}
+notification ti{
+    display: block;
+    font-weight: 500;
+    color: #d4d4d4;
+}
+notification desc{
+    color: #fff;
 }

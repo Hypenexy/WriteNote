@@ -92,7 +92,7 @@ function initLanguageEditor(){
     setTimeout(() => {
         function next(){
             function next(){
-                tip("Here you write in the language you've selected. Remember to be as close as possible to the references.", [402, 223], [3, 3], null, true)
+                tip("Here you write in the language you've selected. Remember to be as close as possible to the references.", [402, 79], [3, 3], null, true)
             }
             tip("Click here to add another language to reference from.", [102, 223], [2, 3], next)
         }

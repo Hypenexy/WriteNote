@@ -25,7 +25,7 @@ function setSizes(space){
     }
 }
 
-function InitFile(path, name, space, content, metadata){
+function InitFile(path, name, space, content, metadata, dontSave){
 
     function execute(){
         setSizes(space)
@@ -48,6 +48,10 @@ function InitFile(path, name, space, content, metadata){
             notearea.innerHTML = noteParse(content)
         }
 
+        if(!dontSave){
+            SaveFile(true)
+        }
+        SavedStatus(true)
         setMobileStatusFile(name, space)
     }
 
@@ -70,8 +74,10 @@ function CreateFile(path, name, space){
     isNewFile = true
     var existing = CheckExisting() //Maybe I should store metadata in a separate place? Cause i don't wanna load every file!
 
-    if(existing.includes("localstorage:*" + path + "*" + name)){
-        if(name=="Untitled"){
+    var dontSave = false
+    if(name=="Untitled"){
+        dontSave = true
+        if(existing.includes("localstorage:*" + path + "*" + name)){
             var n = 1
             while(existing.includes("localstorage:*" + path + "*" + name)){
                 n++
@@ -80,10 +86,11 @@ function CreateFile(path, name, space){
         }
         else{
             //error name taken
+            //maybe add numbers like untitled?
         }
     }
 
-    InitFile(path, name, space, "")
+    InitFile(path, name, space, "", "", dontSave)
     activefile.fD = Date.now()
 }
 
@@ -187,17 +194,16 @@ function LoadFile(space, path, name){
     file.path = path
     file.name = name
     InitFile(file.path, file.name, file.space, file.content, file)
-    SavedStatus(true)
     if(notearea.innerHTML!=noteParse(file.content)){
         //File was loaded incorrectly!
         return;
     }
-    SaveFile(true)
 }
 
 
 
-//Fix status when undoing to a saved state!
+//Fix status when undoing to a saved state! I think i did
+//u did it in a memory and cpu unfriendly way
 function SavedStatus(status){
     if(status==true){
         saved = true
@@ -299,13 +305,18 @@ function SaveChangesQuestion(nextStep){
 
 var newfile
 function NewFileGui(close){
-    if(close==true){
+    function closeGui(){
+        HideModal()
         newfile.classList.remove("newfiletransitioned")
         setTimeout(() => {
             newfile.remove()
         }, 200);
+    }
+    if(close==true){
+        closeGui()
         return;
     }
+    ShowModal(closeGui)
     function execute(){
         var isNameSet = false
         var isOptionSelected = false
@@ -332,7 +343,6 @@ function NewFileGui(close){
         newfile.innerHTML += "<x class='m-i'>close</x>"+
         "<ti>Create a new project</ti>" +
         "<p>Name</p><input>"+
-        //"add folers"+
         "<p>Storage</p>"
 
         var closebtn = newfile.getElementsByTagName("x")[0]

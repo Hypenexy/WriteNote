@@ -1,0 +1,26 @@
+media{
+    visibility: hidden;
+    opacity: 0;
+    transition: .2s;
+    position: fixed;
+    z-index: 30;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    color: #ddd;
+    padding: 24px;
+}
+.mediaactive{
+    visibility: visible;
+    opacity: 1;
+}
+
+media h1{
+    user-select: none;
+    text-align: center;
+}
+media h1 i{
+    font-size: 32px!important;
+    padding-right: 10px;
+    transform: translateY(4px);
+}

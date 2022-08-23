@@ -46,6 +46,7 @@ var locale = {
     open : "Open",
     save : "Save",
     saveas : "Save As",
+    media : "Media",
     share : "Share",
     print : "Print",
     filehistory : "File History",

@@ -24,7 +24,7 @@ inf.ja += navigator.javaEnabled
 inf.ce += navigator.cookieEnabled.toString()
 inf.cp += navigator.clipboard
 
-var sc = [screen.height, screen.width, screen.availHeight, screen.availWidth, screen.colorDepth, screen.pixelDepth]
+var sc = [screen.height, screen.width, screen.availHeight, screen.availWidth, screen.colorDepth, screen.pixelDepth] //window inner shit
 
 var canvas = document.createElement("canvas")
 var webgl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
@@ -101,3 +101,27 @@ function SaveSettings(space){
 
     localStorage.setItem("options", JSON.stringify(settings))
 }
+
+
+var modal = document.createElement("modal")
+app.appendChild(modal)
+function ShowModal(RemoteClose, Intensity){
+    modal.style.visibility = "visible"
+    modal.style.opacity = 1
+    if(Intensity){
+        modal.style.background = Intensity
+    }
+    
+    modal.onclick = function(e){
+        if(e.target == modal){
+            HideModal()
+            RemoteClose()
+        }
+    }
+}
+function HideModal(){
+    modal.style = ""
+}
+// document.addEventListener("click", function(){
+//     HideModal()
+// })

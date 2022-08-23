@@ -1,0 +1,57 @@
+ImageEditor{
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s;
+    position: fixed;
+    z-index: 30;
+    width: 100%;
+    height: 100%;
+}
+ImageEditor *{
+    pointer-events: initial;
+}
+ImageEditor img{
+    margin: 5%;
+    margin-top: 75px;
+    height: 90%;
+    width: 90%;
+    object-fit: contain;
+}
+ImageEditor tools1{
+    user-select: none;
+    position: absolute;
+    left: 10%;
+    top: 10px;
+    padding: 6px;
+    width: 80%;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #111;
+    color: #eee;
+}
+ImageEditor tools1 i{
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: .2s;
+    
+}
+ImageEditor tools1 i:hover,
+ImageEditor tools1 i:focus-visible{
+    background: #555;
+}
+ImageEditor info{
+    padding: 12px;
+    color: #eee;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #111;
+    position: absolute;
+    right: 20px;
+    top: 75px;
+}
+ImageEditor info i{
+    user-select: none;
+    transform: translate(-4px, 4px);
+}
