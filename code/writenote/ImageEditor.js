@@ -8,7 +8,7 @@ function openimageEditor(img, image){
         image.appendChild(img)
         ImageEditor.innerHTML = ""
     }
-    ShowModal(closeEditor, "#000000bb")
+    var HideModal = ShowModal(closeEditor, "#000000bb")
 
     var tools1 = document.createElement("tools1")
     tools1.innerHTML = "<i class='m-i'>edit</i><i class='m-i'>crop</i><i class='m-i'>fullscreen</i><i class='m-i'>share</i>"
@@ -29,7 +29,7 @@ function openimageEditor(img, image){
         " " + allMetaData.FocalLength + "mm" +
         " 1/" + 1/allMetaData.ExposureTime +
         " sec ISO " + allMetaData.ISOSpeedRatings +
-        " " + allMetaData.XResolution + " dpi" +
+        " " + allMetaData.XResolution + " dpi" +//show file size in base64 as well!
         //" " + allMetaData.bit + " bit" + what
         "</p>"+
         "<p><i class='m-i'>photo_camera</i> " + allMetaData.Make + " " + allMetaData.Model + "</p>"

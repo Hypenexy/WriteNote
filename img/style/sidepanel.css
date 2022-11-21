@@ -61,6 +61,19 @@ sidepanel .x:hover{
 .sidepanelmostactive info{
     display: none
 }
+.sidepanelmostactivereverse filesside{
+    opacity: 0;
+}
+.sidepanelmostactivereverse info{
+    opacity: 1;
+}
+.sidepanelmostactivereverse{
+    padding: 12px;
+    padding-top: 60px;
+    padding-right: 4px;
+    width: 300px;
+    max-width: 300px;
+}
 @media screen and (max-width:300px){
     .sidepanelactive{
         width: 100%

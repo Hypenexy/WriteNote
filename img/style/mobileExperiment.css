@@ -55,7 +55,8 @@
 }
 
 .mobilemenuoverflow{
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .mobilemenu vs{
@@ -100,9 +101,59 @@
     box-shadow: 0 0 0 #555;
 }
 
+
 .mobilemenu actionmenu{
     display: block;
     margin: 20px;
+}
+.mobilemenu h1{
+    color: #bbb;
+    text-align: center;
+    font-size: 28px;
+}
+.mobilemenu currentnote{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    padding: 10px;
+    color: #bbb;
+    background: #222;
+    border-radius: 12px;
+    height: 56px;
+    padding-left: 56px;
+}
+.mobilemenu currentnote i{
+    font-size: 36px;
+    position: absolute;
+    left: 10px;
+    user-select: none;
+}
+.mobilemenu currentnote input{
+    width: 120px;
+    color: #fff;
+}
+.mobilemenu currentnote input, .mobilemenu notesize, .mobilemenu notespace, .mobilemenu workspace{
+    display: inline-block;
+    background: #111;
+    padding: 8.5px;
+    border-radius: 4px;
+    flex-grow: 1;
+    margin-right: 5px;
+}
+.mobilemenu currentnote:last-child{
+    margin-right: initial;
+}
+
+@media screen and (max-width: 460px) {
+    .mobilemenu currentnote{
+        flex-flow: row wrap;
+        height: initial;
+        padding-bottom: 5px;
+    }
+    .mobilemenu currentnote input, .mobilemenu notesize, .mobilemenu notespace, .mobilemenu workspace{
+        margin-bottom: 5px;
+    }
 }
 
 .mobilemenu mv{
@@ -168,29 +219,63 @@
     border-radius: 12px;
 }
 notificationspace{
+    pointer-events: none;
+    width: 500px;
     position: fixed;
-    z-index: 30;
+    z-index: 28;
+    top: 60px;
     right: 0;
-    /* pointer-events: none; */
 }
 notificationspace notification{
     position: relative;
     right: 0;
 }
 notification{
+    cursor: pointer;
+    position: relative;
+    pointer-events: initial;
     display: block;
     background: #2c2c2c;
     color: #eee;
+    box-shadow: 1px 1px 2px #111;
     padding: 12px;
     border-radius: 12px;
     margin: 20px;
     width: calc(100% - 40px);
+
+    opacity: 0;
+    transform: translateX(20px);
     transition: .3s;
 }
-notification:hover{
+.notificationwarn{
+    box-shadow: 1px 1px 2px #be2d2d;
+}
+.notificationsucc{
+    box-shadow: 1px 1px 2px #3ecc39;
+}
+notification x{
+    font-size: 16px!important;
+    top: 4px;
+    right: 4px;
+    opacity: 0;
+}
+notification:hover, notification:focus-within{
     margin: 10px;
     padding: 30px 22px;
     width: calc(100% - 20px);
+    box-shadow: 0 0 3px #111;
+}
+.notificationwarn:hover, .notificationwarn:focus-within{
+    box-shadow: 0 0 2px 2px #be2d2d;
+}
+notification:hover x, notification:focus-within x{
+    opacity: 1;
+}
+notification i{
+    font-size: 16px!important;
+}
+notification date{
+    float: right;
 }
 notification ti{
     display: block;
@@ -199,4 +284,14 @@ notification ti{
 }
 notification desc{
     color: #fff;
+}
+
+.notificationshown{
+    opacity: initial;
+    transform: initial;
+}
+
+.notificationmove{
+    opacity: 0;
+    transform: translateY(-20px);
 }

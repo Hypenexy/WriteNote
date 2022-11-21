@@ -11,10 +11,10 @@ License: https://github.com/Hypenexy/MDUtils/blob/main/LICENSE
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /**
- * Load scripts dynamically.
- * @param {*} url The url of the file
- * @param {*} id The id of the loaded script in the dom
- * @param {*} onload A function to call after it's finished loading
+ * Load JavaScript code/file dynamically.
+ * @param {URL} url The path of the file
+ * @param {String} id The id of the loaded script in the dom
+ * @param {Function} onload A function to call after it's finished loading
  */
  function loadScript(url, id, onload) {
     var script = document.createElement("script")
@@ -30,6 +30,34 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
         }
     }
 }
+
+/**
+ * Load CSS files dynamically.
+ * @param {URL} url The path of the file
+ * @param {String} id The id of the loaded script in the dom
+ * @param {Function} onload A function to call after it's finished loading
+ */
+function loadCSS(url, id, onload){
+    var file = url
+
+    var link = document.createElement("link")
+    link.href = file.substr(0, file.lastIndexOf(".")) + ".css"
+    link.type = "text/css"
+    link.rel = "stylesheet"
+    link.media = "screen,print"
+    if(id){
+        link.id = id
+    }
+
+    document.getElementsByTagName("head")[0].appendChild(link)
+
+    if(onload){ // IDK If this works or not. Too lazy to test. sry
+        link.onload = function(){
+            onload()
+        }
+    }
+}
+
 
 /**
  * Sets an event of an element.
@@ -112,7 +140,7 @@ function ButtonEventStyled(element, action, hoverstyle, clickstyle){
             element.style.removeProperty("box-shadow")
             element.style.removeProperty("transform")
         }
-        setTimeout(() => {
+        setTimeout(function() {
             if(clickstyle){
                 //element.style = \
                 //again.. how do I remove it??
@@ -294,7 +322,7 @@ function roughSizeOfObject(object){
             bytes += 4
         }
         else if ( typeof value === 'string' ) {
-            bytes += value.length * 2
+            bytes += value.length
         }
         else if ( typeof value === 'number' ) {
             bytes += 8
@@ -312,3 +340,36 @@ function roughSizeOfObject(object){
     }
     return bytes;
 }
+
+
+/**
+ * Format bytes as human-readable text.
+ * 
+ * @param bytes Number of bytes.
+ * @param si True to use metric (SI) units, aka powers of 1000. False to use 
+ *           binary (IEC), aka powers of 1024.
+ * @param dp Number of decimal places to display.
+ * 
+ * @return Formatted string.
+ */
+ function humanFileSize(bytes, si=true, dp=1) {
+    const thresh = si ? 1000 : 1024;
+  
+    if (Math.abs(bytes) < thresh) {
+      return bytes + ' B';
+    }
+  
+    const units = si 
+      ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] 
+      : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    let u = -1;
+    const r = 10**dp;
+  
+    do {
+      bytes /= thresh;
+      ++u;
+    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+  
+  
+    return bytes.toFixed(dp) + ' ' + units[u];
+  }

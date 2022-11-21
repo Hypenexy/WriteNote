@@ -1,6 +1,16 @@
 Everytime you open "Open project" refresh all files.
 Think of colors. Maybe make the 2 main colors be, For all backgrounds #0d0f10, For notearea #222244 (i mistyped #222242 so maybe its something idk)
 Fix pasting as a whole.
+Create a shared clipboard of the sort(maybe save it as a file on the account?)
 Fix creating files.
 Create keyboard TAB focus ease of use by focusing windows.
-Implement an easier, faster way to read by coloring start and end of line opposite colors and reverse every 2nd line!
+Implement an easier, faster way to read by coloring start and end of line opposite colors and reverse every 2nd line! // i think thats done?
+Save notifications in localstorage or online with account
+At least try to fix undo/redo (drag and drop destroys it)
+Find the issues thats not affecting chrome...
+Fix blurry transform windows // and how exactly?? i have to do everything relative? z-scaleZ dont work i think
+Instead of opening a project creation menu at new file just leave it blank and add a popup asking for a name and space and workplace and shit
+When focused window check if file was changed someplace else. (Electron)
+!You need to save workspace in the DataToSave
+copy history!
+create an ascii generator

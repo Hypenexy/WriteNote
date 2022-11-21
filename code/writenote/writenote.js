@@ -55,11 +55,13 @@ notearea.addEventListener('paste', function(e){ // i also need to sanitize drag 
 
 
 function noteCompress(){//find out if <p> </p> are useless
-    return notearea.innerHTML.replaceAll("<p><br></p>", "<n>").replaceAll("<p> </p>", "").replaceAll("<p></p>", "").replaceAll("</p><p>", "<->").replaceAll(' alt=""', "")
+    //return notearea.innerHTML.replaceAll("<p><br></p>", "<n>").replaceAll("<p> </p>", "").replaceAll("<p></p>", "").replaceAll("</p><p>", "<->").replaceAll(' alt=""', "")
+    return notearea.innerHTML
 }
 
 function noteParse(note){
-    return note.replaceAll("<->", "</p><p>").replaceAll("<n>", "<p><br></p>")
+    //return note.replaceAll("<->", "</p><p>").replaceAll("<n>", "<p><br></p>")
+    return note
 }
 
 // var noteareatimeout
@@ -175,16 +177,17 @@ $(document).ready(function() {
                     range.setStart(pos.offsetNode, pos.offset);
                     range.collapse();
                     range.insertNode(img);
+                    SavedStatus(false)
                 }
                 // Next, the WebKit way. This works in Chrome.
                 else if (document.caretRangeFromPoint) {
                     range = document.caretRangeFromPoint(x, y);
                     range.insertNode(img);
+                    SavedStatus(false)
                 }
                 else
                 {
-                    //not supporting IE right now.
-                    console.log('could not find carat'); // make this into a PushError!
+                    PushNotification("We couldn't find your cursor!", "You may be using an outdated or unsupported browser.")
                 }
 
 
@@ -211,17 +214,17 @@ $(document).ready(function() {
                     range.setStart(pos.offsetNode, pos.offset);
                     range.collapse();
                     range.insertNode(img);
+                    SavedStatus(false)
                 }
                 else if (document.caretRangeFromPoint) {
                     range = document.caretRangeFromPoint(x, y);
                     range.insertNode(img);
+                    SavedStatus(false)
                 }
                 else
                 {
-                    console.log('could not find carat'); // make this into a PushError!
+                    PushNotification("We couldn't find your cursor!", "You may be using an outdated or unsupported browser.")
                 }
-
-
             });
             //this reads in the file, and the onload event triggers, which adds the image to the div at the carat
             reader.readAsDataURL(file);

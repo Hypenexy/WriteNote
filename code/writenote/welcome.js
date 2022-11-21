@@ -3,6 +3,7 @@
 
 var WelcomeGuiinteractable = true
 function WelcomeGui(response, element, error){
+    var welcomeguimodal
     var content = element.getElementsByTagName("content")[0]
     if(response=="error"){
 
@@ -75,14 +76,22 @@ function WelcomeGui(response, element, error){
     }
 
     var motd = document.createElement("h1")
-    if(response.status!='offline'){
+    if(response.status!='offline'&&response.user!=false){
         motd.innerHTML = createMOTD(response.user.username)
+        if(!mobileHeaderMenu.getElementsByTagName("account")[0]){
+            var account = document.createElement("account")
+            account.innerHTML = "<img src='temp/pfp.jpeg'><name>"+response.user.username+"</name><bio>the world is beautiful by your side</bio><img src='temp/banner.jpeg'>"
+            mobileHeaderMenu.prepend(account)
+            mobileHeaderMenu.prepend(mobileHeaderMenu.getElementsByTagName("h1")[0])
+
+        }
     }
     else{
         motd.innerHTML = createMOTD("")
     }
 
     function welcomeClose(){
+        welcomeguimodal()
         WelcomeGuiinteractable = false
         welcome.classList.remove("welcometransitioned")
         
@@ -119,6 +128,7 @@ function WelcomeGui(response, element, error){
         ButtonEvent(closebtn, function(){
             welcomeClose()
         })
+        welcomeguimodal = ShowModal(welcomeClose)
     }
 
     var search = document.createElement("search")
@@ -147,15 +157,33 @@ function WelcomeGui(response, element, error){
 
     var info = document.createElement("info")
     var widgets = []
-    
+
     var account = document.createElement("account")
     widgets.push(account)
     if(response.status!='offline'){
-        account.innerHTML = "<img src='temp/pfp.jpeg'>Hypenexy<a tabindex='0'>"+locale.switchacc+"</a>"
+        if(response.user!=false){
+            account.innerHTML = "<img src='temp/pfp.jpeg'>"+response.user.username+"<a tabindex='0'>"+locale.switchacc+"</a>"
+            account.style = "text-shadow: 1px 1px 3px #000;background-position:center;background-size:cover;background-image:url(temp/banner.jpeg)"
+            ButtonEvent(account.getElementsByTagName("a")[0], function(){
+                 //do ur account switching
+            })
+        }
+        else{
+            account.innerHTML = "You're not logged in. <a>Login</a><a>Register</a>"
+            ButtonEvent(account.getElementsByTagName("a")[1], function(){
+                loadCSS(serveraddress + "img/styles/forms.css")
+                loadScript(serveraddress + "register/register.js.php", "registerscript", function(){
+                    showlogin()
+                    var xbtn = login.getElementsByTagName("span")[0]
+                    xbtn.opacity = 1
+                    ButtonEvent(xbtn, hidelogin)
+                })
+            })
+        }
     }
     else{
-        account.innerHTML = "No connection <a tabindex='0'>"+locale.retry+"</a>"
-        
+        account.innerHTML = locale.noconnection+" <a tabindex='0'>"+locale.retry+"</a>"
+
         ButtonEvent(account.getElementsByTagName("a")[0], function(){
             sidepanel.innerHTML = sidepanelHTML
             connectToMidelightTemporary()
@@ -268,7 +296,12 @@ function WelcomeGui(response, element, error){
 
     var space = document.createElement("space")
     widgets.push(space)
-    space.innerHTML = "2 GB "+locale.usedof+" 5 GB"
+    var sizes = getSizes()
+    var apptakenInMB = (sizes.apptaken/1000000).toFixed(2)
+    if(apptakenInMB[2]==0 && apptakenInMB[3]==0){
+        apptakenInMB = apptakenInMB.split('.')[0]
+    }
+    space.innerHTML = apptakenInMB+" MB "+locale.usedof+" "+sizes.appmax/1000000+" MB"
 
     for (let i = 0; i < widgets.length; i++) {
         widgets[i].classList.add("widget")
@@ -279,244 +312,289 @@ function WelcomeGui(response, element, error){
     // sidepanel.classList.add("sidepanelmoreactive")
 
     var filesside = document.createElement("filesside")
-
     var filters = document.createElement("filters")
-    filters.innerHTML ="<span class='op m-i'>sort</span>"+
-        "<select><option>"+locale.lastopened+"</option><option>"+locale.earliestopened+"</option><option>"+locale.alphabetically+"</option><option>"+locale.size+"</option></select>"+
-        "<span class='o m-i'>grid_view</span>"+
-        "<span class='o m-i'>view_headline</span>"
-
-    var fileviews = filters.getElementsByClassName("o")
-    ButtonEvent(fileviews[0], function(){
-        delete settings.lineview
-        SaveSettings()
-        fileviews[1].classList.remove("oselected")
-        fileviews[0].classList.add("oselected")
-        files.classList.remove("lineview")
-    })
-    ButtonEvent(fileviews[1], function(){
-        settings.lineview = true
-        SaveSettings()
-        fileviews[0].classList.remove("oselected")
-        fileviews[1].classList.add("oselected")
-        files.classList.add("lineview")
-    })
-
     var files = document.createElement("files")
-    if(settings.lineview){
-        fileviews[1].click()
-    }
-    else{
-        fileviews[0].classList.add("oselected")
-    }
-    var existing = CheckExisting()
-
-    var filesButtons = []
-
-    var lastFolderAnim = ""
-    function FilesSort(folder){
-        files.innerHTML = ""
-        if(folder){
-            var lastFolder = document.createElement("button")
-            var folders = []
-            if(folder.includes('/')){
-                folders = folder.split('/')
-            }
-            else{
-                folders.push(folder)
-            }
-            folders.unshift("Home")
-            var lastFolderFolder = folders[folders.length-2]
-            lastFolder.innerHTML = "<i class='m-i'>chevron_left</i> " + lastFolderFolder
-            lastFolder.classList.add("folder")
-            files.appendChild(lastFolder)
-            var displayFolders = folders
-            displayFolders.shift()
-            lastFolder.outerHTML = "<div style='display: flex'>" + lastFolder.outerHTML + '<button class="currentfolder">'+displayFolders.join(' / ')+'</button></div>'
-            lastFolder = files.getElementsByTagName("button")[0]
-            ButtonEvent(lastFolder, function(){
-                if(lastFolderFolder=="Home"){
-                    FilesSort()
+    function FileFunction(sort, reverse){
+        filters.innerHTML ="<div tabindex='0' class='sorts'><span class='op m-i'>sort</span><a>"+locale.openeddate+"</a><i class='m-i'>swap_horiz</i><div><p>"+locale.openeddate+"</p><p>"+locale.modifieddate+"</p><p>"+locale.alphabetically+"</p><p>"+locale.size+"</p></div></div>"+
+            "<span class='o m-i'>grid_view</span>"+
+            "<span class='o m-i'>view_headline</span>"
+    
+        var sorts = filters.getElementsByClassName("sorts")[0]
+        var sorttext = sorts.getElementsByTagName("a")[0]
+        var sortbtns = sorts.getElementsByTagName("p")
+        switch (sort) {
+            case 0:
+                sorttext.innerText = locale.openeddate
+                break;
+            case 1:
+                sorttext.innerText = locale.modifieddate
+                break;
+            case 2:
+                sorttext.innerText = locale.alphabetically
+                break;
+            case 3:
+                sorttext.innerText = locale.size
+                break;
+            default:
+                break;
+        }
+        sortbtns[sort].classList.add("oselected")
+        for (let i = 0; i < sortbtns.length; i++) {
+            ButtonEvent(sortbtns[i], function(){
+                if(reverse){
+                    FileFunction(i, true)
                 }
                 else{
-                    folders.pop()
-                    folders = folders.join('/')
-                    FilesSort(folders)
+                    FileFunction(i, null)
                 }
             })
-            lastFolder.addEventListener("click", function(e){
-                e.stopPropagation();
-            })
-
-            var transition
-            if(folder.includes(lastFolderAnim)){
-                transition = "filestransitionforward"
-            }
-            else{
-                transition = "filestransitionbackward"
-            }
-            files.classList.add(transition)
-            setTimeout(() => {
-                files.classList.remove(transition)
-            }, 0);
-
-            lastFolderAnim = folder
         }
-        filesButtons = []
-        var foldersSet = []
-
-        for(let i = 0; i < existing.length; i++){
-            var parts = existing[i].split(":")
-            var space = parts[0]
-            var pathname = parts[1]
-            pathname = pathname.split("*").slice(1).join('*')
-            var path = pathname.split("*")[0]
-            var name = pathname.split("*").slice(1).join('*')
-
-            var displayName
-            if(!folder){
-                if(path&&path.includes('/')){
-                    path = path.split('/')[0]
-                }
+        
+        var reversebtn = sorts.getElementsByTagName("i")[0]
+        if(reverse){
+            reversebtn.classList.add("oselected")
+        }
+        ButtonEvent(reversebtn, function(){
+            if(reverse){
+                FileFunction(sort, null)
             }
             else{
-                if(path){
-                    displayName = path.split('/')
-                    var lastFolder = folder
-                    if(folder.includes("/")){
-                        lastFolder = folder.split('/')
-                        lastFolder = lastFolder.pop()
-                    }
-                    var index = path.split('/').indexOf(lastFolder)
-                    displayName = displayName[index+1]
-                }
+                FileFunction(sort, true)
             }
-
-            if(path&&foldersSet.includes(path)){}
-            else{
-                // console.log(foldersSet)
-                if(path){
-                    foldersSet.push(path)
-                }
-                if(folder){
-                    if(path.includes(folder)){
-                        // console.log(path)
-                        if(!foldersSet.includes(displayName)){
-                            foldersSet.push(displayName)
-                            filesButtons.push({path, name, space})
-                        }
-                    }
+        })
+    
+        var fileviews = filters.getElementsByClassName("o")
+        ButtonEvent(fileviews[0], function(){
+            delete settings.lineview
+            SaveSettings()
+            fileviews[1].classList.remove("oselected")
+            fileviews[0].classList.add("oselected")
+            files.classList.remove("lineview")
+        })
+        ButtonEvent(fileviews[1], function(){
+            settings.lineview = true
+            SaveSettings()
+            fileviews[0].classList.remove("oselected")
+            fileviews[1].classList.add("oselected")
+            files.classList.add("lineview")
+        })
+    
+        if(settings.lineview){
+            fileviews[1].click()
+        }
+        else{
+            fileviews[0].classList.add("oselected")
+        }
+        var existing = CheckExisting()
+    
+        var filesButtons = []
+    
+        var lastFolderAnim = ""
+        function FilesSort(folder){
+            files.innerHTML = ""
+            if(folder){
+                var lastFolder = document.createElement("button")
+                var folders = []
+                if(folder.includes('/')){
+                    folders = folder.split('/')
                 }
                 else{
-                    filesButtons.push({path, name, space})
+                    folders.push(folder)
                 }
-            }
-        }
-
-        filesButtons.sort(function(a,b){
-            const nameA = a.name.toUpperCase()
-            const nameB = b.name.toUpperCase()
-            if (nameA < nameB){
-                return 1
-            }
-            if (nameA > nameB){
-                return -1
-            }
-            return 0;
-        })
-
-        filesButtons.sort(function(a,b){ //idk if folers are sorted alphabetically?
-            const folderA = a.path.toUpperCase()
-            const folderB = b.path.toUpperCase()
-            if (folderA < folderB){
-                return 1
-            }
-            if (folderA > folderB){
-                return -1
-            }
-            return 0;
-        })
-
-        //console.log(filesButtons)
-        for(let i = 0; i < filesButtons.length; i++){
-            function createButton(path, name, space){
-                var button = document.createElement("button")
-                if(path&&path!=folder){
-                    var folderName = path
-
-                    if(folderName.includes("/")){
-                        var folderName = folderName.split("/")
-                        var displayFolder = folder
-                        if(displayFolder.includes("/")){
-                            displayFolder = displayFolder.split("/")
-                            displayFolder = displayFolder.pop()
-                        }
-                        if(folderName.includes(displayFolder)){
-                            var index = folderName.indexOf(displayFolder)
-                            folderName = folderName[index + 1]
-                        }
+                folders.unshift("Home")
+                var lastFolderFolder = folders[folders.length-2]
+                lastFolder.innerHTML = "<i class='m-i'>chevron_left</i> " + lastFolderFolder
+                lastFolder.classList.add("folder")
+                files.appendChild(lastFolder)
+                var displayFolders = folders
+                displayFolders.shift()
+                lastFolder.outerHTML = "<div style='display: flex'>" + lastFolder.outerHTML + '<button class="currentfolder">'+displayFolders.join(' / ')+'</button></div>'
+                lastFolder = files.getElementsByTagName("button")[0]
+                ButtonEvent(lastFolder, function(){
+                    if(lastFolderFolder=="Home"){
+                        FilesSort()
                     }
-                    // if(path.includes('/')){
-                    //     folderName = path.split('/')[0]
-                    // }
-                    // if(!foldersSet.includes(folderName)){
-                    //     foldersSet.push(folderName)
-                        button.classList.add("folder")
-                        button.innerHTML = "<i class='m-i'>folder</i> " + folderName
-                    // }
-                    // else{
-                    //     console.log(path)
-                    //     button.innerHTML = "duck"
-                    //     button.remove()
-                    // }
-                }
-                else{
-                    button.innerHTML = name
-                }
-                ButtonEvent(button, function(){
-                    if(WelcomeGuiinteractable){
-                        if(path&&path!=folder){
-                            FilesSort(path)
-                        }
-                        else{
-                            LoadFile(space, path, name)
-                            if(element.classList[0]=="welcome"){
-                                welcomeClose()
-                            }
-                            else{
-                                closeSidepanel()
-                                setTimeout(() => {
-                                    closeSidepanel()
-                                }, 301);
-                            }
-                        }
+                    else{
+                        folders.pop()
+                        folders = folders.join('/')
+                        FilesSort(folders)
                     }
                 })
-                button.addEventListener("click", function(e){
+                lastFolder.addEventListener("click", function(e){
                     e.stopPropagation();
                 })
-                return button;
-            }
-
-            files.appendChild(createButton(filesButtons[i].path, filesButtons[i].name, filesButtons[i].space))
-            
-            if(!folder){
-                files.classList.add("filestransitionbackward")
+    
+                var transition
+                if(folder.includes(lastFolderAnim)){
+                    transition = "filestransitionforward"
+                }
+                else{
+                    transition = "filestransitionbackward"
+                }
+                files.classList.add(transition)
                 setTimeout(() => {
-                    files.classList.remove("filestransitionbackward")
+                    files.classList.remove(transition)
                 }, 0);
+    
+                lastFolderAnim = folder
+            }
+            filesButtons = []
+            var foldersSet = []
+    
+            for(let i = 0; i < existing.length; i++){
+                var parts = existing[i].split(":")
+                var space = parts[0]
+                var pathname = parts[1]
+                pathname = pathname.split("*").slice(1).join('*')
+                var path = pathname.split("*")[0]
+                var name = pathname.split("*").slice(1).join('*')
+    
+                var displayName
+                if(!folder){
+                    if(path&&path.includes('/')){
+                        path = path.split('/')[0]
+                    }
+                }
+                else{
+                    if(path){
+                        displayName = path.split('/')
+                        var lastFolder = folder
+                        if(folder.includes("/")){
+                            lastFolder = folder.split('/')
+                            lastFolder = lastFolder.pop()
+                        }
+                        var index = path.split('/').indexOf(lastFolder)
+                        displayName = displayName[index+1]
+                    }
+                }
+    
+                if(path&&foldersSet.includes(path)){}
+                else{
+                    // console.log(foldersSet)
+                    if(path){
+                        foldersSet.push(path)
+                    }
+                    if(folder){
+                        if(path.includes(folder)){
+                            // console.log(path)
+                            if(!foldersSet.includes(displayName)){
+                                foldersSet.push(displayName)
+                                filesButtons.push({path, name, space})
+                            }
+                        }
+                    }
+                    else{
+                        filesButtons.push({path, name, space})
+                    }
+                }
+            }
+    
+            filesButtons.sort(function(a,b){
+                const nameA = a.name.toUpperCase()
+                const nameB = b.name.toUpperCase()
+                if (nameA < nameB){
+                    return 1
+                }
+                if (nameA > nameB){
+                    return -1
+                }
+                return 0;
+            })
+    
+            filesButtons.sort(function(a,b){ //idk if folers are sorted alphabetically?
+                const folderA = a.path.toUpperCase()
+                const folderB = b.path.toUpperCase()
+                if (folderA < folderB){
+                    return 1
+                }
+                if (folderA > folderB){
+                    return -1
+                }
+                return 0;
+            })
+    
+            //console.log(filesButtons)
+            for(let i = 0; i < filesButtons.length; i++){
+                function createButton(path, name, space){
+                    var button = document.createElement("button")
+                    if(path&&path!=folder){
+                        var folderName = path
+    
+                        if(folderName.includes("/")){
+                            var folderName = folderName.split("/")
+                            var displayFolder = folder
+                            if(displayFolder.includes("/")){
+                                displayFolder = displayFolder.split("/")
+                                displayFolder = displayFolder.pop()
+                            }
+                            if(folderName.includes(displayFolder)){
+                                var index = folderName.indexOf(displayFolder)
+                                folderName = folderName[index + 1]
+                            }
+                        }
+                        // if(path.includes('/')){
+                        //     folderName = path.split('/')[0]
+                        // }
+                        // if(!foldersSet.includes(folderName)){
+                        //     foldersSet.push(folderName)
+                            button.classList.add("folder")
+                            button.innerHTML = "<i class='m-i'>folder</i> " + folderName
+                        // }
+                        // else{
+                        //     console.log(path)
+                        //     button.innerHTML = "duck"
+                        //     button.remove()
+                        // }
+                    }
+                    else{
+                        button.innerHTML = name
+                    }
+                    ButtonEvent(button, function(){
+                        if(WelcomeGuiinteractable){
+                            if(path&&path!=folder){
+                                FilesSort(path)
+                            }
+                            else{
+                                LoadFile(space, path, name)
+                                if(element.classList[0]=="welcome"){
+                                    welcomeClose()
+                                }
+                                else{
+                                    closeSidepanel()
+                                    setTimeout(() => {
+                                        closeSidepanel()
+                                    }, 301);
+                                }
+                            }
+                        }
+                    })
+                    button.addEventListener("click", function(e){
+                        e.stopPropagation();
+                    })
+                    return button;
+                }
+    
+                files.appendChild(createButton(filesButtons[i].path, filesButtons[i].name, filesButtons[i].space))
+                
+                if(!folder){
+                    files.classList.add("filestransitionbackward")
+                    setTimeout(() => {
+                        files.classList.remove("filestransitionbackward")
+                    }, 0);
+                }
             }
         }
+    
+        FilesSort()
+    
+        var createnewbutton = document.createElement("button")
+        createnewbutton.classList.add("folder")
+        createnewbutton.innerHTML = "<i class='m-i'>add</i> " + locale.createnew
+        ButtonEvent(createnewbutton, NewFileGui)
+        files.appendChild(createnewbutton)
     }
 
-    FilesSort()
-
-    var createnewbutton = document.createElement("button")
-    createnewbutton.classList.add("folder")
-    createnewbutton.innerHTML = "<i class='m-i'>add</i> " + locale.createnew
-    ButtonEvent(createnewbutton, NewFileGui)
-    files.appendChild(createnewbutton)
-
+    FileFunction(1)
 
     //finally load
 

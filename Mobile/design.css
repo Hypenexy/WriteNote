@@ -1,0 +1,165 @@
+*{margin: 0;box-sizing: border-box;font-family: sans-serif;overflow: hidden;}
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(Material-Icons-Outlined.woff2) format('woff2');
+}
+
+.m-i{font-family:'Material Icons';font-weight:normal;font-style:normal;font-size:24px;display:inline-block;line-height:1;text-transform:none;letter-spacing:normal;word-wrap:normal;white-space:nowrap;direction:ltr;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-moz-osx-font-smoothing:grayscale;font-feature-settings:'liga'}
+
+button{
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+}
+notearea{
+    position: fixed;
+    top: 0;
+    overflow: auto;
+    overflow-y: scroll;
+    border: 0;
+    border-radius: 0;
+    cursor: auto;
+    resize: none;
+    outline: none;
+    color: #fff;
+    background-color: #0a1d3d;/*original: #222242*/
+    padding: 8px 4px;
+    font-size: 24px;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 70px;
+    transition: 0.2s;
+}
+.colorful notearea{
+    background: rgb(101,186,255);
+    background: linear-gradient(90deg, rgba(101,186,255,1) 0%, rgba(208,187,255,1) 100%);
+    color: #000;
+}
+header{
+    color: #ddd;
+    background: #050505cc;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    position: fixed;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    transition: .3s;
+}
+.headeractive{
+    height: 100%;
+}
+header hr{
+    border: 3px solid #bbbbbbbb;
+    border-radius: 9px;
+    position: absolute;
+    top: 10px;
+    width: 20%;
+    margin-left: 40%;
+    transition: 1s;
+}
+.headeractive hr{
+    border: 3px solid #44444466;
+}
+header i{
+    position: absolute;
+    left: 7px;
+    color: #999;
+    font-size: 20px!important;
+}
+header button{
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    position: absolute;
+    top: 19px;
+    background: #11111188;
+    padding: 8px 10px;
+    padding-left: 30px;
+    border-radius: 99px;
+}
+
+header [data-action="activeFile"]{
+    left: 15px;
+}
+header [data-action="addSomething"]{
+    right: 15px;
+}
+header [data-action="undo"]{
+    right: 65px;
+}
+header [data-action="redo"]{
+    right: 115px;
+}
+header .icon{
+    top: 14px;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+}
+header .icon i{
+    color: #bbb;
+    position: initial;
+    font-size: 24px!important;
+}
+
+
+
+popups{
+    pointer-events: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+popups div{
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: .2s;
+
+    pointer-events: all;
+    position: absolute;
+    color: #ddd;
+    background: #050505cc;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    width: 160px;
+    border-radius: 12px;
+    padding: 12px;
+}
+popups .activediv{
+    visibility: visible;
+    transform: initial;
+    opacity: 1;
+}
+popups a{
+    transform: translateY(5px);
+    transition: .4s;
+
+    user-select: none;
+    cursor: pointer;
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+popups .activediv a{
+    transform: initial;
+}
+popups a:last-child{
+    margin: 0;
+}
+popups i{
+    float: left;
+    font-size: 20px!important;
+    margin-right: 5px;
+}
+popups [data-action="addSomething"]{
+    bottom: 75px;
+    right: 5px;
+}

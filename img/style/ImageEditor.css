@@ -4,7 +4,7 @@ ImageEditor{
     pointer-events: none;
     transition: .2s;
     position: fixed;
-    z-index: 30;
+    z-index: 32;
     width: 100%;
     height: 100%;
 }

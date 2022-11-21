@@ -1,7 +1,9 @@
 var app = document.getElementsByTagName("app")[0]
-var mobile = false
+var mobile, interacted = false
+const isPage = false
 var online
-var server = "http://localhost/WriteNoteApp/"
+var serveraddress = "http://localhost/"
+var server =  serveraddress + "WriteNoteApp/"
 var settings = {}
 if(localStorage.getItem("options")){
     settings = JSON.parse(localStorage.getItem("options"))
@@ -103,25 +105,60 @@ function SaveSettings(space){
 }
 
 
-var modal = document.createElement("modal")
-app.appendChild(modal)
-function ShowModal(RemoteClose, Intensity){
-    modal.style.visibility = "visible"
-    modal.style.opacity = 1
+/**
+ * Dims the background and focuses on the element.
+ * @param {Function} RemoteClose A function that executes when the modal is clicked.
+ * @param {Color} Intensity The background's color.
+ * @param {Number} Index A custom Z-Index for the modal. Default is 29
+ * @returns The modal element to remove it.
+ */
+
+function ShowModal(RemoteClose, Intensity, Index){
+    var modal = document.createElement("modal")
+    app.appendChild(modal)
+    setTimeout(() => {
+        modal.style.opacity = 1
+    }, 10);
     if(Intensity){
         modal.style.background = Intensity
     }
+    if(Index){
+        modal.style.zIndex = Index
+    }
     
+    function HideModal(){
+        modal.style = ""
+        setTimeout(() => {
+            modal.remove()
+        }, 300);
+    }
     modal.onclick = function(e){
         if(e.target == modal){
             HideModal()
             RemoteClose()
         }
     }
-}
-function HideModal(){
-    modal.style = ""
+
+    return HideModal;
 }
 // document.addEventListener("click", function(){
 //     HideModal()
 // })
+
+document.addEventListener("click", function(){
+    interacted = true
+})
+document.addEventListener("keydown", function(){
+    interacted = true
+})
+
+function playSound(url) {
+    if(interacted==true){
+        const audio = new Audio(url);
+        audio.play();
+    }
+}
+
+var login = document.createElement("div")//need it for register and login
+login.id = "login"
+app.appendChild(login)

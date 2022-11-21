@@ -56,6 +56,7 @@ header.innerHTML = `
     <v onclick="toggleTimer()"><p class="m-i">timer</p> ${locale.timer}<tick id="timercheckmark"></tick></v>
     <hr>
     <v onclick="togglefullscreen()"><p class="m-i">fullscreen</p> ${locale.fullscreen}<tick id="fullscreencheckmark"></tick></v>
+    <v class="subdropdownbtns"><p class="m-i">text_increase</p> ${locale.easeofreadin}<p style="float: right" class="m-i">chevron_right</p>${locale.g}</v>
     <!-- <v onclick="togglespellcheck()"><p class="m-i">spellcheck</p> ${locale.spellcheck}<tick id="spellcheckcheckmark"></tick></v> -->
     <v onclick="togglewordwrap()"><p class="m-i">wrap_text</p> ${locale.wordwrap}<tick id="wordwrapcheckmark"></tick></v>
     <v onclick="togglelines()"><p class="m-i">toc</p> ${locale.showlines}<tick id="linescheckmark"></tick></v>
@@ -64,6 +65,11 @@ header.innerHTML = `
     <v onclick="opensetting('Appearance'),opensubsetting('font')" class="writingdirection"><p class="m-i">text_fields</p> ${locale.changefont}</v>
     <v onclick="opensetting('Appearance'),opensubsetting('theme')"><p class="m-i">style</p> ${locale.theme}</v>
 </dropdown>
+
+<subdropdown id="directions" class="subdropdownmenu subdropdownmenu3">
+    <v onclick=""><p class="m-i">palette</p> ${locale.colorize}<tick id="ltrcheckmark"></tick></v>
+    <v onclick=""><p class="m-i">format_shapes</p> ${locale.flashwords}<tick id="rtlcheckmark"></tick></v>
+</subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">
     <v onclick="direction(false)"><p class="m-i">format_textdirection_l_to_r</p> ${locale.lefttoright}<tick id="ltrcheckmark"></tick></v>

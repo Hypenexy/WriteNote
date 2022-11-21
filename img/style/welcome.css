@@ -1,7 +1,7 @@
 .welcome{
     opacity: 0;
     position: absolute;
-    z-index: 10;
+    z-index: 30;
     top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -41,7 +41,8 @@ content{
     position: relative;
     display: block;
     transition: transform .3s, opacity .3s;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding-right: 6px;
     white-space: nowrap;
 }
@@ -145,6 +146,10 @@ content h1{
     font-weight: 300;
     padding: 8px;
     text-align: center;
+    min-width: 200px;
+}
+.contentfull h1{
+    min-width: initial;
 }
 .contentfull h1 br{
     display: none;
@@ -300,32 +305,40 @@ content account img{
     left: 50%;
     transform: translateX(-50%);
 }
+filesside{
+    white-space: normal;
+    display: none;
+    transition: .15s;
+}
+.contentfull filesside{
+    display: block;
+    float: right;
+    padding: 0 24px;
+    max-width: calc(100% - 200px);
+    width: 80%;
+}
+
 @media screen and (max-width: 850px) {
     .contentfull info{
         width: 100%;
         margin: 15px 0;
+        position: relative;
+    }
+    .contentfull filesside{
+        float: left;
+        width: 100%;
+        max-width: initial;
+        padding: 24px 8px;
     }
     .contentfull .widget{
         position: relative;
         float: left;
-        width: calc(50% - 12px);
+        width: calc(50% - 6px);
         margin-right: 12px;
     }
     .contentfull .widget:last-child{
         margin-right: initial;
     }
-}
-
-filesside{
-    white-space: normal;
-    display: none;
-    transition: .3s;
-}
-.contentfull filesside{
-    display: block;
-    float: right;
-    padding: 24px;
-    width: 80%;
 }
 
 content files{
@@ -396,7 +409,6 @@ content files .folder i{
     top: 50%;
     transform: translateY(-50%);
 }
-
 /* 
 input, filters{
     flex-basis: 100%;
@@ -404,7 +416,7 @@ input, filters{
     font-size: 20px;
     height: 40px;
 } what's this */
-filters select{
+/* filters select{
     cursor: pointer;
     color: #bbb;
     background: none;
@@ -418,7 +430,78 @@ filters select{
 }
 filters select option{
     background: #111;
+} */
+filters .sorts{
+    position: relative;
+    display: inline-block;
+    background: #222;
+    padding: 12px;
+    border-radius: 8px;
+    width: 190px;
 }
+filters .sorts span{
+    float: left;
+    margin: -3px;
+}
+filters .sorts a{
+    color: #eee;
+    margin-left: 6px;
+}
+filters .sorts i{
+    cursor: pointer;
+    float: right;
+    margin: -9px;
+    padding: 6px;
+    border-radius: 8px;
+    transition: .3s;
+}
+filters .sorts div{
+    position: absolute;
+    background: #222;
+    width: 150px;
+    left: 0;
+    padding: 6px;
+    border-radius: 0 0 8px 8px;
+    display: none;
+}
+filters .sorts p{
+    cursor: pointer;
+    background: #111;
+    border: 1px solid #111;
+    margin-top: 6px;
+    padding: 6px;
+    border-radius: 8px;
+    transition: .3s;
+}
+filters .sorts p:hover, filters .sorts p:focus-visible{
+    border: 1px solid #bbb;
+}
+filters .sorts p:active{
+    background: #bbb;
+    color: #111;
+}
+
+filters .sorts:hover i, filters .sorts:focus-within i{
+    background: #111;
+}
+filters .sorts:hover div, filters .sorts:focus-within div{
+    display: block;
+    animation: fadeIn 300ms ease-in-out forwards
+}
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    50% {
+        transform: rotateX(-10deg);
+    }
+    100% {
+        opacity: 1;
+        transform: initial;
+    }
+}
+
 filters .o:focus-visible{
     outline: 2px solid #fff;
     border-radius: 4px;

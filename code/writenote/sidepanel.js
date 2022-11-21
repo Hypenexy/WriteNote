@@ -32,9 +32,11 @@ function openSidepanel(menu){
 
 function closeSidepanel(){
     if(sidepanel.classList.contains("sidepanelmoreactive")){
-        sidepanel.classList.remove("sidepanelmostactive")
+        sidepanel.classList.add("sidepanelmostactivereverse")
         setTimeout(() => {
+            sidepanel.classList.remove("sidepanelmostactive")
             sidepanel.classList.remove("sidepanelmoreactive")
+            sidepanel.classList.remove("sidepanelmostactivereverse")
             sidepanel.classList.add("sidepanelactive")
         }, 300);
     }

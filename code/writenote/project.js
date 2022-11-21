@@ -6,6 +6,7 @@ var currentSize
 var maxSize
 var isNewFile = false
 var savedNoteContent = ""
+var loadedFileSize
 
 function setSizes(space){
     switch (space) {
@@ -23,6 +24,15 @@ function setSizes(space){
             //error
             break;
     }
+}
+
+function getSizes(){
+    var sizes = {}
+
+    sizes.appmax = 4000000
+    sizes.apptaken = new Blob(Object.values(localStorage)).size
+
+    return sizes;
 }
 
 function InitFile(path, name, space, content, metadata, dontSave){
@@ -102,9 +112,9 @@ function NewFile(path, name, space){
 }
 
 function SaveFile(updateOpen){
-    activefile.content = noteCompress()
+    activefile.content = noteCompress() // wait why am i
     var DataToSave = {}
-    DataToSave.content = activefile.content
+    DataToSave.content = activefile.content // using that variable?
     DataToSave.fD = activefile.fD
     DataToSave.fO = activefile.fO
     DataToSave.fM = Date.now()
@@ -132,10 +142,17 @@ function SaveFile(updateOpen){
             if(updateOpen){
                 DataToSave.fM = activefile.fM
             }
-            if(roughSize + currentSize > maxSize){
-                //send error
-                console.log("send error")
-                return;
+            if(loadedFileSize){
+                if(roughSize + currentSize - loadedFileSize > maxSize){
+                    PushNotification("Not enough free space in app storage!", "The file wasn't saved because you have no free space in your app's space.", "warn")
+                    return;
+                }
+            }
+            else{
+                if(roughSize + currentSize > maxSize){
+                    PushNotification("Not enough free space in app storage!", "The file wasn't saved because you have no free space in your app's space.", "warn")
+                    return;
+                }
             }
 
             localStorage.setItem("*" + activefile.path + "*" + activefile.name, JSON.stringify(DataToSave))
@@ -144,7 +161,7 @@ function SaveFile(updateOpen){
                 SavedStatus(true)
             }
             else{
-                alert("Error, file hasn't saved!")
+                PushNotification("Error, your file wasn't saved!", "There was an issue saving the file to app.", "warn")
             }
             break;
         case "device":
@@ -193,9 +210,11 @@ function LoadFile(space, path, name){
     file.space = space
     file.path = path
     file.name = name
+    loadedFileSize = roughSizeOfObject(file)
     InitFile(file.path, file.name, file.space, file.content, file)
     if(notearea.innerHTML!=noteParse(file.content)){
         //File was loaded incorrectly!
+        PushNotification("Hey, WriteNote made an oopsie", "And your file didn't load correctly! (In our opinion)")
         return;
     }
 }
@@ -236,15 +255,17 @@ document.addEventListener("keydown", function(e){
 //     isNewFile
 // }
 
-notearea.addEventListener("input", function(){
+notearea.addEventListener("input", function(e){
     if(notearea.innerHTML=="<p><br></p>"&&isNewFile==true){
         SavedStatus(true)
     }
     else{
         SavedStatus(false)
     }
-    if(savedNoteContent==notearea.innerHTML){
-        SavedStatus(true)
+    if(e.inputType == "historyUndo"){
+        if(savedNoteContent==notearea.innerHTML){
+            SavedStatus(true)
+        }
     }
 })
 window.onbeforeunload = function(e) {
@@ -304,19 +325,22 @@ function SaveChangesQuestion(nextStep){
 }
 
 var newfile
+var newfilemodal
 function NewFileGui(close){
     function closeGui(){
-        HideModal()
         newfile.classList.remove("newfiletransitioned")
         setTimeout(() => {
             newfile.remove()
         }, 200);
     }
     if(close==true){
+        newfilemodal()
         closeGui()
         return;
     }
-    ShowModal(closeGui)
+    else{
+        newfilemodal = ShowModal(closeGui, null, 31)
+    }
     function execute(){
         var isNameSet = false
         var isOptionSelected = false
@@ -458,7 +482,7 @@ function LoadFileGui(){
 
 document.addEventListener("keydown", function(e){
     if(e.key == "Escape"){
-        function closeNode(node){
+        function closeNode(node){//why this shit?
             node.classList.remove("newfiletransitioned")
             setTimeout(() => {
                 node.remove()
@@ -468,7 +492,7 @@ document.addEventListener("keydown", function(e){
             }
         }
         if(newfile && newfile.nodeType){
-            closeNode(newfile)
+            NewFileGui(true)
         }
         if(savechanges && savechanges.nodeType){
             closeNode(savechanges)
