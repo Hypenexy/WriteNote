@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mask</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: sans-serif;
+            margin: 0;
+        }
+        html, body, .gradient{
+            width: 100%;
+            height: 100%;
+        }
+        .gradient{
+            background: rgb(51,40,235);
+            background: linear-gradient(180deg, rgba(51,40,235,1) 0%, rgba(0,212,255,1) 100%);
+        }
+        .protector{
+            display: block;
+            height: 100%;
+            background: #111;
+            color: #fff;
+            padding: 12px;
+        }
+        button{
+            position: absolute;
+            bottom: 0;
+            display: block;
+            border-radius: 8px;
+            padding: 14px 2px;
+            margin: 20px 0;
+        }
+        border{
+            background: #111;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        h1.bgfx{
+            color: var(--bg);
+        }
+        button.bgfx{
+            background: var(--bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient">
+        <div class="protector">
+            <h1 class="bgfx">Cool data</h1>
+            <button class="bgfx"><border>butto</border></button>
+        </div>
+    </div>
+    <script>
+        var getStepColor = function(colorA, colorB, value) {
+            return colorA.map(function(color, i) {
+                return (color + value * (colorB[i] - color)) & 255
+            })
+        }
+
+        var protector = document.getElementsByClassName("protector")[0]
+        var everythingInside = protector.getElementsByClassName("bgfx")
+        for (let i = 0; i < everythingInside.length; i++) {
+            const element = everythingInside[i];
+            var ratio = element.getBoundingClientRect().top / window.innerHeight
+            var color = getStepColor([51,40,235], [0,212,255], ratio)
+            element.style.setProperty('--bg', "rgb("+color+")");
+        }
+
+
+        
+
+    </script>
+</body>
+</html>

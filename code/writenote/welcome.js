@@ -179,6 +179,15 @@ function WelcomeGui(response, element, error){
                     ButtonEvent(xbtn, hidelogin)
                 })
             })
+            // ButtonEvent(account.getElementsByTagName("a")[0], function(){
+            //     loadCSS(serveraddress + "img/styles/forms.css")
+            //     loadScript(serveraddress + "login/login.js", "registerscript", function(){
+            //         showlogin()
+            //         var xbtn = login.getElementsByTagName("span")[0]
+            //         xbtn.opacity = 1
+            //         ButtonEvent(xbtn, hidelogin)
+            //     })
+            // })
         }
     }
     else{
@@ -547,7 +556,18 @@ function WelcomeGui(response, element, error){
                         // }
                     }
                     else{
-                        button.innerHTML = name
+                        var where
+                        switch (space) {
+                            case "localstorage":
+                                where = '<ic><i class="m-i">web</i><t>App</t></ic>'
+                                break;
+                        
+                            default:
+                                break;
+                        }
+                        var type = '<ty><i class="m-i">description</i></ty>' // I NEED A WAY TO GET WORKPLACE AND SIZE!
+                        var bytes = '<si>' + humanFileSize(210) + '</si>'
+                        button.innerHTML = where + type + "<ti>" + name + "</ti>" + "<co>" + "some 20 chars here from the fil..." + "</co>" + bytes + "<i class='more m-i'>more_vert</i>"
                     }
                     ButtonEvent(button, function(){
                         if(WelcomeGuiinteractable){
@@ -583,19 +603,30 @@ function WelcomeGui(response, element, error){
                     }, 0);
                 }
             }
+            if(!folder){
+                var createnewbutton = document.createElement("button")
+                createnewbutton.classList.add("folder")
+                createnewbutton.innerHTML = "<i class='m-i'>add</i> " + locale.createnew
+                ButtonEvent(createnewbutton, NewFileGui)
+                files.appendChild(createnewbutton)
+            }
         }
-    
+
         FilesSort()
-    
-        var createnewbutton = document.createElement("button")
-        createnewbutton.classList.add("folder")
-        createnewbutton.innerHTML = "<i class='m-i'>add</i> " + locale.createnew
-        ButtonEvent(createnewbutton, NewFileGui)
-        files.appendChild(createnewbutton)
     }
 
     FileFunction(1)
 
+    files.onmousemove = e => {
+        for(const button of document.getElementsByTagName("button")) {
+            const rect = button.getBoundingClientRect(),
+                x = e.clientX - rect.left,
+                y = e.clientY - rect.top;
+    
+            button.style.setProperty("--mouse-x", `${x}px`);
+            button.style.setProperty("--mouse-y", `${y}px`);
+        };
+    }
     //finally load
 
     content.style.transform = "translateY(20px)"

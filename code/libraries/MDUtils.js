@@ -344,15 +344,13 @@ function roughSizeOfObject(object){
 
 /**
  * Format bytes as human-readable text.
- * 
  * @param bytes Number of bytes.
  * @param si True to use metric (SI) units, aka powers of 1000. False to use 
  *           binary (IEC), aka powers of 1024.
  * @param dp Number of decimal places to display.
- * 
  * @return Formatted string.
  */
- function humanFileSize(bytes, si=true, dp=1) {
+function humanFileSize(bytes, si=true, dp=1) {
     const thresh = si ? 1000 : 1024;
   
     if (Math.abs(bytes) < thresh) {
@@ -372,4 +370,17 @@ function roughSizeOfObject(object){
   
   
     return bytes.toFixed(dp) + ' ' + units[u];
-  }
+}
+
+/**
+ * Calculates the value of a ratio between the colors.
+ * @param {[r,g,b]} colorA First color
+ * @param {[r,g,b]} colorB Second color
+ * @param {Int} value A number between 0 and 1 (1 is 100%)
+ * @returns Result color in [r, g, b] array.
+ */
+function getStepColor(colorA, colorB, value){
+    return colorA.map(function(color, i) {
+        return (color + value * (colorB[i] - color)) & 255
+    })
+}

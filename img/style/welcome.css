@@ -310,6 +310,10 @@ filesside{
     display: none;
     transition: .15s;
 }
+filters{
+    z-index: 4;
+    position: relative;
+}
 .contentfull filesside{
     display: block;
     float: right;
@@ -346,6 +350,54 @@ content files{
     padding: 1px; /*This fixes outline shit but idk if it breaks other shit*/
     transition: .2s;
 }
+/* cool effect! */
+content files:hover > content files button::after {
+  opacity: 1;
+}
+content files button:hover::after{
+  background: rgba(255, 255, 255, 0.5);
+}
+
+content files button{
+    background: rgba(255, 255, 255, 0.1);
+}
+
+content files button:hover::before {
+  opacity: 1;
+}
+
+content files button::before,
+content files button::after {
+  border-radius: inherit;
+  content: "";
+  height: 100%;
+  left: 0px;
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  transition: opacity 500ms;
+  width: 100%;
+}
+
+content files button::before {
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 255, 255, 0.12),
+    transparent 40%
+  );
+  z-index: 3;
+}
+
+content files button::after {  
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(255, 255, 255, 0.4),
+    transparent 40%
+  );
+  z-index: 1;
+}
+/* end of cool effect*/
+
 content .filestransitionforward{
     opacity: 0.3;
     transform: translateX(20px);
@@ -363,23 +415,78 @@ content .lineview button{
 }
 
 content files button{
-    background: #222;
+    float: left;
+    position: relative;
+    /* background: #252525; */
     border-radius: 8px;
     padding: 24px;
+    width: 150px;
+    height: 95px;
     margin-top: 24px;
     margin-right: 24px;
     transition: .2s;
 }
-content files button:not(.folder, .currentfolder):hover, content files button:not(.folder, .currentfolder):focus-visible{
+/* content files button:not(.folder, .currentfolder):hover, content files button:not(.folder, .currentfolder):focus-visible{
     background: #555;
-}
+} */
 content files button:not(.folder, .currentfolder):active{
     outline: 1px solid #a78de4;
 }
 content files button:last-child{
     margin-right: initial;
 }
+content files button ti{
+    display: block;
+}
+content files button co{
+    text-align: left;
+    color: #bbb;
+    display: block;
+    font-size: 12px;
+}
+content files button .more{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 3px;
+    color: #bbb;
+    border-radius: 99px;
+    transition: .3s;
+}
+content files button .more:hover, content files button .more:focus{
+    color: #fff;
+}
 
+content files button ic, content files button si, content files button ty{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: #999;
+    transition: .1s;
+}
+content files button ic t{
+    position: absolute;
+    top: 4px;
+    margin-left: 4px;
+    opacity: 0;
+    transition: .1s;
+}
+content files button:not(.folder, .currentfolder):hover ic, content files button:not(.folder, .currentfolder):focus-visible ic{
+    color: #eee;
+}
+content files button:not(.folder, .currentfolder):hover ic t, content files button:not(.folder, .currentfolder):focus-visible ic t{
+    opacity: 1;
+}
+content files button si{
+    top: initial;
+    left: initial;
+    bottom: 5px;
+    right: 5px;
+}
+content files button ty{
+    top: initial;
+    bottom: 0;
+}
 content files .currentfolder{
     width: 100%;
     user-select: text;
@@ -389,14 +496,13 @@ content files .currentfolder{
     box-shadow: 0 2px 2px #bbbbbb55;
 }
 content files .folder{
-    position: relative;
     background: #111;
-    outline: 1px solid #555;
-    padding: 23px;
-    padding-left: 40px;
+    border: 1px solid #555;
+    /* margin-top: 25px; */
+    padding-left: 37px;
 }
 content files .folder:hover, content files .folder:focus-visible{
-    outline: 1px solid #bbb;
+    border: 1px solid #bbb;
 }
 content files .folder:active{
     color: #111;

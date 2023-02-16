@@ -1,0 +1,19 @@
+widget{
+    position: absolute;
+    z-index: 1;
+    left: 100px;
+    top: 100px;
+    display: block;
+    width: 500px;
+    height: 700px;
+    border-radius: 16px;
+    color: #eee;
+    background: #111;
+    box-shadow: 2px 3px 4px #11111166;
+
+    transition: .2s;
+}
+widget.transition{
+    opacity: 0;
+    transform: translateY(-5px);
+}

@@ -170,7 +170,12 @@ var mobileHeaderMenu = document.createElement("div")
 
 mobileHeaderMenu.classList.add("mobilemenu")
 mobileHeaderMenu.innerHTML = "<h1>11/11/2022</h1><currentnote><i class='m-i'>description</i><input><workspace></workspace><notespace></notespace><notesize></notesize></currentnote>"+
-"<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu>"
+// "<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu>"
+"<actionmenu><vs class='m-i'>settings</vs></actionmenu>"+
+"<actionmenu><h2>Notifications</h2><clearn>Clear All</clearn></actionmenu>"
+
+
+
 if(!settings.ft){
     if(mobile){
         mobileHeaderMenu.innerHTML += "<helper>Swipe Up to close</helper>"
@@ -180,6 +185,13 @@ if(!settings.ft){
     }
 }
 app.appendChild(mobileHeaderMenu)
+
+ButtonEvent(mobileHeaderMenu.getElementsByTagName("clearn")[0], function(){
+    var notificationsRn = mobileHeaderMenu.getElementsByTagName("notification")
+    for (let i = 0; i < notificationsRn.length; i++) {
+        notificationsRn[i].removeFunction()
+    }
+})
 
 var currentnote = mobileHeaderMenu.getElementsByTagName("currentnote")[0]
 var currentNoteEdit = currentnote.getElementsByTagName("input")[0]
@@ -303,7 +315,7 @@ function PushNotification(ti, desc, type, action){
     var notification = document.createElement("notification")
     var removed = false
     notification.tabIndex = 0
-    notification.innerHTML = "<x class='m-i'>close</x><date>"+timeformatted+"</date><ti>"+ti+"</ti><desc>"+desc+"</desc>"
+    notification.innerHTML = "<notcontent><x class='m-i'>close</x><date>"+timeformatted+"</date><ti>"+ti+"</ti><desc>"+desc+"</desc></notcontent>"
     if(mobileHeaderMenu.classList[1] == "mobilemenuactive"){
         mobileHeaderMenu.appendChild(notification)
     }
@@ -344,7 +356,7 @@ function PushNotification(ti, desc, type, action){
     }
     moveNotificationTimeout()
 
-    ButtonEvent(notification.getElementsByTagName("x")[0], function(){
+    function removeThisNotification(){
         removed = true
         notification.classList.remove("notificationshown")
 
@@ -354,7 +366,7 @@ function PushNotification(ti, desc, type, action){
             const element = otherNotifications[i];
             if(reachedYet){
                 var heigth = notification.offsetHeight + 20 //not the best but good enough
-                element.style.transform = "translateY(-"+heigth+"px)"
+                element.style.transform = "translateY(-"+heigth+"px)" // i like the typo
             }
             if(element==notification){
                 reachedYet = true
@@ -389,12 +401,19 @@ function PushNotification(ti, desc, type, action){
                 otherNotifications[i].style = ""
             }
         }, 300)
-    })
+    }
+
+    notification.removeFunction = removeThisNotification
+
+    ButtonEvent(notification.getElementsByTagName("x")[0], removeThisNotification)
 }
 
 
 // Just realized I could remove the background and add smooth appearing animation to all elements and
 // make it like Chrome OS and Windows 11 notifications. But why would i
+
+// reading this comment a while later i realize that I am talking about the notifications inside the mobile menu
+// how i can make them overflow the menu and when the menu is opened they smoothly drop down one by one 
 setTimeout(() => {
 
     PushNotification("Hey there!", "You've successfully installed WriteNote!")
