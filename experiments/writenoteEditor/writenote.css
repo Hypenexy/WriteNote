@@ -17,8 +17,25 @@ notearea{
     padding-bottom: calc(100vh - 95px);
     transition: 0.2s;
 }
+
+app .linkPreview {
+    position: absolute;
+    width: 400px;
+    height: 200px;
+    border-radius: 16px;
+    /* box-shadow: 2px 2px 2px #0e0e0e;
+    border: 2px solid #555;
+    outline: 4px solid #111; */
+    background: #111;
+    top: 200px;
+    left: 20px;
+}
+
 notearea i:hover{/*experiment*/
     background-color: #65baff22;
+}
+notearea p:focus{
+    outline: 1px solid #999
 }
 notearea b:hover{
     background-color: #65baff22;
