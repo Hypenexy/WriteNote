@@ -31,22 +31,77 @@ class WriteNote{
         })
 
         notearea.addEventListener('input', function (e) {
-            console.log(e.inputType) // this could be used elsewhere too! also undo feature is all fixed!
+             // console.log(e.inputType) this could be used elsewhere too! also undo feature is all fixed!
             if(notearea.innerHTML.substring(0, 3)!="<p>" && e.inputType!="historyUndo"){
                 document.execCommand('formatBlock', false, "p")
             }
         })
 
+        var getSelectedNode = this.getSelectedNode
+        var setCaretAfterElement = this.setCaretAfterElement
         notearea.addEventListener('keydown', function (e){
+            var focusedElement = getSelectedNode()
             if(notearea.innerHTML == "<p><br></p>" && e.key == "Backspace"){
                 e.preventDefault()
             }
             if(e.key == ' '){
-                console.log(e.target)
+                if(focusedElement.nodeName=='A'){
+                    e.preventDefault()
+                    // setCaretAfterElement(focusedElement) // I cannot fix the escaping of the element!
+                    // document.execCommand("insertHTML", false, "&nbsp;")
+                    let selection = window.getSelection()
+                    selection.collapse(focusedElement.parentNode, focusedElement.parentNode.childNodes.length)
+                    // with this method the cadet goes at the end of the element
+                    // need to block the deletion of text after the link
+
+                    // if (e.code === 'Enter' && selectionTag === 'SUP') {
+                    //     e.preventDefault()
+                    //     // Insert a 'space' symbol at the end
+                    //     selection.anchorNode.parentNode.insertAdjacentHTML('beforeend', '&nbsp;')
+                    //     // Select the parent node
+                    //     selection.selectAllChildren(selection.anchorNode.parentNode)
+                    //     // Collapse selection to the end, effectively moving the cursor out of the formatted element
+                    //     selection.collapseToEnd()
+                    //   } Test this out!
+                }
+            }
+            if(e.key == "Enter"){
+                if(focusedElement.nodeName=='A'){
+                    e.preventDefault()
+                }
             }
         })
 
         parent.appendChild(this.notearea)
+    }
+
+    setCaretAfterElement(element){
+        if(window.getSelection){
+            var range, selection   
+            range = document.createRange()
+            range.setStartAfter(element)
+            selection = window.getSelection()
+            selection.removeAllRanges()
+            selection.addRange(range)
+        }
+    }
+
+    setCaretAtEndOfElement(element){
+        var range, selection
+        if(document.createRange){
+            range = document.createRange()
+            range.selectNodeContents(element)
+            range.collapse(false)
+            selection = window.getSelection()
+            selection.removeAllRanges()
+            selection.addRange(range)
+        }
+        else if(document.selection){
+            range = document.body.createTextRange()
+            range.moveToElementText(element)
+            range.collapse(false)
+            range.select()
+        }
     }
 
     changeZoom(value){
@@ -61,20 +116,84 @@ class WriteNote{
         }
     }
 
-    processLink(linkEngine, url){
-        var xhttp = new XMLHttpRequest()
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                return this.responseText;
+    getSelectedNode(){
+        if(document.selection){
+            return document.selection.createRange().parentElement();
+        }
+        else{
+            var selection = window.getSelection()
+            if(selection.rangeCount > 0){
+                return selection.getRangeAt(0).startContainer.parentNode;
             }
         }
-     
-        xhttp.open("POST", linkEngine, true)
-        xhttp.send(url) // debug ofc
     }
+
+    processLink(linkEngine, url){ // Learn to handle errors, rejection ;(
+        return new Promise(function(resolve, reject){
+            var xhttp = new XMLHttpRequest()
+
+            xhttp.open("POST", linkEngine, true)
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+            var body = 'url='+url
+            xhttp.send(body)
+
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    resolve(this.responseText)
+                }
+            }
+        });
+    }
+
+    getAverageRGB(element){
+        var blockSize = 1, // was 5
+            defaultRGB = {r:0,g:0,b:0},
+            canvas = document.createElement('canvas'),
+            context = canvas.getContext && canvas.getContext('2d'),
+            data, width, height,
+            i = -4,
+            length,
+            rgb = {r:0,g:0,b:0},
+            count = 0;
+    
+        if (!context){
+            return defaultRGB
+        }
+
+        height = canvas.height = element.naturalHeight || element.offsetHeight || element.height
+        width = canvas.width = element.naturalWidth || element.offsetWidth || element.width
+
+        context.drawImage(element, 0, 0)
+
+        try{
+            data = context.getImageData(0, 0, width, height)
+        } catch(e){
+            return defaultRGB;
+        }
+
+        length = data.data.length;
+
+        while ( (i += blockSize * 4) < length ) {
+            ++count;
+            rgb.r += data.data[i];
+            rgb.g += data.data[i+1];
+            rgb.b += data.data[i+2];
+        }
+
+        rgb.r = ~~(rgb.r/count);
+        rgb.g = ~~(rgb.g/count);
+        rgb.b = ~~(rgb.b/count);
+    
+        return rgb;
+    
+    }
+    
 
     insertLink(url){ // if a link is inserted outside this function, either paste or detection, the event handler will not be handlin'
         var parent = this.parent
+        var linkEngine = this.linkEngine
+        var processLink = this.processLink
+        var getAverageRGB = this.getAverageRGB
         var existingLinks = this.notearea.getElementsByTagName("a")
         var id = existingLinks.length
         document.execCommand("insertHTML", false, "<a n="+id+">"+url+"</a>&nbsp;")
@@ -83,11 +202,45 @@ class WriteNote{
             const element = existingLinksAfterUpdate[i]
             if(element.getAttribute('n')==id){
                 var linkPreviewElement = document.createElement("div")
+                function remove(){
+                    linkPreviewElement.classList.add("transition")
+                    setTimeout(() => {
+                        linkPreviewElement.remove()
+                    }, 400)
+                }
                 element.addEventListener("mouseenter", function(){
+                    processLink(linkEngine, url).then(function(data){
+                        var data = JSON.parse(data)
+                        linkPreviewElement.innerHTML = "<div class='header'><p>"+url+"</p><div><i class='m-i'>edit</i><i class='m-i'>refresh</i></div></div><div class='metadata'>"
+                        if(data.image){
+                            linkPreviewElement.innerHTML += "<div class='image'><img src='data:image/png;base64,"+data.image+"'></div>"
+                        }
+                        linkPreviewElement.innerHTML += "<div><a>"+data.title+"</a><p>"+data.description+"</p></div></div><div class='buttons'><button>Open in WriteNote</button><button>Open in a new tab</button></div>"
+                        if(data.image){
+                            setTimeout(() => {
+                                var accentColor = getAverageRGB(linkPreviewElement.getElementsByTagName("img")[0])
+                                linkPreviewElement.getElementsByTagName("button")[0].style.background = `rgb(${accentColor.r},${accentColor.g},${accentColor.b})` // I was going to find a contrast friendly color for the text but seems like every site's logo colors are fine for now.
+                                // please animate when you press this button,
+                                // match the other element to this' size and position
+                                // opacity 0 on this element
+                                // then move to the preffered location and boom
+                            }, 10);
+                        }
+                    }).catch(function(err){
+                        console.log(err)
+                    })
                     linkPreviewElement.classList.add("linkPreview")
-                    linkPreviewElement.innerHTML = "<p>"+url+"</p>"
+                    linkPreviewElement.classList.add("transition")
+                    // I need to add a tooltip for the buttons!
+                    // Maybe make it in a function at MDUtilities or MDUI
                     parent.appendChild(linkPreviewElement)
+                    setTimeout(() => {
+                        linkPreviewElement.classList.remove("transition")
+                    }, 10)
                 })
+                // element.addEventListener("mouseleave", function(){
+                //     remove()
+                // })
             }
         }
     }

@@ -18,17 +18,79 @@ notearea{
     transition: 0.2s;
 }
 
-app .linkPreview {
+app .linkPreview{
     position: absolute;
-    width: 400px;
-    height: 200px;
+    max-width: 400px;
     border-radius: 16px;
     /* box-shadow: 2px 2px 2px #0e0e0e;
     border: 2px solid #555;
     outline: 4px solid #111; */
-    background: #111;
+    background: #1c1c1c;
+    box-shadow: 2px 2px 4px #111;
+    color: #eee;
+    padding: 12px;
     top: 200px;
     left: 20px;
+    transition: .4s;
+}
+app .linkPreview.transition{
+    opacity: 0;
+    transform: translateY(-8px);
+}
+app .linkPreview .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #555;
+}
+app .linkPreview .header p{
+    display: inline-block;
+    color: #999;
+    margin-right: 12px;
+}
+app .linkPreview .header div{
+    display: flex;
+}
+app .linkPreview .header i:first-child{
+    margin-right: 8px;
+}
+app .linkPreview .header i{
+    user-select: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: .1s;
+}
+app .linkPreview .header i:hover, app .linkPreview .header i:focus-visible{
+    background: #333;
+}
+app .linkPreview .header i:active{
+    background: #eee;
+    color: #111;
+}
+app .linkPreview .metadata{
+    display: flex;
+    align-items: center;
+}
+app .linkPreview .metadata p{
+    color: #bbb;
+}
+app .linkPreview div{
+    padding: 8px;
+}
+app .linkPreview .image{
+    min-width: 64px;
+}
+app .linkPreview .buttons{
+    display: flex;
+}
+app .linkPreview .buttons button{
+    flex: 1;
+    margin: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #333;
 }
 
 notearea i:hover{/*experiment*/
