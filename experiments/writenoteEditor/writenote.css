@@ -17,6 +17,28 @@ notearea{
     padding-bottom: calc(100vh - 95px);
     transition: 0.2s;
 }
+writenote{
+    display: block;
+    height: 100%;
+    transition: 0.2s;
+    /* background-color: #111124; */
+    background-color: #0c0c0c;
+}
+writenote.flex{
+    display: flex;
+}
+writenote features{
+    display: flex;
+    overflow: auto;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    min-width: 300px;
+    /* z-index: 1;
+    box-shadow: -1px 0 2px #111; */
+}
+notearea.borderRadiusRight{
+    border-radius: 0 12px 12px 0;
+}
 
 app .linkPreview{
     position: absolute;
@@ -36,6 +58,9 @@ app .linkPreview{
 app .linkPreview.transition{
     opacity: 0;
     transform: translateY(-8px);
+}
+app .linkPreview.opacity{
+    opacity: 0;
 }
 app .linkPreview .header{
     display: flex;
@@ -91,6 +116,30 @@ app .linkPreview .buttons button{
     padding: 12px;
     border-radius: 12px;
     background: #333;
+    transition: .2s;
+}
+app .linkPreview .buttons button:focus-visible {
+    outline: 1px solid #999;
+}
+app .linkPreview .buttons button:hover, app .linkPreview .buttons button:focus-visible{
+    filter: brightness(125%);
+}
+app .linkPreview .buttons button:active {
+    transition: .1s;
+    filter: brightness(65%);
+}
+app .sitepreview{
+    position: absolute;
+    background: #1c1c1c;
+    border-radius: 16px;
+    margin: 8px;
+    transition: .4s;
+    width: 300px;
+    height: 200px;
+}
+app .sitepreview.relative{
+    position: relative;
+    width: 100%;
 }
 
 notearea i:hover{/*experiment*/
