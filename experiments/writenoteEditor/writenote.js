@@ -204,6 +204,10 @@ class WriteNote{
         if(!writenote.contains(features)){
             if(isSet==true){
                 writenote.appendChild(features)
+                features.classList.add("transition")
+                setTimeout(() => {
+                    features.classList.remove("transition")
+                }, 10);
             }
         }
         else{
@@ -239,7 +243,7 @@ class WriteNote{
                 element.addEventListener("mouseenter", function(){
                     processLink(linkEngine, url).then(function(data){
                         var data = JSON.parse(data)
-                        var html = "<div class='header'><p>"+url+"</p><div><i class='m-i'>edit</i><i class='m-i'>refresh</i></div></div><div class='metadata'>"
+                        var html = "<div class='header'><p>"+url+"</p><div><i class='m-i'>history</i><i class='m-i'>refresh</i></div></div><div class='metadata'>"
                         if(data.image){
                             html += "<div class='image'><img src='data:image/png;base64,"+data.image+"'></div>"
                         }
@@ -265,6 +269,7 @@ class WriteNote{
                                     element.style.height = dimensions.height + "px"
                                     app.appendChild(element)
                                     setTimeout(() => {
+                                        
                                         var top = "8px"
                                         var left = window.innerWidth - dimensions.width + "px"
                                         element.style.top = top
@@ -285,6 +290,11 @@ class WriteNote{
                                             features.prepend(element)
                                         }, 400)
                                     }, 10)
+                                    processLink(linkEngine, url, true).then(function(data){
+                                        console.log(data)
+                                    }).catch(function(err){
+                                        console.log(err)
+                                    })
                                 })
                             }, 10)
                         }
