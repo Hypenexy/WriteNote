@@ -207,6 +207,50 @@ function getOffset(el){
 }
 
 /**
+ * Returns getBoundingClientRect() as an object
+ * @param {Element} element Any DOM node
+ * @returns the getBoundingClientRect() as an object
+ */
+function getBoundingClientRectObject(element) {
+    var rect = element.getBoundingClientRect()
+    return {
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+      x: rect.x,
+      y: rect.y
+    }
+}
+
+/**
+ * Takes an elements position and size and returns a position that doesn't put it out the screen
+ * @param {JSON} offset Takes a JSON as a parameter
+ * @returns the same JSON but with calculated value if it's out of the screen 
+ */
+function normalizeOffset(offset){
+    if(offset.right === undefined){ // I'm not sure if this is a proper way to check for undefined
+        if(offset.width&&offset.left){
+            offset.right = offset.left+offset.width
+        }
+    }
+    if(offset.right > window.innerWidth){
+        offset.left = offset.left - (offset.right - window.innerWidth)
+    }
+    if(offset.bottom === undefined){
+        if(offset.height&&offset.top){
+            offset.bottom = offset.top+offset.height
+        }
+    }
+    if(offset.bottom > window.innerHeight){
+        offset.top = offset.top - (offset.bottom - window.innerHeight)
+    }
+    return offset
+}
+
+/**
  * Used to get a specific css property's value.
  * @param {*} el Any element
  * @param {*} styleProp Any computed css property
@@ -383,4 +427,55 @@ function getStepColor(colorA, colorB, value){
     return colorA.map(function(color, i) {
         return (color + value * (colorB[i] - color)) & 255
     })
+}
+
+/**
+ * A function that gets the average color of an image
+ * Function belongs to James on StackOverflow
+ * @param {*} img Image element
+ * @param {Int} blockSize Visit every n pixels
+ * @returns The "accent" color
+ */
+function getAverageRGB(img, blockSize) {
+    if(!blockSize){
+        blockSize = 5
+    }
+    var defaultRGB = {r:0,g:0,b:0},
+        canvas = document.createElement('canvas'),
+        context = canvas.getContext && canvas.getContext('2d'),
+        data, width, height,
+        i = -4,
+        length,
+        rgb = {r:0,g:0,b:0},
+        count = 0;
+
+    if (!context) {
+        return defaultRGB;
+    }
+
+    height = canvas.height = img.naturalHeight || img.offsetHeight || img.height;
+    width = canvas.width = img.naturalWidth || img.offsetWidth || img.width;
+
+    context.drawImage(img, 0, 0);
+
+    try {
+        data = context.getImageData(0, 0, width, height);
+    } catch(e) {
+        return defaultRGB;
+    }
+
+    length = data.data.length;
+
+    while ( (i += blockSize * 4) < length ) {
+        ++count;
+        rgb.r += data.data[i];
+        rgb.g += data.data[i+1];
+        rgb.b += data.data[i+2];
+    }
+
+    rgb.r = ~~(rgb.r/count);
+    rgb.g = ~~(rgb.g/count);
+    rgb.b = ~~(rgb.b/count);
+
+    return rgb;
 }

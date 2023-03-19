@@ -1,3 +1,5 @@
+rework the welcome screen with flex because you need a way to make the files section 100% height without losing your mind
+
 Everytime you open "Open project" refresh all files.
 Think of colors. Maybe make the 2 main colors be, For all backgrounds #0d0f10, For notearea #222244 (i mistyped #222242 so maybe its something idk)
 Fix pasting as a whole.

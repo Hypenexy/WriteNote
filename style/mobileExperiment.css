@@ -205,12 +205,12 @@
     font-size: 18px;
 }
 .mobilemenu account img:first-child{
-    width: 115px;
-    height: 115px;
+    width: 128px;
+    height: 128px;
     object-fit: cover;
     border-radius: 50%;
     position: absolute;
-    margin: 15px;
+    margin: 8px;
 }
 .mobilemenu account img:last-child{
     width: 100%;

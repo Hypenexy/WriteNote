@@ -80,10 +80,13 @@ function WelcomeGui(response, element, error){
         motd.innerHTML = createMOTD(response.user.username)
         if(!mobileHeaderMenu.getElementsByTagName("account")[0]){
             var account = document.createElement("account")
-            account.innerHTML = "<img src='temp/pfp.jpeg'><name>"+response.user.username+"</name><bio>the world is beautiful by your side</bio><img src='temp/banner.jpeg'>"
+            account.innerHTML = "<img src='http://localhost/i/?s=128&i="+response.user.pfp+"'><name>"+response.user.username+"</name><bio>the world is beautiful by your side</bio><img src='http://localhost/i/?i="+response.user.banner+"'>"
             mobileHeaderMenu.prepend(account)
             mobileHeaderMenu.prepend(mobileHeaderMenu.getElementsByTagName("h1")[0])
-
+            var banner = account.getElementsByTagName("img")[1]
+            banner.onload = function(){
+                console.log(getAverageRGB(banner)) //think of something better
+            }
         }
     }
     else{
@@ -162,8 +165,8 @@ function WelcomeGui(response, element, error){
     widgets.push(account)
     if(response.status!='offline'){
         if(response.user!=false){
-            account.innerHTML = "<img src='temp/pfp.jpeg'>"+response.user.username+"<a tabindex='0'>"+locale.switchacc+"</a>"
-            account.style = "text-shadow: 1px 1px 3px #000;background-position:center;background-size:cover;background-image:url(temp/banner.jpeg)"
+            account.innerHTML = "<img src='http://localhost/i/?s=64&i="+response.user.pfp+"'>"+response.user.username+"<a tabindex='0'>"+locale.switchacc+"</a>"
+            account.style = "text-shadow: 1px 1px 3px #000;background-position:center;background-size:cover;background-image:url(http://localhost/i/?&i="+response.user.banner+")"
             ButtonEvent(account.getElementsByTagName("a")[0], function(){
                  //do ur account switching
             })
@@ -171,7 +174,7 @@ function WelcomeGui(response, element, error){
         else{
             account.innerHTML = "You're not logged in. <a>Login</a><a>Register</a>"
             ButtonEvent(account.getElementsByTagName("a")[1], function(){
-                loadCSS(serveraddress + "img/styles/forms.css")
+                loadCSS(serveraddress + "styles/forms.css")
                 loadScript(serveraddress + "register/register.js.php", "registerscript", function(){
                     showlogin()
                     var xbtn = login.getElementsByTagName("span")[0]
@@ -180,7 +183,7 @@ function WelcomeGui(response, element, error){
                 })
             })
             // ButtonEvent(account.getElementsByTagName("a")[0], function(){
-            //     loadCSS(serveraddress + "img/styles/forms.css")
+            //     loadCSS(serveraddress + "styles/forms.css")
             //     loadScript(serveraddress + "login/login.js", "registerscript", function(){
             //         showlogin()
             //         var xbtn = login.getElementsByTagName("span")[0]
@@ -323,7 +326,7 @@ function WelcomeGui(response, element, error){
     var filesside = document.createElement("filesside")
     var filters = document.createElement("filters")
     var files = document.createElement("files")
-    function FileFunction(sort, reverse){
+    function FileFunction(sort, reverse, folder){
         filters.innerHTML ="<div tabindex='0' class='sorts'><span class='op m-i'>sort</span><a>"+locale.openeddate+"</a><i class='m-i'>swap_horiz</i><div><p>"+locale.openeddate+"</p><p>"+locale.modifieddate+"</p><p>"+locale.alphabetically+"</p><p>"+locale.size+"</p></div></div>"+
             "<span class='o m-i'>grid_view</span>"+
             "<span class='o m-i'>view_headline</span>"
@@ -417,7 +420,7 @@ function WelcomeGui(response, element, error){
                 files.appendChild(lastFolder)
                 var displayFolders = folders
                 displayFolders.shift()
-                lastFolder.outerHTML = "<div style='display: flex'>" + lastFolder.outerHTML + '<button class="currentfolder">'+displayFolders.join(' / ')+'</button></div>'
+                lastFolder.outerHTML = "<div style='display: flex;flex-basis: 100%;'>" + lastFolder.outerHTML + '<button class="currentfolder">'+displayFolders.join(' / ')+'</button></div>'
                 lastFolder = files.getElementsByTagName("button")[0]
                 ButtonEvent(lastFolder, function(){
                     if(lastFolderFolder=="Home"){
@@ -430,7 +433,7 @@ function WelcomeGui(response, element, error){
                     }
                 })
                 lastFolder.addEventListener("click", function(e){
-                    e.stopPropagation();
+                    e.stopPropagation()
                 })
     
                 var transition
@@ -509,8 +512,12 @@ function WelcomeGui(response, element, error){
                 }
                 return 0;
             })
+
+            if(!reverse){
+                filesButtons.reverse()
+            }
     
-            filesButtons.sort(function(a,b){ //idk if folers are sorted alphabetically?
+            filesButtons.sort(function(a,b){ //idk if folers are sorted alphabetically? They are not
                 const folderA = a.path.toUpperCase()
                 const folderB = b.path.toUpperCase()
                 if (folderA < folderB){
@@ -588,8 +595,66 @@ function WelcomeGui(response, element, error){
                             }
                         }
                     })
+                    function ButtonContextMenu(e){
+                        if(e){
+                            var show = showContext()
+
+                            if(e.left){
+                                contextMenu.style.top = e.top + 20 + "px"
+                                contextMenu.style.left = e.left + 20 + "px"
+                            }
+                            else{
+                                contextMenu.style.top = e.clientY + "px"
+                                contextMenu.style.left = e.clientX + "px"
+                            }
+                            if(path&&path!=folder){
+                                contextMenu.innerHTML = '<input value="'+path+'">'+
+                                "<de>Actions</de>"+
+                                "<p><i class='m-i'>delete</i> Delete</p>"+
+                                "<de>Properties</de>"+
+                                "<p>edited: today</p>"+
+                                "<p>size: chonk</p>" //get the combined sizes of the things inside
+                            }
+                            else{
+                                contextMenu.innerHTML = '<input value="'+name+'" placeholder='+name+'>'+
+                                "<de>Actions</de>"+
+                                "<p><i class='m-i'>share</i> Share</p>"+
+                                "<p><i class='m-i'>content_copy</i> Duplicate</p>"+
+                                "<p><i class='m-i'>delete</i> Delete</p>"+
+                                "<de>Properties</de>"+
+                                "<pr><i class='m-i'>calendar_month</i> 2 minutes ago</pr>"+
+                                "<pr><i class='m-i'>save</i> 210 B</pr>"
+                                var renameInput = contextMenu.getElementsByTagName("input")[0]
+                                renameInput.addEventListener("change", function(){
+                                    var renameResult = Rename(path, name, space, this.value)
+                                    if(renameResult=='all good'){
+                                        FileFunction(sort, reverse, folder)
+                                    }
+                                    else{
+                                        PushNotification("Couldn't change the name", renameResult)
+                                    }
+                                })
+                            }
+
+                            show()
+                        }
+                    }
+                    if(path&&path!=folder){}
+                    else{
+                        var moreIcon = button.getElementsByClassName("more")[0]
+                        ButtonEvent(moreIcon, function(e){
+                            e.stopPropagation()
+                            var offset = moreIcon.getBoundingClientRect()
+                            var elementPos = {left:offset.left, top:offset.top}
+                            ButtonContextMenu(elementPos)
+                        }, null, true)
+                    }
                     button.addEventListener("click", function(e){
-                        e.stopPropagation();
+                        e.stopPropagation()
+                    })
+                    button.addEventListener("contextmenu", function(e){
+                        e.preventDefault()
+                        ButtonContextMenu(e)
                     })
                     return button;
                 }
@@ -612,7 +677,7 @@ function WelcomeGui(response, element, error){
             }
         }
 
-        FilesSort()
+        FilesSort(folder)
     }
 
     FileFunction(1)

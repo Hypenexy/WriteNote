@@ -11,6 +11,60 @@ if(localStorage.getItem("options")){
 settings.version = "3.0.0"
 // background: rgb(112,91,128); background: linear-gradient(36deg, rgba(112,91,128,1) 0%, rgba(239,183,229,1) 47%, rgba(34,34,66,1) 100%);
 
+var contextMenu
+
+function hideContext(){
+    contextMenu.classList.add("transition")
+    var altVar = contextMenu
+    contextMenu = ""
+    setTimeout(() => {
+        altVar.remove()
+        altVar = ""
+    }, 200);
+}
+
+/**
+ * Cool contextmenu function
+ * @returns The function which shows the context menu
+ */
+function showContext(){
+    if(contextMenu && contextMenu.nodeType){
+        hideContext()
+    }
+
+    contextMenu = document.createElement("div")
+    contextMenu.classList.add("contextmenu")
+    contextMenu.classList.add("transition")
+
+    function show(){
+        app.appendChild(contextMenu)
+        var offset = normalizeOffset(getBoundingClientRectObject(contextMenu))
+        contextMenu.style.transition = 'initial'
+        contextMenu.style.top = offset.top + "px"
+        contextMenu.style.left = offset.left + "px"
+        setTimeout(() => {
+            contextMenu.style.transition = ''
+            contextMenu.classList.remove("transition")
+        }, 5);
+    }
+    return show;
+}
+
+// document.addEventListener("contextmenu", function(e){
+    // e.preventDefault();
+    // Probably uncomment after everything is supported with
+    // custom context menus. Yes, even the inputs inside the
+    // other context menus so you should make a child context
+    // menu.
+// })
+
+document.addEventListener("click", function(e){
+    if(contextMenu && contextMenu.nodeType){
+        if(e.target != contextMenu && e.target.parentElement != contextMenu){
+            hideContext()
+        }
+    }
+})
 
 function mobileAndTabletCheck(){
     let check = false;

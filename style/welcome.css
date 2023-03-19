@@ -296,6 +296,8 @@ content account a:active, content info create a:active{
     background: #999;
 }
 content account img{
+    /* idk why */
+    image-rendering: pixelated;
     position: relative;
     display: block;
     width: 64px;
@@ -346,7 +348,10 @@ filters{
 }
 
 content files{
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 24px;
     padding: 1px; /*This fixes outline shit but idk if it breaks other shit*/
     transition: .2s;
 }
@@ -369,6 +374,7 @@ content files button:hover::before {
 content files button::before,
 content files button::after {
   border-radius: inherit;
+  pointer-events: none;
   content: "";
   height: 100%;
   left: 0px;
@@ -422,8 +428,6 @@ content files button{
     padding: 24px;
     width: 150px;
     height: 95px;
-    margin-top: 24px;
-    margin-right: 24px;
     transition: .2s;
 }
 /* content files button:not(.folder, .currentfolder):hover, content files button:not(.folder, .currentfolder):focus-visible{

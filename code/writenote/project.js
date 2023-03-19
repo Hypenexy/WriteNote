@@ -168,7 +168,7 @@ function SaveFile(updateOpen){
             // file = OpenFileDialog()
             break;
         default:
-            PushError("Saving file failed, unexpected app input!")
+            pushNotification("Saving file failed, unexpected app input!", null, "warn")
             break;
     }
     setSizes(activefile.space)
@@ -203,7 +203,7 @@ function LoadFile(space, path, name){
             file = OpenFileDialog()
             break;
         default:
-            PushError("Loading file failed, unexpected app input!")
+            pushNotification("Loading file failed, unexpected app input!", null, "warn")
             break;
     }
     file = JSON.parse(file)
@@ -219,10 +219,48 @@ function LoadFile(space, path, name){
     }
 }
 
+function RenameVerify(renameTo){
+    if(renameTo.includes('/')){ // check if its a folder issue
+        return 'Name can\'t contain "/"'
+    }
 
+    return 'all good'
+}
+function Rename(path, name, space, renameTo){
+    var status = RenameVerify(renameTo)
+    if(status!='all good'){
+        return status
+    }
+    switch(space){
+        case "online":
+            
+            break;
+        case "localstorage":
+            var existing = CheckExisting()
+            var renamedPath = space + ":*" + path + "*" + renameTo
+            var currentPath = "*" + path + "*" + name
+            for(let i = 0; i < existing.length; i++){
+                if(existing[i] == renamedPath){
+                    return "File already exists"
+                }
+            }
+            var file = localStorage.getItem(currentPath)
+            localStorage.removeItem(currentPath)
+            localStorage.setItem("*" + path + "*" + renameTo, file)
+            activefile.name = renameTo
+            return 'all good'
+            break;
+        case "device":
+            
+            break;
+        default:
+            PushNotification("Unexpected app input! Incorrect function parameter.", null, "warn")
+            break;
+    }
+}
 
 //Fix status when undoing to a saved state! I think i did
-//u did it in a memory and cpu unfriendly way
+//u did it in a memory and cpu unfriendly way I think i fixed the cpu unfriendly part
 function SavedStatus(status){
     if(status==true){
         saved = true
