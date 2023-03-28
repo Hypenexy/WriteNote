@@ -67,8 +67,8 @@ header.innerHTML = `
 </dropdown>
 
 <subdropdown id="directions" class="subdropdownmenu subdropdownmenu3">
-    <v onclick="colorize()"><p class="m-i">palette</p> ${locale.colorize}<tick id="colorizecheckmark"></tick></v>
-    <v onclick=""><p class="m-i">format_shapes</p> ${locale.flashwords}<tick id="flashwordscheckmark"></tick></v>
+    <v onclick="toggleColorize()"><p class="m-i">palette</p> ${locale.colorize}<tick id="colorizecheckmark"></tick></v>
+    <v onclick="toggleWordFlash()"><p class="m-i">format_shapes</p> ${locale.flashwords}<tick id="flashwordscheckmark"></tick></v>
 </subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">

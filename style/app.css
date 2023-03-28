@@ -182,3 +182,84 @@ modal{
     pointer-events: none;
     user-select: none;
 }
+
+.windowApp{
+    z-index: 2;
+    display: block;
+    position: absolute;
+    padding: 12px;
+    background: #151515;
+    border-radius: 12px;
+    box-shadow: 1px 2px 3px #111;
+    top: 70px;
+    left: 70px;
+    height: 500px;
+    width: 400px;
+    min-width: 220px;
+    min-height: 200px;
+    user-select: none;
+    color: #fff;
+    background: #100f11;
+
+    resize: both;
+    overflow: auto;
+
+    transition: opacity .3s, transform .3s, visibility .3s;
+}
+.windowApp .header{
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    gap: 8px;
+    position: relative;
+    height: 60px;
+    background: #222;
+    cursor: grab;
+    margin: -12px;
+    margin-bottom: 12px;
+}
+.windowApp x{
+    z-index: initial;
+    top: 9px;
+    right: 9px;
+}
+.windowApp.transition{
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-2%);
+}
+
+.bigWindow.transition{
+    opacity: 0;
+    top: 48%;
+}
+.bigWindow{
+    z-index: 30;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: top .4s, opacity .5s;
+
+    height: 80%;
+    width: 70%;
+    min-width: 1100px;
+
+    user-select: none;
+    color: #fff;
+    box-shadow: 1px 2px 3px #111;
+    background: #100f11;
+    padding: 24px;
+    border-radius: 12px;
+    overflow: auto;
+}
+.bigWindow::-webkit-scrollbar-thumb{
+    border-radius: 8px;
+}
+
+@media screen and (max-width: 1100px){
+    .bigWindow{
+        width: 100%;
+        min-width: initial;
+    }
+}

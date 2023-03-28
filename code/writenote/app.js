@@ -2,8 +2,9 @@ var app = document.getElementsByTagName("app")[0]
 var mobile, interacted = false
 const isPage = false
 var online
-var serveraddress = "http://localhost/"
-var server =  serveraddress + "WriteNoteApp/"
+var serverAddress = "http://localhost/"
+var serverImage = "http://localhost/i/"
+var server =  "http://localhost/WriteNoteApp/"
 var settings = {}
 if(localStorage.getItem("options")){
     settings = JSON.parse(localStorage.getItem("options"))
@@ -89,7 +90,14 @@ var gpu = webgl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
 
 var date = new Date();
 var offset = date.getTimezoneOffset();
-var exc = [offset, navigator.connection.effectiveType, navigator.doNotTrack, navigator.hardwareConcurrency, navigator.deviceMemory, offset, gpu]
+
+var exc 
+if(navigator.connection){
+    exc = [offset, navigator.connection.effectiveType, navigator.doNotTrack, navigator.hardwareConcurrency, navigator.deviceMemory, offset, gpu]
+}
+else{
+    exc = [offset, 'uf', navigator.doNotTrack, navigator.hardwareConcurrency, navigator.deviceMemory, offset, gpu]
+}
 
 var datalog = {}
 datalog.settings = settings
@@ -216,3 +224,47 @@ function playSound(url) {
 var login = document.createElement("div")//need it for register and login
 login.id = "login"
 app.appendChild(login)
+
+
+var activeWindows = []
+function windowApp(Node, Title, Icon){
+    var object = {
+        "node" : Node,
+        "title" : Title,
+        "icon" : Icon,
+        "close" : closeWindow
+    }
+    var element = document.createElement("div")
+    var header = document.createElement("div")
+    header.classList.add("header")
+    header.innerHTML = "<i class='m-i'>"+Icon+"</i><p>"+Title+"</p>"
+    element.appendChild(header)
+    //maybe replace this with native javascript (it's the same)
+    $(element).draggable({ snap: true, containment: app, handle: header });
+    element.classList.add("windowApp")
+    element.classList.add("transition")
+    activeWindows.push(object)
+    function closeWindow(){
+        element.classList.add("transition")
+        setTimeout(() => {
+            element.remove()
+            if(Node.close){
+                Node.close()
+            }
+            const index = activeWindows.indexOf(object);
+            if(index > -1){
+                activeWindows.splice(index, 1);
+            }
+        }, 200);
+    }
+    var xbtn = document.createElement("x")
+    xbtn.classList.add("m-i")
+    xbtn.innerText="close"
+    ButtonEvent(xbtn, closeWindow)
+    element.appendChild(xbtn)
+    element.appendChild(Node)
+    app.appendChild(element)
+    setTimeout(() => {
+        element.classList.remove("transition")
+    }, 10);
+}

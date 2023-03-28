@@ -1,4 +1,5 @@
 <?php
+
 function recurseCopy(
     string $sourceDirectory,
     string $destinationDirectory,

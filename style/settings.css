@@ -1,0 +1,105 @@
+.settings{
+    display: flex;
+    padding-top: 48px;
+    gap: 32px;
+}
+
+.settings .sidepanel{
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.settings account{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 80px;
+    border-radius: 12px;
+}
+.settings account name{
+    position: absolute;
+    left: 80px;
+    top: calc(50% - 10px);
+    transform: translateY(-50%);
+    color: #eee;
+    text-shadow: 1px 1px 5px #111;
+    font-size: 20px;
+    font-weight: 500;
+}
+.settings account bio{
+    position: absolute;
+    left: 80px;
+    top: 40px;
+    color: #bbb;
+    text-shadow: 1px 1px 5px #111;
+    font-size: 12px;
+}
+.settings account img:first-child{
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    margin: 8px;
+}
+.settings account img:last-child{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.settings .sidepanel .buttons{
+    margin: 32px 0;
+}
+
+.settings .sidepanel button{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 18px;
+}
+.settings .sidepanel button:hover, .settings .sidepanel button:focus-visible{
+    background: #222;
+}
+.settings .sidepanel button:active{
+    background: #555;
+    transition: .2s;
+}
+.settings .sidepanel button.active{
+    color: #222;
+    background: #eee;
+    transition: .1s;
+}
+
+.settings .pageSettings{
+    flex: 1;
+}
+
+.settings .pageSettings h1{
+    font-weight: 400;
+}
+
+.settings .pageSettings .display{
+    border-radius: 12px;
+    background: #1d1d1d;
+    text-align: center;
+}
+.settings .pageSettings .display .banner{
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+}
+.settings .pageSettings .display .avatar{
+    border-radius: 99px;
+    transform: translateY(-64px);
+}
+.settings .pageSettings .display .username{
+    font-size: 24px;
+    padding: 10px 0;
+    margin-top: -64px;
+}

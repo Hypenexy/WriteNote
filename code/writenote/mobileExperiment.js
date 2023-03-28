@@ -186,6 +186,8 @@ if(!settings.ft){
 }
 app.appendChild(mobileHeaderMenu)
 
+ButtonEvent(mobileHeaderMenu.getElementsByTagName("vs")[0], showSettings, "Account")
+
 ButtonEvent(mobileHeaderMenu.getElementsByTagName("clearn")[0], function(){
     var notificationsRn = mobileHeaderMenu.getElementsByTagName("notification")
     for (let i = 0; i < notificationsRn.length; i++) {
@@ -414,11 +416,11 @@ function PushNotification(ti, desc, type, action){
 
 // reading this comment a while later i realize that I am talking about the notifications inside the mobile menu
 // how i can make them overflow the menu and when the menu is opened they smoothly drop down one by one 
-setTimeout(() => {
+// setTimeout(() => {
 
-    PushNotification("Hey there!", "You've successfully installed WriteNote!")
-    PushNotification("A second one?!", "Whoa there can be a lot of notifications right? I mean what am I thinking.")
-    setTimeout(() => {
-        PushNotification("<i class='m-i'>warning</i> oh god", "There has been a change in login details.", "warn")
-    }, 1500);
-}, 2050);
+//     PushNotification("Hey there!", "You've successfully installed WriteNote!")
+//     PushNotification("A second one?!", "Whoa there can be a lot of notifications right? I mean what am I thinking.")
+//     setTimeout(() => {
+//         PushNotification("<i class='m-i'>warning</i> oh god", "There has been a change in login details.", "warn")
+//     }, 1500);
+// }, 2050);

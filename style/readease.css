@@ -15,6 +15,63 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.readease::selection { /*this not working!*/
-    background-color: #4b23ff99!important;
+.readease p::selection {
+    background-color: #ffffff55!important;
+}
+
+flashwords{
+    display: flex;
+    align-content: space-between;
+    flex-wrap: wrap;
+    height: calc(100% - 60px);
+}
+flashwords word{
+    text-align: center;
+    width: 100%;
+    display: block;
+    background: #22222c;
+    padding: 24px;
+    font-size: 32px;
+    border-radius: 12px;
+    margin: 30px 15px;
+}
+flashwords speed{
+    display: block;
+    margin: 15px;
+    width: 100%;
+}
+flashwords input{
+    margin-top: 8px;
+    background: #222;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #222;
+    transition: .2s;
+}
+flashwords input:hover{
+    border: 1px solid #333;
+}
+flashwords input:focus{
+    border: 1px solid #555;
+}
+flashwords button{
+    margin: 15px;
+    width: 100%;
+    background: #272135;
+    padding: 12px;
+    border-radius: 12px;
+    transition: .1s;
+}
+flashwords button.disabled{
+    pointer-events: none;
+    cursor: initial;
+    background: #292929;
+}
+flashwords button:not(.disabled):hover{
+    background: #48396b;
+}
+flashwords button:not(.disabled):active{
+    background: #ad8df8;
+    color: #111;
 }

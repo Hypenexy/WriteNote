@@ -80,7 +80,7 @@ function WelcomeGui(response, element, error){
         motd.innerHTML = createMOTD(response.user.username)
         if(!mobileHeaderMenu.getElementsByTagName("account")[0]){
             var account = document.createElement("account")
-            account.innerHTML = "<img src='http://localhost/i/?s=128&i="+response.user.pfp+"'><name>"+response.user.username+"</name><bio>the world is beautiful by your side</bio><img src='http://localhost/i/?i="+response.user.banner+"'>"
+            account.innerHTML = "<img src='"+serverImage+"?s=128&i="+response.user.pfp+"'><name>"+response.user.username+"</name><bio>the world is beautiful by your side</bio><img src='"+serverImage+"?i="+response.user.banner+"'>"
             mobileHeaderMenu.prepend(account)
             mobileHeaderMenu.prepend(mobileHeaderMenu.getElementsByTagName("h1")[0])
             var banner = account.getElementsByTagName("img")[1]
@@ -165,8 +165,8 @@ function WelcomeGui(response, element, error){
     widgets.push(account)
     if(response.status!='offline'){
         if(response.user!=false){
-            account.innerHTML = "<img src='http://localhost/i/?s=64&i="+response.user.pfp+"'>"+response.user.username+"<a tabindex='0'>"+locale.switchacc+"</a>"
-            account.style = "text-shadow: 1px 1px 3px #000;background-position:center;background-size:cover;background-image:url(http://localhost/i/?&i="+response.user.banner+")"
+            account.innerHTML = "<img src='"+serverImage+"?s=64&i="+response.user.pfp+"'>"+response.user.username+"<a tabindex='0'>"+locale.switchacc+"</a>"
+            account.style = "text-shadow: 1px 1px 3px #000;background-position:center;background-size:cover;background-image:url("+serverImage+"?&i="+response.user.banner+")"
             ButtonEvent(account.getElementsByTagName("a")[0], function(){
                  //do ur account switching
             })
@@ -174,8 +174,8 @@ function WelcomeGui(response, element, error){
         else{
             account.innerHTML = "You're not logged in. <a>Login</a><a>Register</a>"
             ButtonEvent(account.getElementsByTagName("a")[1], function(){
-                loadCSS(serveraddress + "styles/forms.css")
-                loadScript(serveraddress + "register/register.js.php", "registerscript", function(){
+                loadCSS(serverAddress + "styles/forms.css")
+                loadScript(serverAddress + "register/register.js.php", "registerscript", function(){
                     showlogin()
                     var xbtn = login.getElementsByTagName("span")[0]
                     xbtn.opacity = 1
@@ -183,8 +183,8 @@ function WelcomeGui(response, element, error){
                 })
             })
             // ButtonEvent(account.getElementsByTagName("a")[0], function(){
-            //     loadCSS(serveraddress + "styles/forms.css")
-            //     loadScript(serveraddress + "login/login.js", "registerscript", function(){
+            //     loadCSS(serverAddress + "styles/forms.css")
+            //     loadScript(serverAddress + "login/login.js", "registerscript", function(){
             //         showlogin()
             //         var xbtn = login.getElementsByTagName("span")[0]
             //         xbtn.opacity = 1
