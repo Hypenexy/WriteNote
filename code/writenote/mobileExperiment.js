@@ -99,6 +99,9 @@ function setMobileStatus(){
     }
 }
 function getMobileStatus(){
+    if(mobile){
+        return onlinestatus + " " + notificationstatus
+    }
     return getTime() + " " + batterystatusprocessed + " " + onlinestatus + " " + notificationstatus
 }
 
@@ -171,7 +174,7 @@ var mobileHeaderMenu = document.createElement("div")
 mobileHeaderMenu.classList.add("mobilemenu")
 mobileHeaderMenu.innerHTML = "<h1>11/11/2022</h1><currentnote><i class='m-i'>description</i><input><workspace></workspace><notespace></notespace><notesize></notesize></currentnote>"+
 // "<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu>"
-"<actionmenu><vs class='m-i'>settings</vs></actionmenu>"+
+"<vs class='m-i'>settings</vs>"+
 "<actionmenu><h2>Notifications</h2><clearn>Clear All</clearn></actionmenu>"
 
 

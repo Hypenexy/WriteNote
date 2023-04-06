@@ -87,7 +87,7 @@
     outline: 1px solid #fff;
 }
 
-.mobilemenu vs:first-child{
+/* .mobilemenu vs:first-child{
     margin-left: 0;
 }
 
@@ -99,8 +99,25 @@
     transition: .1s;
     transform: translateY(2px);
     box-shadow: 0 0 0 #555;
+} */
+.mobilemenu vs{
+    position: absolute;
+    right: 20px;
+    top: 0;
+    transition: .3s;
 }
-
+.mobilemenuactive vs{
+    top: 8px;
+}
+.mobilemenu vs:hover{
+    transform: rotate(60deg);
+    box-shadow: 1.8px .9px 0 #555;
+}
+.mobilemenu vs:active{
+    transition: .1s;
+    transform: translateY(2px);
+    box-shadow: 0 0 0 #555;
+}
 
 .mobilemenu actionmenu{
     display: block;

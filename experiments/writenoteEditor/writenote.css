@@ -201,14 +201,92 @@ notearea cal::before{
 }
 
 dropeffect{
-    pointer-events: none;
+    z-index: 1;
+    cursor: grabbing;
     visibility: hidden;
+    pointer-events: none;
     position: absolute;
     display: block;
     width: 100%;
     height: 100%;
-    background: #22222288;
+    background: #22223699;
+    border: 2px dashed #eeeeeeee;
 }
 .dropeffectvisible{
     visibility: visible;
 }
+dropeffect p{
+    font-size: 20px;
+    color: #efefefef;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+wnaudio{
+    position: relative;
+    user-select: none;
+    background: #111;
+    border-radius: 8px;
+    padding: 7px 5px 1px 4px;
+}
+wnaudio ti{
+    position: absolute;
+    left: 68px;
+    font-size: 12px;
+}
+
+wnaudio i{
+    cursor: pointer;
+    user-select: none;
+    padding: 4px;
+    border-radius: 8px;
+}
+wnaudio i:hover{
+    background: #292929;
+}
+
+wnaudio input {
+    cursor: pointer;
+    width: 250px;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+wnaudio input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #65baff;
+    border: 2px solid #65baff;
+    box-shadow: -9005px 0 0 9000px #65baff;
+    transition: 0.2s;
+}
+
+wnaudio:hover input[type="range"]::-webkit-slider-thumb{
+    background: #65baff55;
+    border: 2px solid #fffcfccc;
+}
+
+writenote overlay{
+    pointer-events: none;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+}
+
+writenote overlay userselection{
+    display: block;
+    position: absolute;
+    min-width: 1px;
+    background: #eeeeee44;
+} 

@@ -71,6 +71,8 @@
     position: relative;
     display: block;
     width: 100%;
+    padding: 12px;
+    gap: 12px;
     height: calc(100% - 112px);
     transition: .4s;
 }
@@ -155,8 +157,7 @@
 }
 .languageedit, .languagereference{
     width: 100%;
-    margin: 30px;
-    padding: 30px;
+    padding: 24px;
     background: #2d2d2d;
     border-radius: 24px;
     font-size: 20px;
@@ -186,6 +187,14 @@
     background: #222242;
     border-radius: 0 8px 8px 0;
 }
+.languageeditReference x{
+    top: 24px;
+    right: 24px;
+}
+.languageeditReference input{
+    width: 100%;
+    border-radius: 8px;
+}
 .referenceadd{
     padding: initial;
     width: 68px
@@ -206,7 +215,7 @@
     color: #111;
     background: #bbb;
 }
-.tooltip, .tip{
+.tooltip, .tip, .languageSelector{
     visibility: hidden;
     opacity: 0;
     position: absolute;
@@ -217,10 +226,34 @@
     padding: 12px;
     color: #eee;
 }
-.tooltipvisible, .tipvisible{
+.tooltipvisible, .tipvisible, .languageSelectorVisible{
     visibility: visible;
     opacity: 1;
     transition: opacity .3s;
+}
+.languageSelectorVisible{
+    max-height: 150px;
+    top: 290px;
+    left: 12px;
+    overflow: auto;
+}
+.languageSelectorVisible p{
+    user-select: none;
+    cursor: pointer;
+    padding: 7px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    transition: .1s;
+}
+.languageSelectorVisible p:last-child{
+    margin-bottom: initial;
+}
+.languageSelectorVisible p:hover, .languageSelectorVisible p:focus-visible{
+    background: #111;
+}
+.languageSelectorVisible p:active{
+    background: #070707;
+    color: #fff;
 }
 .tip{
     width: 250px;

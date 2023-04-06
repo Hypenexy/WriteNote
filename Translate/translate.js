@@ -2,7 +2,7 @@ function initApp(){
 var languages = ["English", "Български", "Turkish", "Deutsch", "Español", "Русский", "Japanese", "Chinese"]
 var SelectedLanguage = ""
 
-var strings = ["welcome", "heythere"]
+var strings = Object.keys(locale)
 
 var welcome = document.createElement("div")
 welcome.classList.add("translate")
@@ -88,15 +88,15 @@ function initLanguageEditor(){
     //     if(tipElement.innerHTML){
     //         tipnextfunction()
     //     }
-    // }) not sure
+    // }) not sure // still not sure, maybe better keep it commented
     setTimeout(() => {
         function next(){
             function next(){
-                tip("Here you write in the language you've selected. Remember to be as close as possible to the references.", [402, 79], [3, 3], null, true)
+                tip("Here you write in the language you've selected. Remember to be as close as possible to the references.", [275, 55], [3, 3], null, true)
             }
-            tip("Click here to add another language to reference from.", [102, 223], [2, 3], next)
+            tip("Click here to add another language to reference from.", [87, 206], [2, 3], next)
         }
-        tip("To exit and return to the language selection, you can click here.", [102, 145], [1, 3], next)
+        tip("To exit and return to the language selection, you can click here.", [87, 125], [1, 3], next)
         setTimeout(() => {
             if(tipnextfunction == next){
                 next()
@@ -113,7 +113,7 @@ function initLanguageEditor(){
         }
         return html
     }
-    translations.innerHTML = "<div class='languagereference referenceadd'><i class='m-i'>arrow_back</i><i class='m-i'>add</i></div><div class='languageedit'><p>"+SelectedLanguage+"</p>"+getLanguageStrings()+"</div>"
+    translations.innerHTML = "<div class='languagereference referenceadd'><i class='m-i'>close</i><i class='m-i'>add</i></div><div class='languageedit'><p>"+SelectedLanguage+"</p>"+getLanguageStrings()+"</div>"
     var referenceadd = translations.getElementsByClassName("referenceadd")[0]
     var referenceaddbuttons = referenceadd.getElementsByClassName("m-i")
 
@@ -123,9 +123,95 @@ function initLanguageEditor(){
         initApp()
     })
     Tooltip(referenceaddbuttons[1], "Add a reference language")
-    ButtonEvent(referenceaddbuttons[1], function(){
-        //reference language
+    document.addEventListener("click", function(){
+        var languageSelector = app.getElementsByClassName("languageSelectorVisible")
+        if(languageSelector.length != 0){
+            languageSelector[0].remove()
+        }
     })
+    ButtonEvent(referenceaddbuttons[1], function(){
+        if(app.getElementsByClassName("languageSelector").length == 0){
+            var languageSelector = document.createElement("div")
+            languageSelector.classList.add("languageSelector")
+            var data = {getExistingLanguages : true}
+            $.ajax({
+                url: server + "app/translate/",
+                type: "post",
+                data: data,
+                success: function (response) {
+                    response = JSON.parse(response)
+                    if(response.status=="success"){
+                        response.languages.forEach(element => {
+                            var languageButton = document.createElement("p")
+                            languageButton.innerHTML = element
+                            ButtonEvent(languageButton, addReference, element)
+                            languageSelector.appendChild(languageButton)
+                        });
+                    }
+                },
+                error: function() {
+                    languageSelector.innerHTML = "Could not connect to server.<br>Check your connection between the server!"
+                }
+            })
+            app.appendChild(languageSelector)
+            setTimeout(function() {
+                languageSelector.classList.add("languageSelectorVisible")
+            }, 10)
+        }
+    })
+
+    function addReference(language){
+        function getReferenceLanguageStrings(){
+            var data = {getLanguage : language}
+            var strings = ""
+            $.ajax({
+                url: server + "app/translate/",
+                type: "post",
+                data: data,
+                success: function (response) {
+                    response = JSON.parse(response)
+                    strings = response.language
+                    strings = strings.slice(13)
+                    
+                    var fixedJSON = strings
+                        .replace(/:\s*"([^"]*)"/g, function(match, p1) {
+                            return ': "' + p1.replace(/:/g, '@colon@') + '"';
+                        })
+                        .replace(/:\s*'([^']*)'/g, function(match, p1) {
+                            return ': "' + p1.replace(/:/g, '@colon@') + '"';
+                        })
+                        .replace(/(['"])?([a-z0-9A-Z_]+)(['"])?\s*:/g, '"$2": ')
+                        .replace(/@colon@/g, ':')
+
+
+                    strings = JSON.parse(fixedJSON)
+                    stringsValues = Object.values(strings)
+                    var html = ""
+                    for(let i = 0; i < stringsValues.length; i++){
+                        html += "<label><input value='"+stringsValues[i]+"' disabled></label>"
+                    }
+                    reference.innerHTML = "<p>"+language+"</p>"+html
+                    reference.appendChild(closeBtn)
+                },
+                error: function() {
+                    alert("Could not connect to server.<br>Check your connection between the server!")
+                }
+            })
+            
+        }
+        var reference = document.createElement("div")
+        reference.classList.add("languageedit")
+        reference.classList.add("languageeditReference")
+        var closeBtn = document.createElement("x")
+        closeBtn.classList.add("m-i")
+        closeBtn.innerText = "close"
+        ButtonEvent(closeBtn, function(){
+            reference.remove()
+        })
+        getReferenceLanguageStrings()
+        translations.appendChild(reference)
+    }
+
     var languageedit = translations.getElementsByClassName("languageedit")[0]
 }
 
@@ -143,7 +229,7 @@ for (let i = 0; i < specificlanguagebuttons.length; i++) {
 }
 
 
-//ADD HOVER TOOLTIPS!!!
+//ADD HOVER TOOLTIPS!!! Haven't I done that already?
 ButtonEvent(languageselectbtn, function(){
     if(languageselectbtn.classList.contains("btnactive")){
         languageselectbtn.classList.remove("btnactive")

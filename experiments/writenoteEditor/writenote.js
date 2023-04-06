@@ -22,6 +22,7 @@ class WriteNote{
         var notearea = this.notearea
         var writenote = this.writenote
         notearea.contentEditable = true // maybe make a change where each p element is contenteditable and all of them have ids
+        notearea.tabIndex = '0' // was this really needed all this time?
         document.execCommand("defaultParagraphSeparator", false, "p")
         notearea.innerHTML = "<p><br></p>"
 
@@ -75,6 +76,57 @@ class WriteNote{
             }
         })
 
+        
+        var dropeffect = document.createElement("dropeffect")
+        // dropeffect.innerHTML = "<headerfx>Drop here to open as a new file</headerfx><noteareafx>Drop here to insert in current file</noteareafx>" //add a choice to insert contents or a file! if it's a file lol
+        dropeffect.innerHTML = "<p>Drop here to insert in current file</p>"
+        writenote.appendChild(dropeffect)
+        
+        document.addEventListener("dragover", function(e){
+            dropChange()
+        }, false)
+
+        function dropChange(){
+            dropeffect.classList.add("dropeffectvisible")
+        }
+
+        function dropChangeBack(){
+            dropeffect.classList.remove("dropeffectvisible")
+        }
+        document.addEventListener("dragleave", dropChangeBack, false)
+        document.addEventListener("drop", function(e){
+            dropChangeBack()
+            e.stopPropagation();
+            e.preventDefault();
+            var file = e.dataTransfer.files;
+            console.log(file)
+            
+        })
+
+
+        var overlay = document.createElement("overlay")
+        writenote.appendChild(overlay)
+        var that = this
+        function foo(){ // make this a function of the class
+            // and add serialization support so u can socket io the data
+            const selObj = window.getSelection()
+            const selRange = selObj.getRangeAt(0)
+            console.log(that.zoom)
+            var userSelection = document.getElementById("u1")
+            if(!userSelection){
+                userSelection = document.createElement("userselection")
+                userSelection.id = "u1"
+            }
+            var selectionPosition = selRange.getBoundingClientRect()
+            userSelection.style.top = selectionPosition.top * that.zoom + "px"
+            userSelection.style.left = selectionPosition.left * that.zoom + "px"
+            userSelection.style.width = selectionPosition.width * that.zoom + "px"
+            userSelection.style.height = selectionPosition.height * that.zoom + "px"
+            overlay.appendChild(userSelection)
+       }
+
+        document.addEventListener("selectionchange", foo)
+
         writenote.appendChild(notearea)
         parent.appendChild(writenote)
     }
@@ -118,6 +170,7 @@ class WriteNote{
                 this.notearea.style.transformOrigin = '0 0'
             }
         }
+        this.zoom = value
     }
 
     getSelectedNode(){
@@ -129,6 +182,28 @@ class WriteNote{
             if(selection.rangeCount > 0){
                 return selection.getRangeAt(0).startContainer.parentNode;
             }
+        }
+    }
+
+    readFromSerialPort(){
+        // https://developer.mozilla.org/en-US/docs/Web/API/SerialPort
+    }
+
+    //allow for escaping
+    //disallow adding new line
+    //allow only title edit
+    insertAudio(){
+        var audio = document.createElement("wnaudio")
+
+        // append child at selection (caret)
+        var range = window.getSelection().getRangeAt(0)
+        audio.innerHTML = '<ti>song.mp3</ti><i class="m-i">play_arrow</i><i class="m-i">repeat</i><input type="range">'
+
+        if(range.startContainer.parentElement.parentElement===this.notearea){
+           // delete whatever is on the range
+           range.deleteContents()
+           // place your audio
+           range.insertNode(audio)
         }
     }
 

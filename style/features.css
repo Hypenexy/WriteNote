@@ -1,0 +1,135 @@
+.calculator input{
+    background: #222335;
+    display: block;
+    width: calc(100% + 24px);
+    padding: 24px 12px;
+    font-size: 24px;
+    border: 2px solid #ebe3ff33;
+    margin: -12px;
+    margin-bottom: 12px;
+    transition: .2s;
+}
+.calculator input.error{
+    border: 2px solid #cc4747dd;
+}
+
+.calculator{
+    height: calc(100% - 60px);
+    position: relative;
+}
+.calculator buttons{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 12px;
+    height: calc(100% - 80px);
+}
+
+.calculator buttons btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1c1c1c;
+    border-radius: 8px;
+    cursor: pointer;
+    flex: 1 0 15%;
+    font-size: 24px;
+    text-align: center;
+    padding: 12px;
+    transition: .1s;
+}
+.calculator buttons btn:hover{
+    background: #252525;
+}
+.calculator buttons btn:active{
+    background: #2d3058;
+}
+.calculator buttons btn.big{
+    background: #1b1f47;
+    position: relative;
+    flex: 7.5 0 80px;
+}
+.calculator buttons btn.big:hover{
+    background: #333981;
+}
+.calculator buttons btn.big:active{
+    background: #474fac;
+}
+
+.calculator .historybtn{
+    position: absolute;
+    top: 20px;
+    right: 0px;
+    padding: 8px;
+
+    color: #eee;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 50%;
+    transition: .2s;
+}
+.calculator .historybtn:hover, .calculator .historybtn:focus-visible{
+    color: #fff;
+    background: #141414;
+}
+.calculator .historybtn:active{
+    background: #333;
+}
+
+.calculator history{
+    z-index: 2;
+    position: absolute;
+    background: #111;
+    border-radius: 12px;
+    width: calc(100% + 24px);
+    height: 0%;
+    bottom: -12px;
+    left: 0;
+    margin: -12px;
+    overflow: auto;
+    transition: .3s cubic-bezier(.77,.07,.53,.82);
+}
+.calculator history.active{
+    height: 100%;
+    padding-top: 48px;
+}
+.calculator history p{
+    margin-top: 90px;
+    text-align: center;
+}
+.calculator history div{
+    /* user-select: text; */
+    cursor: pointer;
+    background: #1c1c1c;
+    padding: 12px;
+    margin: 12px;
+    border-radius: 4px;
+    margin-bottom: 0;
+    font-size: 20px;
+}
+.calculator history div:hover, .calculator history div:focus-visible{
+    background: #252525;
+}
+.calculator history div calc{
+    color: #ddd;
+}
+.calculator history div calc::before{
+    display: block;
+    content: 'Equation';
+    font-size: 16px;
+}
+.calculator history div result{
+    color: #eee;
+}
+.calculator history div result::before{
+    display: block;
+    content: 'Result';
+    font-size: 16px;
+}
+.calculator lasthistory{
+    position: absolute;
+    cursor: pointer;
+    color: #bbb;
+    top: 10px;
+    left: 3px;
+}

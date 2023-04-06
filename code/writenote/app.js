@@ -61,8 +61,12 @@ function showContext(){
 
 document.addEventListener("click", function(e){
     if(contextMenu && contextMenu.nodeType){
-        if(e.target != contextMenu && e.target.parentElement != contextMenu){
+        if(e.target != contextMenu && e.target.parentElement != contextMenu && e.target.parentElement.parentElement != contextMenu){
             hideContext()
+        }
+        else{
+            e.preventDefault()
+            e.stopPropagation()
         }
     }
 })
@@ -267,4 +271,18 @@ function windowApp(Node, Title, Icon){
     setTimeout(() => {
         element.classList.remove("transition")
     }, 10);
+}
+
+/**
+ * Used for the toggle functions on windows
+ * @param {String} Title The exact title on creation
+ * @returns The index where it's found at in the array
+ */
+function windowAppExists(Title){
+    for(let i = 0; i < activeWindows.length; i++) {
+        if(activeWindows[i].title === Title){
+            return i
+        }
+    }
+    return false
 }

@@ -32,8 +32,8 @@ function showSettings(panel){
 
     var buttons = document.createElement("div")
     buttons.classList.add("buttons")
-    var miIcons = ["person", "style", "info"]
-    var tabs = ["Account", "Appearance", "About"]
+    var miIcons = ["person", "style", "border_color", "info"]
+    var tabs = ["Account", "Appearance", "Editor", "About"]
     for (let i = 0; i < tabs.length; i++) {
         const element = tabs[i]
         var button = document.createElement("button")
@@ -65,7 +65,18 @@ function showSettings(panel){
         if(panel=="Account"){
             var display = document.createElement("div")
             display.classList.add("display")
-            display.innerHTML = "<img class='banner' src='"+serverImage+"?i="+storedResponse.user.banner+"'><img class='avatar' src='"+serverImage+"?s=128&i="+storedResponse.user.pfp+"'><p class='username'>"+storedResponse.user.username+"</p>"
+            if(storedResponse.user){
+                if(storedResponse.user.banner){
+                    display.innerHTML += "<img class='banner' src='"+serverImage+"?i="+storedResponse.user.banner+"'>"
+                }
+                if(storedResponse.user.avatar){
+                    display.innerHTML += "<img class='avatar' src='"+serverImage+"?s=128&i="+storedResponse.user.pfp+"'>"
+                }
+                display.innerHTML += "<p class='username'>"+storedResponse.user.username+"</p>"
+            }
+            else{
+                display.innerHTML = ""
+            }
             pageSettings.appendChild(display)
         }
     }

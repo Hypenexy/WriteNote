@@ -75,3 +75,19 @@ flashwords button:not(.disabled):active{
     background: #ad8df8;
     color: #111;
 }
+
+narrator p{
+    cursor: pointer;
+    background: #1c1c1c;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: .2s;
+}
+narrator p:hover, narrator p:focus-visible{
+    background: #333;
+}
+narrator p:active{
+    background: #eee;
+    color: #111;
+}

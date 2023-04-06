@@ -12,11 +12,27 @@
     <script src="../../code/libraries/MDUtils.js"></script>
     <script src="../../code/writenote/MDUI.js"></script>
     <script>
+        var locale = {
+            "hi1" : "hi",
+            "updateloc" : "update loc",
+            "highlightHi" : "highlight hi"
+        }
         var ui = new MDUI(true)
         ui.init()
         
         var login = ui.createModal()
-        login.createButton("hi", console.log)
+        login.createButton("hi1", console.log)
+        login.createButton("updateloc", function(){
+            locale = {
+                "hi1" : "zdr",
+                "updateloc" : "It is updated now!",
+                "highlightHi" : "highlight hi"
+            }
+            ui.updateLocalization()
+        })
+        login.createButton("highlightHi", function(){
+            ui.highlightElementByLocalization("hi1")
+        })
     </script>
 </body>
 </html>

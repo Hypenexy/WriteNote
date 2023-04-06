@@ -4,6 +4,7 @@ app.appendChild(notearea)
 var workspace = "note"
 
 notearea.contentEditable = "true"
+notearea.tabIndex = '0'
 
 document.execCommand("defaultParagraphSeparator", false, "p")
 
@@ -248,3 +249,28 @@ notearea.addEventListener("click", function(e){
         openimageEditor(img, image)
     }
 })
+
+
+// Remove this when you're smarter and have time
+// to create your own undo redo stack
+//
+// Maybe command-pattern shits? Idk yet. (rewrite writenote)
+function Undo(){
+    document.execCommand('undo');
+}
+function Redo(){
+    document.execCommand('redo');
+}
+function SelectAll(){
+  window.getSelection().selectAllChildren(notearea)
+  notearea.focus()
+}
+
+function getSeletedText(){
+    try {
+        const range = window.getSelection().getRangeAt(0)
+        return range.toString();
+    } catch (e) {
+        return ''
+    }
+}

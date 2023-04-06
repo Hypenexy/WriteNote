@@ -124,7 +124,7 @@ function SaveFile(updateOpen){
         case "online":
             var data = {version : settings.version}
             $.ajax({
-                url: server + "/app/errorlog.php",
+                url: server + "app/errorlog.php",
                 type: "post",
                 data: data,
                 success: function (response) {
@@ -182,7 +182,7 @@ function LoadFile(space, path, name){
         case "online":
             var data = {version : settings.version}
             $.ajax({
-                url: server + "/app/errorlog.php",
+                url: server + "app/errorlog.php",
                 type: "post",
                 data: data,
                 success: function (response) {

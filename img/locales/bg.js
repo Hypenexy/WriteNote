@@ -2,6 +2,7 @@ var locale = {
     oops : "Уупс получи се грешка!",
     clienterr : "Клиент Грешка",
     serverres : "Сървър Отговор",
+    noconnection : "Няма връзка",
     retry : "Опитай пак",
     continueoffline : "Продължи към WriteNote офлайн",
     goodmorning : "Добро утро",
@@ -52,8 +53,8 @@ var locale = {
     edit : "Едит",
     insert : "Вмъкни",
     find : "Намери",
-    undo : "Отмени", // не знам!
-    redo : "Повтори",
+    undo : "Отмени",
+    redo : "Върни",
     cut : "Одрежи",
     copy : "Копирай",
     paste : "Постави",
@@ -76,7 +77,7 @@ var locale = {
     wordwrap : "Пренасяне на Думи",
     showlines : "Покажи редове",
     writingdirectio : "Дирекция на писан",
-    n : "е",// i tova lol
+    n : "е",
     menupositio : "Позиция на меню-",
     changefont : "Промени Фонта",
     theme : "Тема",
@@ -86,5 +87,5 @@ var locale = {
     left : "Ляво",
     right : "Дясно",
     bottom : "Долу",
-    search : "Търси",
+    search : "Търси"
 }

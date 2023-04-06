@@ -34,15 +34,12 @@ function narrator(){
 }
 
 function toggleWordFlash(){
-    var containsWordFlash = false
-    for (let i = 0; i < activeWindows.length; i++) {
-        if(activeWindows[i].Title = "Flash Words"){
-            containsWordFlash = true
-            activeWindows[i].close()
-        }
-    }
-    if(containsWordFlash==false){
+    var check = windowAppExists("Flash Words")
+    if(check===false){
         flashWords()
+    }
+    else{
+        activeWindows[check].close()
     }
 }
 
@@ -80,4 +77,51 @@ function flashWords(){
         document.getElementById("flashwordscheckmark").style = ""
     }
     windowApp(flashwords, "Flash Words", "format_shapes")
+}
+
+
+
+
+function toggleNarrator(){
+    var check = windowAppExists("Narrator")
+    if(check===false){
+        NarratorGui()
+    }
+    else{
+        activeWindows[check].close()
+    }
+}
+
+function NarratorGui(){
+    var narrator = document.createElement("narrator")
+    function tempNarratorFunc(text){
+        var msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        window.speechSynthesis.speak(msg);
+    }
+    function readSel(){
+        tempNarratorFunc(getSeletedText())
+    }
+    function readWhole(){
+        tempNarratorFunc(notearea.innerText)
+    }
+    var readSelBtn = document.createElement("p")
+    readSelBtn.innerText = "Read current selection"
+    var readWholeBtn = document.createElement("p")
+    readWholeBtn.innerText = "Read entire text"
+    var stopBtn = document.createElement("p")
+    stopBtn.innerText = "Stop narrator"
+    ButtonEvent(readSelBtn, readSel)
+    ButtonEvent(readWholeBtn, readWhole)
+    ButtonEvent(stopBtn, function(){
+        window.speechSynthesis.cancel()
+    })
+    narrator.appendChild(readSelBtn)
+    narrator.appendChild(readWholeBtn)
+    narrator.appendChild(stopBtn)
+    document.getElementById("narratorcheckmark").style.display = "block"
+    narrator.close = function(){
+        document.getElementById("narratorcheckmark").style = ""
+    }
+    windowApp(narrator, "Narrator", "record_voice_over")
 }

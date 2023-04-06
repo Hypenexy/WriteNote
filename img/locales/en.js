@@ -27,7 +27,7 @@ var locale = {
     cold : "a cold",
     mild : "a mild",
     hot : "a hot",
-    extremelyhot : "an extremely hot",// you need to contain context in WriteNote Translations
+    extremelyhot : "an extremely hot",
     its : "It's",
     afternoonin : "afternoon in",
     eveningin : "evening in",
@@ -86,11 +86,12 @@ var locale = {
     theme : "Theme",
     colorize : "Colorize",
     flashwords : "Flash Words",
+    narrator : "Narrator",
     lefttoright : "Left to Right",
     righttoleft : "Right to Left",
     top : "Top",
     left : "Left",
     right : "Right",
     bottom : "Bottom",
-    search : "Search",
+    search : "Search"
 }

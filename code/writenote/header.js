@@ -51,7 +51,7 @@ header.innerHTML = `
 
 <a>${locale.view}</a>
 <dropdown>
-    <v onclick="toggleCounter()"><p class="m-i">pin</p> ${locale.wordcounter}<tick id="wordcountercheckmark"></tick></v>
+    <v onclick="toggleWordCounter()"><p class="m-i">pin</p> ${locale.wordcounter}<tick id="wordcountercheckmark"></tick></v>
     <v onclick="toggleCalculator()"><p class="m-i">calculate</p> ${locale.calculator}<tick id="calculatorcheckmark"></tick></v>
     <v onclick="toggleTimer()"><p class="m-i">timer</p> ${locale.timer}<tick id="timercheckmark"></tick></v>
     <hr>
@@ -69,6 +69,7 @@ header.innerHTML = `
 <subdropdown id="directions" class="subdropdownmenu subdropdownmenu3">
     <v onclick="toggleColorize()"><p class="m-i">palette</p> ${locale.colorize}<tick id="colorizecheckmark"></tick></v>
     <v onclick="toggleWordFlash()"><p class="m-i">format_shapes</p> ${locale.flashwords}<tick id="flashwordscheckmark"></tick></v>
+    <v onclick="toggleNarrator()"><p class="m-i">record_voice_over</p> ${locale.narrator}<tick id="narratorcheckmark"></tick></v>
 </subdropdown>
 
 <subdropdown id="directions" class="subdropdownmenu">

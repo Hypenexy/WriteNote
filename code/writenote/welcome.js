@@ -173,8 +173,17 @@ function WelcomeGui(response, element, error){
         }
         else{
             account.innerHTML = "You're not logged in. <a>Login</a><a>Register</a>"
+            ButtonEvent(account.getElementsByTagName("a")[0], function(){
+                loadCSS(serverAddress + "img/styles/forms.css")
+                loadScript(serverAddress + "login/login.js", "loginscript", function(){
+                    showlogin()
+                    var xbtn = login.getElementsByTagName("span")[0]
+                    xbtn.opacity = 1
+                    ButtonEvent(xbtn, hidelogin)
+                })
+            })
             ButtonEvent(account.getElementsByTagName("a")[1], function(){
-                loadCSS(serverAddress + "styles/forms.css")
+                loadCSS(serverAddress + "img/styles/forms.css")
                 loadScript(serverAddress + "register/register.js.php", "registerscript", function(){
                     showlogin()
                     var xbtn = login.getElementsByTagName("span")[0]
