@@ -261,10 +261,26 @@ function Undo(){
 function Redo(){
     document.execCommand('redo');
 }
+function Cut(){
+    document.execCommand('cut');
+}
+function Copy(){
+    document.execCommand('copy');
+}
+function Paste(){
+    document.execCommand('paste');
+}
 function SelectAll(){
   window.getSelection().selectAllChildren(notearea)
   notearea.focus()
 }
+
+notearea.addEventListener('click', function (e){
+    if(e.detail === 3){
+        e.preventDefault()
+        SelectAll()
+    }
+})
 
 function getSeletedText(){
     try {

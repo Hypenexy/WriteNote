@@ -121,19 +121,93 @@ function toggleCalculator(){
 }
 
 
+var wordcounterVisible = false
+var wordcounter
 function WordCounter(){
-    var wordcounter = document.createElement("wordcounter")
+    wordcounter = document.createElement("wordcounter")
+    wordcounter.classList.add("transition")
+    var info = document.createElement("p")
+    var wordsEl = document.createElement("words")
+    var wordsText = document.createTextNode(" Words • ");
+    var symbolsEl = document.createElement("symbols")
+    var symbolsText = document.createTextNode(" Symbols");
+    var selectionEl = document.createElement("selection")
+    info.appendChild(wordsEl)
+    info.appendChild(wordsText)
+    info.appendChild(symbolsEl)
+    info.appendChild(symbolsText)
+    info.appendChild(selectionEl)
+    wordcounter.update = function(){
+        var text = $(notearea).text()
+        var words = text.split(' ')
+        if(text.length==0){
+            words = ''
+        }
+        wordsEl.innerText = words.length
+        symbolsEl.innerText = text.length 
+    }
+    wordcounter.updateSelection = function(){
+        var selectedText = getSeletedText()
+        if(selectedText.length != 0){
+            selectionEl.innerText = " • " + selectedText.length + " Selected"
+        }
+        else{
+            selectionEl.innerText = ""
+        }
+    }
+    wordcounter.update()
+    wordcounter.appendChild(info)
+    wordcounterVisible = true
+    notearea.classList.add("wordcounter")
     document.getElementById("wordcountercheckmark").style.display = "block"
     wordcounter.close = function(){
+        wordcounterVisible = false
+        notearea.classList.remove("wordcounter")
         document.getElementById("wordcountercheckmark").style = ""
+        wordcounter.classList.add("transition")
+        setTimeout(() => {
+            wordcounter.classList.remove("transition")
+            wordcounter.remove()
+        }, 200);
     }
-    windowApp(wordcounter, "Word Counter", "pin")
+    var maximizeBtn = document.createElement("x")
+    maximizeBtn.classList.add('m-i')
+    maximizeBtn.innerText = "open_in_new"
+    info.appendChild(maximizeBtn)
+    var closeBtn = document.createElement("x")
+    closeBtn.classList.add('m-i')
+    closeBtn.innerText = "close"
+    info.appendChild(closeBtn)
+    // windowApp(wordcounter, "Word Counter", "pin")
+    app.appendChild(wordcounter)
+    setTimeout(() => {
+        wordcounter.classList.remove("transition")
+    }, 10);
 }
+
+notearea.addEventListener("input", function(e){
+    if(wordcounterVisible==true){
+        wordcounter.update()
+        if(e.inputType=="deleteContentBackward" || e.inputType=="deleteContentForward"){
+            wordcounter.updateSelection()
+        }
+    }
+})
+document.addEventListener("selectionchange", function(){
+    if(wordcounterVisible==true){ // detect if the parent parent is notearea
+        wordcounter.updateSelection()
+    }
+})
 
 function toggleWordCounter(){
     var check = windowAppExists("Word Counter")
     if(check===false){
-        WordCounter()
+        if(wordcounterVisible==true){
+            wordcounter.close()
+        }
+        else{
+            WordCounter()
+        }
     }
     else{
         activeWindows[check].close()

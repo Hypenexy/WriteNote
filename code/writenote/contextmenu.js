@@ -100,7 +100,7 @@ notearea.addEventListener("contextmenu", function(e){
         addToMenu("Copy", "copy", null, true)
     }
     else{
-        addToMenu("Cut", "cut", function(){})
+        addToMenu("Cut", "cut", Cut)
         addToMenu("Copy", "copy", function(){})
     }
     addToMenu("Paste", "paste", function(){})

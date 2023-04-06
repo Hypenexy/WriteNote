@@ -18,4 +18,12 @@ function initSocket(){
     socket.on('contentChange', (data) => {
         notearea.innerHTML = data
     })
+
+
+    function onSettingsChange(){
+        socket.emit("saveSettings", JSON.stringify(settings))
+    }
+    socket.on('saveSettings', (data) => {
+        settings = JSON.parse(data)
+    })
 }
