@@ -479,3 +479,17 @@ function getAverageRGB(img, blockSize) {
 
     return rgb;
 }
+
+/**
+ * Gets a parent's parents' node
+ * @param {Element} element Element
+ * @param {Int} level How many parents up
+ * @returns Returns the parent element according to level
+ */
+function getParentNode(element, level = 1){
+    while (level-- > 0) {
+      element = element.parentNode;
+      if (!element) return null;
+    }
+    return element;
+}

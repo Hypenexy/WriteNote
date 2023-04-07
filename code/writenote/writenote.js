@@ -301,7 +301,7 @@ function printwn(){ //it's possible without opening new document
 }
 
 
-function getSelectionStyles(){ // func not working when multiple active or not selected specifically
+function getSelectionStyles(){
     return {
         "isBold" : isSelectionEl("b"),
         "isItalic" : isSelectionEl("i"),
@@ -323,21 +323,24 @@ function isSelectionEl(el){
 
     if(raw_html==="") return false;
 
-    var tempDiv = document.createElement('div');
-    tempDiv.innerHTML = raw_html;
+    var tempDiv = document.createElement('div')
+    tempDiv.innerHTML = raw_html
 
-    var is_el_nodes = []
-    for (var node of tempDiv.childNodes) {
-        var tags = [node.nodeName.toLowerCase()];   
-        while(tags.includes("#text")) {
-            var start_tag = sel.anchorNode.parentNode.nodeName.toLowerCase();
-            var end_tag = sel.focusNode.parentNode.nodeName.toLowerCase();
-            tags = [start_tag, end_tag]
+    var el_nodes = []
+    for (var node of tempDiv.childNodes){
+        var tags = [node.nodeName.toLowerCase()]
+        if(tags.includes("#text")){
+        for (let i = 0; i < 4; i++){
+                var tagName = getParentNode(sel.anchorNode, i+1).nodeName.toLowerCase()
+                el_nodes.push(tagName)
+            }
         }
-        is_el_nodes.push(containsOnly([el], tags));
     }
 
-    return (!is_el_nodes.includes(false))
+    if(el_nodes.includes(el)){
+        return (true)
+    }
+    return false
 }
 
 function getSelectionAsHtml() {
