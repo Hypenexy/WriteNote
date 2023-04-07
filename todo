@@ -21,3 +21,4 @@ A great idea with sockets! In the translation page open an iframe or another pag
 Get the image info on a "::after element" or in the editor
 Maybe make like an integrated devtools menu to debug the html contents of the editor
 Make sure to update live changed settings with socket io
+Add version checker

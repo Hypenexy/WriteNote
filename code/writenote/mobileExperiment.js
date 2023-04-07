@@ -189,7 +189,7 @@ if(!settings.ft){
 }
 app.appendChild(mobileHeaderMenu)
 
-ButtonEvent(mobileHeaderMenu.getElementsByTagName("vs")[0], showSettings, "Account")
+ButtonEvent(mobileHeaderMenu.getElementsByTagName("vs")[0], function(w){showSettings(w);hideHeaderMobileMenu()}, "Account")
 
 ButtonEvent(mobileHeaderMenu.getElementsByTagName("clearn")[0], function(){
     var notificationsRn = mobileHeaderMenu.getElementsByTagName("notification")

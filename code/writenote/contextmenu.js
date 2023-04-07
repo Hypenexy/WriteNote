@@ -1,10 +1,16 @@
-notearea.addEventListener("contextmenu", function(e){
+function noteareaContextMenu(e, mobile){
     e.preventDefault()
     var show = showContext()
 
-    contextMenu.style.minWidth = "200px"
-    contextMenu.style.top = e.clientY + "px"
-    contextMenu.style.left = e.clientX + "px"
+    if(mobile==true){
+        contextMenu.classList.add("mobile")
+    }
+    else{
+        contextMenu.style.minWidth = "200px"
+        contextMenu.style.top = e.clientY + "px"
+        contextMenu.style.left = e.clientX + "px"
+    }
+    contextMenu.style.userSelect = "none"
 
     var selectedText
     try {
@@ -17,30 +23,56 @@ notearea.addEventListener("contextmenu", function(e){
     var charsCount = document.createElement("pr")
     charsCount.classList.add("heading")
     charsCount.innerText = length+' characters selected'
+    charsCount.style.userSelect = "none"
     contextMenu.appendChild(charsCount)
 
     var richBtns = document.createElement("horizontalbtns")
     richBtnsArr = ["format_bold", "format_italic", "format_underline", "format_strikethrough"]
+    var selStyles = getSelectionStyles()
+    var richBtnsBtnsArr = []
     for (let i = 0; i < richBtnsArr.length; i++) {
-        const icon = richBtnsArr[i];
+        const icon = richBtnsArr[i]
         var element = document.createElement("i")
         element.classList.add("m-i")
         element.innerText = icon
         richBtns.appendChild(element)
-        ButtonEvent(element, function(){
-            if(icon[7]=='b'){
-                console.log("create bold text")
+        richBtnsBtnsArr.push(element)
+    }
+    for (let i = 0; i < richBtnsBtnsArr.length; i++) {
+        const element = richBtnsBtnsArr[i]
+        if(i==0 && selStyles.isBold==true){
+            element.classList.add("active")
+        }
+        if(i==1 && selStyles.isItalic==true){
+            element.classList.add("active")
+        }
+        if(i==2 && selStyles.isUnderlined==true){
+            element.classList.add("active")
+        }
+        if(i==3 && selStyles.isStrikeThrough==true){
+            element.classList.add("active")
+        }
+        function toggleStyle(type){
+            document.execCommand(type)
+            if(element.classList.contains("active")){
+                element.classList.remove("active")
             }
-            if(icon[7]=='i'){
-
+            else{
+                element.classList.add("active")
             }
-            if(icon[7]=='u'){
-
-            }
-            if(icon[7]=='s'){
-
-            }
-        })
+        }
+        if(i==0){
+            ButtonEvent(element, toggleStyle, "bold")
+        }
+        if(i==1){
+            ButtonEvent(element, toggleStyle, "italic")
+        }
+        if(i==2){
+            ButtonEvent(element, toggleStyle, "underline")
+        }
+        if(i==3){
+            ButtonEvent(element, toggleStyle, "strikethrough")
+        }
     }
     contextMenu.appendChild(richBtns)
 
@@ -80,13 +112,20 @@ notearea.addEventListener("contextmenu", function(e){
             element.classList.add("disabled")
         }
         else{
-            ButtonEvent(element, action)
+            ButtonEvent(element, function(){
+                action()
+                hideContext()
+            })
         }
         contextMenu.appendChild(element)
     }
 
     if(e.target.tagName === 'IMG'){
-        addToMenu("Open image in editor", "tune", function(){})
+        addToMenu("Open image in editor", "tune", function(){
+            var img = e.target
+            var image = e.target.parentNode
+            openimageEditor(img, image)
+        })
         addToMenu("Save image at", "add_photo_alternate", function(){})
         addToMenu("Copy image", "image", function(){})
         addToMenu("hr")
@@ -101,7 +140,7 @@ notearea.addEventListener("contextmenu", function(e){
     }
     else{
         addToMenu("Cut", "cut", Cut)
-        addToMenu("Copy", "copy", function(){})
+        addToMenu("Copy", "copy", Copy)
     }
     addToMenu("Paste", "paste", function(){})
     addToMenu("Select All", "select_all", SelectAll)
@@ -114,4 +153,23 @@ notearea.addEventListener("contextmenu", function(e){
     // "<pr><i class='m-i'>save</i> 210 B</pr>"
 
     show()
+}
+
+notearea.addEventListener("contextmenu", noteareaContextMenu)
+document.addEventListener("selectionchange", function(e){
+    if(mobile){
+        if(contextMenu && contextMenu.nodeType){
+            hideContext()
+        }
+        if(getSeletedText().length!=0){
+            noteareaContextMenu(e, true)
+        }
+    }
+})
+document.addEventListener("input", function(e){
+    if(mobile){
+        if(contextMenu && contextMenu.nodeType){
+            hideContext()
+        }
+    }
 })

@@ -286,3 +286,49 @@ function windowAppExists(Title){
     }
     return false
 }
+
+
+document.addEventListener('fullscreenchange', function(e) {
+  if (document.fullscreenElement) {
+    fullscreen = true;
+    fullscreencheckmark.style.display = "block";
+  } else {
+    fullscreen = false;
+    fullscreencheckmark.style.display = "none";
+  }
+});
+
+document.addEventListener ("keydown", function (ekey) {
+  if (ekey.key == "F11") {
+      ekey.preventDefault();
+      togglefullscreen();
+  }
+});
+
+var documentElem = document.documentElement;
+var fullscreen = false;
+
+function openFullscreen() {
+    var element = documentElem
+    fullscreen = true
+    fullscreencheckmark.style.display = "block"
+    if(element.requestFullscreen){
+        element.requestFullscreen()
+    }else if(element.webkitRequestFullscreen){
+        element.webkitRequestFullscreen()
+    }else if(element.msRequestFullscreen){
+        element.msRequestFullscreen()
+  }
+}
+
+function closeFullscreen() {
+    fullscreen = false;
+    fullscreencheckmark.style.display = "none"
+    if(document.exitFullscreen){
+        document.exitFullscreen()
+    }else if(document.webkitExitFullscreen){
+        document.webkitExitFullscreen()
+    }else if(document.msExitFullscreen){
+        document.msExitFullscreen()
+    }
+}

@@ -264,8 +264,10 @@ function Redo(){
 function Cut(){
     document.execCommand('cut');
 }
+var wnclipboard = []
 function Copy(){
     document.execCommand('copy');
+    wnclipboard.push(getSeletedText()) //maybe check character size
 }
 function Paste(){
     document.execCommand('paste');
@@ -283,10 +285,81 @@ notearea.addEventListener('click', function (e){
 })
 
 function getSeletedText(){
-    try {
+    try { // check what is selected I COULDN'T find the .parent.parent code!!!
         const range = window.getSelection().getRangeAt(0)
         return range.toString();
     } catch (e) {
         return ''
     }
 }
+
+function printwn(){ //it's possible without opening new document
+    var oPrntWin = window.open("","_blank","width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
+    oPrntWin.document.open();
+    oPrntWin.document.write("<!doctype html><html><head><title>WriteNote Print<\/title><style>*{box-sizing: border-box;font-family: 'Roboto', sans-serif}<\/style><\/head><body onload=\"print();\">" + notearea.innerHTML + "<\/body><\/html>");
+    oPrntWin.document.close();
+}
+
+
+function getSelectionStyles(){ // func not working when multiple active or not selected specifically
+    return {
+        "isBold" : isSelectionEl("b"),
+        "isItalic" : isSelectionEl("i"),
+        "isUnderlined" : isSelectionEl("u"),
+        "isStrikeThrough" : isSelectionEl("strike")
+    }
+}
+
+function isSelectionEl(el){
+    var sel;
+    if (window.getSelection){
+        sel = window.getSelection(); 
+    }
+    else if (document.getSelection){
+        sel = document.getSelection(); 
+    }
+
+    var raw_html = getSelectionAsHtml();
+
+    if(raw_html==="") return false;
+
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = raw_html;
+
+    var is_el_nodes = []
+    for (var node of tempDiv.childNodes) {
+        var tags = [node.nodeName.toLowerCase()];   
+        while(tags.includes("#text")) {
+            var start_tag = sel.anchorNode.parentNode.nodeName.toLowerCase();
+            var end_tag = sel.focusNode.parentNode.nodeName.toLowerCase();
+            tags = [start_tag, end_tag]
+        }
+        is_el_nodes.push(containsOnly([el], tags));
+    }
+
+    return (!is_el_nodes.includes(false))
+}
+
+function getSelectionAsHtml() {
+    var html = "";
+    if(typeof window.getSelection != "undefined"){
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var container = document.createElement("div");
+            for (var i = 0, len = sel.rangeCount; i < len; ++i){
+                container.appendChild(sel.getRangeAt(i).cloneContents());
+            }
+            html = container.innerHTML;
+        }
+    }else if (typeof document.selection != "undefined"){
+        if (document.selection.type == "Text"){
+            html = document.selection.createRange().htmlText;
+        }
+    }
+    return html;
+}
+
+function containsOnly(array1, array2){
+    return !array2.some(elem => !array1.includes(elem))
+}
+  

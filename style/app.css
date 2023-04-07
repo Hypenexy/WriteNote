@@ -130,6 +130,14 @@ modal{
     padding: 12px;
     transition: .2s;
 }
+.contextmenu.mobile{
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+    overflow: auto;
+    bottom: 200px;
+    border-radius: 14px 14px 0 0;
+}
 .contextmenu input{
     padding: 6px 0 0 0;
     width: 100%;
@@ -218,6 +226,10 @@ modal{
     background: #eee;
     box-shadow: initial;
     transform: initial;
+}
+.contextmenu horizontalbtns i.active{
+    background: #885cff;
+    color: #fff;
 }
 
 .windowApp{

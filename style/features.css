@@ -140,6 +140,7 @@ notearea.wordcounter{
 wordcounter{
     z-index: 4;
     position: absolute;
+    overflow: hidden;
     bottom: 0;
     width: 100%;
     padding: 10px;
@@ -150,8 +151,11 @@ wordcounter{
 }
 wordcounter x{
     font-size: 16px!important;
-    top: 1px;
+    top: 2px;
     right: 1px;
+}
+wordcounter x:last-child{
+    right: 32px;
 }
 wordcounter p{
     transition: .2s;
@@ -161,6 +165,17 @@ wordcounter.transition{
     /* transform: translateY(40px); */
 }
 
-wordcounter.transition p{
-    transform: translateY(10px);
+wordcounter.transition p, wordcounter.transition x{
+    transform: translateY(20px);
+}
+
+.windowApp wordcounter x{
+    display: none;
+}
+.windowApp wordcounter{
+    border: 1px solid #4a20bd;
+    display: block;
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
 }

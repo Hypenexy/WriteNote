@@ -170,15 +170,19 @@ function WordCounter(){
             wordcounter.remove()
         }, 200);
     }
-    var maximizeBtn = document.createElement("x")
-    maximizeBtn.classList.add('m-i')
-    maximizeBtn.innerText = "open_in_new"
-    info.appendChild(maximizeBtn)
     var closeBtn = document.createElement("x")
     closeBtn.classList.add('m-i')
     closeBtn.innerText = "close"
-    info.appendChild(closeBtn)
-    // windowApp(wordcounter, "Word Counter", "pin")
+    ButtonEvent(closeBtn, wordcounter.close)
+    wordcounter.appendChild(closeBtn)
+    var maximizeBtn = document.createElement("x")
+    maximizeBtn.classList.add('m-i')
+    maximizeBtn.innerText = "open_in_new"
+    ButtonEvent(maximizeBtn, function(){
+        notearea.classList.remove("wordcounter")
+        windowApp(wordcounter, "Word Counter", "pin")
+    })
+    wordcounter.appendChild(maximizeBtn)
     app.appendChild(wordcounter)
     setTimeout(() => {
         wordcounter.classList.remove("transition")
@@ -213,3 +217,56 @@ function toggleWordCounter(){
         activeWindows[check].close()
     }
 }
+
+
+var fullscreencheckmark = document.getElementById("fullscreencheckmark");
+
+function togglefullscreen(){
+  if(fullscreen==false){
+    openFullscreen();
+  }
+  else{
+    closeFullscreen();
+  }
+}
+
+
+var hadfun = false
+function fun(funny){
+    if(funny==1){
+        if(!hadfun){
+            hadfun = true
+            PushNotification("A lot of clicks!", "You clicked that button 10 times")
+        }
+    }
+}
+
+
+var clipboard = document.createElement("clipboard")
+
+function showClipboard(){
+    var show = showContext()
+    var heading = document.createElement("pr")
+    heading.classList.add("heading")
+    heading.innerText = 'Clipboard history'
+    contextMenu.appendChild(heading)
+    contextMenu.style.maxHeight = "400px"
+    contextMenu.style.overflow = "auto"
+    for(let i = 0; i < wnclipboard.length; i++){
+        const clipboardData = wnclipboard[i]
+        var element = document.createElement("p")
+        element.innerHTML = clipboardData
+        ButtonEvent(element, function(){
+            document.execCommand("insertHTML", false, clipboardData)
+            hideContext()
+        })
+        contextMenu.appendChild(element)
+    }
+    show()
+}
+
+document.addEventListener("keydown", function(e){
+    if(e.ctrlKey && e.altKey && e.key == "v"){
+        showClipboard()
+    }
+})
