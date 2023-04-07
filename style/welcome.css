@@ -48,8 +48,18 @@ content{
 }
 
 .contentfull{
+    display: flex;
+    flex-direction: column;
     padding-right: initial;
     white-space: initial;
+}
+.contentfull search i{
+    top: 21px;
+}
+.contentfull infofileside{
+    display: flex;
+    height: 100%;
+    gap: 16px;
 }
 
 .onlineloaderspiny{
@@ -215,10 +225,9 @@ content info{
 }
 .contentfull info{
     /* background: red; */
-    position: absolute;
     display: block;
-    width: 20%;
-    /* max-height: 100%; i can't...
+    width: 200px;
+    /* max-height: 100%; i can't... or can I?
     overflow-y: auto; */
 }
 .widget{
@@ -317,29 +326,38 @@ filters{
     position: relative;
 }
 .contentfull filesside{
+    /* background-color: rgb(164, 97, 97); */
     display: block;
     float: right;
-    padding: 0 24px;
-    max-width: calc(100% - 200px);
-    width: 80%;
+    width: 100%;
+    height: 100%;
+    /* max-width: calc(100% - 200px); */
 }
 
 @media screen and (max-width: 850px) {
+    .contentfull infofileside{
+        flex-direction: column;
+    }
     .contentfull info{
         width: 100%;
-        margin: 15px 0;
         position: relative;
+        display: flex;
     }
     .contentfull filesside{
         float: left;
         width: 100%;
         max-width: initial;
-        padding: 24px 8px;
+        padding: 8px;
+    }
+    .contentfull space{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .contentfull .widget{
         position: relative;
-        float: left;
         width: calc(50% - 6px);
+        margin: 0;
         margin-right: 12px;
     }
     .contentfull .widget:last-child{

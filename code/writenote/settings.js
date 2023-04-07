@@ -51,34 +51,49 @@ function showSettings(panel){
     settingsGUI.appendChild(pageSettings)
 
     function openPanel(panel){
-        pageSettings.innerHTML = ""
-        var lastActive = buttons.getElementsByClassName("active")
-        for (let i = 0; i < lastActive.length; i++) {
-            lastActive[i].classList.remove("active")
+        var animationTime = 0
+        if(animations){
+            animationTime = 150
+            pageSettings.classList.add("anim1")
         }
-        var navButtons = buttons.getElementsByTagName("button")
-        var navButtonIndex = tabs.indexOf(panel)
-        navButtons[navButtonIndex].classList.add("active")
-        var heading = document.createElement("h1")
-        heading.innerHTML = panel
-        pageSettings.appendChild(heading)
-        if(panel=="Account"){
-            var display = document.createElement("div")
-            display.classList.add("display")
-            if(storedResponse.user){
-                if(storedResponse.user.banner){
-                    display.innerHTML += "<img class='banner' src='"+serverImage+"?i="+storedResponse.user.banner+"'>"
-                }
-                if(storedResponse.user.avatar){
-                    display.innerHTML += "<img class='avatar' src='"+serverImage+"?s=128&i="+storedResponse.user.pfp+"'>"
-                }
-                display.innerHTML += "<p class='username'>"+storedResponse.user.username+"</p>"
+        setTimeout(() => {
+            pageSettings.classList.remove("anim1")
+            pageSettings.classList.add("notransition")
+            pageSettings.classList.add("animf")
+            setTimeout(() => {
+                pageSettings.classList.remove("notransition")
+                pageSettings.classList.remove("animf")
+            }, animationTime);
+            pageSettings.innerHTML = ""
+            var lastActive = buttons.getElementsByClassName("active")
+            for (let i = 0; i < lastActive.length; i++) {
+                lastActive[i].classList.remove("active")
             }
-            else{
-                display.innerHTML = ""
+            var navButtons = buttons.getElementsByTagName("button")
+            var navButtonIndex = tabs.indexOf(panel)
+            navButtons[navButtonIndex].classList.add("active")
+            var heading = document.createElement("h1")
+            heading.innerHTML = panel
+            pageSettings.appendChild(heading)
+            if(panel=="Account"){
+                var display = document.createElement("div")
+                display.classList.add("display")
+                if(storedResponse.user){
+                    if(storedResponse.user.banner){
+                        display.innerHTML += "<img class='banner' src='"+serverImage+"?i="+storedResponse.user.banner+"'>"
+                    }
+                    if(storedResponse.user.avatar){
+                        display.innerHTML += "<img class='avatar' src='"+serverImage+"?s=128&i="+storedResponse.user.pfp+"'>"
+                    }
+                    display.innerHTML += "<p class='username'>"+storedResponse.user.username+"</p>"
+                }
+                else{
+                    display.innerHTML = "You're not signed in"
+                    //sign buttons
+                }
+                pageSettings.appendChild(display)
             }
-            pageSettings.appendChild(display)
-        }
+        }, animationTime);
     }
 
     openPanel(panel)

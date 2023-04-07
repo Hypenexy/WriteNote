@@ -218,8 +218,8 @@ function LoadFile(space, path, name){
         return;
     }
 }
-
-function RenameVerify(renameTo){
+//also prevent creating files that already exist
+function RenameVerify(renameTo){ // . dots bug it out idk why
     if(renameTo.includes('/')){ // check if its a folder issue
         return 'Name can\'t contain "/"'
     }

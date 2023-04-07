@@ -1,6 +1,7 @@
 var app = document.getElementsByTagName("app")[0]
 var mobile, interacted = false
 const isPage = false
+var animations = true
 var online
 var serverAddress = "http://localhost/"
 var serverImage = "http://localhost/i/"
@@ -135,15 +136,15 @@ var startupInfo
 // }
 
 
-window.addEventListener('offline', function(e){
-    connectToMidelight()
-    // pushNotification("You're now offline!", "To work on your online space you need to be connected.", "warn")
-})
+// window.addEventListener('offline', function(e){
+//     connectToMidelight()
+//     PushNotification("You're now offline!", "To work on your online space you need to be connected.", "warn")
+// })
 
-window.addEventListener('online', function(e){
-    connectToMidelight()
-    // pushNotification("You've connected!", "Welcome back to the internet.")
-})
+// window.addEventListener('online', function(e){
+//     connectToMidelight()
+//     PushNotification("You've connected!", "Welcome back to the internet.")
+// })
 
 
 

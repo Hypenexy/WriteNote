@@ -720,10 +720,12 @@ function WelcomeGui(response, element, error){
             }
             content.appendChild(motd)
             content.appendChild(search)
-            content.appendChild(info)
+            var InfoFileside = document.createElement("InfoFileside")
+            InfoFileside.appendChild(info)
             filesside.appendChild(filters)
             filesside.appendChild(files)
-            content.appendChild(filesside)
+            InfoFileside.appendChild(filesside)
+            content.appendChild(InfoFileside)
         }, 10)
     }, 300)
 }

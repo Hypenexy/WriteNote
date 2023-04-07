@@ -45,7 +45,17 @@ function toggleWordFlash(){
 
 function flashWords(){
     var flashwords = document.createElement("flashwords")
-    var words = $(notearea).text().split(' ')
+    
+    var pEls = notearea.getElementsByTagName("p")
+    var text = []
+    for(let i = 0; i < pEls.length; i++){
+        if(pEls[i].innerText!=''){
+            text.push(pEls[i].innerText)
+        }
+    }
+    text = text.join(' ')
+    var words = text.split(' ')
+    // var words = $(notearea).text().split(' ')
     var word = document.createElement("word")
     var startbtn = document.createElement("button")
     if(words.length == 1 && words[0] == ""){
