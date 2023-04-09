@@ -13,8 +13,9 @@ function noteareaContextMenu(e, mobile){
     contextMenu.style.userSelect = "none"
 
     var selectedText
+    var range
     try {
-        const range = window.getSelection().getRangeAt(0)
+        range = window.getSelection().getRangeAt(0)
         selectedText = range.toString();
     } catch (e) {
         selectedText = ''
@@ -77,30 +78,10 @@ function noteareaContextMenu(e, mobile){
     contextMenu.appendChild(richBtns)
 
     function speakSelection(){
-        if('speechSynthesis' in window) {}
-        else{
-            PushNotification("Sorry, your browser doesn't support text to speech!", "You can't use the narrator in this browser or device.", "warn");
-        }
-        var msg = new SpeechSynthesisUtterance();
-        msg.text = selectedText;
-        window.speechSynthesis.speak(msg);
-        //https://github.com/mdn/dom-examples/tree/main/web-speech-api/speak-easy-synthesis
-        // read this
-        // var msg = new SpeechSynthesisUtterance();
-        // var voices = window.speechSynthesis.getVoices();
-        // msg.voice = voices[7]; // Choose a voice
-        // msg.volume = 1; // From 0 to 1
-        // msg.rate = 1; // From 0.1 to 10
-        // msg.pitch = 2; // From 0 to 2
-        // msg.text = "Dónde está el baño";
-        // msg.lang = 'es';
-        // speechSynthesis.speak(msg);
-        // speechSynthesis.getVoices().forEach(function(voice) {
-        //     console.log(voice.name, voice.default ? voice.default :'');
-        // });
+        Narrator(selectedText)
     }
 
-    function addToMenu(name, icon, action, isDisabled){
+    function addToMenu(name, icon, action, isDisabled, isDropdown){
         if(name=="hr"){
             var element = document.createElement("hr")
             contextMenu.appendChild(element)
@@ -112,10 +93,19 @@ function noteareaContextMenu(e, mobile){
             element.classList.add("disabled")
         }
         else{
-            ButtonEvent(element, function(){
-                action()
-                hideContext()
-            })
+            if(isDropdown!=true){
+                ButtonEvent(element, function(){
+                    hideContext()
+                    action()
+                })
+            }
+            else{
+                ButtonEvent(element, function(){
+                    setTimeout(() => {
+                        action()
+                    }, 5);
+                })
+            }
         }
         contextMenu.appendChild(element)
     }
@@ -142,10 +132,27 @@ function noteareaContextMenu(e, mobile){
         addToMenu("Cut", "cut", Cut)
         addToMenu("Copy", "copy", Copy)
     }
-    addToMenu("Paste", "paste", function(){})
+    addToMenu("Paste", "paste", Paste)
+    addToMenu("Clipboard history", "assignment", showClipboard, null, true)
     addToMenu("Select All", "select_all", SelectAll)
     addToMenu("hr")
-    addToMenu("Speak selection", "record_voice_over", speakSelection)
+    if(length==0){
+        addToMenu("Search on Ixeo", "search", null, true)
+        addToMenu("Find in note", "search", null, true)
+        addToMenu("Speak selection", "record_voice_over", null, true)
+        addToMenu("Convert selection", "pin", null, true)
+    }
+    else{
+        if(isNumeric(selectedText)){
+            addToMenu("Convert selection", "pin", function(){numeralConvert(range, e)}, null, true)
+        }
+        else{
+            addToMenu("Convert selection", "pin", null, true)
+        }
+        addToMenu("Search on Ixeo", "search", null)
+        addToMenu("Find in note", "search", null)
+        addToMenu("Speak selection", "record_voice_over", speakSelection)
+    }
     addToMenu("hr")
     addToMenu("Share", "share", function(){})
     // "<de>Properties</de>"+

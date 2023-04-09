@@ -22,3 +22,9 @@ Get the image info on a "::after element" or in the editor
 Maybe make like an integrated devtools menu to debug the html contents of the editor
 Make sure to update live changed settings with socket io
 Add version checker
+socketio device info like on battery change
+changes like in git
+when creating a file, if no name specified default to untitled + number
+maybe update contextmenu in app.js so its better (with submenus and addtomenu functions uknow?)
+rework the new animations on the settings menu so they look like the old one
+recognize language

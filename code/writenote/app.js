@@ -1,6 +1,8 @@
 var app = document.getElementsByTagName("app")[0]
 var mobile, interacted = false
-const isPage = false
+if(isApp!=true){
+    var isApp = false
+}
 var animations = true
 var online
 var serverAddress = "http://localhost/"
@@ -167,6 +169,8 @@ function load(response){
 function SaveSettings(space){
     //save in different places with the space argument
     //but for now!
+
+    //remove empty jsons inside!
 
     localStorage.setItem("options", JSON.stringify(settings))
 }

@@ -1,4 +1,4 @@
-function showSettings(panel){
+function showSettings(panel, submenu){
     var settingsGUI = document.createElement("div")
     settingsGUI.classList.add("bigWindow")
     settingsGUI.classList.add("settings")
@@ -49,35 +49,95 @@ function showSettings(panel){
     var pageSettings = document.createElement("div")
     pageSettings.classList.add("pageSettings")
     settingsGUI.appendChild(pageSettings)
+    var lasti = -1
 
-    function openPanel(panel){
+    function openPanel(panel, submenuParam){
         var animationTime = 0
         if(animations){
             animationTime = 150
-            pageSettings.classList.add("anim1")
         }
+        var lastActive = buttons.getElementsByClassName("active")
+        for (let i = 0; i < lastActive.length; i++) {
+            lastActive[i].classList.remove("active")
+        }
+
+        var navButtons = buttons.getElementsByTagName("button")
+        var navButtonIndex = tabs.indexOf(panel)
+        var animIn = "anim1" // For the animations I could make dynamic speed like 1 and divise it by the |lasti-i|
+        var animOut = "animf"
+        if(lasti<navButtonIndex){
+            animIn = "animf"
+            animOut = "anim1"
+        }
+        if(lasti==navButtonIndex){
+            animIn = "anims"
+            animOut = "anims"
+        }
+        var subpanel = settingsGUI.getElementsByTagName("subpanel")
+        if(subpanel.length>0){
+            if(lasti==navButtonIndex){
+                animOut = "animfh"
+                subpanel[0].classList.add("anim1h")
+            }
+            else{
+                subpanel[0].classList.add("animst")
+            }
+            setTimeout(() => {
+                subpanel[0].remove()
+                pageSettings.classList.remove("nodisplay")
+            }, animationTime);
+        }
+        pageSettings.classList.add(animIn)
+        lasti = navButtonIndex
+        navButtons[navButtonIndex].classList.add("active")
         setTimeout(() => {
-            pageSettings.classList.remove("anim1")
+            pageSettings.classList.remove(animIn)
             pageSettings.classList.add("notransition")
-            pageSettings.classList.add("animf")
+            pageSettings.classList.add(animOut)
             setTimeout(() => {
                 pageSettings.classList.remove("notransition")
-                pageSettings.classList.remove("animf")
+                pageSettings.classList.remove(animOut)
             }, animationTime);
             pageSettings.innerHTML = ""
-            var lastActive = buttons.getElementsByClassName("active")
-            for (let i = 0; i < lastActive.length; i++) {
-                lastActive[i].classList.remove("active")
-            }
-            var navButtons = buttons.getElementsByTagName("button")
-            var navButtonIndex = tabs.indexOf(panel)
-            navButtons[navButtonIndex].classList.add("active")
             var heading = document.createElement("h1")
             heading.innerHTML = panel
             pageSettings.appendChild(heading)
+            function submenu(menu){
+                var subHeading = document.createElement("h1")
+                var headerTextAppend = document.createElement("headermore")
+                headerTextAppend.innerHTML = " <i class='m-i'>navigate_next</i> " + menu
+                subHeading.innerText = heading.innerText
+                headerTextAppend.prepend(subHeading)
+                ButtonEvent(subHeading, openPanel, heading.innerText)
+                var submenu = document.createElement("div")
+                submenu.classList.add("submenu")
+                pageSettings.classList.add("animfh")
+                var subMenu = settingsSubMenus(menu)
+                subMenu.prepend(headerTextAppend)
+                setTimeout(() => {
+                    pageSettings.classList.add("nodisplay")
+                    pageSettings.classList.remove("animfh")
+                    settingsGUI.appendChild(subMenu)
+                    setTimeout(() => {
+                        subMenu.classList.remove("anim1h")
+                    }, 10);
+                }, animationTime);
+            }
+            if(submenuParam){
+                submenu(submenuParam)
+            }
+            function submenuButtons(buttonsList){
+                for (let i = 0; i < buttonsList.length; i++) {
+                    const buttonData = buttonsList[i].split(';')
+                    var element = document.createElement("bigBtn")
+                    element.innerHTML = "<ti><i class='m-i'>"+buttonData[0]+"</i>"+buttonData[1]+"</ti><co>"+buttonData[2]+"</co>"
+                    ButtonEvent(element, submenu, buttonData[1])
+                    pageSettings.appendChild(element)
+                }
+            }
+            var display = document.createElement("div")
+            display.classList.add("display")
             if(panel=="Account"){
-                var display = document.createElement("div")
-                display.classList.add("display")
                 if(storedResponse.user){
                     if(storedResponse.user.banner){
                         display.innerHTML += "<img class='banner' src='"+serverImage+"?i="+storedResponse.user.banner+"'>"
@@ -92,14 +152,197 @@ function showSettings(panel){
                     //sign buttons
                 }
                 pageSettings.appendChild(display)
+                var buttonsList = [
+                    "person;Account;Change your account details",
+                    "badge;Profile;A place to edit your profile picture, banner and status.",
+                    "verified_user;Privacy;Change your privacy preferences.",
+                    "devices;Devices;Preview and choose what devices you are logged in from."
+                ]
+                submenuButtons(buttonsList)
+            }
+            if(panel == "Appearance"){
+                var headerbox = document.createElement("headerbox")
+                var noteareabox = document.createElement("noteareabox")
+                display.appendChild(headerbox)
+                display.appendChild(noteareabox)
+                noteareabox.contentEditable = true
+                copyNodeStyle(header, headerbox)
+                copyNodeStyle(notearea, noteareabox)
+                pageSettings.appendChild(display)
+                var buttonsList = [
+                    "style;Theme;Choose a theme or create one to your liking",
+                    "translate;Language;Switch to your preferred language.",
+                    "menu;Sidepanel;Change options for the sidepanel.",
+                    "text_fields;Font;Change the size, boldness and font of the text."
+                ]
+                submenuButtons(buttonsList)
+            }
+
+            if(panel == "Editor"){
+                var buttonsList = [
+                    "record_voice_over;Narrator;Customize the way the narrator speaks",
+                    "dns;Services;Change the default search engine and more."
+                ]
+                submenuButtons(buttonsList)
+            }
+
+            if(panel == "About"){
+                var about = document.createElement("div")
+                about.classList.add("about")
+                about.innerHTML = `<h1 class="brand">
+                <b>WriteNote</b> by <m>Midelight</m></h1>
+                <wnsplit></wnsplit>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Written by Hypenexy, WriteNote is the ultimate text editor that should fit all your text editing needs!</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Firstly written in 2016 and shown to my classmates and principal. Rewritten in 2020 due to boredom. In 2022 and forward it's one of my biggest projects.</p>
+                <p>Release ${settings.version}</p>
+                <p><a target="_blank" href="https://midelight.net/WriteNote/History">WriteNote\'s history</a></p>`
+                pageSettings.appendChild(about)
             }
         }, animationTime);
     }
 
-    openPanel(panel)
+    openPanel(panel, submenu)
 
     app.appendChild(settingsGUI)
     setTimeout(() => {
         settingsGUI.classList.remove("transition")
     }, 10);
+}
+
+function settingsSubMenus(subpanel){
+    function addLabel(child, title){
+        var label = document.createElement("div")
+        label.classList.add("label")
+        label.innerHTML = "<p>"+title+"</p>"
+        label.appendChild(child)
+        element.appendChild(label)
+    }
+
+    var element = document.createElement("subpanel")
+    element.classList.add("pageSettings")
+    element.classList.add("anim1h")
+    if(subpanel=="Account"){
+        element.innerHTML = "hiii"
+    }
+
+    if(subpanel=="Narrator"){
+        var voices
+        const inputForm = document.createElement("form")
+        const inputTxt = document.createElement("input")
+        const inputBtn = document.createElement("button")
+        inputBtn.innerText = "Speak"
+        inputForm.appendChild(inputTxt)
+        inputForm.appendChild(inputBtn)
+        addLabel(inputForm, "Preview")
+
+
+        const synth = window.speechSynthesis
+
+        const voiceSelect = document.createElement("select")
+        addLabel(voiceSelect, "Voice")
+
+        // msg.volume = 1; // From 0 to 1
+        // msg.rate = 1; // From 0.1 to 10
+        // msg.pitch = 2; // From 0 to 2
+        const volumeInput = document.createElement("input")
+        const rateInput = document.createElement("input")
+        const pitchInput = document.createElement("input")
+        var arrInputs = [volumeInput, rateInput, pitchInput]
+        arrInputs.forEach(element => {
+            element.type = "number"
+        })
+        volumeInput.min = 0.1
+        if(settings.narrator && settings.narrator.volume){
+            volumeInput.value = settings.narrator.volume
+        }
+        else{
+            volumeInput.value = 1
+        }
+        volumeInput.max = 2
+        rateInput.min = 0.1
+        if(settings.narrator && settings.narrator.rate){
+            rateInput.value = settings.narrator.rate
+        }
+        else{
+            rateInput.value = 1
+        }
+        rateInput.max = 10
+        pitchInput.min = 0
+        if(settings.narrator && settings.narrator.pitch){
+            pitchInput.value = settings.narrator.pitch
+        }
+        else{
+            pitchInput.value = 1
+        }
+        pitchInput.max = 2
+        arrInputs.forEach(element => {
+            element.addEventListener("change", function(){
+                var attribute = this.parentNode.getElementsByTagName("p")[0].innerText.toLowerCase()
+                if(!settings.narrator){
+                    settings.narrator = {}
+                }
+                if(this.value==1){
+                    delete settings.narrator[attribute]
+                }
+                else{   
+                    settings.narrator[attribute] = this.value
+                }
+                SaveSettings()
+            })
+        })
+        addLabel(volumeInput, "Volume")
+        addLabel(rateInput, "Rate")
+        addLabel(pitchInput, "Pitch")
+        
+        function populateVoiceList() {
+            voices = synth.getVoices()
+
+            for(const voice of voices){
+                const option = document.createElement("option")
+                option.textContent = `${voice.name} (${voice.lang})`
+
+                if(voice.default){
+                    option.textContent += " — DEFAULT"
+                }
+
+                option.setAttribute("data-lang", voice.lang)
+                option.setAttribute("data-name", voice.name)
+                voiceSelect.appendChild(option)
+            }
+            for(const voice of voices){
+                if(settings.narrator && settings.narrator.voice){
+                    if(voice.name == settings.narrator.voice){
+                        voiceSelect.value = `${voice.name} (${voice.lang})`
+                    }
+                }
+            }
+        }
+        
+        populateVoiceList()
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoiceList
+        }
+        
+        voiceSelect.onchange = () => {
+            const selectedOption = voiceSelect.selectedOptions[0].getAttribute("data-name")
+            if(!settings.narrator){
+                settings.narrator = {}
+            }
+            if(!voiceSelect.selectedOptions[0].innerText.endsWith("DEFAULT")){
+                settings.narrator.voice = selectedOption
+            }
+            else{
+                delete settings.narrator.voice
+            }
+            SaveSettings()
+        }
+
+        inputForm.onsubmit = (event) => {
+            event.preventDefault()
+
+            Narrator(inputTxt.value)
+            inputTxt.blur()
+        }
+    }
+    return element
 }

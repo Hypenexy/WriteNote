@@ -284,6 +284,31 @@ notearea.addEventListener('click', function (e){
     }
 })
 
+
+function printwn(){
+    var printWin = window.open('', 'PRINT', 'width=914,height=639,left=400,top=100,location="writenote"');
+
+    printWin.document.write('<html><head><title>' + document.title  + '</title>');
+    printWin.document.write('</head><body >');
+    printWin.document.write(notearea.innerHTML);
+    printWin.document.write('</body></html>');
+
+    printWin.document.close();
+    printWin.focus();
+
+    printWin.print();
+    printWin.close();
+
+    return true;
+}
+
+document.addEventListener("keydown", function(e){
+    if(e.ctrlKey && e.key == "p"){
+        e.preventDefault()
+        printwn()
+    }
+})
+
 function getSeletedText(){
     try { // check what is selected I COULDN'T find the .parent.parent code!!!
         const range = window.getSelection().getRangeAt(0)
@@ -292,14 +317,6 @@ function getSeletedText(){
         return ''
     }
 }
-
-function printwn(){ //it's possible without opening new document
-    var oPrntWin = window.open("","_blank","width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
-    oPrntWin.document.open();
-    oPrntWin.document.write("<!doctype html><html><head><title>WriteNote Print<\/title><style>*{box-sizing: border-box;font-family: 'Roboto', sans-serif}<\/style><\/head><body onload=\"print();\">" + notearea.innerHTML + "<\/body><\/html>");
-    oPrntWin.document.close();
-}
-
 
 function getSelectionStyles(){
     return {
@@ -362,7 +379,7 @@ function getSelectionAsHtml() {
     return html;
 }
 
-function containsOnly(array1, array2){
-    return !array2.some(elem => !array1.includes(elem))
+function replaceSelection(range, replacementText) {
+    range.deleteContents();
+    range.insertNode(document.createTextNode(replacementText))
 }
-  

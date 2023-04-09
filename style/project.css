@@ -157,3 +157,10 @@
     background: #de99f3;
     color: #111;
 }
+
+.newfile .downloadinfo p{
+    font-size: 16px;
+    color: #eee;
+    font-weight: initial;
+    text-transform: initial;
+}

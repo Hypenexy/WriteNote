@@ -493,3 +493,32 @@ function getParentNode(element, level = 1){
     }
     return element;
 }
+
+/**
+ * Check if string is just a number
+ * @param {*} str String that might be a number
+ * @returns Bool true or false depending if the string contains a number
+ */
+function isNumeric(str) {
+    if (typeof str != "string") return false
+    return !isNaN(str) &&
+           !isNaN(parseFloat(str))
+}
+
+/**
+ * WRITENOTE ONLY FOR NOW
+ * Cloning an element's style to another
+ * @param {Element} sourceNode To copy style from
+ * @param {Element} targetNode To apply style to
+ */
+function copyNodeStyle(sourceNode, targetNode) {
+    const computedStyle = window.getComputedStyle(sourceNode);
+    //default Array.from(computedStyle).forEach(key => targetNode.style.setProperty(key, computedStyle.getPropertyValue(key), computedStyle.getPropertyPriority(key)))
+    computedStyleAr = Array.from(computedStyle)
+    for (let i = 0; i < computedStyleAr.length; i++) {
+        var current = computedStyleAr[i].toString()
+        if(current=="background"||current=="background-color"||current=="color"||current=="font-size"||current=="outline"){
+            targetNode.style.setProperty(current, computedStyle.getPropertyValue(current), computedStyle.getPropertyPriority(current))
+        }
+    }
+}

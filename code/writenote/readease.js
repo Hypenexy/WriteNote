@@ -27,12 +27,6 @@ if(settings.ease && settings.ease.colorize){
     colorize()
 }
 
-function narrator(){
-    var msg = new SpeechSynthesisUtterance()
-    msg.text = $(notearea).text()
-    window.speechSynthesis.speak(msg)
-}
-
 function toggleWordFlash(){
     var check = windowAppExists("Flash Words")
     if(check===false){
@@ -91,6 +85,32 @@ function flashWords(){
 
 
 
+function Narrator(text){
+    if('speechSynthesis' in window) {}
+    else{
+        PushNotification("Sorry, your browser doesn't support text to speech!", "You can't use the narrator in this browser or device.", "warn");
+    }
+    window.speechSynthesis.onvoiceschanged = function() {
+        window.speechSynthesis.getVoices()
+        const narator = new SpeechSynthesisUtterance(text)
+        var voices = window.speechSynthesis.getVoices()
+        
+        if(settings.narrator){
+            var optionsArr = ["volume", "rate", "pitch"]
+            optionsArr.forEach(element => {
+                if(settings.narrator[element]){
+                    narator[element] = settings.narrator[element]
+                }
+            })
+            if(settings.narrator.voice){
+                const selectedOption = settings.narrator.voice
+                narator.voice = voices.find((v) => v.name === selectedOption)
+            }
+        }
+
+        window.speechSynthesis.speak(narator)
+    }
+}
 
 function toggleNarrator(){
     var check = windowAppExists("Narrator")
@@ -104,16 +124,11 @@ function toggleNarrator(){
 
 function NarratorGui(){
     var narrator = document.createElement("narrator")
-    function tempNarratorFunc(text){
-        var msg = new SpeechSynthesisUtterance();
-        msg.text = text;
-        window.speechSynthesis.speak(msg);
-    }
     function readSel(){
-        tempNarratorFunc(getSeletedText())
+        Narrator(getSeletedText())
     }
     function readWhole(){
-        tempNarratorFunc(notearea.innerText)
+        Narrator(notearea.innerText)
     }
     var readSelBtn = document.createElement("p")
     readSelBtn.innerText = "Read current selection"

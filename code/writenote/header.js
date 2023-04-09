@@ -62,8 +62,8 @@ header.innerHTML = `
     <v onclick="togglelines()"><p class="m-i">toc</p> ${locale.showlines}<tick id="linescheckmark"></tick></v>
     <v class="subdropdownbtns"><p class="m-i">format_textdirection_l_to_r</p> ${locale.writingdirectio}<p style="float: right" class="m-i">chevron_right</p>${locale.n}</v>
     <v class="subdropdownbtns"><p class="m-i">widgets</p> ${locale.menupositio}<p style="float: right" class="m-i">chevron_right</p>${locale.n}</v>
-    <v onclick="opensetting('Appearance'),opensubsetting('font')" class="writingdirection"><p class="m-i">text_fields</p> ${locale.changefont}</v>
-    <v onclick="opensetting('Appearance'),opensubsetting('theme')"><p class="m-i">style</p> ${locale.theme}</v>
+    <v onclick="showSettings('Appearance', 'Font')" class="writingdirection"><p class="m-i">text_fields</p> ${locale.changefont}</v>
+    <v onclick="showSettings('Appearance', 'Theme')"><p class="m-i">style</p> ${locale.theme}</v>
 </dropdown>
 
 <subdropdown id="directions" class="subdropdownmenu subdropdownmenu3">
@@ -72,7 +72,7 @@ header.innerHTML = `
     <v onclick="toggleNarrator()"><p class="m-i">record_voice_over</p> ${locale.narrator}<tick id="narratorcheckmark"></tick></v>
 </subdropdown>
 
-<subdropdown id="directions" class="subdropdownmenu">
+<subdropdown id="directions" class="subdropdownmenu subdropdownmenu4">
     <v onclick="direction(false)"><p class="m-i">format_textdirection_l_to_r</p> ${locale.lefttoright}<tick id="ltrcheckmark"></tick></v>
     <v onclick="direction(true)"><p class="m-i">format_textdirection_r_to_l</p> ${locale.righttoleft}<tick id="rtlcheckmark"></tick></v>
 </subdropdown>

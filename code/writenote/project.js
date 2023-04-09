@@ -428,18 +428,31 @@ function NewFileGui(close){
         var buttons = buttonsDiv.getElementsByTagName("button")
         var buttonoptions = ['online', 'localstorage', 'device']
         var buttonselected
+        var eldownload = document.createElement("div")
+        eldownload.classList.add("downloadinfo")
         for (let i = 0; i < buttons.length; i++) {
             const element = buttons[i];
             ButtonEvent(element, function(){
+                if(eldownload && eldownload.nodeType){
+                    eldownload.remove()
+                }
                 isChecks(undefined, true)
                 buttonselected = i
                 for (let i = 0; i < buttons.length; i++) {
                     const element = buttons[i];
                     element.classList.remove("buttonSelected")
                 }
+                if(isApp!=true){
+                    if(i==2){
+                        eldownload.innerHTML = "<p>To save directly on your device you need to download WriteNote</p><a target='_blank' href='https://midelight.net/WriteNote/Download'><button>Download</button></a>"
+                        newfile.appendChild(eldownload)
+                        isChecks(undefined, true)
+                    }
+                }
                 element.classList.add("buttonSelected")
             })
         }
+
 
         newfile.appendChild(buttonsDiv)
 

@@ -342,6 +342,8 @@ filters{
         width: 100%;
         position: relative;
         display: flex;
+        overflow: hidden;
+        overflow-x: auto;
     }
     .contentfull filesside{
         float: left;

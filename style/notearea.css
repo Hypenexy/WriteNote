@@ -85,3 +85,7 @@ dropeffect{
 .dropeffectvisible{
     visibility: visible;
 }
+
+.wordwrap *{
+    white-space: nowrap
+}

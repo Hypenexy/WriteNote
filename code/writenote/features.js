@@ -246,6 +246,11 @@ var clipboard = document.createElement("clipboard")
 
 function showClipboard(){
     var show = showContext()
+    const selObj = window.getSelection()
+    const selRange = selObj.getRangeAt(0)
+    const selectionPosition = selRange.getBoundingClientRect()
+    contextMenu.style.top = selectionPosition.bottom + "px"
+    contextMenu.style.left = selectionPosition.right + "px"
     var heading = document.createElement("pr")
     heading.classList.add("heading")
     heading.innerText = 'Clipboard history'
@@ -270,3 +275,240 @@ document.addEventListener("keydown", function(e){
         showClipboard()
     }
 })
+
+
+function numeralConvert(range, e){
+    var number = range.toString()
+    const show = showContext()
+    contextMenu.style.top = e.clientY + 260 + "px"
+    contextMenu.style.left = e.clientX + "px"
+    contextMenu.style.maxWidth = "320px"
+
+    var processedNumber = ''
+    var heading = document.createElement("pr")
+    heading.classList.add("heading")
+    heading.style.whiteSpace = "initial"
+    heading.style.overflow = "auto"
+    heading.innerText = 'Convert '+number+' to '+processedNumber
+    contextMenu.appendChild(heading)
+
+    var input = document.createElement("input")
+    input.placeholder = "A number (from 2 to 36)"
+    input.addEventListener("input", function(){
+        if(this.value >= 2 && this.value <=36){
+            number = parseInt(number)
+            processedNumber = number.toString(this.value)
+            heading.innerText = 'Convert '+number+' to '+processedNumber
+        }
+    })
+    contextMenu.appendChild(input)
+
+    var convert = document.createElement("p")
+    convert.innerText = "Convert"
+    convert.style.marginTop = "8px"
+    ButtonEvent(convert, function(){
+        replaceSelection(range, processedNumber)
+        hideContext()
+    })
+    contextMenu.appendChild(convert)
+
+    show()
+}
+
+
+// Word Wrap
+
+var wordwrapcheckmark = document.getElementById("wordwrapcheckmark");
+if(settings.wordwrap!=false){
+    wordwrapcheckmark.style.display = "block";
+}
+else{
+    notearea.classList.add("wordwrap")
+}
+
+function togglewordwrap(){
+    console.log(settings.wordwrap)
+    if(settings.wordwrap==false){
+        delete settings.wordwrap
+        wordwrapcheckmark.style.display = "block"
+        notearea.classList.remove("wordwrap")
+    }
+    else{
+        settings.wordwrap = false
+        wordwrapcheckmark.style.display = "none"
+        notearea.classList.add("wordwrap")
+    }
+    SaveSettings()
+
+    if(linestoggle==true){
+        var divs = notearea.getElementsByTagName("p")
+        UpdateLines(divs)
+    }
+}
+
+// Lines
+
+var linestoggle = false
+var lines = document.createElement("div")
+lines.id = "lines"
+app.appendChild(lines)
+var lastlinesnumber
+var timeoutlines = false
+var lineheight
+
+function togglelines(){
+    if(linestoggle==false){
+        linestoggle=true
+        var divs = notearea.getElementsByTagName("p")
+        UpdateLines(divs)
+        linescheckmark.style.display = "block"
+        notearea.style.marginLeft = "40px"
+        notearea.style.width = "calc(100% - 40px)"
+        lines.style.left = "0"
+    }
+    else{
+        linestoggle=false
+        linescheckmark.style.removeProperty("display")
+        notearea.style.removeProperty("margin-left")
+        notearea.style.removeProperty("width")
+        lines.style.removeProperty("left")
+        setTimeout(function() {
+            lines.innerHTML = ""
+        }, 300);
+    }
+}
+
+notearea.addEventListener('input', function() {
+    if(linestoggle==true){
+        var divs = notearea.getElementsByTagName("p")
+        if(lastlinesnumber!=divs.length){
+            if(timeoutlines==false){
+                timeoutlines = true
+                UpdateLines(divs)
+                setTimeout(function (){ 
+                    timeoutlines = false
+                }, 150);
+            }
+        }
+    }
+})
+
+function UpdateLines(divs){
+    lastlinesnumber = divs.length
+    lines.innerHTML = ""
+    if(divs.length>99){
+        lines.style.width = "50px"
+        notearea.style.marginLeft = "50px"
+        notearea.style.width = "calc(100% - 50px)"
+        if(divs.length>999){
+            lines.style.width = "60px"
+            notearea.style.marginLeft = "60px"
+            notearea.style.width = "calc(100% - 60px)"
+        }
+    }
+    try {
+        for (let i = 0; i < divs.length; i++) {
+            var linenumber = i+1
+            lines.innerHTML += "<l>" + linenumber + "</l>"
+            if(!lineheight){
+                lineheight = divs[i].offsetHeight
+            }
+            for (let j = 0; j < divs[i].offsetHeight/lineheight; j++) {
+                lines.innerHTML += "<br>"
+            }
+        }
+    } catch (e) {
+        
+    }
+    lines.scrollTop = notearea.scrollTop
+}
+
+var linesresizetimeout;
+window.addEventListener("resize", function(){
+    if(linestoggle==true && settings.wordwrap==true){
+        var divs = notearea.getElementsByTagName("p")
+        clearTimeout(linesresizetimeout);
+        linesresizetimeout = setTimeout(UpdateLines(divs), 100);
+    }
+})
+
+notearea.addEventListener("scroll", function(){
+    if(linestoggle==true){
+        lines.scrollTop = notearea.scrollTop
+    }
+})
+//
+
+//Writing direction
+
+document.getElementById("ltrcheckmark").style.display = "block";
+function direction(n){
+  var all = notearea.getElementsByTagName("p")//* is creating problems
+  if(n){
+    //settings = {...settings, direction: "r"};
+    document.getElementById("rtlcheckmark").style.display = "block";
+    document.getElementById("ltrcheckmark").style.display = "none";
+    if(notearea.innerHTML){
+        for (let i = 0; i < all.length; i++) {
+            all[i].style = "display:inline-block"
+            var animmove = window.innerWidth - all[i].offsetWidth-24
+            if(linestoggle==true){
+                animmove -= 38
+            }
+            all[i].style = "transition: 1s;transform: translateX("+animmove+"px);"
+        }
+        
+        setTimeout(function (){
+            for (let i = 0; i < all.length; i++) {
+                all[i].style = ""
+            }
+            notearea.style.textAlign = "right";
+        }, 1000);
+    }
+    else{
+        notearea.style.textAlign = "right";
+    }
+  }
+  else{
+    //delete settings.direction;
+    document.getElementById("ltrcheckmark").style.display = "block";
+    document.getElementById("rtlcheckmark").style.display = "none";
+    if(notearea.innerHTML){
+        var all = notearea.getElementsByTagName("p")
+        for (let i = 0; i < all.length; i++) {
+            all[i].style = "display:inline-block"
+            var animmove = window.innerWidth - all[i].offsetWidth-24
+            if(linestoggle==true){
+                animmove -= 38
+            }
+            all[i].style = "transition: 1s;transform: translateX(-"+animmove+"px);"
+        }
+        
+        setTimeout(function (){
+            for (let i = 0; i < all.length; i++) {
+                all[i].style = ""
+            }
+            notearea.style.removeProperty('text-align');
+        }, 1000);
+    }
+    else{
+        notearea.style.removeProperty('text-align');
+    }
+  }
+  SaveSettings();
+}
+
+
+function insertRich(type){
+    var gui = document.createElement("div")
+    gui.classList.add("insertRich")
+    app.appendChild(gui)
+
+    function closeGui(){
+        newfile.classList.remove("newfiletransitioned")
+        setTimeout(() => {
+            newfile.remove()
+        }, 200);
+    }
+    var closeModal = ShowModal(closeGui, null, 31)
+}
