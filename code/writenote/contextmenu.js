@@ -111,13 +111,15 @@ function noteareaContextMenu(e, mobile){
     }
 
     if(e.target.tagName === 'IMG'){
+
         addToMenu("Open image in editor", "tune", function(){
             var img = e.target
             var image = e.target.parentNode
             openimageEditor(img, image)
         })
-        addToMenu("Save image at", "add_photo_alternate", function(){})
-        addToMenu("Copy image", "image", function(){})
+        addToMenu("Save image", "add_photo_alternate", function(){downloadBase64File(e.target.src, "Image")})
+        addToMenu("Extract text", "text_fields", function(){getTextFromImage(e.target.src)})
+        // addToMenu("Copy image", "image", function(){copyBase64(e.target.src)})
         addToMenu("hr")
     }
 

@@ -28,3 +28,4 @@ when creating a file, if no name specified default to untitled + number
 maybe update contextmenu in app.js so its better (with submenus and addtomenu functions uknow?)
 rework the new animations on the settings menu so they look like the old one
 recognize language
+logging out should reset whole app

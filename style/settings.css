@@ -60,6 +60,7 @@
 }
 
 .settings .sidepanel button{
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 8px;

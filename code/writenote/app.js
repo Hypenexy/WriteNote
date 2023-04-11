@@ -5,9 +5,9 @@ if(isApp!=true){
 }
 var animations = true
 var online
-var serverAddress = "http://localhost/"
-var serverImage = "http://localhost/i/"
-var server =  "http://localhost/WriteNoteApp/"
+var serverAddress = "http://172.20.10.12/"
+var serverImage = "http://172.20.10.12/i/"
+var server =  "http://172.20.10.12/WriteNoteApp/"
 var settings = {}
 if(localStorage.getItem("options")){
     settings = JSON.parse(localStorage.getItem("options"))
@@ -313,8 +313,11 @@ document.addEventListener ("keydown", function (ekey) {
 var documentElem = document.documentElement;
 var fullscreen = false;
 
-function openFullscreen() {
+function openFullscreen(custom) {
     var element = documentElem
+    if(custom){
+        element = custom
+    }
     fullscreen = true
     fullscreencheckmark.style.display = "block"
     if(element.requestFullscreen){
@@ -336,4 +339,72 @@ function closeFullscreen() {
     }else if(document.msExitFullscreen){
         document.msExitFullscreen()
     }
+}
+
+var SubmitForm = function(){}
+
+function showLogin(){
+    if(!document.getElementById("formsStyle")){
+        loadCSS(serverAddress + "img/styles/forms.css", "formsStyle")
+    }
+    loadScript(serverAddress + "login/login.js", "loginscript", function(){
+        showlogin()
+        var xbtn = login.getElementsByTagName("span")[0]
+        xbtn.opacity = 1
+        ButtonEvent(xbtn, hidelogin)
+        // SubmitForm = function(){
+        //     if(loginusername.value==""){
+        //         FormError(loginusername, textusername, "Username or Email", "Empty")
+        //     }
+        //     if(loginpassword.value==""){
+        //         FormError(loginpassword, textpassword, "Password", "Empty")
+        //     }
+            
+        //     if(loginusername.value!=""&&loginpassword.value!=""){
+        //         var values = {identity : loginusername.value, password : loginpassword.value}
+        //         $.ajax({
+        //             url: serverAddress + "app/account/login.php",
+        //             type: "post",
+        //             data: values,
+        //             success: function (response) {
+        //                 if(response==201){
+        //                     connectToMidelightTemporary()
+        //                 }
+        //                 else{
+        //                     if(response=="wrongInfo"){
+        //                         FormError(loginusername, textusername, "Username or Email", "Wrong credentials")
+        //                     }
+        //                 }
+        //             },
+        //             error: function(error) {
+        //                 FormError(loginusername, textusername, "Username or Email", "Could not connect to server!")
+        //             }
+        //         })
+        //     }
+        // }
+    })
+}
+function showRegistration(){
+    if(!document.getElementById("formsStyle")){
+        loadCSS(serverAddress + "img/styles/forms.css", "formsStyle")
+    }
+    loadScript(serverAddress + "register/register.js.php", "registerscript", function(){
+        showlogin()
+        var xbtn = login.getElementsByTagName("span")[0]
+        xbtn.opacity = 1
+        ButtonEvent(xbtn, hidelogin)
+    })
+}
+
+function logout(){
+    $.ajax({
+        url: serverAddress + "logout/",
+        type: "post",
+        success: function (response) {
+            connectToMidelightTemporary()
+        },
+        error: function(error) {
+            PushNotification("Connection Error", "Could not connect to server!")
+        }
+    })
 }

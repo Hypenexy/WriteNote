@@ -310,9 +310,14 @@ document.addEventListener("keydown", function(e){
 })
 
 function getSeletedText(){
-    try { // check what is selected I COULDN'T find the .parent.parent code!!!
+    try { // found it
         const range = window.getSelection().getRangeAt(0)
-        return range.toString();
+        if(range.startContainer.parentElement.parentElement===this.notearea || range.startContainer.parentElement===this.notearea || range.startContainer===this.notearea){
+            return range.toString();
+        }
+        else{
+            return ''
+        }
     } catch (e) {
         return ''
     }
@@ -382,4 +387,15 @@ function getSelectionAsHtml() {
 function replaceSelection(range, replacementText) {
     range.deleteContents();
     range.insertNode(document.createTextNode(replacementText))
+}
+
+
+function getTextFromImage(base64){
+    socket.emit("img2text", base64)
+    socket.on('img2text', (data) => {
+        var show = showContext()
+        contextMenu.innerHTML = data
+        console.log(data)
+        show()
+    })
 }

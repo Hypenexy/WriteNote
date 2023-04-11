@@ -312,3 +312,9 @@ modal{
         min-width: initial;
     }
 }
+
+#login{
+    z-index: 50!important;
+    backdrop-filter: blur(28px)!important;
+    -webkit-backdrop-filter: blur(28px)!important;
+}

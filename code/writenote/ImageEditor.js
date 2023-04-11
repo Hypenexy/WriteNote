@@ -11,7 +11,7 @@ function openimageEditor(img, image){
     var HideModal = ShowModal(closeEditor, "#000000bb")
 
     var tools1 = document.createElement("tools1")
-    tools1.innerHTML = "<i class='m-i'>edit</i><i class='m-i'>crop</i><i class='m-i'>fullscreen</i><i class='m-i'>share</i>"
+    tools1.innerHTML = "<i class='m-i'>edit</i><i class='m-i'>crop</i><i class='m-i'>text_fields</i><i class='m-i'>fullscreen</i><i style='position:initial;float:right' class='x m-i'>close</i>"
     ImageEditor.appendChild(tools1)
 
     ImageEditor.appendChild(img)
@@ -55,6 +55,39 @@ function EditorImgResize(img){
         img.style = ""
     }
 }
+
+
+function downloadBase64File(contentBase64, fileName) {
+    // const linkSource = `data:application/pdf;base64,${contentBase64}`;
+    const linkSource = contentBase64;
+    const downloadLink = document.createElement('a');
+    document.body.appendChild(downloadLink);
+
+    downloadLink.href = linkSource;
+    downloadLink.target = '_self';
+    downloadLink.download = fileName;
+    downloadLink.click(); 
+}
+function copyBase64(contentBase64){
+    //idk yet (needs localhost or https)
+    // try {
+    //     const data = [new ClipboardItem({ 'image/png': contentBase64 })];
+        
+    //     navigator.clipboard.write(data).then(
+    //         () => {
+    //         /* success */
+    //         },
+    //         () => {
+    //         /* failure */
+    //         }
+    //     );
+    // } catch (error) {
+    //     console.error(error);
+    // }
+}
+
+// on saving image!
+// const dataURL = canvas.toDataURL();
 
 window.addEventListener("resize", function(){
     if(ImageEditor.innerHTML){

@@ -173,6 +173,41 @@
     }
 }
 
+.mobilemenu devices{
+    position: relative;
+    display: block;
+    justify-content: space-between;
+    margin: 20px;
+    padding: 10px;
+    color: #bbb;
+    background: #222;
+    border-radius: 12px;
+}
+.mobilemenu devices div{
+    background: #2c2c2c;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 12px;
+}
+.mobilemenu devices div i{
+    user-select: none;
+    float: left;
+    margin-right: 5px;
+    transform: translateY(-3px);
+}
+.mobilemenu devices div.you{
+    /* 177245 */
+    color: #eee;
+    background: #125b37;
+}
+.mobilemenu devices div.you ti{
+    display: block;
+    font-weight: 500;
+}
+.mobilemenu devices div.you ti::after{
+    content: " • You";
+}
+
 .mobilemenu mv{
     font-size: 18px;
     padding: 14px 8px;

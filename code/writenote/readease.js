@@ -84,17 +84,38 @@ function flashWords(){
 }
 
 
+var voices
+
+async function getVoices() {
+    const GET_VOICES_TIMEOUT = 4000; // two second timeout
+
+    let voices = window.speechSynthesis.getVoices();
+    if (voices.length) {
+      return voices;
+    }
+
+    let voiceschanged = new Promise(
+      r => speechSynthesis.addEventListener(
+        "voiceschanged", r, { once: true }));
+
+    let timeout = new Promise(r => setTimeout(r, GET_VOICES_TIMEOUT));
+
+    await Promise.race([voiceschanged, timeout]);
+
+    voices = window.speechSynthesis.getVoices();
+}
+
 
 function Narrator(text){
     if('speechSynthesis' in window) {}
     else{
         PushNotification("Sorry, your browser doesn't support text to speech!", "You can't use the narrator in this browser or device.", "warn");
     }
+    const narator = new SpeechSynthesisUtterance(text)
     window.speechSynthesis.onvoiceschanged = function() {
-        window.speechSynthesis.getVoices()
-        const narator = new SpeechSynthesisUtterance(text)
-        var voices = window.speechSynthesis.getVoices()
-        
+        voices = window.speechSynthesis.getVoices()
+    }
+    getVoices().then(function(){
         if(settings.narrator){
             var optionsArr = ["volume", "rate", "pitch"]
             optionsArr.forEach(element => {
@@ -104,12 +125,14 @@ function Narrator(text){
             })
             if(settings.narrator.voice){
                 const selectedOption = settings.narrator.voice
-                narator.voice = voices.find((v) => v.name === selectedOption)
+                while(!narator.voice){
+                    narator.voice = voices.find((v) => v.name === selectedOption)
+                }
             }
+            
         }
-
         window.speechSynthesis.speak(narator)
-    }
+    })
 }
 
 function toggleNarrator(){

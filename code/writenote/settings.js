@@ -32,13 +32,16 @@ function showSettings(panel, submenu){
 
     var buttons = document.createElement("div")
     buttons.classList.add("buttons")
-    var miIcons = ["person", "style", "border_color", "info"]
-    var tabs = ["Account", "Appearance", "Editor", "About"]
+    var miIcons = ["person", "style", "border_color", "info", "logout"]
+    var tabs = ["Account", "Appearance", "Editor", "About", "Log Out"]
     for (let i = 0; i < tabs.length; i++) {
         const element = tabs[i]
         var button = document.createElement("button")
         button.innerHTML = "<i class='m-i'>"+miIcons[i]+"</i><p>"+element+"</p>"
         ButtonEvent(button, openPanel, element)
+        if(i+1==tabs.length){
+            ButtonEvent(button, logout)
+        }
         buttons.appendChild(button)
     }
     
@@ -138,26 +141,31 @@ function showSettings(panel, submenu){
             var display = document.createElement("div")
             display.classList.add("display")
             if(panel=="Account"){
+                var buttonsList
                 if(storedResponse.user){
+                    display.style.height = "initial"
                     if(storedResponse.user.banner){
                         display.innerHTML += "<img class='banner' src='"+serverImage+"?i="+storedResponse.user.banner+"'>"
                     }
-                    if(storedResponse.user.avatar){
+                    if(storedResponse.user.pfp){
                         display.innerHTML += "<img class='avatar' src='"+serverImage+"?s=128&i="+storedResponse.user.pfp+"'>"
                     }
                     display.innerHTML += "<p class='username'>"+storedResponse.user.username+"</p>"
+                    buttonsList = [
+                        "person;Account;Change your account details",
+                        "badge;Profile;A place to edit your profile picture, banner and status.",
+                        "verified_user;Privacy;Change your privacy preferences.",
+                        "devices;Devices;Preview and choose what devices you are logged in from."
+                    ]
                 }
                 else{
                     display.innerHTML = "You're not signed in"
-                    //sign buttons
+                    buttonsList = [
+                        "person;Sign In;",
+                        "badge;Sign Up;"
+                    ]
                 }
                 pageSettings.appendChild(display)
-                var buttonsList = [
-                    "person;Account;Change your account details",
-                    "badge;Profile;A place to edit your profile picture, banner and status.",
-                    "verified_user;Privacy;Change your privacy preferences.",
-                    "devices;Devices;Preview and choose what devices you are logged in from."
-                ]
                 submenuButtons(buttonsList)
             }
             if(panel == "Appearance"){
@@ -223,6 +231,18 @@ function settingsSubMenus(subpanel){
     element.classList.add("anim1h")
     if(subpanel=="Account"){
         element.innerHTML = "hiii"
+    }
+
+    if(subpanel=="Sign In"){
+        showLogin()
+    }
+    if(subpanel=="Sign Up"){
+        showRegistration()
+    }
+
+    if(subpanel=="Sidepanel"){
+        var cityInput = document.createElement("input")
+        addLabel(cityInput, "Weather info")
     }
 
     if(subpanel=="Narrator"){

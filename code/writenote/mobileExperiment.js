@@ -86,6 +86,10 @@ function setMobileStatus(){
             batterystatusprocessed = ""
         }
     }
+    else{
+        //maybe it's not undefined after sometime?
+        batterystatusprocessed = ""
+    }
     if(notificationslog){
         if(notificationslog.length!=0){
             notificationstatus = "<p class='m-i'>mark_email_unread</p>"
@@ -173,6 +177,7 @@ var mobileHeaderMenu = document.createElement("div")
 
 mobileHeaderMenu.classList.add("mobilemenu")
 mobileHeaderMenu.innerHTML = "<h1>11/11/2022</h1><currentnote><i class='m-i'>description</i><input><workspace></workspace><notespace></notespace><notesize></notesize></currentnote>"+
+"<devices></devices>"+
 // "<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu>"
 "<vs class='m-i'>settings</vs>"+
 "<actionmenu><h2>Notifications</h2><clearn>Clear All</clearn></actionmenu>"
@@ -188,6 +193,49 @@ if(!settings.ft){
     }
 }
 app.appendChild(mobileHeaderMenu)
+
+devices = mobileHeaderMenu.getElementsByTagName("devices")[0]
+devices.innerHTML = "<p>Your devices</p>"
+
+
+function addDevice(id, UserAgent){
+    var element = document.createElement("div")
+    if(!UserAgent){
+        element.classList.add("you")
+    }
+    else{
+        if(document.getElementById(id)){
+            return
+        }
+        element.id = id
+    }
+    var parser = new UAParser(UserAgent)
+    var parserResults = parser.getResult() //.getOS()
+    // console.log(parserResults)
+    var icon = document.createElement("i")
+    icon.classList.add("m-i")
+    icon.innerText = "computer"
+    if(parserResults.device.type == "mobile"){
+        icon.innerText = "smartphone"
+    }
+    if(parserResults.device.model == "iPhone"){
+        icon.innerText = "phone_iphone"
+    }
+    if(parserResults.device.model == "android"){
+        icon.innerText = "phone_android"
+    }
+    element.innerHTML = "<ti>" + parserResults.os.name + " " + parserResults.os.version + "</ti>"
+    // element.innerHTML += "<co></co>"
+    element.prepend(icon)
+    devices.appendChild(element)
+}
+
+function removeDevice(id){
+    var element = document.getElementById(id)
+    element.remove()
+}
+
+addDevice()
 
 ButtonEvent(mobileHeaderMenu.getElementsByTagName("vs")[0], function(w){showSettings(w);hideHeaderMobileMenu()}, "Account")
 
