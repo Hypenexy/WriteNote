@@ -5,9 +5,9 @@ if(isApp!=true){
 }
 var animations = true
 var online
-var serverAddress = "http://172.20.10.12/"
-var serverImage = "http://172.20.10.12/i/"
-var server =  "http://172.20.10.12/WriteNoteApp/"
+var serverAddress = "http://192.168.1.11/"
+var serverImage = "http://192.168.1.11/i/"
+var server =  "http://192.168.1.11/WriteNoteApp/"
 var settings = {}
 if(localStorage.getItem("options")){
     settings = JSON.parse(localStorage.getItem("options"))

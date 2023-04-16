@@ -1,10 +1,10 @@
 header{
-    background-image: url(../images/BeautifulSky.jpeg);
+    background-image: url(../img/images/BeautifulSky.jpeg);
     background-size: cover;
     background-position: center;
 }
 notearea{
-    background-image: url(../images/BeautifulSky.jpeg);
+    background-image: url(../img/images/BeautifulSky.jpeg);
     background-size: cover;
     background-position: center;
     /* background-blend-mode: saturation; */

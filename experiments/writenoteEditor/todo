@@ -1,0 +1,6 @@
+Implement 
+    Paste
+    Undo/Redo
+    Image, audio, video and file dragging
+    Optimization so it only displays visible text with top: 4120px style
+    Audio on actions

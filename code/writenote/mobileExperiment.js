@@ -87,7 +87,6 @@ function setMobileStatus(){
         }
     }
     else{
-        //maybe it's not undefined after sometime?
         batterystatusprocessed = ""
     }
     if(notificationslog){

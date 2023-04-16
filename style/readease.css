@@ -2,13 +2,13 @@
     background: linear-gradient(90deg, rgba(195,58,204,1) 0%, rgba(195,195,255,1) 50%, rgba(0,212,255,1) 100%);
 }
 .readease p:nth-child(2n){
-    background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgb(136, 136, 252) 50%, rgba(195,58,204,1) 100%);
+    background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgb(136, 136, 252) 50%, rgba(204,148,58,1) 100%);
 }
 .readease p:nth-child(3n){
     background: linear-gradient(90deg, rgba(204,148,58,1) 0%, rgba(217,237,186,1) 50%, rgba(81,210,37,1) 100%);
 }
 .readease p:nth-child(4n){
-    background: linear-gradient(90deg, rgba(81,210,37,1) 0%, rgba(217,237,186,1) 50%, rgba(204,148,58,1) 100%);
+    background: linear-gradient(90deg, rgba(81,210,37,1) 0%, rgba(217,237,186,1) 50%, rgba(195,58,204,1) 100%);
 }
 .readease p:nth-child(1n), .readease p:nth-child(2n){
     background-clip: text;

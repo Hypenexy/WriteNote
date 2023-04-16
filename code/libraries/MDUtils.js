@@ -522,3 +522,82 @@ function copyNodeStyle(sourceNode, targetNode) {
         }
     }
 }
+
+
+
+/**
+ * Caclulates the luminance values according to the constants
+ * @param {Int} r Red
+ * @param {Int} g Green
+ * @param {Int} b Blue
+ * @returns The luminance of the RGB values provided
+ */
+function luminance(r, g, b) {
+    const RED = 0.2126;
+    const GREEN = 0.7152;
+    const BLUE = 0.0722;
+
+    const GAMMA = 2.4;
+    var a = [r, g, b].map((v) => {
+        v /= 255;
+        return v <= 0.03928
+        ? v / 12.92
+        : Math.pow((v + 0.055) / 1.055, GAMMA);
+    });
+    return a[0] * RED + a[1] * GREEN + a[2] * BLUE;
+}
+
+/**
+ * Calculates the contrast ratio between 2 colors
+ * @param {*} rgb1 Array like [R, G, B]
+ * @param {*} rgb2 The same like above (example) [129, 123, 41]
+ * @returns A number that represents the ratio in contrast
+ */
+function contrast(rgb1, rgb2) {
+    var lum1 = luminance(...rgb1);
+    var lum2 = luminance(...rgb2);
+    var brightest = Math.max(lum1, lum2);
+    var darkest = Math.min(lum1, lum2);
+    return (brightest + 0.05) / (darkest + 0.05);
+}
+
+/**
+ * Formats seconds to Minutes:Seconds
+ * @param {Number} seconds The value in seconds to format
+ * @returns The time formatted as Minutes:Seconds
+ */
+function formatPlaybackTime(seconds) {
+    minutes = Math.floor(seconds / 60);
+    minutes = minutes;
+    seconds = Math.floor(seconds % 60);
+    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+    return minutes + ":" + seconds;
+}
+
+/**
+ * Used to generate random Ids
+ * @returns A random string
+ */
+function guidGenerator(){
+    var S4 = function() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
+/**
+ * Listener for when an element is removed
+ * Something I don't quite understand yet!
+ * MutationObserver, code by joe on stackoverflow
+ * @param {Element} element 
+ * @param {Function} callback 
+ */
+function onElementRemoved(element, callback){
+    new MutationObserver(function(){
+        if(!document.body.contains(element)){
+            callback()
+            this.disconnect()
+        }
+    }).observe(element.parentElement, {childList: true})
+}
+  

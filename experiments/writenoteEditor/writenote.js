@@ -1,7 +1,6 @@
 /** 
  * WriteNote by Hypenexy, Midelight
  * Todo - Check the following 
- * https://stackoverflow.com/questions/60581285/execcommand-is-now-obsolete-whats-the-alternative
  * https://stackoverflow.com/questions/66059594/how-to-create-a-richtext-editor-in-html-js-without-document-execcommand
  * 
  */
@@ -9,8 +8,10 @@ class WriteNote{
     constructor(workspace, linkEngine){
         //somewhere i have to check for support
         this.notearea = document.createElement("notearea")
+        this.mediaData = {}
         this.writenote = document.createElement("writenote")
         this.features = document.createElement("features")
+        this.lastSave
         this.zoom = 1
         this.workspace = workspace
         this.linkEngine = linkEngine
@@ -18,32 +19,74 @@ class WriteNote{
     }
 
     init(parent){
+        var that = this
         this.parent = parent
         var notearea = this.notearea
         var writenote = this.writenote
-        notearea.contentEditable = true // maybe make a change where each p element is contenteditable and all of them have ids
-        notearea.tabIndex = '0' // was this really needed all this time?
-        document.execCommand("defaultParagraphSeparator", false, "p")
-        notearea.innerHTML = "<p><br></p>"
+        notearea.contentEditable = true
+        notearea.tabIndex = '0'
 
-        notearea.addEventListener('focus', function () {
-            if(notearea.innerHTML.substring(0, 3)!="<p>"){
-                setTimeout(() => { // is this needed
-                    document.execCommand('formatBlock', false, "p")
-                }, 20)
+        function SelectAll(){
+            window.getSelection().selectAllChildren(notearea)
+            notearea.focus()
+        }
+
+        notearea.addEventListener('click', function (e){
+            if(e.detail === 3){
+                if(e.target.nodeName == "NOTEAREA" || e.target.nodeName == "P"){
+                    e.preventDefault()
+                    SelectAll()
+                }
             }
         })
 
-        notearea.addEventListener('input', function (e) {
-             // console.log(e.inputType) this could be used elsewhere too! also undo feature is all fixed!
-            if(notearea.innerHTML.substring(0, 3)!="<p>" && e.inputType!="historyUndo"){
-                document.execCommand('formatBlock', false, "p")
-            }
-        })
+        var initP = document.createElement("p")
+        initP.innerHTML = "<br>"
+        notearea.appendChild(initP)
+        this.lastSave = this.data()
 
         var getSelectedNode = this.getSelectedNode
-        var setCaretAfterElement = this.setCaretAfterElement
+        notearea.addEventListener('input', function(){
+            console.log(that.getSelectedLine())
+        })
+        notearea.addEventListener("copy", function(e) {
+            e.preventDefault()
+            that.copy()
+        })
+        notearea.addEventListener("paste", function(e) {
+            e.preventDefault()
+            var text = (e.originalEvent || e).clipboardData.getData('text/plain')
+            // text = text.replace(/\r\n/g, "\n");
+            // text = text.replace(/\r\n/g, "</p><p>");
+            document.execCommand("insertHTML", false, text);
+            // function insertHTML(html) {
+            //     var range = window.getSelection().getRangeAt(0);
+            //     var lines = html.trim().split('\n');
+            //     var frag = document.createDocumentFragment();
+            //     lines.forEach(line => {
+            //       var p = document.createElement('p');
+            //       p.innerHTML = line;
+            //       frag.appendChild(p);
+            //     });
+            //     range.insertNode(frag);
+            //     console.log(frag.lastChild)
+            //     range.setStartAfter(frag.lastChild);
+            //     range.collapse(true);
+            // }
+            // insertHTML(text)
+
+            console.log(text)
+            // that.pasteTextAtCaret(text, true)
+        })
+        // notearea.addEventListener('focus', function(e){
+        //     this.blur()
+        // })
         notearea.addEventListener('keydown', function (e){
+            if(!e.shiftKey && e.key == "Enter"){ // Maybe remove the shiftKey feature
+                // e.preventDefault()
+                // notearea.innerText.replace('\n', '')
+                // that.pasteHtmlAtCaret('\n', true)
+            }
             var focusedElement = getSelectedNode()
             if(notearea.innerHTML == "<p><br></p>" && e.key == "Backspace"){
                 e.preventDefault()
@@ -75,60 +118,427 @@ class WriteNote{
                 }
             }
         })
-
         
         var dropeffect = document.createElement("dropeffect")
         // dropeffect.innerHTML = "<headerfx>Drop here to open as a new file</headerfx><noteareafx>Drop here to insert in current file</noteareafx>" //add a choice to insert contents or a file! if it's a file lol
         dropeffect.innerHTML = "<p>Drop here to insert in current file</p>"
         writenote.appendChild(dropeffect)
-        
-        document.addEventListener("dragover", function(e){
-            dropChange()
-        }, false)
+
 
         function dropChange(){
             dropeffect.classList.add("dropeffectvisible")
         }
-
         function dropChangeBack(){
             dropeffect.classList.remove("dropeffectvisible")
         }
+
+        document.addEventListener("dragover", dropChange, false)
         document.addEventListener("dragleave", dropChangeBack, false)
         document.addEventListener("drop", function(e){
             dropChangeBack()
-            e.stopPropagation();
-            e.preventDefault();
-            var file = e.dataTransfer.files;
-            console.log(file)
-            
+            var files = e.dataTransfer.files;
+            if(files.length!=0){
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if(file.type.startsWith("audio/")){
+                    that.insertAudio(file)
+                    continue
+                }
+                that.insertFile(file)
+            }
         })
 
 
         var overlay = document.createElement("overlay")
         writenote.appendChild(overlay)
         var that = this
-        function foo(){ // make this a function of the class
-            // and add serialization support so u can socket io the data
-            const selObj = window.getSelection()
-            const selRange = selObj.getRangeAt(0)
-            console.log(that.zoom)
-            var userSelection = document.getElementById("u1")
-            if(!userSelection){
-                userSelection = document.createElement("userselection")
-                userSelection.id = "u1"
-            }
-            var selectionPosition = selRange.getBoundingClientRect()
-            userSelection.style.top = selectionPosition.top * that.zoom + "px"
-            userSelection.style.left = selectionPosition.left * that.zoom + "px"
-            userSelection.style.width = selectionPosition.width * that.zoom + "px"
-            userSelection.style.height = selectionPosition.height * that.zoom + "px"
-            overlay.appendChild(userSelection)
-       }
 
-        document.addEventListener("selectionchange", foo)
+
+        document.addEventListener("selectionchange", function(){
+            that.displayUserSelection()
+        })
 
         writenote.appendChild(notearea)
         parent.appendChild(writenote)
+    }
+
+    /**
+     * Used to get the contents that the user sees/inputs
+     * @returns the notearea's innerHTML
+     */
+    data(){
+        return this.notearea.innerHTML
+    }
+
+    text(fixNewlines){
+        var lines = this.notearea.getElementsByTagName("p")
+        var text = ''
+        for (let i = 0; i < lines.length; i++) {
+            if(fixNewlines===true){
+                text += lines[i].innerText.replace("\n", "")
+                if(i+1!=lines.length){
+                    text += "\n"
+                }
+            }
+            else{
+                text += lines[i].innerText
+            }
+        }
+        return text
+    }
+
+    copy(){
+        this.copyTextToClipboard(this.text(true))
+    }
+    /**
+     * Copy specified text to the clipboard with clipboard api and fallback with execCommand.
+     * @param {*} text Text to copy
+     * @returns True if successful and an error message if not
+     */
+    copyTextToClipboard(text){
+        if (!navigator.clipboard){
+            fallbackCopyTextToClipboard(text)
+            return
+        }
+        navigator.clipboard.writeText(text).then(function(){
+            return true
+        }, function(err){
+            return err
+        })
+    }
+    fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea")
+        textArea.value = text
+
+        textArea.style.top = "0"
+        textArea.style.left = "0"
+        textArea.style.position = "fixed"
+
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        var status
+        try{
+            status = document.execCommand('copy')
+        }catch (err){
+            status = err
+        }
+
+        document.body.removeChild(textArea)
+        return status
+    }
+
+    getArrayFromData(data){
+        return data.slice(3).slice(0, -4).split("</p><p>")
+    }
+     
+    saveData(){
+        var data = this.getArrayFromData(this.data())
+        var lastData = this.getArrayFromData(this.lastSave)
+
+        var diff
+        for(let i = 0; i < data.length; i++){
+            let found = false
+            for(let m = 0; m < data.length; m++){
+                if(data[i] == lastData[m]){
+                    diff += data[i] + "\n"
+                    found = true
+                }
+            }
+            if(found == false){
+                diff += "* " + data[i] + "\n"
+            }
+        }
+        console.log(diff)
+        // console.log(data)
+        // console.log(lastData)
+        this.lastSave = this.data()
+    }
+
+    insertNode(element){
+        var range = window.getSelection().getRangeAt(0)
+        // if(range.startContainer.parentElement.parentElement===this.notearea){// debug this
+            range.deleteContents()
+            // range.insertNode(element)
+            this.insertNodesAtCaret(element, "\u00a0")
+        // }
+    }
+    insertNodesAtCaret() {
+        var i, len, node, sel, range, html, id;
+        var escapeHtml = function(text) {
+            var div = document.createElement("div");
+            div.appendChild( document.createTextNode(text) );
+            return div.innerHTML;
+        };
+        
+        if (typeof window.getSelection != "undefined") {
+            sel = window.getSelection();
+            if (sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.collapse(false);
+                for (i = 0, len = arguments.length, node; i < len; ++i) {
+                    node = arguments[i];
+                    if (typeof node == "string") {
+                        node = document.createTextNode(node);
+                    }
+                    range.insertNode(node);
+                    range.setStartAfter(node);
+                    range.collapse(true);
+                }
+                range = range.cloneRange();
+                range.selectNodeContents(node);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
+            html = "";
+            for (i = 0, len = arguments.length, node; i < len; ++i) {
+                node = arguments[i];
+                if(typeof node == "string"){
+                    html += escapeHtml(node);
+                }else if(node.nodeType == 1){
+                    html += node.outerHTML;
+                }else if(node.nodeType == 3){
+                    html += escapeHtml(node.data);
+                }
+            }
+            id = "marker_" + ("" + Math.random()).slice(2);
+            html += '<span id="' + id + '"></span>';
+            var textRange = document.selection.createRange();
+            textRange.collapse(false);
+            textRange.pasteHTML(html);
+            var markerSpan = document.getElementById(id);
+            textRange.moveToElementText(markerSpan);
+            textRange.select();
+            markerSpan.parentNode.removeChild(markerSpan);
+        }
+    }
+
+
+    restoreSelection(state, referenceNode){
+        referenceNode = referenceNode || document.body
+
+        var i
+        , node
+        , nextNodeCharIndex
+        , currentNodeCharIndex = 0
+        , nodes = [referenceNode]
+        , sel = window.getSelection()
+        , range = document.createRange()
+
+        range.setStart(referenceNode, 0)
+        range.collapse(true)
+
+        while(node = nodes.pop()){
+        if (node.nodeType === 3){
+            nextNodeCharIndex = currentNodeCharIndex + node.length
+
+            if(state.start >= currentNodeCharIndex && state.start <= nextNodeCharIndex){
+            range.setStart(node, state.start - currentNodeCharIndex)
+            }
+
+            if(state.end >= currentNodeCharIndex && state.end <= nextNodeCharIndex){
+            range.setEnd(node, state.end - currentNodeCharIndex)
+            break
+            }
+
+            currentNodeCharIndex = nextNodeCharIndex
+        }else{
+
+            i = node.childNodes.length
+            while (i--) {
+            nodes.push(node.childNodes[i])
+            }
+        }
+        }
+
+        sel.removeAllRanges()
+        sel.addRange(range)
+        return sel
+    }
+
+    saveSelection(referenceNode){
+        referenceNode = referenceNode || document.body
+
+        var sel = window.getSelection()
+        , range = sel.rangeCount
+            ? sel.getRangeAt(0).cloneRange()
+            : document.createRange()
+        , startContainer = range.startContainer
+        , startOffset = range.startOffset
+        , state = {content: range.toString()}
+
+        range.selectNodeContents(referenceNode)
+        range.setEnd(startContainer, startOffset)
+
+        state.start = range.toString().length
+        state.end = state.start + state.content.length
+
+        state.restore = restore.bind(null, state, referenceNode)
+
+        return state
+    }
+
+    /**
+     * TODO: Finish this
+     */
+    displayUserSelection(){
+        const selObj = window.getSelection()
+        const selRange = selObj.getRangeAt(0)
+        const writenote = this.writenote
+        var userSelection = document.getElementById("u1")
+        if(!userSelection){
+            userSelection = document.createElement("userselection")
+            userSelection.id = "u1"
+            writenote.getElementsByTagName("overlay")[0].appendChild(userSelection)
+        }
+
+        var selectionPositions = selRange.getClientRects()
+        userSelection.innerHTML = ""
+        for (let i = 0; i < selectionPositions.length; i++) {
+            const arrElement = selectionPositions[i];
+            const element = document.createElement("us")
+            element.style.top = arrElement.top * this.zoom + "px"
+            element.style.left = arrElement.left * this.zoom + "px"
+            var width = arrElement.width
+            if(arrElement.width == this.notearea.getElementsByTagName("p")[0].offsetWidth){
+                width = 8
+            }
+            element.style.width = width * this.zoom + "px"
+            element.style.height = arrElement.height * this.zoom + "px"
+            userSelection.appendChild(element)
+        }
+
+    }
+    
+
+    /**
+     * It's a shame Stack Overflow had no good answers on this and chatgpt
+     * gave me a better solution in milliseconds.
+     * NVM! Had to edit a lot, even though I don't understand it
+     * @returns Returns the current line that's selected
+     */
+    getSelectedLine(){
+        const notearea = this.notearea
+        const selection = window.getSelection()
+        const range = selection.getRangeAt(0)
+        const caretPosition = range.startOffset
+
+        let currentNode = range.startContainer
+        while(currentNode.nodeName !== "P"){
+            if(currentNode === notearea){
+                return -1
+            }
+            currentNode = currentNode.parentNode
+        }
+
+        const lineIndex = Array.prototype.indexOf.call(
+            notearea.childNodes,
+            currentNode
+        )
+
+        return lineIndex
+    }
+
+
+
+    getInputSelection(el) {
+        var start = 0, end = 0, normalizedValue, range,
+            textInputRange, len, endRange;
+    
+        if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+            start = el.selectionStart;
+            end = el.selectionEnd;
+        } else {
+            range = document.selection.createRange();
+    
+            if (range && range.parentElement() == el) {
+                len = el.value.length;
+                normalizedValue = el.value.replace(/\r\n/g, "\n");
+    
+                // Create a working TextRange that lives only in the input
+                textInputRange = el.createTextRange();
+                textInputRange.moveToBookmark(range.getBookmark());
+    
+                // Check if the start and end of the selection are at the very end
+                // of the input, since moveStart/moveEnd doesn't return what we want
+                // in those cases
+                endRange = el.createTextRange();
+                endRange.collapse(false);
+    
+                if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+                    start = end = len;
+                } else {
+                    start = -textInputRange.moveStart("character", -len);
+                    start += normalizedValue.slice(0, start).split("\n").length - 1;
+    
+                    if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+                        end = len;
+                    } else {
+                        end = -textInputRange.moveEnd("character", -len);
+                        end += normalizedValue.slice(0, end).split("\n").length - 1;
+                    }
+                }
+            }
+        }
+    
+        return {
+            start: start,
+            end: end
+        };
+    }
+
+    getSelectionCoords(win) {
+        win = win || window;
+        var doc = win.document;
+        var sel = doc.selection, range, rects, rect;
+        var x = 0, y = 0;
+        if (sel) {
+            if (sel.type != "Control") {
+                range = sel.createRange();
+                range.collapse(true);
+                x = range.boundingLeft;
+                y = range.boundingTop;
+            }
+        } else if (win.getSelection) {
+            sel = win.getSelection();
+            if (sel.rangeCount) {
+                range = sel.getRangeAt(0).cloneRange();
+                if (range.getClientRects) {
+                    range.collapse(true);
+                    rects = range.getClientRects();
+                    if (rects.length > 0) {
+                        rect = rects[0];
+                    }
+                    x = rect.left;
+                    y = rect.top;
+                }
+                // Fall back to inserting a temporary element
+                if (x == 0 && y == 0) {
+                    var span = doc.createElement("span");
+                    if (span.getClientRects) {
+                        // Ensure span has dimensions and position by
+                        // adding a zero-width space character
+                        span.appendChild( doc.createTextNode("\u200b") );
+                        range.insertNode(span);
+                        rect = span.getClientRects()[0];
+                        x = rect.left;
+                        y = rect.top;
+                        var spanParent = span.parentNode;
+                        spanParent.removeChild(span);
+    
+                        // Glue any broken text nodes back together
+                        spanParent.normalize();
+                    }
+                }
+            }
+        }
+        return { x: x, y: y };
     }
 
     setCaretAfterElement(element){
@@ -187,24 +597,219 @@ class WriteNote{
 
     readFromSerialPort(){
         // https://developer.mozilla.org/en-US/docs/Web/API/SerialPort
+        // bad idea, but good if u use it in nodejs
     }
 
-    //allow for escaping
-    //disallow adding new line
-    //allow only title edit
-    insertAudio(){
-        var audio = document.createElement("wnaudio")
-
-        // append child at selection (caret)
-        var range = window.getSelection().getRangeAt(0)
-        audio.innerHTML = '<ti>song.mp3</ti><i class="m-i">play_arrow</i><i class="m-i">repeat</i><input type="range">'
-
-        if(range.startContainer.parentElement.parentElement===this.notearea){
-           // delete whatever is on the range
-           range.deleteContents()
-           // place your audio
-           range.insertNode(audio)
+    insertTicTacToe(){
+        var tictactoe = document.createElement("tictactoe")
+        tictactoe.contentEditable = false
+        var status = document.createElement("status")
+        var player = 1
+        function updateStatus(){
+            status.innerText = "Player "+player+"'s turn"
         }
+        function finishGame(p){
+            status.innerText = "Player "+p+" has won!"
+            for (let i = 0; i < btns.children.length; i++) {
+                const element = btns.children[i];
+                element.classList.add("marked")
+            }
+        }
+        function checkWin(){
+            var plays = btns.children
+            var p1 = []
+            var p2 = []
+            for (let i = 0; i < plays.length; i++) {
+                if(plays[i].innerText=="close"){
+                    p1.push(i)
+                }
+                if(plays[i].innerText=="circle"){
+                    p2.push(i)
+                }
+            }
+            function pc(p){
+                if(p.includes(0) && p.includes(1) && p.includes(2)){
+                    return true
+                }
+                if(p.includes(3) && p.includes(4) && p.includes(5)){
+                    return true
+                }
+                if(p.includes(6) && p.includes(7) && p.includes(8)){
+                    return true
+                }
+
+                if(p.includes(0) && p.includes(3) && p.includes(6)){
+                    return true
+                }
+                if(p.includes(1) && p.includes(4) && p.includes(7)){
+                    return true
+                }
+                if(p.includes(2) && p.includes(5) && p.includes(8)){
+                    return true
+                }
+                
+                if(p.includes(0) && p.includes(4) && p.includes(8)){
+                    return true
+                }
+                if(p.includes(2) && p.includes(4) && p.includes(6)){
+                    return true
+                }
+            }
+            if(pc(p1)){
+                return 1
+            }
+            if(pc(p2)){
+                return 2
+            }
+        }
+        updateStatus()
+        tictactoe.appendChild(status)
+        var btns = document.createElement("btns")
+        tictactoe.appendChild(btns)
+        for(let i = 0; i < 9; i++){
+            const element = document.createElement("sq")
+            element.classList.add("m-i")
+            element.innerText = "c"
+            btns.appendChild(element)
+        }
+        btns.addEventListener("click", function(e){
+            if(!e.target.classList.contains("marked") && e.target.nodeName == "SQ"){
+                if(player==1){
+                    player = 2
+                    e.target.innerText = "close"
+                }
+                else{
+                    player = 1
+                    e.target.innerText = "circle"
+                }
+                updateStatus()
+                var checkWinResult = checkWin()
+                if(checkWinResult==1){
+                    finishGame(1)
+                }
+                if(checkWinResult==2){
+                    finishGame(2)
+                }
+                e.target.classList.add("marked")
+            }
+        })
+        this.insertNode(tictactoe)
+    }
+
+    insertFile(file){
+        var fileEl = document.createElement("wnfile")
+        fileEl.contentEditable = false
+        fileEl.innerHTML = '<ti>'+file.name+"</ti>"
+
+        var dataId = guidGenerator().slice(0, 5)
+        var that = this
+        var reader = new FileReader()
+        reader.onload = (function(readFile){
+            console.log("added") // debug cuz sometimes it adds 2?
+            that.mediaData[dataId] = readFile.target.result
+            fileEl.setAttribute("dataId", dataId)
+        })
+        reader.readAsDataURL(file)
+    
+        this.insertNode(fileEl)
+        onElementRemoved(fileEl, function(){
+            delete that.mediaData[dataId]
+        })
+    }
+
+    //allow only title edit
+    //reEvent the events on load!
+    insertAudio(file){
+        var audioEl = document.createElement("wnaudio")
+        audioEl.contentEditable = false
+        // append child at selection (caret)
+        // add a 3 dots menu with download, speed, volume!
+        audioEl.innerHTML = '<ti>'+file.name+'</ti><times><timenow>0:00</timenow>/<timemax>0:00</timemax></times><i class="m-i">play_arrow</i><i class="m-i">repeat</i><input value=0 type="range">'
+        
+        var that = this
+        var reader = new FileReader()
+        var dataId = guidGenerator().slice(0, 5)
+        reader.onload = (function(readFile){
+            that.mediaData[dataId] = readFile.target.result
+            audioEl.setAttribute("dataId", dataId)
+        })
+        reader.readAsDataURL(file)
+        this.insertNode(audioEl)
+        
+        this.processAudio(audioEl)
+        onElementRemoved(audioEl, function(){
+            delete that.mediaData[dataId]
+        })
+    }
+    // i should foreach every wnaudio element to make them work :/
+    processAudio(audioEl){
+        var audio
+        var btns = audioEl.getElementsByClassName("m-i")
+        var seek = audioEl.getElementsByTagName("input")[0]
+        var currentTime = audioEl.getElementsByTagName("timenow")[0]
+        var totalTime = audioEl.getElementsByTagName("timemax")[0]
+        var that = this
+        ButtonEvent(btns[0], function(){
+            if(typeof audio != "object"){
+                var dataId = audioEl.getAttribute("dataId")
+                var audioData = that.mediaData[dataId]
+                audio = new Audio(audioData)
+                
+                audio.onplay = function(){btns[0].innerText = "pause"}
+                audio.onpause = function(){btns[0].innerText = "play_arrow"}
+                seek.addEventListener("change", function(){
+                    audio.currentTime = this.value
+                    document.activeElement.blur()
+                })
+                seek.addEventListener("input", function(){
+                    currentTime.innerText = formatPlaybackTime(this.value)
+                })
+                audio.ondurationchange = function(){
+                    seek.max = audio.duration
+                    totalTime.innerText = formatPlaybackTime(audio.duration)
+                }
+                audio.ontimeupdate = function(){
+                    if(seek != document.activeElement){
+                        seek.value = audio.currentTime
+                    }
+                    currentTime.innerText = formatPlaybackTime(audio.currentTime)
+                }
+                
+                audio.onended = function(){
+                    audio.currentTime = 0
+                    if(btns[1].innerText=='repeat_one'){
+                        btns[1].classList.remove("active")
+                        btns[1].innerText = "repeat"
+                        audio.play()
+                    }
+                    if(btns[1].innerText=='repeat_on'){
+                        audio.play()
+                    }
+                }
+            }
+            if(btns[0].innerText == "play_arrow"){
+                audio.play()
+            }
+            else{
+                audio.pause()
+            }
+        })
+        
+        ButtonEvent(btns[1], function(){
+            switch(btns[1].innerText){
+            case "repeat":
+                btns[1].innerText = "repeat_one"
+                break;
+            case "repeat_one":
+                btns[1].innerText = "repeat_on"
+                break;
+            case "repeat_on":
+                btns[1].innerText = "repeat"
+                break;
+            default:
+                break;
+            }
+        })
     }
 
     processLink(linkEngine, url, requestWholePage){ // Learn to handle errors, rejection ;(
@@ -293,6 +898,78 @@ class WriteNote{
         return features;
     }
 
+    pasteTextAtCaret(text) {
+        var sel, range;
+        if(window.getSelection){
+            sel = window.getSelection();
+            if(sel.getRangeAt && sel.rangeCount){
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+                var textNode = document.createTextNode(text);
+                range.insertNode(textNode);
+
+                // Preserve the selection
+                range = range.cloneRange();
+                range.setStartAfter(textNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }else if(document.selection && document.selection.type != "Control") {
+            document.selection.createRange().text = text;
+        }
+    }
+
+    pasteHtmlAtCaret(html, selectPastedContent) {
+        var sel, range;
+        if (window.getSelection) {
+            // IE9 and non-IE
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+
+                // Range.createContextualFragment() would be useful here but is
+                // only relatively recently standardized and is not supported in
+                // some browsers (IE9, for one)
+                var el = document.createElement("div");
+                el.innerHTML = html;
+                var frag = document.createDocumentFragment(),
+                    node,
+                    lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                var firstNode = frag.firstChild;
+                console.log(firstNode)
+                range.insertNode(frag);
+
+                // Preserve the selection
+                if (lastNode) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode);
+                    if (selectPastedContent) {
+                        range.setStartBefore(firstNode);
+                    } else {
+                        range.collapse(true);
+                    }
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        } else if ( (sel = document.selection) && sel.type != "Control") {
+            // IE < 9
+            var originalRange = sel.createRange();
+            originalRange.collapse(true);
+            sel.createRange().pasteHTML(html);
+            if (selectPastedContent) {
+                range = sel.createRange();
+                range.setEndPoint("StartToStart", originalRange);
+                range.select();
+            }
+        }
+    }
+
     insertLink(url){ // if a link is inserted outside this function, either paste or detection, the event handler will not be handlin'
         var parent = this.parent
         var writenote = this.writenote
@@ -303,7 +980,8 @@ class WriteNote{
         var getAverageRGB = this.getAverageRGB
         var existingLinks = this.notearea.getElementsByTagName("a")
         var id = existingLinks.length
-        document.execCommand("insertHTML", false, "<a n="+id+">"+url+"</a>&nbsp;")
+        // document.execCommand("insertHTML", false, "<a contenteditable='false' n="+id+">"+url+"</a>&nbsp;")
+        this.pasteHtmlAtCaret("<a n='"+id+"'>"+url+"</a>")
         var existingLinksAfterUpdate = this.notearea.getElementsByTagName("a")
         for (let i = 0; i < existingLinksAfterUpdate.length; i++) {
             const element = existingLinksAfterUpdate[i]

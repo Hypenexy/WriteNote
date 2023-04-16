@@ -20,7 +20,7 @@ function loadSnake(){
         "code/libraries/socket.io.js",
         "socketio",
         function(){
-            const SnakeServerIP = 'http://172.20.10.12:3000'
+            const SnakeServerIP = 'http://192.168.1.11:3000'
             const BG_COLOUR = '#231f20';
             const SNAKE_COLOUR = '#c2c2c2';
             const FOOD_COLOUR = '#e66916';
