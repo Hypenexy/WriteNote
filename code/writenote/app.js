@@ -9,8 +9,12 @@ var serverAddress = "http://192.168.1.11/"
 var serverImage = "http://192.168.1.11/i/"
 var server =  "http://192.168.1.11/WriteNoteApp/"
 var settings = {}
+var firstTime = false
 if(localStorage.getItem("options")){
     settings = JSON.parse(localStorage.getItem("options"))
+}
+else{
+    firstTime = true
 }
 settings.version = "3.0.0"
 // background: rgb(112,91,128); background: linear-gradient(36deg, rgba(112,91,128,1) 0%, rgba(239,183,229,1) 47%, rgba(34,34,66,1) 100%);

@@ -236,6 +236,10 @@ class WriteNote{
         return data.slice(3).slice(0, -4).split("</p><p>")
     }
      
+    /**
+     * Make a bool for modular (maybe to save locally)
+     * Add a unique id (or Sha) to every line then compare IT, and maybe on change of line regenerate id!
+     */
     saveData(){
         var data = this.getArrayFromData(this.data())
         var lastData = this.getArrayFromData(this.lastSave)
