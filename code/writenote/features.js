@@ -270,10 +270,16 @@ function showClipboard(){
 
     contextMenu.addEventListener('keydown', function(e){
         if(e.key == "ArrowUp"){
-            document.activeElement.previousSibling.focus()
+            var lastEl = document.activeElement.previousSibling
+            if(lastEl){
+                lastEl.focus()
+            }
         }
         if(e.key == "ArrowDown"){
-            document.activeElement.nextSibling.focus()
+            var nextEl = document.activeElement.nextSibling
+            if(nextEl){
+                nextEl.focus()
+            }
         }
     })
     show()
