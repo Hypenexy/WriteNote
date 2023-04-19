@@ -48,25 +48,28 @@
     padding: 24px;
     transition: .3s;
 }
+.firstTimeSetup .mdblock{
+    height: 100%;
+}
 .firstTimeSetup h1{
     font-size: 2.5em;
     font-weight: 400;
     padding-top: 60px;
     padding-bottom: 30px;
 }
-.firstTimeSetup h1 b{
+.firstTimeSetup b{
     background: linear-gradient(80deg, #9b0dff 0%, #bf0bff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.firstTimeSetup h1 ub{
+.firstTimeSetup ub{
     background: initial;
     background-clip: initial;
     -webkit-background-clip: initial;
     -webkit-text-fill-color: initial;
 }
-.firstTimeSetup h1 b.nw{
+.firstTimeSetup b.nw{
     display: block;
 }
 .firstTimeSetup p{
@@ -74,10 +77,36 @@
     font-weight: 300;
 }
 
+.firstTimeSetup btn{
+    border-radius: 8px;
+    background: #222;
+    border: 1px solid #222;
+    cursor: pointer;
+    padding: 12px;
+    transition: .1s;
+}
+.firstTimeSetup btn:hover{
+    border: 1px solid #555;
+}
+
+.firstTimeSetup btn.skip{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.firstTimeSetup btn.continue{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
 
 @media(max-width: 480px){
     .firstTimeSetup h1{
         font-size: 2em;
+    }
+    .firstTimeSetup p{
+        font-size: 1em;
+        font-weight: 300;
     }
 }
 content{

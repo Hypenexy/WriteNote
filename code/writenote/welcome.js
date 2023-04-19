@@ -49,9 +49,10 @@ function WelcomeGui(response, element, error){
         firstTimeSetup.classList.add("firstTimeSetup")
         var mdblock = document.createElement("div")
         mdblock.classList.add("mdblock")
+        mdblock.classList.add("relative")
         var welcomeTo = locale.welcomeTo.split("\n")
         var boldText = welcomeTo[1].slice(0, welcomeTo[1].length-1)
-        mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
+        mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p><btn class='skip'>"+locale.skip+"</btn><btn class='continue'>"+locale.continue+"</btn>"
         firstTimeSetup.appendChild(mdblock)
         element.appendChild(firstTimeSetup)
         firstTimeSetup.style.transform = "translateY(20px)"
