@@ -267,7 +267,18 @@ function showClipboard(){
         })
         contextMenu.appendChild(element)
     }
+
+    contextMenu.addEventListener('keydown', function(e){
+        if(e.key == "ArrowUp"){
+            document.activeElement.previousSibling.focus()
+        }
+        if(e.key == "ArrowDown"){
+            document.activeElement.nextSibling.focus()
+        }
+    })
     show()
+
+    contextMenu.getElementsByTagName("p")[0].focus()
 }
 
 document.addEventListener("keydown", function(e){

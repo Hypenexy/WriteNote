@@ -93,5 +93,8 @@ var locale = {
     left : "Left",
     right : "Right",
     bottom : "Bottom",
-    search : "Search"
+    search : "Search",
+    welcomeTo : "Welcome to your new \n text editor.",
+    welcomeToSubtext : "Making it easier for you to write a story, organize a calendar, manage a todo or even a website",
+    
 }

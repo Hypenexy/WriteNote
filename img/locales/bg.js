@@ -87,5 +87,6 @@ var locale = {
     left : "Ляво",
     right : "Дясно",
     bottom : "Долу",
-    search : "Търси"
+    search : "Търси",
+    welcomeTo : "Добре дошли в новият ви \n текстов редактор.",
 }

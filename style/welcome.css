@@ -36,6 +36,50 @@
     opacity: 0;
     top: 52%;
 }
+.firstTimeSetup{
+    z-index: 9;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #100f11;
+    padding: 24px;
+    transition: .3s;
+}
+.firstTimeSetup h1{
+    font-size: 2.5em;
+    font-weight: 400;
+    padding-top: 60px;
+    padding-bottom: 30px;
+}
+.firstTimeSetup h1 b{
+    background: linear-gradient(80deg, #9b0dff 0%, #bf0bff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.firstTimeSetup h1 ub{
+    background: initial;
+    background-clip: initial;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+}
+.firstTimeSetup h1 b.nw{
+    display: block;
+}
+.firstTimeSetup p{
+    font-size: 2em;
+    font-weight: 300;
+}
+
+
+@media(max-width: 480px){
+    .firstTimeSetup h1{
+        font-size: 2em;
+    }
+}
 content{
     height: 100%;
     position: relative;

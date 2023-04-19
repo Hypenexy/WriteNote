@@ -43,6 +43,26 @@ function WelcomeGui(response, element, error){
 
 
     }
+
+    if(firstTime==true){
+        var firstTimeSetup = document.createElement("div")
+        firstTimeSetup.classList.add("firstTimeSetup")
+        var mdblock = document.createElement("div")
+        mdblock.classList.add("mdblock")
+        var welcomeTo = locale.welcomeTo.split("\n")
+        var boldText = welcomeTo[1].slice(0, welcomeTo[1].length-1)
+        mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
+        firstTimeSetup.appendChild(mdblock)
+        element.appendChild(firstTimeSetup)
+        firstTimeSetup.style.transform = "translateY(20px)"
+        firstTimeSetup.style.opacity = 0
+        setTimeout(() => {
+            firstTimeSetup.style.removeProperty("transition")
+            firstTimeSetup.style.removeProperty("transform")
+            firstTimeSetup.style.opacity = 1
+        }, 10)
+    }
+
     if(element.classList[0]=="welcome"){
         content.classList.add("contentfull")
     }
