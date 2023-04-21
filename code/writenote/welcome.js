@@ -52,7 +52,50 @@ function WelcomeGui(response, element, error){
         mdblock.classList.add("relative")
         var welcomeTo = locale.welcomeTo.split("\n")
         var boldText = welcomeTo[1].slice(0, welcomeTo[1].length-1)
-        mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p><btn class='skip'>"+locale.skip+"</btn><btn class='continue'>"+locale.continue+"</btn>"
+        mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
+        // <btns><btn class='skip'>"+locale.continueWithout+"</btn><btn class='continue'>"+locale.continueDownload+"</btn><btn class='continue'>"+locale.continueAcc+"</btn></btns>
+        var btns = document.createElement("btns")
+        function customizePage(i){
+            mdblock.classList.add("")//animate transition!
+            var mdblock2 = document.createElement("div")
+            mdblock2.classList.add("mdblock")
+            mdblock2.classList.add("relative")
+            var welcomeTo = locale.welcomeTo.split("\n")
+            var boldText = welcomeTo[1].slice(0, welcomeTo[1].length-1)
+            mdblock2.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
+            firstTimeSetup.appendChild(mdblock2)
+        }
+        function openDownload(){
+            window.open('https://midelight.net/WriteNote/download/', '_blank').focus()
+        }
+        var btnsLocales = [locale.continueWithout, locale.continueDownload, locale.continueAcc]
+        for (let i = 0; i < btnsLocales.length; i++) {
+            const btnlocale = btnsLocales[i]
+            const element = document.createElement("btn")
+            element.innerText = btnlocale
+            if(i==0){
+                element.classList.add("skip")
+            }
+            if(i==1){
+                element.addEventListener("auxclick", openDownload)
+            }
+            ButtonEvent(element, function(){
+                if(i==1){
+                    openDownload()
+                }
+                else{
+                    customizePage(i)
+                }
+            })
+            if(i==0 && isApp==true){
+                element.innerText = locale.continueWithoutAcc
+            }
+            if(i==1 && isApp==true){
+                continue
+            }
+            btns.appendChild(element)
+        }
+        mdblock.appendChild(btns)
         firstTimeSetup.appendChild(mdblock)
         element.appendChild(firstTimeSetup)
         firstTimeSetup.style.transform = "translateY(20px)"
@@ -294,6 +337,12 @@ function WelcomeGui(response, element, error){
 
         timedescription = `${locale.its} ${feel} `
 
+        if(hour<12&&hour>=6){
+            timedescription += locale.morningin
+        }
+        if(hour==12){
+            timedescription += locale.noonin
+        }
         if(hour>13&&hour<18){
             timedescription += locale.afternoonin
         }

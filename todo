@@ -14,7 +14,7 @@ Fix blurry transform windows // and how exactly?? i have to do everything relati
 Instead of opening a project creation menu at new file just leave it blank and add a popup asking for a name and space and workplace and shit
 When focused window check if file was changed someplace else. (Electron)
 !You need to save workspace in the DataToSave
-copy history!
+COMPLETED copy history!
 create an ascii generator
 I thought Flex was my saviour! But no, it also makes images blurry, without even resizing them!
 A great idea with sockets! In the translation page open an iframe or another page with writenote an use sockets to display changing language in real time and focus on it!

@@ -76,30 +76,53 @@
     font-size: 2em;
     font-weight: 300;
 }
-
+.firstTimeSetup btns{
+    position: absolute;
+    right: 0;
+    bottom: 12px;
+}
 .firstTimeSetup btn{
     border-radius: 8px;
-    background: #222;
-    border: 1px solid #222;
     cursor: pointer;
-    padding: 12px;
+    padding: 16px;
     transition: .1s;
+    margin-left: 12px;
+    white-space: nowrap;
+    
+    color: #ce46ff;
+    border: 1px solid #ce46ff;
+}
+.firstTimeSetup btn:first-child{
+    margin-left: initial;
 }
 .firstTimeSetup btn:hover{
-    border: 1px solid #555;
+    border: 1px solid #df85ff;
+    color: #df85ff;
 }
-
+.firstTimeSetup btn:active:not(.skip){
+    color: #111;
+    border: 1px solid #df85ff;
+    background: #df85ff;
+}
 .firstTimeSetup btn.skip{
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    padding: initial;
+    border: initial;
+    color: #999;
+    margin-right: 12px;
 }
-.firstTimeSetup btn.continue{
-    position: absolute;
-    bottom: 0;
-    right: 0;
+.firstTimeSetup btn.skip:hover{
+    text-decoration: underline;
 }
-
+@media screen and (max-width: 580px){
+    .firstTimeSetup btns{
+        width: 100%;
+    }
+    .firstTimeSetup btn{
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+    }
+}
 @media(max-width: 480px){
     .firstTimeSetup h1{
         font-size: 2em;
@@ -107,6 +130,9 @@
     .firstTimeSetup p{
         font-size: 1em;
         font-weight: 300;
+    }
+    .firstTimeSetup b.nw{
+        display: inline-block;
     }
 }
 content{

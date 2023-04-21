@@ -29,6 +29,8 @@ var locale = {
     hot : "Гореща",
     extremelyhot : "екстремно гореща",
     its : "",
+    morningin : "сутрин в",
+    noonin : "обяд в",
     afternoonin : "следобед в",
     eveningin : "вечер в",
     nightin : "нощ в",
