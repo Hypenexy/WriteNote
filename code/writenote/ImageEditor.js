@@ -11,7 +11,7 @@ function openimageEditor(img, image){
     var HideModal = ShowModal(closeEditor, "#000000bb")
 
     var tools1 = document.createElement("tools1")
-    tools1.innerHTML = "<i class='m-i'>edit</i><i class='m-i'>crop</i><i class='m-i'>text_fields</i><i class='m-i'>fullscreen</i><i style='position:initial;float:right' class='x m-i'>close</i>"
+    tools1.innerHTML = "<i>edit</i><i>crop</i><i>text_fields</i><i>fullscreen</i><i style='position:initial;float:right' class='x m-i'>close</i>"
     ImageEditor.appendChild(tools1)
 
     ImageEditor.appendChild(img)
@@ -23,8 +23,8 @@ function openimageEditor(img, image){
         console.log(allMetaData)
     })
     if(Object.keys(allMetaData).length != 0){
-        info.innerHTML = "<p><i class='m-i'>event</i> " + allMetaData.DateTime + "</p>"+
-        "<p><i class='m-i'>photo_size_select_large</i> " + allMetaData.PixelXDimension + " x " + allMetaData.PixelYDimension +
+        info.innerHTML = "<p><i>event</i> " + allMetaData.DateTime + "</p>"+
+        "<p><i>photo_size_select_large</i> " + allMetaData.PixelXDimension + " x " + allMetaData.PixelYDimension +
         " f/" + allMetaData.FNumber +
         " " + allMetaData.FocalLength + "mm" +
         " 1/" + 1/allMetaData.ExposureTime +
@@ -32,10 +32,10 @@ function openimageEditor(img, image){
         " " + allMetaData.XResolution + " dpi" +//show file size in base64 as well!
         //" " + allMetaData.bit + " bit" + what
         "</p>"+
-        "<p><i class='m-i'>photo_camera</i> " + allMetaData.Make + " " + allMetaData.Model + "</p>"
+        "<p><i>photo_camera</i> " + allMetaData.Make + " " + allMetaData.Model + "</p>"
     }
     else{
-        info.innerHTML = "<p><i class='m-i'>photo_size_select_large</i> " + img.naturalWidth + " x " + img.naturalHeight;
+        info.innerHTML = "<p><i>photo_size_select_large</i> " + img.naturalWidth + " x " + img.naturalHeight;
     }
     ImageEditor.appendChild(info)
 

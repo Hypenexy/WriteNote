@@ -16,7 +16,6 @@ function showSettings(panel, submenu){
     }
 
     var xbtn = document.createElement("x")
-    xbtn.classList.add("m-i")
     xbtn.innerText = "close"
     ButtonEvent(xbtn, localClose)
     settingsGUI.appendChild(xbtn)
@@ -37,7 +36,7 @@ function showSettings(panel, submenu){
     for (let i = 0; i < tabs.length; i++) {
         const element = tabs[i]
         var button = document.createElement("button")
-        button.innerHTML = "<i class='m-i'>"+miIcons[i]+"</i><p>"+element+"</p>"
+        button.innerHTML = "<i>"+miIcons[i]+"</i><p>"+element+"</p>"
         ButtonEvent(button, openPanel, element)
         if(i+1==tabs.length){
             ButtonEvent(button, logout)
@@ -108,7 +107,7 @@ function showSettings(panel, submenu){
             function submenu(menu){
                 var subHeading = document.createElement("h1")
                 var headerTextAppend = document.createElement("headermore")
-                headerTextAppend.innerHTML = " <i class='m-i'>navigate_next</i> " + menu
+                headerTextAppend.innerHTML = " <i>navigate_next</i> " + menu
                 subHeading.innerText = heading.innerText
                 headerTextAppend.prepend(subHeading)
                 ButtonEvent(subHeading, openPanel, heading.innerText)
@@ -133,7 +132,7 @@ function showSettings(panel, submenu){
                 for (let i = 0; i < buttonsList.length; i++) {
                     const buttonData = buttonsList[i].split(';')
                     var element = document.createElement("bigBtn")
-                    element.innerHTML = "<ti><i class='m-i'>"+buttonData[0]+"</i>"+buttonData[1]+"</ti><co>"+buttonData[2]+"</co>"
+                    element.innerHTML = "<ti><i>"+buttonData[0]+"</i>"+buttonData[1]+"</ti><co>"+buttonData[2]+"</co>"
                     ButtonEvent(element, submenu, buttonData[1])
                     pageSettings.appendChild(element)
                 }

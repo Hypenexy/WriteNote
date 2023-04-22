@@ -332,7 +332,7 @@ function SaveChangesQuestion(nextStep){
             }, 200);
         }
         savechanges = document.createElement("div")
-        savechanges.innerHTML += "<x class='m-i'>close</x>"+
+        savechanges.innerHTML += "<x>close</x>"+
         '<ti>You have unsaved changes to '+activefile.name+'!</ti>'+
         "<co>Do you want to save them?</co>"+
         "<div style='text-align:center;margin-top:20px'><button>Save</button><button>Don't save</button><button>Cancel</button></div>"
@@ -402,7 +402,7 @@ function NewFileGui(close){
         }
 
         newfile = document.createElement("div")
-        newfile.innerHTML += "<x class='m-i'>close</x>"+
+        newfile.innerHTML += "<x>close</x>"+
         "<ti>Create a new project</ti>" +
         "<p>Name</p><input>"+
         "<p>Storage</p>"
@@ -421,9 +421,9 @@ function NewFileGui(close){
         })
 
         var buttonsDiv = document.createElement("buttons")
-        buttonsDiv.innerHTML = "<button><i class='m-i'>cloud</i> Cloud</button>"+
-        "<button><i class='m-i'>web</i> App</button>"+
-        "<button><i class='m-i'>desktop_windows</i> Device</button>"
+        buttonsDiv.innerHTML = "<button><i>cloud</i> Cloud</button>"+
+        "<button><i>web</i> App</button>"+
+        "<button><i>desktop_windows</i> Device</button>"
 
         var buttons = buttonsDiv.getElementsByTagName("button")
         var buttonoptions = ['online', 'localstorage', 'device']

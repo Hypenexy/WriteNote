@@ -250,7 +250,7 @@ function windowApp(Node, Title, Icon){
     var element = document.createElement("div")
     var header = document.createElement("div")
     header.classList.add("header")
-    header.innerHTML = "<i class='m-i'>"+Icon+"</i><p>"+Title+"</p>"
+    header.innerHTML = "<i>"+Icon+"</i><p>"+Title+"</p>"
     element.appendChild(header)
     //maybe replace this with native javascript (it's the same)
     $(element).draggable({ snap: true, containment: app, handle: header });
@@ -271,7 +271,6 @@ function windowApp(Node, Title, Icon){
         }, 200);
     }
     var xbtn = document.createElement("x")
-    xbtn.classList.add("m-i")
     xbtn.innerText="close"
     ButtonEvent(xbtn, closeWindow)
     element.appendChild(xbtn)

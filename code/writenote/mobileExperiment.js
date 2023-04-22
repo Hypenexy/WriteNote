@@ -175,7 +175,7 @@ notificationsbtn.remove()
 var mobileHeaderMenu = document.createElement("div")
 
 mobileHeaderMenu.classList.add("mobilemenu")
-mobileHeaderMenu.innerHTML = "<h1>11/11/2022</h1><currentnote><i class='m-i'>description</i><input><workspace></workspace><notespace></notespace><notesize></notesize></currentnote>"+
+mobileHeaderMenu.innerHTML = "<h1>11/11/2022</h1><currentnote><i>description</i><input><workspace></workspace><notespace></notespace><notesize></notesize></currentnote>"+
 "<devices></devices>"+
 // "<actionmenu><vs class='m-i'>account_circle</vs><vs class='m-i'>volume_up</vs><vs class='m-i'>light_mode</vs><vs class='m-i'>contrast</vs><vs class='m-i'>settings</vs></actionmenu>"
 "<vs class='m-i'>settings</vs>"+
@@ -212,7 +212,6 @@ function addDevice(id, UserAgent){
     var parserResults = parser.getResult() //.getOS()
     // console.log(parserResults)
     var icon = document.createElement("i")
-    icon.classList.add("m-i")
     icon.innerText = "computer"
     if(parserResults.device.type == "mobile"){
         icon.innerText = "smartphone"
@@ -471,6 +470,6 @@ function PushNotification(ti, desc, type, action){
 //     PushNotification("Hey there!", "You've successfully installed WriteNote!")
 //     PushNotification("A second one?!", "Whoa there can be a lot of notifications right? I mean what am I thinking.")
 //     setTimeout(() => {
-//         PushNotification("<i class='m-i'>warning</i> oh god", "There has been a change in login details.", "warn")
+//         PushNotification("<i>warning</i> oh god", "There has been a change in login details.", "warn")
 //     }, 1500);
 // }, 2050);

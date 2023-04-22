@@ -40,3 +40,13 @@
 //     settings = JSON.parse(data)
 // })
 
+// function getLatency(){
+//     const start = Date.now()
+  
+//     socket.emit("ping", () => {
+//       const duration = Date.now() - start
+//       console.log(duration);
+//     })
+// }
+
+// // getLatency() to get latency (ping) in ms

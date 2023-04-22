@@ -34,7 +34,6 @@ function noteareaContextMenu(e, mobile){
     for (let i = 0; i < richBtnsArr.length; i++) {
         const icon = richBtnsArr[i]
         var element = document.createElement("i")
-        element.classList.add("m-i")
         element.innerText = icon
         richBtns.appendChild(element)
         richBtnsBtnsArr.push(element)
@@ -88,7 +87,7 @@ function noteareaContextMenu(e, mobile){
             return
         }
         var element = document.createElement("p")
-        element.innerHTML="<i class='m-i'>"+icon+"</i> "+name
+        element.innerHTML="<i>"+icon+"</i> "+name
         if(isDisabled==true){
             element.classList.add("disabled")
         }
@@ -158,8 +157,8 @@ function noteareaContextMenu(e, mobile){
     addToMenu("hr")
     addToMenu("Share", "share", function(){})
     // "<de>Properties</de>"+
-    // "<pr><i class='m-i'>calendar_month</i> 2 minutes ago</pr>"+
-    // "<pr><i class='m-i'>save</i> 210 B</pr>"
+    // "<pr><i>calendar_month</i> 2 minutes ago</pr>"+
+    // "<pr><i>save</i> 210 B</pr>"
 
     show()
 }

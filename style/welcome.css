@@ -49,7 +49,20 @@
     transition: .3s;
 }
 .firstTimeSetup .mdblock{
-    height: 100%;
+    overflow: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    height: calc(100% - 48px);
+    transition: .3s;
+}
+.firstTimeSetup .transitionLeft{
+    transform: translateX(calc(-50% + -64px));
+    opacity: 0;
+}
+.firstTimeSetup .transitionRight{
+    transform: translateX(calc(-50% + 64px));
+    opacity: 0;
 }
 .firstTimeSetup h1{
     font-size: 2.5em;
@@ -57,11 +70,21 @@
     padding-top: 60px;
     padding-bottom: 30px;
 }
+.firstTimeSetup h2{
+    font-size: 1.75em;
+    color: #ddd;
+    font-weight: 400;
+}
 .firstTimeSetup b{
     background: linear-gradient(80deg, #9b0dff 0%, #bf0bff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+.firstTimeSetup b::selection{
+    background-clip: initial;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
 }
 .firstTimeSetup ub{
     background: initial;
@@ -79,7 +102,7 @@
 .firstTimeSetup btns{
     position: absolute;
     right: 0;
-    bottom: 12px;
+    bottom: 18px;
 }
 .firstTimeSetup btn{
     border-radius: 8px;
@@ -113,6 +136,39 @@
 .firstTimeSetup btn.skip:hover{
     text-decoration: underline;
 }
+.firstTimeSetup .compare{
+    display: flex;
+    width: 100%;
+    height: calc(100% - 48px);
+}
+.firstTimeSetup .compare div{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    /* border-right: 1px solid #555; */
+    background: #222;
+    margin: 5px;
+    border-radius: 12px;
+}
+.firstTimeSetup .compare div h2{
+    display: block;
+    color: #df85ff;
+    text-align: center;
+    padding: 10px 0;
+}
+.firstTimeSetup .compare div fe{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    font-size: 1.25em;
+    padding: 0 10px;
+}
+.firstTimeSetup .compare btn{
+    margin: 12px;
+    text-align: center;
+}
 @media screen and (max-width: 580px){
     .firstTimeSetup btns{
         width: 100%;
@@ -128,11 +184,19 @@
         font-size: 2em;
     }
     .firstTimeSetup p{
-        font-size: 1em;
+        font-size: 1.5em;
         font-weight: 300;
     }
     .firstTimeSetup b.nw{
         display: inline-block;
+    }
+}
+@media(max-height: 520px) {
+    .firstTimeSetup btns{
+        bottom: 0;
+        margin-top: 24px;
+        display: block;
+        position: relative;
     }
 }
 content{

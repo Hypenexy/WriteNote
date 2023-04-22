@@ -68,7 +68,6 @@ function calculator(){
     }
 
     var historybtn = document.createElement("i")
-    historybtn.classList.add("m-i")
     historybtn.classList.add("historybtn")
     historybtn.innerText = "history"
     ButtonEvent(historybtn, function(){
@@ -80,7 +79,6 @@ function calculator(){
         }
     })
     var closehistory = document.createElement('x')
-    closehistory.classList.add("m-i")
     closehistory.innerText = "close"
     ButtonEvent(closehistory, function(){
         history.classList.remove("active")

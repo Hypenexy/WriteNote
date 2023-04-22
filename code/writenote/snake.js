@@ -14,7 +14,7 @@ app.appendChild(snakewindow)
 function loadSnake(){
     snakemodal = ShowModal(unloadSnake)
     snakewindow.classList.add("snakeactive")
-    snakewindow.innerHTML = "<h1><i class='m-i'>group</i> Snake</h1><x class='m-i'>close</x><p><i class='m-i'>dns</i> Trying to connect...</p>"
+    snakewindow.innerHTML = "<h1><i>group</i> Snake</h1><x class='m-i'>close</x><p><i>dns</i> Trying to connect...</p>"
     ButtonEvent(snakewindow.getElementsByTagName('x')[0], unloadSnake)
     loadScript(
         "code/libraries/socket.io.js",
@@ -28,7 +28,7 @@ function loadSnake(){
             snakesocket = io(SnakeServerIP);
 
             snakesocket.on('connect', function() {
-                snakewindow.getElementsByTagName("p")[0].innerHTML = "<i class='m-i'>dns</i> Connected to game server <b>"+SnakeServerIP+"</b>"
+                snakewindow.getElementsByTagName("p")[0].innerHTML = "<i>dns</i> Connected to game server <b>"+SnakeServerIP+"</b>"
                 var PreGameWindow = document.createElement("pregamewindow")
                 PreGameWindow.innerHTML = "<input placeholder='Enter game code'><button>Join Game</button><hr><button>Create Game</button>"
                 snakewindow.appendChild(PreGameWindow)
@@ -177,7 +177,7 @@ function loadSnake(){
 
             })
             snakesocket.on('disconnect', function() {
-                snakewindow.getElementsByTagName("p")[0].innerHTML = "<i class='m-i'>dns</i> Disconnected"
+                snakewindow.getElementsByTagName("p")[0].innerHTML = "<i>dns</i> Disconnected"
             })
         }
     )

@@ -55,15 +55,45 @@ function WelcomeGui(response, element, error){
         mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
         // <btns><btn class='skip'>"+locale.continueWithout+"</btn><btn class='continue'>"+locale.continueDownload+"</btn><btn class='continue'>"+locale.continueAcc+"</btn></btns>
         var btns = document.createElement("btns")
-        function customizePage(i){
-            mdblock.classList.add("")//animate transition!
+        function nextPage(i){
             var mdblock2 = document.createElement("div")
+            mdblock2.classList.add("transitionRight")
             mdblock2.classList.add("mdblock")
             mdblock2.classList.add("relative")
-            var welcomeTo = locale.welcomeTo.split("\n")
-            var boldText = welcomeTo[1].slice(0, welcomeTo[1].length-1)
-            mdblock2.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
+            if(i==0){ // Benefits menu
+                mdblock2.innerHTML = "<div class='compare'>"+
+                "<div><h2>Limited</h2><fe>• Most WriteNote features</fe><fe>4 Mb of browser storage</fe><btn>Continue</btn></div>"+
+                "<div><h2>Download</h2><fe>• More WriteNote features<br>• Available offline<br>• Faster load times</fe><fe>As much as your device has</fe><btn>Download</btn></div>"+
+                "<div><h2>Sign Up</h2><fe>• More WriteNote features<br>• Share & collaborate with anyone<br>• Access from any device</fe><fe>2 Gb of free cloud storage</fe><btn>Sign Up</btn></div>"+
+                "</div>"
+                var btns = mdblock2.getElementsByTagName("btn")
+                for (let i = 0; i < btns.length; i++) {
+                    const element = btns[i];
+                    if(i==1){
+                        element.addEventListener("auxclick", openDownload)
+                    }
+                    ButtonEvent(element, function(){
+                        if(i==1){
+                            openDownload()
+                        }
+                    })
+                }
+            }
+            if(i==4){
+                mdblock2.innerHTML = "<h1>"+locale.customize+"</h1>"+
+                "<h2>Theme</h2>"+
+                "<h2>Language</h2>"+
+                "<h2>Narrator</h2>"
+
+                var btns = document.createElement("btns")
+                
+                
+            }
             firstTimeSetup.appendChild(mdblock2)
+            mdblock.classList.add("transitionLeft")
+            setTimeout(() => {
+                mdblock2.classList.remove("transitionRight")
+            }, 10);
         }
         function openDownload(){
             window.open('https://midelight.net/WriteNote/download/', '_blank').focus()
@@ -84,7 +114,7 @@ function WelcomeGui(response, element, error){
                     openDownload()
                 }
                 else{
-                    customizePage(i)
+                    nextPage(i)
                 }
             })
             if(i==0 && isApp==true){
@@ -190,7 +220,6 @@ function WelcomeGui(response, element, error){
 
     if(element.classList[0]=="welcome"){
         var closebtn = document.createElement("x")
-        closebtn.classList.add("m-i")
         closebtn.innerText = "close"
         ButtonEvent(closebtn, function(){
             welcomeClose()
@@ -219,7 +248,7 @@ function WelcomeGui(response, element, error){
             }
         }
     })
-    search.innerHTML = "<i class='m-i'>search</i>"
+    search.innerHTML = "<i>search</i>"
     search.appendChild(searchinput)
 
     var info = document.createElement("info")
@@ -406,7 +435,7 @@ function WelcomeGui(response, element, error){
     var filters = document.createElement("filters")
     var files = document.createElement("files")
     function FileFunction(sort, reverse, folder){
-        filters.innerHTML ="<div tabindex='0' class='sorts'><span class='op m-i'>sort</span><a>"+locale.openeddate+"</a><i class='m-i'>swap_horiz</i><div><p>"+locale.openeddate+"</p><p>"+locale.modifieddate+"</p><p>"+locale.alphabetically+"</p><p>"+locale.size+"</p></div></div>"+
+        filters.innerHTML ="<div tabindex='0' class='sorts'><span class='op m-i'>sort</span><a>"+locale.openeddate+"</a><i>swap_horiz</i><div><p>"+locale.openeddate+"</p><p>"+locale.modifieddate+"</p><p>"+locale.alphabetically+"</p><p>"+locale.size+"</p></div></div>"+
             "<span class='o m-i'>grid_view</span>"+
             "<span class='o m-i'>view_headline</span>"
     
@@ -494,7 +523,7 @@ function WelcomeGui(response, element, error){
                 }
                 folders.unshift("Home")
                 var lastFolderFolder = folders[folders.length-2]
-                lastFolder.innerHTML = "<i class='m-i'>chevron_left</i> " + lastFolderFolder
+                lastFolder.innerHTML = "<i>chevron_left</i> " + lastFolderFolder
                 lastFolder.classList.add("folder")
                 files.appendChild(lastFolder)
                 var displayFolders = folders
@@ -633,7 +662,7 @@ function WelcomeGui(response, element, error){
                         // if(!foldersSet.includes(folderName)){
                         //     foldersSet.push(folderName)
                             button.classList.add("folder")
-                            button.innerHTML = "<i class='m-i'>folder</i> " + folderName
+                            button.innerHTML = "<i>folder</i> " + folderName
                         // }
                         // else{
                         //     console.log(path)
@@ -689,7 +718,7 @@ function WelcomeGui(response, element, error){
                             if(path&&path!=folder){
                                 contextMenu.innerHTML = '<input value="'+path+'">'+
                                 "<de>Actions</de>"+
-                                "<p><i class='m-i'>delete</i> Delete</p>"+
+                                "<p><i>delete</i> Delete</p>"+
                                 "<de>Properties</de>"+
                                 "<p>edited: today</p>"+
                                 "<p>size: chonk</p>" //get the combined sizes of the things inside
@@ -697,12 +726,12 @@ function WelcomeGui(response, element, error){
                             else{
                                 contextMenu.innerHTML = '<input value="'+name+'" placeholder='+name+'>'+
                                 "<de>Actions</de>"+
-                                "<p><i class='m-i'>share</i> Share</p>"+
-                                "<p><i class='m-i'>content_copy</i> Duplicate</p>"+
-                                "<p><i class='m-i'>delete</i> Delete</p>"+
+                                "<p><i>share</i> Share</p>"+
+                                "<p><i>content_copy</i> Duplicate</p>"+
+                                "<p><i>delete</i> Delete</p>"+
                                 "<de>Properties</de>"+
-                                "<pr><i class='m-i'>calendar_month</i> 2 minutes ago</pr>"+
-                                "<pr><i class='m-i'>save</i> 210 B</pr>"
+                                "<pr><i>calendar_month</i> 2 minutes ago</pr>"+
+                                "<pr><i>save</i> 210 B</pr>"
                                 var renameInput = contextMenu.getElementsByTagName("input")[0]
                                 renameInput.addEventListener("change", function(){
                                     var renameResult = Rename(path, name, space, this.value)
@@ -750,7 +779,7 @@ function WelcomeGui(response, element, error){
             if(!folder){
                 var createnewbutton = document.createElement("button")
                 createnewbutton.classList.add("folder")
-                createnewbutton.innerHTML = "<i class='m-i'>add</i> " + locale.createnew
+                createnewbutton.innerHTML = "<i>add</i> " + locale.createnew
                 ButtonEvent(createnewbutton, NewFileGui)
                 files.appendChild(createnewbutton)
             }
@@ -842,399 +871,3 @@ function connectToMidelightTemporary(){
 }
 
 connectToMidelightTemporary()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function Startup(){
-    /**
-     * Imported from WriteNote 2.0.0,
-     * used to display a welcoming message!
-     * @param {*} name User's username
-     * Midnight Doesn't work on chrome but on safari!
-     */
-    function createMOTD(name){
-        var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });
-        var hour = parseInt(now24.slice(0, 2));
-        var welcomemessage = "Good morning, " + name;
-        if(hour>13&&hour<18){
-          welcomemessage = "Good afternoon, " + name;
-        }
-        if(hour>17&&hour<23){
-          welcomemessage = "Good evening, " + name;
-        }
-        if(hour>22||hour<6){
-          welcomemessage = "Good night, " + name;
-        }
-        if(hour==0){
-          welcomemessage = "Enjoy the midnight, " + name;
-        }
-        return welcomemessage;
-    }
-
-
-    /**
-     * Also imported from WriteNote 2.0.0,
-     * and used to get the type of weather.
-     * @param {*} info Parsed retrieved message about weather.
-     */
-    function weather(info){
-        if(info.status==429){
-            // document.getElementById("weather").style.display = "none";
-            return false;
-        }
-        else{
-            if(info.altdesc=="Thunderstorm"){
-                info.desc = "Thunderstorm";
-            }
-            if(info.altdesc=="Drizzle"){
-                info.desc = "Rainy";
-            }
-            if(info.altdesc=="Rain"){
-                info.desc = "Rainy";
-            }
-            if(info.altdesc=="Snow"){
-                info.desc = "Snowing";
-            }
-            if(info.altdesc=="Clouds"){
-                info.desc = "Cloudy";
-            }
-            if(info.desc=="clear sky"){
-                info.desc = "Clear sky";
-            }
-            if(info.desc=="few clouds"){
-                info.desc = "A little cloudy";
-            }
-            if(info.desc=="scattered clouds"){
-                info.desc = "Somewhat cloudy";
-            }
-            if(info.desc=="very heavy rain"||info.desc=="heavy intensity rain"){
-                info.desc = "Heavy rain";
-            }
-            if(info.desc=="extreme rain"){
-                info.desc = "Extreme Rain"
-            }
-            if(info.desc=="Rain and snow"||info.desc=="Light rain and snow"){
-                info.desc = "Snowing & raining";
-            }
-            if(info.altdesc=="Mist"){
-                info.desc = "Mist";
-            }
-
-            var now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
-            var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });
-            var hour = parseInt(now24.slice(0, 2));
-            var timedescription = info.city;
-            var temp = parseInt(info.temp.toString().slice(0, 2));
-            var feel = "a nice";
-            if(Math.floor(Math.random() * 4)==2){
-                feel = "a peaceful";
-            }
-            if(temp<1){
-                feel="a freezing"
-            }
-            if(temp<14){
-                feel="a cold"
-            }
-            if(temp>20){
-                feel="a mild"
-            }
-            if(temp>28){
-                feel="a hot"
-            }
-            if(temp>36){
-                feel="an extremely hot"
-            }
-            if(hour>13&&hour<18){
-                timedescription = "It's " + feel + " afternoon in " + info.city;
-            }
-            if(hour>17&&hour<23){
-                timedescription = "It's " + feel + " evening in " + info.city;
-            }
-            if(hour>22||hour<6){
-                timedescription = "It's " + feel + " night in " + info.city;
-            }
-            if(hour==0){
-                timedescription = "It's " + feel + " midnight in " + info.city;
-            }
-            return '<div id="weathertimed"><timed> Last updated ' + now + '</timed><a class="link" onclick="openotherwindow(' + "'sidepanel'" +')">Options</a></div><h2>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</h2><h3>" + timedescription +".</h3>"
-        }
-    }
-
-    startup.style.visibility = "visible"
-    startup.style.opacity = 1
-    startup.style.transform = "translate(-50%, -50%)"
-
-    startup.innerHTML = "<content><div class='startuploader'></div><content>"
-    var content = startup.getElementsByTagName("content")[0]
-    var other
-
-    function homeContent(anim, retur, info){
-        var HTMLinfo = "<account class='widget'><img src='IMG_2363.jpg'>Hypenexy<a tabindex='0'>Switch account</a></account>"+
-        "<weather class='widget'><img src='littlecloudy.jpeg'><w>Sunny 38°C</w><p>It's a nice morning in Plovdiv</p></weather>"+
-        "<create class='widget'><a tabindex='0'><span class='m-i'>add</span> Create Project</a><a tabindex='0'><span class='m-i'>file_open</span> Open Project</a></create>"+
-        "<space class='widget'>2 GB used of 5 GB</space>"
-        var HTMLcontent =  "<info>"+HTMLinfo+"</info>"
-        if(retur){
-            if(info){
-                return HTMLinfo
-            }
-            return '<svg tabindex="0" class="x" width="48" height="48" viewBox="0 0 64 64"><rect x="4" y="8" width="56" height="8" rx="4" ry="4"></rect><rect x="4" y="28" width="56" height="8" rx="4" ry="4"></rect><rect x="4" y="48" width="56" height="8" rx="4" ry="4"></rect></svg><content class="contentfull">' + HTMLcontent + "</content>"
-        }
-        if(anim){
-            content.style = "display:block;overflow:hidden"
-            other.style = "display:block;transform: translateY(50px);transition: 0.4s"
-            setTimeout(() => {
-                other.style = "display:block;transform: translateY(-30px);transition: 0s"
-                other.innerHTML = HTMLcontent
-
-                setTimeout(() => {
-                    other.style = "display:block;transition: 0.4s"
-                    setTimeout(() => {
-                        content.style = "display:block"
-                    }, 400);
-                }, 10);
-            }, 100);
-        }
-        else{
-            other.innerHTML = HTMLcontent
-        }
-        setTimeout(() => {
-            var buttons = other.getElementsByTagName("a")
-
-            ButtonEvent(buttons[0], switchAccount)
-            ButtonEvent(buttons[1], function(){manageProject(null, "create")})
-            ButtonEvent(buttons[2], function(){manageProject(null, "open")})
-        }, 150);
-    }
-
-    function switchAccount(isSidepanel){
-        other = content.getElementsByTagName("other")[0]
-        if(isSidepanel){
-            other = sidepanel.getElementsByTagName("info")[0]
-        }
-        content.style = "display:block;overflow:hidden"
-        other.style = "display:block;transform: translateY(-50px);transition: 0.4s"
-        setTimeout(() => {
-            other.style = "display:block;transform: translateY(50px);transition: 0s"
-            other.innerHTML = "<span tabindex='0' class='m-i x' style='display:block;width:44px'>arrow_back</span>"+
-            "<account class='widget chacc achac'><img src='IMG_2363.jpg'>Hypenexy<a tabindex='0'>Remove</a></account>"+
-            "<account class='widget chacc'><img src='IMG_2363.jpg'>Cooler hype<a tabindex='0'>Switch</a><a tabindex='0'>Remove</a></account>"+
-            "<account class='widget chacc'><a tabindex='0'>Add another account</a></account>"
-            var backbtn = other.getElementsByTagName("span")[0]
-            if(isSidepanel){
-                backbtn.style.position = "relative"
-                backbtn.style.left = "8px"
-                backbtn.style.top = "0"
-                ButtonEvent(backbtn, sidePanelLoad, true)
-            }
-            else{
-                ButtonEvent(backbtn, function(){homeContent(true)})
-            }
-
-            setTimeout(() => {
-                other.style = "display:block;transition: 0.4s"
-                setTimeout(() => {
-                    content.style = "display:block"
-                }, 400);
-            }, 10);
-        }, 100);
-    }
-
-    
-    function manageProject(isSidepanel, type){
-        other = content.getElementsByTagName("other")[0]
-        if(isSidepanel){
-            other = sidepanel.getElementsByTagName("info")[0]
-        }
-        content.style = "display:block;overflow:hidden"
-        other.style = "display:block;transform: translateY(-50px);transition: 0.4s"
-        setTimeout(() => {
-            var buttonsgui = "<buttons>"
-            if(type=="create"){
-                buttonsgui += "<a style='color: #df85ff;box-shadow:0 0 2px 1px #df85ff'>Create</a><a tabindex='0'>Open</a></buttons>"
-            }
-            else{
-                buttonsgui += "<a tabindex='0'>Create</a><a style='color: #df85ff;box-shadow:0 0 2px 1px #df85ff'>Open</a></buttons>"
-            }
-            other.style = "display:block;transform: translateY(50px);transition: 0s"
-            other.innerHTML = "<span tabindex='0' class='m-i x' style='display:block;width:44px'>arrow_back</span>"+
-            buttonsgui+
-            `<div class="name">
-                <divbel>
-                <p>Name your new project</p>
-                <input class="createname" placeholder="Untitled">
-                </divbel>
-                <divbel>
-                <p>Store your project</p>
-                <button class="createcloud"><span class="m-i">cloud</span> Cloud</button>
-                <button class="createbrowser"><span class="m-i">web</span> App</button>
-                <button class="createdevice"><span class="m-i">desktop_windows</span> Device</button>
-                </divbel>
-                <divbel>
-                <div class="createcloudfolder">
-                    <p>Folder</p>
-                    <button class='createcloudfolderbutton'>Choose a folder<span class='m-i'>expand_more</span></button>
-                    <div class="createcloudfolderselect">
-                        <folder><span class='m-i'>home</span></folder>
-                        <folder><span class='m-i'>folder</span>folder lmao</folder>
-                        <folder><span class='m-i'>folder</span>codes</folder>
-                        <folder><span class='m-i'>add_circle_outline</span></folder>
-                    </div>
-                </div>
-                </divbel>
-                <divbel>
-                <div class="bottom">
-                <!-- <p>Create the project</p> -->
-                <button class="blue"><span class="m-i">add</span> Create</button> <button onclick="openHome()"><span class="m-i">close</span> Cancel</button>
-                </div>
-                </divbel>
-            </div>`
-            var createcloudfolderselect = other.getElementsByClassName("createcloudfolderselect")[0]
-            function toggleFolders(button){
-                var icon = button.getElementsByClassName("m-i")[0]
-                if(!createcloudfolderselect.style.visibility){
-                    icon.innerText = "expand_less"
-                    button.style.color = "#df85ff"
-                    button.style.background = "#df85ff22"
-                    button.style.border = "1px solid #df85ff"
-                    createcloudfolderselect.style.visibility = "initial"
-                    createcloudfolderselect.style.transform = "initial"
-                    createcloudfolderselect.style.opacity = 1
-                }
-                else{
-                    icon.innerText = "expand_more"
-                    button.style = ""
-                    createcloudfolderselect.style.transform = "translateY(-10px)"
-                    createcloudfolderselect.style.opacity = 0
-                    setTimeout(() => {
-                        createcloudfolderselect.style = ""
-                    }, 300);
-                }
-            }
-            var folderbutton = other.getElementsByClassName("createcloudfolderbutton")[0]
-            ButtonEvent(folderbutton, toggleFolders, folderbutton)
-            var buttons = other.getElementsByTagName("a")
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].tabindex = '0'
-            }
-            ButtonEvent(buttons[0], function(){manageProject(isSidepanel, "create")})
-            ButtonEvent(buttons[1], function(){manageProject(isSidepanel, "open")})
-            var backbtn = other.getElementsByTagName("span")[0]
-            if(isSidepanel){
-                backbtn.style.position = "relative"
-                backbtn.style.left = "8px"
-                backbtn.style.top = "0"
-                ButtonEvent(backbtn, sidePanelLoad, true)
-            }
-            else{
-                ButtonEvent(backbtn, function(){homeContent(true)})
-            }
-
-            setTimeout(() => {
-                other.style = "display:block;transition: 0.4s"
-                setTimeout(() => {
-                    content.style = "display:block"
-                }, 400);
-            }, 10);
-        }, 100);
-    }
-
-    function sidePanelLoad(anim){
-        function load(){
-            if(anim){
-                sidepanel.getElementsByTagName("info")[0].innerHTML = homeContent(true, true, true)
-            }
-            else{
-                sidepanel.innerHTML = homeContent(true, true)
-            }
-            var buttons = sidepanel.getElementsByTagName("a")
-            ButtonEvent(buttons[0], switchAccount, true)
-            ButtonEvent(buttons[1], function(){manageProject(true, "create")})
-            ButtonEvent(buttons[2], function(){manageProject(true, "open")})
-            ButtonEvent(sidepanel.getElementsByTagName("svg")[0], closeNav)
-        }
-        if(anim){
-            var sidepanelanim = sidepanel.getElementsByTagName("info")[0]
-            sidepanelanim.style = "display:block;transform: translateY(50px);transition: 0.4s"
-            setTimeout(() => {
-                load()
-                sidepanelanim.style = "display:block;transform: translateY(-50px);transition: 0s"
-                setTimeout(() => {
-                    sidepanelanim.style = "display:block;transition: 0.4s"
-                }, 10);
-            }, 100);
-        }
-        else{
-            load()
-        }
-    }
-
-    function load(response){
-        if(!response){
-            response = storedResponse
-        }
-        else{
-            storedResponse = response
-        }
-        if(response.status=="offline"){
-            response = {
-                name: ""
-            }
-        }
-
-        content.style = "display:block;transform: translateY(-50px);transition: 0.4s"
-        setTimeout(() => {
-            content.style = "display:block;transform: translateY(50px);transition: 0s"
-            content.innerHTML = "<span tabindex='0' class='m-i x'>close</span>"+
-            "<motd>"+createMOTD(response.name)+"</motd>"+
-            "<search><span class='m-i'>search</span><input placeholder='Search'></search>"+//im confusedm, does this element exist?
-            "<other>"+
-            "</other>"
-
-            other = content.getElementsByTagName("other")[0]
-            homeContent()
-
-            ButtonEvent(content.getElementsByTagName("span")[0], close)
-
-            setTimeout(() => {
-                content.style = "display:block;transition: 0.4s"
-            }, 10);
-        }, 100);
-    }
-
-    function hideStartup(){
-        var elements = startup.getElementsByTagName("*")
-
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].style.transform = "translateX(-200px)";
-        }
-
-        startup.style.removeProperty("opacity")
-        startup.style.removeProperty("transform")
-        startup.style.removeProperty("visibility")
-        HideModal()
-
-        sidePanelLoad()
-    }
-}

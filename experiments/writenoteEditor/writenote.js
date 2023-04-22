@@ -1000,7 +1000,7 @@ class WriteNote{
                 element.addEventListener("mouseenter", function(){
                     processLink(linkEngine, url).then(function(data){
                         var data = JSON.parse(data)
-                        var html = "<div class='header'><p>"+url+"</p><div><i class='m-i'>history</i><i class='m-i'>refresh</i></div></div><div class='metadata'>"
+                        var html = "<div class='header'><p>"+url+"</p><div><i>history</i><i>refresh</i></div></div><div class='metadata'>"
                         if(data.image){
                             html += "<div class='image'><img src='data:image/png;base64,"+data.image+"'></div>"
                         }

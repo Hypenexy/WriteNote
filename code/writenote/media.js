@@ -1,5 +1,5 @@
 var media = document.createElement("media")
-media.innerHTML = "<h1><i class='m-i'>folder</i>Media</h1><x class='m-i'>close</x>"
+media.innerHTML = "<h1><i>folder</i>Media</h1><x class='m-i'>close</x>"
 
 ButtonEvent(media.getElementsByTagName("x")[0], hidemedia)
 

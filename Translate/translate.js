@@ -7,7 +7,7 @@ var strings = Object.keys(locale)
 var welcome = document.createElement("div")
 welcome.classList.add("translate")
 welcome.innerHTML = "<h1>WriteNote <b>Translations</b></h1><h2>Welcome, to the translations page.</h2><div class='bouncy m-i'>language</div><div class='bouncy2 m-i'>translate</div>"
-//<i class='m-i'>language</i>
+//<i>language</i>
 app.appendChild(welcome)
 
 var translations = document.createElement("div")
@@ -15,7 +15,7 @@ translations.classList.add("translations")
 
 var languageselectbtn = document.createElement("button")
 
-languageselectbtn.innerHTML = "What language do you want to translate to? <i class='m-i'>expand_more</i>"
+languageselectbtn.innerHTML = "What language do you want to translate to? <i>expand_more</i>"
 
 
 var languagesselector = document.createElement("div")
@@ -69,7 +69,7 @@ function initLanguageEditor(){
         if(alt){
             arrow = "<div class='arrow-down-border'></div><div class='arrow-down'></div>"
         }
-        tipElement.innerHTML = arrow+"<h1>Tip</h1><i class='m-i'>close</i><h2>"+num[0]+"/"+num[1]+"</h2><p>"+tip+"</p>"
+        tipElement.innerHTML = arrow+"<h1>Tip</h1><i>close</i><h2>"+num[0]+"/"+num[1]+"</h2><p>"+tip+"</p>"
         tipElement.classList.add("tipvisible")
         var closebtn = tipElement.getElementsByClassName("m-i")[0]
         if(next){
@@ -113,7 +113,7 @@ function initLanguageEditor(){
         }
         return html
     }
-    translations.innerHTML = "<div class='languagereference referenceadd'><i class='m-i'>close</i><i class='m-i'>add</i></div><div class='languageedit'><p>"+SelectedLanguage+"</p>"+getLanguageStrings()+"</div>"
+    translations.innerHTML = "<div class='languagereference referenceadd'><i>close</i><i>add</i></div><div class='languageedit'><p>"+SelectedLanguage+"</p>"+getLanguageStrings()+"</div>"
     var referenceadd = translations.getElementsByClassName("referenceadd")[0]
     var referenceaddbuttons = referenceadd.getElementsByClassName("m-i")
 
@@ -203,7 +203,6 @@ function initLanguageEditor(){
         reference.classList.add("languageedit")
         reference.classList.add("languageeditReference")
         var closeBtn = document.createElement("x")
-        closeBtn.classList.add("m-i")
         closeBtn.innerText = "close"
         ButtonEvent(closeBtn, function(){
             reference.remove()
@@ -234,12 +233,12 @@ ButtonEvent(languageselectbtn, function(){
     if(languageselectbtn.classList.contains("btnactive")){
         languageselectbtn.classList.remove("btnactive")
         languagesselector.classList.remove("languageselectoractive")
-        languageselectbtn.innerHTML = "What language do you want to translate to? <i class='m-i'>expand_more</i>"
+        languageselectbtn.innerHTML = "What language do you want to translate to? <i>expand_more</i>"
     }
     else{
         languageselectbtn.classList.add("btnactive")
         languagesselector.classList.add("languageselectoractive")
-        languageselectbtn.innerHTML = "What language do you want to translate to? <i class='m-i'>expand_less</i>"
+        languageselectbtn.innerHTML = "What language do you want to translate to? <i>expand_less</i>"
     }
 })
 
