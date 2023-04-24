@@ -118,7 +118,7 @@
 .firstTimeSetup btn:first-child{
     margin-left: initial;
 }
-.firstTimeSetup btn:hover{
+.firstTimeSetup btn:hover, .firstTimeSetup btn:focus-visible{
     border: 1px solid #df85ff;
     color: #df85ff;
 }
@@ -147,7 +147,7 @@
     flex: 1;
     height: 100%;
     /* border-right: 1px solid #555; */
-    background: #222;
+    background: #0a0a0a;
     margin: 5px;
     border-radius: 12px;
 }
@@ -169,6 +169,17 @@
     margin: 12px;
     text-align: center;
 }
+
+.firstTimeSetup .err{
+    font-size: 16px;
+    border: 2px solid #ff8383;
+    background: #ff838333;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 7px;
+    margin-bottom: -40px;
+}
+
 @media screen and (max-width: 580px){
     .firstTimeSetup btns{
         width: 100%;
@@ -177,6 +188,9 @@
         display: block;
         margin: 10px 0;
         text-align: center;
+    }
+    .firstTimeSetup .compare{
+        flex-direction: column;
     }
 }
 @media(max-width: 480px){
@@ -198,6 +212,58 @@
         display: block;
         position: relative;
     }
+}
+.firstTimeSetup form{
+    max-width: 500px;
+    height: 100%;
+    position: relative;
+}
+.firstTimeSetup form img{
+    width: 128px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+}
+.firstTimeSetup form c{
+    vertical-align: middle;
+    font-weight: 300;
+}
+.firstTimeSetup form h1:first-child{
+    margin-left: -60px;
+}
+.firstTimeSetup form h1{
+    text-align: center;
+    padding: 0;
+}
+.firstTimeSetup form label{
+    display: block;
+}
+.firstTimeSetup form f{
+    display: block;
+    padding: 12px 0 4px 0;
+    font-size: 20px;
+    color: #bbb;
+}
+.firstTimeSetup form input{
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-size: 20px;
+    border-radius: 8px;
+    /* box-shadow: inset -2px -2px 0px #000; */
+    border: 1px solid #555;
+    background: #222;
+    transition: .2s;
+}
+.firstTimeSetup form input:hover{
+    border: 1px solid #999;
+}
+.firstTimeSetup form input:focus{
+    border: 1px solid #df85ff
+}
+.firstTimeSetup form btn{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 content{
     height: 100%;

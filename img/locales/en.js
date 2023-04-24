@@ -102,5 +102,6 @@ var locale = {
     continueDownload : "Download",
     continueWithout : "Continue Limited",
     continueWithoutAcc : "Continue without Account",
-    customize: "Customize to your <b> heart's content </b>"
+    customize: "Customize to your <b> heart's content </b>",
+    signIn: "Sign In",
 }

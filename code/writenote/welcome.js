@@ -55,7 +55,7 @@ function WelcomeGui(response, element, error){
         mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
         // <btns><btn class='skip'>"+locale.continueWithout+"</btn><btn class='continue'>"+locale.continueDownload+"</btn><btn class='continue'>"+locale.continueAcc+"</btn></btns>
         var btns = document.createElement("btns")
-        function nextPage(i){
+        function nextPage(i, lastmdblock){
             var mdblock2 = document.createElement("div")
             mdblock2.classList.add("transitionRight")
             mdblock2.classList.add("mdblock")
@@ -73,15 +73,34 @@ function WelcomeGui(response, element, error){
                         element.addEventListener("auxclick", openDownload)
                     }
                     ButtonEvent(element, function(){
+                        if(i==0){
+                            nextPage(5, mdblock2)
+                        }
                         if(i==1){
                             openDownload()
                         }
                     })
                 }
             }
-            if(i==4){
-                mdblock2.innerHTML = "<h1>"+locale.customize+"</h1>"+
-                "<h2>Theme</h2>"+
+            if(i==2){
+                mdblock2.innerHTML = "<form><h1><img src='https://midelight.net/mide.png'><c>Midelight</c></h1>"+
+                "<h1>"+locale.signIn+"</h1>"+
+                "<label><f>Username</f><input name='username'></label>"+
+                "<label><f>Password</f><input name='password' type='password'></label>"+
+                "<label><btn>"+locale.signIn+"</btn></label>"+
+                "</form>"
+
+                var form = mdblock2.getElementsByTagName("form")[0]
+                var submitBtn = form.getElementsByTagName("btn")[0]
+                ButtonEvent(submitBtn, console.log, 'hii :3')
+            }
+            if(i==4 || i==5){
+                if(i==5){
+                    mdblock2.innerHTML = "<p class='err'>Warning, you only have 4 Mb of storage and can be easily lost if your browser or you deletes its' site data.</p>"
+                }
+                mdblock2.innerHTML += "<h1>"+locale.customize+"</h1>"+
+                "<h2>Theme</h2>"+ // hover to preview
+                
                 "<h2>Language</h2>"+
                 "<h2>Narrator</h2>"
 
@@ -90,7 +109,12 @@ function WelcomeGui(response, element, error){
                 
             }
             firstTimeSetup.appendChild(mdblock2)
-            mdblock.classList.add("transitionLeft")
+            if(lastmdblock){
+                lastmdblock.classList.add("transitionLeft")
+            }
+            else{
+                mdblock.classList.add("transitionLeft")
+            }
             setTimeout(() => {
                 mdblock2.classList.remove("transitionRight")
             }, 10);
@@ -387,15 +411,21 @@ function WelcomeGui(response, element, error){
 
         timedescription += " " + info.city
 
-        return '<img src="data:image/png;base64,'+info.image+'"><timed> '+locale.lastupdated+' ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
+        return '<img src="'+serverAddress+'weather/images/'+info.image+'.jpg"><timed> '+locale.lastupdated+' ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
     }
-    
+    // STOP USING FLEX IT BLURS IMAGES WAY TOO MUCH
     var weather = document.createElement("weather")
     if(response.weather){
         widgets.push(weather)
         weather.innerHTML = WeatherStyled(response.weather)
+        var imgElement = weather.getElementsByTagName("img")[0]
+        imgElement.addEventListener("load", function(){
+            // Doesn't work if image is on different domain
+            var aRGB = getAverageRGB(imgElement)
+            console.log(contrast([aRGB.r, aRGB.g, aRGB.b], [34, 34, 34]))
+            weather.getElementsByTagName("w")[0].style.color = `rgb(${aRGB.r}, ${aRGB.g}, ${aRGB.b})`
+        })
     }
-    // weather.innerHTML = "<img src='temp/banner.jpeg'><w>Clear 26°C</w><p>It's a nice morning in Plovdiv</p>"
 
     if(element.classList[0]!="welcome"){
         var create = document.createElement("create")

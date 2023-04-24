@@ -344,6 +344,10 @@ function closeFullscreen() {
     }
 }
 
+function changeTheme(theme){
+    
+}
+
 var SubmitForm = function(){}
 
 function showLogin(){
