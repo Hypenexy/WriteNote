@@ -98,11 +98,11 @@ function WelcomeGui(response, element, error){
                 if(i==5){
                     mdblock2.innerHTML = "<p class='err'>Warning, you only have 4 Mb of storage and can be easily lost if your browser deletes its' site data.</p>"
                 }
-                mdblock2.innerHTML += "<h1>"+locale.customize+"</h1>"+
-                "<h2>Theme</h2>"+ // hover to preview
-                
-                "<h2>Language</h2>"+
-                "<h2>Narrator</h2>"
+                mdblock2.innerHTML += "<h1>"+locale.customize+"</h1>"
+                mdblock2.appendChild(getThemesMenu())
+                mdblock2.appendChild(getLanguagesMenu())
+                // "<h2>Language</h2>"+
+                // "<h2>Narrator</h2>"
 
                 var btns = document.createElement("btns")
                 

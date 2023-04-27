@@ -2,18 +2,18 @@
     font-family: 'Pixelated MS Sans Serif';
 }
 
-#notearea {
-    background: url(valleyblurred.jpg);
+notearea {
+    /* background: url(valleyblurred.jpg); I think I prefer it without the background :/ */
     background-size: cover;
     background-position: top;
     color: #000;
     background-color: #e8e8f8
 }
 
-#notearea p {
+/* notearea p {
     border-bottom: 1px solid #000;
     padding: 3px 0;
-}
+} */
 
 #lines *{
     display: inline-block;

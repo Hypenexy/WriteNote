@@ -265,6 +265,19 @@
     bottom: 0;
     width: 100%;
 }
+.firstTimeSetup theme, .settings theme{
+    cursor: pointer;
+    display: inline-block;
+    padding: 12px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: #050505;
+}
+.firstTimeSetup theme ti, .settings theme ti{
+    font-weight: 500;
+    display: block;
+}
 content{
     height: 100%;
     position: relative;

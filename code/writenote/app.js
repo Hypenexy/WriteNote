@@ -17,6 +17,26 @@ else{
     firstTime = true
 }
 settings.version = "3.0.0"
+var themes = {
+    "Dark" : {
+        "desc" : "The default WriteNote look",
+        "wncolor" : "#222242",
+        "textcolor" : "#fff",
+    },
+    "Light" : {
+        "desc" : "Bright and enlightening",
+        "wncolor" : "#fff",
+        "textcolor" : "#111",
+    },
+    "Experience" : {
+        "desc" : "Nostalgic and alive",
+        "wncolor" : "#00FF7F",
+        "textcolor" : "#111", 
+    }
+}
+if(settings.theme){
+    changeTheme(settings.theme)
+}
 // background: rgb(112,91,128); background: linear-gradient(36deg, rgba(112,91,128,1) 0%, rgba(239,183,229,1) 47%, rgba(34,34,66,1) 100%);
 
 var contextMenu
@@ -77,6 +97,33 @@ document.addEventListener("click", function(e){
         }
     }
 })
+
+function createSelect(defaultOption, isPlaceholder){
+    var select = document.createElement("mselect")
+    select.innerHTML = defaultOption + "<i>arrow_drop_down</i>"
+    var options = []
+    if(!isPlaceholder){
+        options.push(defaultOption)
+    }
+    select.selecion = defaultOption
+    select.addOption = function(value){
+        options.push(value)
+    }
+    select.addEventListener("click", function(e){
+        if(!select.classList.contains("active")){
+            select.classList.add("active")
+            select.innerHTML = select.selecion + "<i>arrow_drop_up</i>"
+            // var show = showContext() Or something like that
+            // e.preventDefault()
+            // show()
+        }
+        else{
+            select.classList.remove("active")
+            select.innerHTML = select.selecion + "<i>arrow_drop_down</i>"
+        }
+    })
+    return select
+}
 
 function mobileAndTabletCheck(){
     let check = false;
@@ -345,7 +392,18 @@ function closeFullscreen() {
 }
 
 function changeTheme(theme){
-    
+    var lastTheme = document.getElementById("theme")
+    if(lastTheme){
+        lastTheme.remove()
+    }
+    if(theme!="Dark"){
+        settings.theme = theme
+        loadCSS("img/themes/"+theme+"/style.css", "theme")
+    }
+    else{
+        delete settings.theme
+    }
+    SaveSettings()
 }
 
 var SubmitForm = function(){}

@@ -239,6 +239,10 @@ function settingsSubMenus(subpanel){
         showRegistration()
     }
 
+    if(subpanel=="Theme"){
+        element.appendChild(getThemesMenu())
+    }
+
     if(subpanel=="Sidepanel"){
         var cityInput = document.createElement("input")
         addLabel(cityInput, "Weather info")
@@ -364,4 +368,52 @@ function settingsSubMenus(subpanel){
         }
     }
     return element
+}
+
+function getThemesMenu(){
+    var elementThemes = document.createElement("div")
+    elementThemes.innerHTML = "<h2>Theme</h2>"
+    var themesList = Object.keys(themes)
+    themesList.forEach(theme => {
+        var element = document.createElement("theme")
+        element.innerHTML = `<ti>${theme}</ti><desc>${themes[theme].desc}</desc>`
+        element.style.background = themes[theme].wncolor
+        element.style.color = themes[theme].textcolor
+        var animationTime = 0
+        if(animations){
+            animationTime = 5000
+        }
+        element.addEventListener("mouseenter", function(){
+            app.classList.add("slowtransition")
+            notearea.style.background = themes[theme].wncolor
+            setTimeout(() => {
+                app.classList.remove("slowtransition")
+            }, animationTime);
+        })
+        element.addEventListener("mouseleave", function(){
+            app.classList.add("slowtransition")
+            notearea.style.removeProperty("background")
+            setTimeout(() => {
+                app.classList.remove("slowtransition")
+            }, animationTime); // There's a small issue here that user can't interact fast until 5 seconds pass.
+        })
+        element.addEventListener("click", function(){
+            app.classList.remove("slowtransition")
+            app.classList.add("transition")
+            changeTheme(theme)
+            setTimeout(() => {
+                app.classList.remove("transition")
+            }, 500);
+        })
+        elementThemes.appendChild(element)
+    })
+    return elementThemes
+}
+
+function getLanguagesMenu(){
+    var elementLanguages = document.createElement("div")
+    elementLanguages.innerHTML = "<h2>Language</h2>"
+    var select = createSelect("English")
+    elementLanguages.appendChild(select)
+    return elementLanguages
 }
