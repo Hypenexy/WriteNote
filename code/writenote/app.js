@@ -5,9 +5,9 @@ if(isApp!=true){
 }
 var animations = true
 var online
-var serverAddress = "http://192.168.1.11/"
-var serverImage = "http://192.168.1.11/i/"
-var server =  "http://192.168.1.11/WriteNoteApp/"
+var serverAddress = "http://localhost/"
+var serverImage = "http://i.localhost/"
+var server =  "http://writenote.localhost/"
 var settings = {}
 var firstTime = false
 if(localStorage.getItem("options")){

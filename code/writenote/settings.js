@@ -202,7 +202,7 @@ function showSettings(panel, submenu){
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;Written by Hypenexy, WriteNote is the ultimate text editor that should fit all your text editing needs!</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;Firstly written in 2016 and shown to my classmates and principal. Rewritten in 2020 due to boredom. In 2022 and forward it's one of my biggest projects.</p>
                 <p>Release ${settings.version}</p>
-                <p><a target="_blank" href="https://midelight.net/WriteNote/History">WriteNote\'s history</a></p>`
+                <p><a target="_blank" href="${serverAddress}WriteNote/History">WriteNote\'s history</a></p>`
                 pageSettings.appendChild(about)
             }
         }, animationTime);

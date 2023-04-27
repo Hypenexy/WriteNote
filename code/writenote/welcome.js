@@ -83,7 +83,7 @@ function WelcomeGui(response, element, error){
                 }
             }
             if(i==2){
-                mdblock2.innerHTML = "<form><h1><img src='https://midelight.net/mide.png'><c>Midelight</c></h1>"+
+                mdblock2.innerHTML = "<form><h1><img src='"+serverAddress+"mide.png'><c>Midelight</c></h1>"+
                 "<h1>"+locale.signIn+"</h1>"+
                 "<label><f>Username</f><input name='username'></label>"+
                 "<label><f>Password</f><input name='password' type='password'></label>"+
@@ -96,7 +96,7 @@ function WelcomeGui(response, element, error){
             }
             if(i==4 || i==5){
                 if(i==5){
-                    mdblock2.innerHTML = "<p class='err'>Warning, you only have 4 Mb of storage and can be easily lost if your browser or you deletes its' site data.</p>"
+                    mdblock2.innerHTML = "<p class='err'>Warning, you only have 4 Mb of storage and can be easily lost if your browser deletes its' site data.</p>"
                 }
                 mdblock2.innerHTML += "<h1>"+locale.customize+"</h1>"+
                 "<h2>Theme</h2>"+ // hover to preview
@@ -120,7 +120,7 @@ function WelcomeGui(response, element, error){
             }, 10);
         }
         function openDownload(){
-            window.open('https://midelight.net/WriteNote/download/', '_blank').focus()
+            window.open(serverAddress+'WriteNote/download/', '_blank').focus()
         }
         var btnsLocales = [locale.continueWithout, locale.continueDownload, locale.continueAcc]
         for (let i = 0; i < btnsLocales.length; i++) {

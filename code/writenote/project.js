@@ -444,7 +444,7 @@ function NewFileGui(close){
                 }
                 if(isApp!=true){
                     if(i==2){
-                        eldownload.innerHTML = "<p>To save directly on your device you need to download WriteNote</p><a target='_blank' href='https://midelight.net/WriteNote/Download'><button>Download</button></a>"
+                        eldownload.innerHTML = "<p>To save directly on your device you need to download WriteNote</p><a target='_blank' href='"+serverAddress+"WriteNote/Download'><button>Download</button></a>"
                         newfile.appendChild(eldownload)
                         isChecks(undefined, true)
                     }
