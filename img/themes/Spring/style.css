@@ -1,0 +1,46 @@
+notearea{
+    color: #27955e;
+    background: #b6ffdb;
+}
+
+header{
+    background: #95ffca;
+    box-shadow: 0 1px 0 #27955e55;
+}
+header.headeractive{
+    box-shadow: 0 2px 2px #27955e55;
+}
+header a{
+    color: #111;
+    border: 1px solid #95ffca;
+}
+header a:hover{
+    background: #27955e;
+}
+header c svg{
+    fill: #111;
+}
+
+.mobilebutton{
+    /* border: 2px solid springgreen;
+    background: springgreen; */
+    border: 2px solid rgb(255, 216, 149);
+    background: rgb(255, 216, 149);
+    color: #111;
+}
+.mobilebuttonactive{
+    background: rgb(255, 149, 229);
+    border: 2px solid #111;
+    border: 2px solid rgb(255, 149, 229);
+}
+.mobilemenu{
+    color: #111;
+    background: #95ffca;
+}
+.mobilemenu h1{
+    color: #222;
+}
+.mobilemenu vs{
+    background: #eee;
+    color: #111;
+}

@@ -162,6 +162,7 @@ modal{
 }
 .contextmenu{
     position: absolute;
+    overflow: auto;
     /* width: 150px; */
     z-index: 50;
     color: #eee;
@@ -171,6 +172,9 @@ modal{
     border: 1px solid #444;
     padding: 12px;
     transition: .2s;
+}
+.contextmenu::-webkit-scrollbar-thumb{
+    border-radius: 8px;
 }
 .contextmenu.mobile{
     width: 100%;

@@ -32,6 +32,11 @@ var themes = {
         "desc" : "Nostalgic and alive",
         "wncolor" : "#00FF7F",
         "textcolor" : "#111", 
+    },
+    "Spring" : {
+        "desc" : "Refreshing and bright",
+        "wncolor" : "#00FF7F",
+        "textcolor" : "#111", 
     }
 }
 if(settings.theme){
@@ -152,6 +157,7 @@ function createSelect(defaultOption, isPlaceholder, usingNames){
             var boundingRect = this.getBoundingClientRect()
             contextMenu.style.top = Math.trunc((boundingRect.bottom + 4)) + "px"
             contextMenu.style.left = Math.trunc(boundingRect.left) + "px"
+            contextMenu.style.maxHeight = "500px"
             var search = document.createElement("input")
             search.placeholder = "Search"
             function searchContextMenu(){

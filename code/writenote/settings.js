@@ -99,7 +99,7 @@ function showSettings(panel, submenu){
             setTimeout(() => {
                 pageSettings.classList.remove("notransition")
                 pageSettings.classList.remove(animOut)
-            }, animationTime);
+            }, 5);
             pageSettings.innerHTML = ""
             var heading = document.createElement("h1")
             heading.innerHTML = panel
@@ -261,7 +261,7 @@ function settingsSubMenus(subpanel){
 
         const synth = window.speechSynthesis
 
-        const voiceSelect = document.createElement("select")
+        const voiceSelect = createSelect(null, null, true)
         addLabel(voiceSelect, "Voice")
 
         // msg.volume = 1; // From 0 to 1
@@ -330,7 +330,8 @@ function settingsSubMenus(subpanel){
 
                 option.setAttribute("data-lang", voice.lang)
                 option.setAttribute("data-name", voice.name)
-                voiceSelect.appendChild(option)
+                // voiceSelect.appendChild(option)
+                voiceSelect.addOption(voice.name, option.textContent)
             }
             for(const voice of voices){
                 if(settings.narrator && settings.narrator.voice){
@@ -345,20 +346,23 @@ function settingsSubMenus(subpanel){
         if (speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = populateVoiceList
         }
-        
-        voiceSelect.onchange = () => {
-            const selectedOption = voiceSelect.selectedOptions[0].getAttribute("data-name")
-            if(!settings.narrator){
-                settings.narrator = {}
+        voiceSelect.addAction(
+            (value) => {
+                // const selectedOption = voiceSelect.selectedOptions[0].getAttribute("data-name")
+                const selectedOption = value
+                if(!settings.narrator){
+                    settings.narrator = {}
+                }
+                console.log(voiceSelect.innerText.split('\n')[0]) // fix here!
+                if(!voiceSelect.innerText.split('\n')[0].endsWith("DEFAULT")){
+                    settings.narrator.voice = selectedOption
+                }
+                else{
+                    delete settings.narrator.voice
+                }
+                SaveSettings()
             }
-            if(!voiceSelect.selectedOptions[0].innerText.endsWith("DEFAULT")){
-                settings.narrator.voice = selectedOption
-            }
-            else{
-                delete settings.narrator.voice
-            }
-            SaveSettings()
-        }
+        )
 
         inputForm.onsubmit = (event) => {
             event.preventDefault()

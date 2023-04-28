@@ -210,7 +210,11 @@ notearea {
 
 header {
     background-color: #fefefe;
-    border-bottom: 1px solid #bbb;
+    box-shadow: 0 1px 0 #55555555;
+    /* border-bottom: 1px solid #bbb; */
+}
+header.headeractive{
+    box-shadow: 0 2px 2px #55555555;
 }
 
 header a {
