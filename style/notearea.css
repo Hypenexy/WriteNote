@@ -17,6 +17,9 @@ notearea{
     padding-bottom: calc(100vh - 95px);
     transition: 0.2s;
 }
+notearea.slowtransition{
+    transition: 5s;
+}
 notearea i:hover{/*experiment*/
     background-color: #65baff22;
 }

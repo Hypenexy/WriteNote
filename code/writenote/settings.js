@@ -384,26 +384,26 @@ function getThemesMenu(){
             animationTime = 5000
         }
         element.addEventListener("mouseenter", function(){
-            app.classList.add("slowtransition")
+            notearea.classList.add("slowtransition")
             notearea.style.background = themes[theme].wncolor
             setTimeout(() => {
-                app.classList.remove("slowtransition")
-            }, animationTime);
+                notearea.classList.remove("slowtransition")
+            }, animationTime)
         })
         element.addEventListener("mouseleave", function(){
-            app.classList.add("slowtransition")
+            notearea.classList.add("slowtransition")
             notearea.style.removeProperty("background")
             setTimeout(() => {
-                app.classList.remove("slowtransition")
-            }, animationTime); // There's a small issue here that user can't interact fast until 5 seconds pass.
+                notearea.classList.remove("slowtransition")
+            }, animationTime)
         })
         element.addEventListener("click", function(){
-            app.classList.remove("slowtransition")
-            app.classList.add("transition")
+            notearea.classList.remove("slowtransition")
+            notearea.classList.add("transition")
             changeTheme(theme)
             setTimeout(() => {
-                app.classList.remove("transition")
-            }, 500);
+                notearea.classList.remove("transition")
+            }, 500)
         })
         elementThemes.appendChild(element)
     })
@@ -413,7 +413,11 @@ function getThemesMenu(){
 function getLanguagesMenu(){
     var elementLanguages = document.createElement("div")
     elementLanguages.innerHTML = "<h2>Language</h2>"
-    var select = createSelect("English")
+    var select = createSelect("en", null, 'English')
+    select.addOption("bg", "Bulgarian")
+    select.addAction(function(language){
+        changeLanguage(language)
+    })
     elementLanguages.appendChild(select)
     return elementLanguages
 }

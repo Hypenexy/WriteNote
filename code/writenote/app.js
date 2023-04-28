@@ -37,11 +37,17 @@ var themes = {
 if(settings.theme){
     changeTheme(settings.theme)
 }
+if(settings.language){ // Languages will be updated to use the method in experiments/mduiTesting/index.html at ui.updateLocalization()
+    changeLanguage(settings.language)
+}
 // background: rgb(112,91,128); background: linear-gradient(36deg, rgba(112,91,128,1) 0%, rgba(239,183,229,1) 47%, rgba(34,34,66,1) 100%);
 
 var contextMenu
 
 function hideContext(){
+    if(contextMenu.closeFunc){
+        contextMenu.closeFunc()
+    }
     contextMenu.classList.add("transition")
     var altVar = contextMenu
     contextMenu = ""
@@ -98,29 +104,112 @@ document.addEventListener("click", function(e){
     }
 })
 
-function createSelect(defaultOption, isPlaceholder){
+function createSelect(defaultOption, isPlaceholder, usingNames){
     var select = document.createElement("mselect")
-    select.innerHTML = defaultOption + "<i>arrow_drop_down</i>"
+    if(usingNames){
+        select.innerHTML = usingNames + "<i>arrow_drop_down</i>"
+    }
+    else{
+        select.innerHTML = defaultOption + "<i>arrow_drop_down</i>"
+    }
     var options = []
     if(!isPlaceholder){
-        options.push(defaultOption)
+        if(usingNames){
+            options.push([defaultOption, usingNames])
+        }
+        else{
+            options.push(defaultOption)
+        }
     }
-    select.selecion = defaultOption
-    select.addOption = function(value){
-        options.push(value)
+    var action
+    select.addAction = function(func){
+        action = func
+    }
+    if(usingNames){
+        select.selecion = usingNames
+    }
+    else{
+        select.selecion = defaultOption
+    }
+    select.addOption = function(value, name){
+        if(name){
+            options.push([value, name])
+        }
+        else{
+            options.push(value)
+        }
     }
     select.addEventListener("click", function(e){
         if(!select.classList.contains("active")){
             select.classList.add("active")
             select.innerHTML = select.selecion + "<i>arrow_drop_up</i>"
-            // var show = showContext() Or something like that
-            // e.preventDefault()
-            // show()
+            var show = showContext()
+            contextMenu.closeFunc = function(){
+                document.removeEventListener("keydown", searchContextMenu)
+                select.classList.remove("active")
+                select.innerHTML = select.selecion + "<i>arrow_drop_down</i>"
+            }
+            var boundingRect = this.getBoundingClientRect()
+            contextMenu.style.top = Math.trunc((boundingRect.bottom + 4)) + "px"
+            contextMenu.style.left = Math.trunc(boundingRect.left) + "px"
+            var search = document.createElement("input")
+            search.placeholder = "Search"
+            function searchContextMenu(){
+                if(document.activeElement!=search){
+                    search.focus()
+                }
+            }
+            document.addEventListener("keydown", searchContextMenu)
+            function searchEvent(){
+                var options = contextMenu.getElementsByTagName("p")
+                for (let i = 0; i < options.length; i++) {
+                    const element = options[i]
+                    if(!element.innerText.toLowerCase().includes(search.value.toLowerCase())){
+                        element.style.display = "none"
+                    }
+                    else{
+                        element.style.removeProperty("display")
+                    }
+                }
+            }
+            search.addEventListener("input", searchEvent)
+            contextMenu.appendChild(search)
+            options.forEach(value => {
+                var element = document.createElement("p")
+                element.addEventListener("click", function(){
+                    if(action){
+                        if(usingNames){
+                            action(value[0])
+                        }
+                        else{
+                            action(value)
+                        }
+                    }
+                    if(usingNames){
+                        select.selecion = value[1]
+                        select.innerHTML = value[1] + "<i>arrow_drop_up</i>"
+                    }
+                    else{
+                        select.selecion = value
+                        select.innerHTML = value + "<i>arrow_drop_up</i>"
+                    }
+                    hideContext()
+                })
+                if(usingNames){
+                    element.innerHTML = value[1]
+                }
+                else{
+                    element.innerHTML = value
+                }
+                contextMenu.appendChild(element)
+            })
+            show()
+            e.stopPropagation()
         }
-        else{
-            select.classList.remove("active")
-            select.innerHTML = select.selecion + "<i>arrow_drop_down</i>"
-        }
+        // else{
+        //     select.classList.remove("active")
+        //     select.innerHTML = select.selecion + "<i>arrow_drop_down</i>"
+        // }
     })
     return select
 }
@@ -402,6 +491,21 @@ function changeTheme(theme){
     }
     else{
         delete settings.theme
+    }
+    SaveSettings()
+}
+
+function changeLanguage(language){
+    var last = document.getElementById("language")
+    if(last){
+        last.remove()
+    }
+    if(language!="en"){
+        settings.language = language
+        loadScript("img/locales/"+language+".js", "theme")
+    }
+    else{
+        delete settings.language
     }
     SaveSettings()
 }

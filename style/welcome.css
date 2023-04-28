@@ -74,6 +74,7 @@
     font-size: 1.75em;
     color: #ddd;
     font-weight: 400;
+    margin: 10px 0;
 }
 .firstTimeSetup b{
     background: linear-gradient(80deg, #9b0dff 0%, #bf0bff 100%);
