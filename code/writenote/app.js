@@ -109,16 +109,26 @@ document.addEventListener("click", function(e){
     }
 })
 
+/**
+ * Creates a <mselect> (custom select element), with search functionality.
+ * Read the other 2 comments inside this function to learn about using it.
+ * @param {String} defaultOption If this is null it will display the first option 
+ * @param {Boolean} isPlaceholder If this is not true, the defaultOption parameter will be added as an option
+ * @param {String} usingNames If this is not null it will be used as a name for the first option, and the select will be value:name type. 
+ * @returns The element "mselect".
+ */
 function createSelect(defaultOption, isPlaceholder, usingNames){
     var select = document.createElement("mselect")
-    if(usingNames){
-        select.innerHTML = usingNames + "<i>arrow_drop_down</i>"
-    }
-    else{
-        select.innerHTML = defaultOption + "<i>arrow_drop_down</i>"
+    if(defaultOption){
+        if(usingNames){
+            select.innerHTML = usingNames + "<i>arrow_drop_down</i>"
+        }
+        else{
+            select.innerHTML = defaultOption + "<i>arrow_drop_down</i>"
+        }
     }
     var options = []
-    if(!isPlaceholder){
+    if(!isPlaceholder && defaultOption){
         if(usingNames){
             options.push([defaultOption, usingNames])
         }
@@ -127,21 +137,47 @@ function createSelect(defaultOption, isPlaceholder, usingNames){
         }
     }
     var action
+    /**
+     * Adds a function on selecting an option.
+     * @param {Function} func the function to run with the value as a parameter
+     */
     select.addAction = function(func){
         action = func
     }
-    if(usingNames){
+    if(usingNames && defaultOption){
         select.selecion = usingNames
     }
     else{
         select.selecion = defaultOption
     }
+    /**
+     * Adds options to the select menu, if defaultOption is not set first added option will be displayed.
+     * @param {String} value The value of the option and also the name if the name is null
+     * @param {String} name The name of the option
+     */
     select.addOption = function(value, name){
+        if(!defaultOption && options.length==0){
+            select.selecion = name
+            select.innerHTML = name + "<i>arrow_drop_down</i>"
+        }
         if(name){
             options.push([value, name])
         }
         else{
             options.push(value)
+        }
+    }
+    /**
+     * Select an option from the list
+     * @param {*} value The value of the option to select.
+     */
+    select.selectOption = function(value){
+        function exists(arr, search) {
+            return arr.some(row => row.includes(search))
+        }
+        if(exists(options, value)){
+            select.selecion = value
+            select.innerHTML = value + "<i>arrow_drop_up</i>"
         }
     }
     select.addEventListener("click", function(e){
@@ -170,7 +206,19 @@ function createSelect(defaultOption, isPlaceholder, usingNames){
                 var options = contextMenu.getElementsByTagName("p")
                 for (let i = 0; i < options.length; i++) {
                     const element = options[i]
-                    if(!element.innerText.toLowerCase().includes(search.value.toLowerCase())){
+                    var words = search.value.trim().toLowerCase().split(' ')
+                    var item = element.innerText.trim().toLowerCase()
+                    var itemWords = item.split(' ')
+                    var res = false
+                    itemWords.forEach(element => {
+                        words.forEach(word => {
+                            wordChars = Array.from(word)
+                            if(wordChars.every(char => element.includes(char))){
+                                res = true
+                            }
+                        })
+                    })
+                    if(!res){
                         element.style.display = "none"
                     }
                     else{

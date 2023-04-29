@@ -101,7 +101,6 @@ function WelcomeGui(response, element, error){
                 mdblock2.innerHTML += "<h1>"+locale.customize+"</h1>"
                 mdblock2.appendChild(getThemesMenu())
                 mdblock2.appendChild(getLanguagesMenu())
-                // "<h2>Language</h2>"+
                 // "<h2>Narrator</h2>"
 
                 var btns = document.createElement("btns")

@@ -242,6 +242,9 @@ function settingsSubMenus(subpanel){
     if(subpanel=="Theme"){
         element.appendChild(getThemesMenu())
     }
+    if(subpanel=="Language"){
+        element.appendChild(getLanguagesMenu())
+    }
 
     if(subpanel=="Sidepanel"){
         var cityInput = document.createElement("input")
@@ -333,13 +336,16 @@ function settingsSubMenus(subpanel){
                 // voiceSelect.appendChild(option)
                 voiceSelect.addOption(voice.name, option.textContent)
             }
-            for(const voice of voices){
-                if(settings.narrator && settings.narrator.voice){
-                    if(voice.name == settings.narrator.voice){
-                        voiceSelect.value = `${voice.name} (${voice.lang})`
-                    }
-                }
+            if(settings.narrator && settings.narrator.voice){
+                voiceSelect.selectOption(settings.narrator.voice)
             }
+            // for(const voice of voices){
+            //     if(settings.narrator && settings.narrator.voice){
+            //         if(voice.name == settings.narrator.voice){
+            //             voiceSelect.value = `${voice.name} (${voice.lang})`
+            //         }
+            //     }
+            // }
         }
         
         populateVoiceList()
@@ -353,8 +359,8 @@ function settingsSubMenus(subpanel){
                 if(!settings.narrator){
                     settings.narrator = {}
                 }
-                console.log(voiceSelect.innerText.split('\n')[0]) // fix here!
-                if(!voiceSelect.innerText.split('\n')[0].endsWith("DEFAULT")){
+                console.log(selectedOption.split('\n')[0]) // fix here!
+                if(!selectedOption.split('\n')[0].endsWith("DEFAULT")){
                     settings.narrator.voice = selectedOption
                 }
                 else{

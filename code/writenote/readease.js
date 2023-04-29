@@ -87,11 +87,12 @@ function flashWords(){
 var voices
 
 async function getVoices() {
-    const GET_VOICES_TIMEOUT = 4000; // two second timeout
+    const GET_VOICES_TIMEOUT = 2000; // two second timeout
 
-    let voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      return voices;
+    let loadedvoices = window.speechSynthesis.getVoices();
+    if (loadedvoices.length) {
+        voices = loadedvoices
+        return voices;
     }
 
     let voiceschanged = new Promise(

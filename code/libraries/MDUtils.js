@@ -605,4 +605,25 @@ function onElementRemoved(element, callback){
         }
     }).observe(element.parentElement, {childList: true})
 }
-  
+
+/**
+ * An advanced search method, should be in a foreach of elements
+ * @param {String} Search The string that the user inputted to search
+ * @param {String} Item 1 of the looped items that is going to be checked
+ * @returns True if it's matched, false otherwise
+ */
+function matchCharsInString(Search, Item){
+    var words = Search.trim().toLowerCase().split(' ')
+    var item = Item.trim().toLowerCase()
+    var itemWords = item.split(' ')
+    var res = false
+    itemWords.forEach(element => {
+        words.forEach(word => {
+            wordChars = Array.from(word)
+            if(wordChars.every(char => element.includes(char))){
+                res = true
+            }
+        })
+    })
+    return res
+}
