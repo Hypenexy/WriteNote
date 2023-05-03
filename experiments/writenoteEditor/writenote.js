@@ -143,6 +143,10 @@ class WriteNote{
             }
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                if(file.type.startsWith("image/")){
+                    that.insertImage(file)
+                    continue
+                }
                 if(file.type.startsWith("audio/")){
                     that.insertAudio(file)
                     continue
@@ -717,6 +721,27 @@ class WriteNote{
     
         this.insertNode(fileEl)
         onElementRemoved(fileEl, function(){
+            delete that.mediaData[dataId]
+        })
+    }
+
+    insertImage(file){
+        var imageEl = document.createElement("img")
+
+        var that = this
+        var reader = new FileReader()
+        var dataId = guidGenerator().slice(0, 5)
+        reader.onload = (function(readFile){
+            var url = window.URL || window.webkitURL;
+            var imageUrl = url.createObjectURL(file);
+            imageEl.src = imageUrl;
+            that.mediaData[dataId] = readFile.target.result
+            imageEl.setAttribute("dataId", dataId)
+        })
+        reader.readAsDataURL(file)
+        this.insertNode(imageEl)
+        
+        onElementRemoved(imageEl, function(){
             delete that.mediaData[dataId]
         })
     }
