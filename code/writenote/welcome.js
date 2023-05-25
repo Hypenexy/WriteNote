@@ -290,22 +290,10 @@ function WelcomeGui(response, element, error){
         else{
             account.innerHTML = "You're not logged in. <a>Login</a><a>Register</a>"
             ButtonEvent(account.getElementsByTagName("a")[0], function(){
-                loadCSS(serverAddress + "img/styles/forms.css")
-                loadScript(serverAddress + "login/login.js", "loginscript", function(){
-                    showlogin()
-                    var xbtn = login.getElementsByTagName("span")[0]
-                    xbtn.opacity = 1
-                    ButtonEvent(xbtn, hidelogin)
-                })
+                showLogin();
             })
             ButtonEvent(account.getElementsByTagName("a")[1], function(){
-                loadCSS(serverAddress + "img/styles/forms.css")
-                loadScript(serverAddress + "register/register.js.php", "registerscript", function(){
-                    showlogin()
-                    var xbtn = login.getElementsByTagName("span")[0]
-                    xbtn.opacity = 1
-                    ButtonEvent(xbtn, hidelogin)
-                })
+                showLogin(true);
             })
             // ButtonEvent(account.getElementsByTagName("a")[0], function(){
             //     loadCSS(serverAddress + "styles/forms.css")
@@ -410,7 +398,7 @@ function WelcomeGui(response, element, error){
 
         timedescription += " " + info.city
 
-        return '<img src="'+serverAddress+'weather/images/'+info.image+'.jpg"><timed> '+locale.lastupdated+' ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
+        return '<img src="'+serverWeather+'images/'+info.image+'.jpg"><timed> '+locale.lastupdated+' ' + now + '</timed><w>' + info.temp.toString().slice(0, 2) + '°C ' + info.desc + "</w><p>" + timedescription +".</p>"
     }
     // STOP USING FLEX IT BLURS IMAGES WAY TOO MUCH
     var weather = document.createElement("weather")
@@ -418,8 +406,9 @@ function WelcomeGui(response, element, error){
         widgets.push(weather)
         weather.innerHTML = WeatherStyled(response.weather)
         var imgElement = weather.getElementsByTagName("img")[0]
+        
+        imgElement.crossOrigin = "Anonymous";
         imgElement.addEventListener("load", function(){
-            // Doesn't work if image is on different domain
             var aRGB = getAverageRGB(imgElement)
             console.log(contrast([aRGB.r, aRGB.g, aRGB.b], [34, 34, 34]))
             weather.getElementsByTagName("w")[0].style.color = `rgb(${aRGB.r}, ${aRGB.g}, ${aRGB.b})`
@@ -868,6 +857,9 @@ function connectToMidelightTemporary(){
     
         $.ajax({
             url: server + "app/startup.php",
+            xhrFields: {
+                withCredentials: true
+            },
             type: "post",
             //timeout: 1500,
             timeout: 2300,

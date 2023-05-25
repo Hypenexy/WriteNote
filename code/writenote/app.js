@@ -5,9 +5,12 @@ if(isApp!=true){
 }
 var animations = true
 var online
-var serverAddress = "http://localhost/"
-var serverImage = "http://i.localhost/"
-var server =  "http://writenote.localhost/"
+var serverAddress = "http://midelightdev.localhost/"
+var serverImage = "http://i.midelightdev.localhost/"
+var serverWeather = "http://weather.midelightdev.localhost/"
+var serverAssets = "http://assets.midelightdev.localhost/"
+var serverApp = "http://app.midelightdev.localhost/"
+var server =  "http://writenote.midelightdev.localhost/"
 var settings = {}
 var firstTime = false
 if(localStorage.getItem("options")){
@@ -424,11 +427,6 @@ function playSound(url) {
     }
 }
 
-var login = document.createElement("div")//need it for register and login
-login.id = "login"
-app.appendChild(login)
-
-
 var activeWindows = []
 function windowApp(Node, Title, Icon){
     var object = {
@@ -564,64 +562,57 @@ function changeLanguage(language){
     SaveSettings()
 }
 
-var SubmitForm = function(){}
-
-function showLogin(){
-    if(!document.getElementById("formsStyle")){
-        loadCSS(serverAddress + "img/styles/forms.css", "formsStyle")
+// Fix modal, when switching inside form.
+function showLogin(isRegister){
+    if(!document.getElementById("mdformsStyle")){
+        var modalClose;
+        function cleanUp(){
+            document.getElementById("mdformsStyle").remove();
+            document.getElementById("MDForms").remove();
+            modalClose();
+        }
+        var formInitData;
+        loadCSS(serverAssets + "styles/forms.css", "mdformsStyle");
+        loadScript(serverAssets + "codes/MDForms.js", "MDForms", function(){
+            if(isRegister==true){
+                formInitData = MDregisterForm(
+                    // Finish registration form!
+                    function(form){
+                        app.appendChild(form);
+                    },
+                    function(response){
+                        response.hideAction();
+                        connectToMidelightTemporary();
+                    },
+                    true,
+                    cleanUp
+                );
+            }
+            else{
+                formInitData = MDloginForm(
+                    function(form){
+                        app.appendChild(form);
+                    },
+                    function(response){
+                        response.hideAction();
+                        connectToMidelightTemporary();
+                    },
+                    true,
+                    cleanUp
+                );
+            }
+            modalClose = ShowModal(formInitData.hideAction, null, 48);
+        })
     }
-    loadScript(serverAddress + "login/login.js", "loginscript", function(){
-        showlogin()
-        var xbtn = login.getElementsByTagName("span")[0]
-        xbtn.opacity = 1
-        ButtonEvent(xbtn, hidelogin)
-        // SubmitForm = function(){
-        //     if(loginusername.value==""){
-        //         FormError(loginusername, textusername, "Username or Email", "Empty")
-        //     }
-        //     if(loginpassword.value==""){
-        //         FormError(loginpassword, textpassword, "Password", "Empty")
-        //     }
-            
-        //     if(loginusername.value!=""&&loginpassword.value!=""){
-        //         var values = {identity : loginusername.value, password : loginpassword.value}
-        //         $.ajax({
-        //             url: serverAddress + "app/account/login.php",
-        //             type: "post",
-        //             data: values,
-        //             success: function (response) {
-        //                 if(response==201){
-        //                     connectToMidelightTemporary()
-        //                 }
-        //                 else{
-        //                     if(response=="wrongInfo"){
-        //                         FormError(loginusername, textusername, "Username or Email", "Wrong credentials")
-        //                     }
-        //                 }
-        //             },
-        //             error: function(error) {
-        //                 FormError(loginusername, textusername, "Username or Email", "Could not connect to server!")
-        //             }
-        //         })
-        //     }
-        // }
-    })
-}
-function showRegistration(){
-    if(!document.getElementById("formsStyle")){
-        loadCSS(serverAddress + "img/styles/forms.css", "formsStyle")
-    }
-    loadScript(serverAddress + "register/register.js.php", "registerscript", function(){
-        showlogin()
-        var xbtn = login.getElementsByTagName("span")[0]
-        xbtn.opacity = 1
-        ButtonEvent(xbtn, hidelogin)
-    })
 }
 
 function logout(){
     $.ajax({
-        url: serverAddress + "logout/",
+        url: serverApp + "logout/?r=app",
+        xhrFields: {
+           withCredentials: true
+        },
+        crossDomain: true,
         type: "post",
         success: function (response) {
             connectToMidelightTemporary()

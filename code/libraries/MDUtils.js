@@ -627,3 +627,28 @@ function matchCharsInString(Search, Item){
     })
     return res
 }
+
+/**
+ * Converts color rgba to hex values.
+ * @param {Int} r Red value 
+ * @param {Int} g Green value 
+ * @param {Int} b Blue value
+ * @param {Int} a Alpha value
+ * @returns The hex variant of the rgba specified.
+ */
+function rgbaToHex(r, g, b, a){
+    function componentToHex(c){
+        if(c==0){
+            return "00";
+        }
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+    var hex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    if(a || a==0){
+        if(a!=255){
+            hex += componentToHex(a);
+        }
+    }
+    return hex;
+}
