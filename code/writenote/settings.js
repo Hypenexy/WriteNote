@@ -42,6 +42,9 @@ function showSettings(panel, submenu){
             ButtonEvent(button, logout)
         }
         buttons.appendChild(button)
+        if(i+1==tabs.length && storedResponse.user == false){
+            button.remove();
+        }
     }
     
     sidepanel.appendChild(buttons)

@@ -99,9 +99,11 @@ var locale = {
     welcomeTo : "Welcome to your new \n text editor.",
     welcomeToSubtext : "Making it easier <b> for you </b> to write a story, organize a calendar, manage a todo or even a website",
     continueAcc : "Continue with an Account",
+    continueAs : "Continue as",
     continueDownload : "Download",
     continueWithout : "Continue Limited",
     continueWithoutAcc : "Continue without Account",
     customize: "Customize to your <b> heart's content </b>",
     signIn: "Sign In",
+    startWriting: "Start Writing!",
 }

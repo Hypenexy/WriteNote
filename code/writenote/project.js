@@ -17,7 +17,7 @@ function setSizes(space){
         case "device":
             
             break;
-        case "online":
+        case "wn":
             
             break;
         default:
@@ -55,7 +55,7 @@ function InitFile(path, name, space, content, metadata, dontSave){
         activefile.name = name
         activefile.space = space
         if(workspace="note"){
-            notearea.innerHTML = noteParse(content)
+            notearea.innerHTML = content
         }
 
         if(!dontSave){
@@ -69,9 +69,8 @@ function InitFile(path, name, space, content, metadata, dontSave){
 
 }
 
-function CheckExisting(){
+function checkLocalstorageExisting(){
     var existingPaths = []
-    //localstorage
     for (var i = 0; i < localStorage.length; i++){
         if(localStorage.key(i)[0] == '*'){
             existingPaths.push("localstorage:" + localStorage.key(i))
@@ -80,24 +79,60 @@ function CheckExisting(){
     return existingPaths
 }
 
+async function CheckExisting(){
+    var existingPaths = []
+    //localstorage
+    for (var i = 0; i < localStorage.length; i++){
+        if(localStorage.key(i)[0] == '*'){
+            existingPaths.push("localstorage:" + localStorage.key(i))
+        }
+    }
+
+    if(typeof getNotes != "undefined"){
+        var notesList = await getNotes();
+        for (let i = 0; i < notesList.length; i++) {
+            const element = notesList[i];
+            existingPaths.push("wn:" + JSON.stringify(element));
+        }
+    }
+    
+    return existingPaths
+}
+
 function CreateFile(path, name, space){
     isNewFile = true
-    var existing = CheckExisting() //Maybe I should store metadata in a separate place? Cause i don't wanna load every file!
 
-    var dontSave = false
-    if(name=="Untitled"){
-        dontSave = true
-        if(existing.includes("localstorage:*" + path + "*" + name)){
-            var n = 1
-            while(existing.includes("localstorage:*" + path + "*" + name)){
-                n++
-                name = "Untitled-" + n
+    if(space == "localstorage"){
+        var existing = checkLocalstorageExisting() // Maybe I should store metadata in a separate place? Cause i don't wanna load every file! Too bad!
+    
+        var dontSave = false
+        if(name=="Untitled"){
+            dontSave = true
+            if(existing.includes("localstorage:*" + path + "*" + name)){
+                var n = 1
+                while(existing.includes("localstorage:*" + path + "*" + name)){
+                    n++
+                    name = "Untitled-" + n
+                }
+            }
+            else{
+                //error name taken
+                //maybe add numbers like untitled?
             }
         }
-        else{
-            //error name taken
-            //maybe add numbers like untitled?
-        }
+    }
+
+    if(space == "wn"){ // Folder support in the future dont forget!
+        socket.emit("createNote", {"name" : name, "type" : "note"}, (success, error) => {
+            if(success){
+                // InitFile(path, name, space, "", "", dontSave);
+                LoadFile(path, name, space);
+            }
+            if(error){
+                PushNotification("Server returned error", error, "warn");
+            }
+        });
+        return;
     }
 
     InitFile(path, name, space, "", "", dontSave)
@@ -121,20 +156,16 @@ function SaveFile(updateOpen){
     var roughSize = roughSizeOfObject(DataToSave)
     setSizes(activefile.space)
     switch(activefile.space){
-        case "online":
-            var data = {version : settings.version}
-            $.ajax({
-                url: server + "app/errorlog.php",
-                type: "post",
-                data: data,
-                success: function (response) {
-                    response = JSON.parse(response)
-                    if(response.status==200){
-                        
-                    }
-                },
-                error: function() {
-                    pushNotification("Could not connect to server.", "Check your connection between the server!", "warn")
+        case "wn":
+            if(updateOpen){
+                return;
+            }
+            socket.emit("modifyNote", {type: "save", content: notearea.innerHTML}, (success, error)=>{
+                if(success){
+                    SavedStatus(true);
+                }
+                if(error){
+                    PushNotification("Your file wasn't saved!", error, "warn");
                 }
             })
             break;
@@ -168,7 +199,7 @@ function SaveFile(updateOpen){
             // file = OpenFileDialog()
             break;
         default:
-            pushNotification("Saving file failed, unexpected app input!", null, "warn")
+            PushNotification("Saving file failed, unexpected app input!", null, "warn")
             break;
     }
     setSizes(activefile.space)
@@ -179,43 +210,58 @@ function SaveFile(updateOpen){
 function LoadFile(space, path, name){
     var file
     switch(space){
-        case "online":
-            var data = {version : settings.version}
-            $.ajax({
-                url: server + "app/errorlog.php",
-                type: "post",
-                data: data,
-                success: function (response) {
-                    response = JSON.parse(response)
-                    if(response.status==200){
-                        
-                    }
-                },
-                error: function() {
-                    pushNotification("Could not connect to server.", "Check your connection between the server!", "warn")
+        case "wn":
+            socket.emit("openNote", path, (success, error) => {
+                if(success){
+                    socket.emit("modifyNote", {type:"load"}, (success, error) => {
+                        if(success || error == "Note empty"){
+                            file = {};
+                            file.content = success;
+                            loadedFileSize = roughSizeOfObject(success);
+                            file.space = space;
+                            file.path = path;
+                            file.name = name;
+                            initLoading();
+                        }
+                        if(error){
+                            if(error=="Note empty"){
+                                PushNotification("Your note is empty", "Start writing!");
+                            }
+                            else{
+                                PushNotification("Server returned error", error, "warn");
+                            }
+                        }
+                    });
                 }
-            })
+                if(error){
+                    PushNotification("Server returned error", error, "warn");
+                }
+            });
             break;
         case "localstorage":
-            file = localStorage.getItem("*" + path + "*" + name)
+            file = localStorage.getItem("*" + path + "*" + name);
+            file = JSON.parse(file);
+            file.space = space;
+            file.path = path;
+            file.name = name;
+            loadedFileSize = roughSizeOfObject(file);
+            initLoading();
             break;
         case "device":
             file = OpenFileDialog()
+            initLoading();
             break;
         default:
-            pushNotification("Loading file failed, unexpected app input!", null, "warn")
+            PushNotification("Loading file failed, unexpected app input!", null, "warn");
             break;
     }
-    file = JSON.parse(file)
-    file.space = space
-    file.path = path
-    file.name = name
-    loadedFileSize = roughSizeOfObject(file)
-    InitFile(file.path, file.name, file.space, file.content, file)
-    if(notearea.innerHTML!=noteParse(file.content)){
-        //File was loaded incorrectly!
-        PushNotification("Hey, WriteNote made an oopsie", "And your file didn't load correctly! (In our opinion)")
-        return;
+    function initLoading(){
+        InitFile(file.path, file.name, file.space, file.content, file);
+        // if(notearea.innerHTML!=file.content){
+        //     //File was loaded incorrectly!
+        //     PushNotification("Hey, WriteNote made an oopsie", "And your file didn't load correctly! (In our opinion)")
+        //     return;
+        // }
     }
 }
 //also prevent creating files that already exist
@@ -232,11 +278,23 @@ function Rename(path, name, space, renameTo){
         return status
     }
     switch(space){
-        case "online":
-            
-            break;
+        case "wn":
+            socket.emit("openNote", path, (success, error) => {
+                if(success){
+                    socket.emit("modifyNote", {type:"rename", content:renameTo}, (success, error) => {
+                        if(error){
+                            PushNotification("Server returned error", error, "warn");
+                        }
+                    });
+                    socket.emit("closeNote", null, ()=>{});
+                }
+                if(error){
+                    PushNotification("Server returned error", error, "warn");
+                }
+            });
+            return 'all good';
         case "localstorage":
-            var existing = CheckExisting()
+            var existing = checkLocalstorageExisting()
             var renamedPath = space + ":*" + path + "*" + renameTo
             var currentPath = "*" + path + "*" + name
             for(let i = 0; i < existing.length; i++){
@@ -249,7 +307,6 @@ function Rename(path, name, space, renameTo){
             localStorage.setItem("*" + path + "*" + renameTo, file)
             activefile.name = renameTo
             return 'all good'
-            break;
         case "device":
             
             break;
@@ -426,7 +483,7 @@ function NewFileGui(close){
         "<button><i>desktop_windows</i> Device</button>"
 
         var buttons = buttonsDiv.getElementsByTagName("button")
-        var buttonoptions = ['online', 'localstorage', 'device']
+        var buttonoptions = ['wn', 'localstorage', 'device'];
         var buttonselected
         var eldownload = document.createElement("div")
         eldownload.classList.add("downloadinfo")
@@ -442,12 +499,14 @@ function NewFileGui(close){
                     const element = buttons[i];
                     element.classList.remove("buttonSelected")
                 }
-                if(isApp!=true){
-                    if(i==2){
-                        eldownload.innerHTML = "<p>To save directly on your device you need to download WriteNote</p><a target='_blank' href='"+serverAddress+"WriteNote/Download'><button>Download</button></a>"
-                        newfile.appendChild(eldownload)
-                        isChecks(undefined, true)
-                    }
+                if(i==2 && isApp!=true){
+                    eldownload.innerHTML = "<p>To save directly on your device you need to download WriteNote</p><a target='_blank' href='"+serverAddress+"WriteNote/Download'><button>Download</button></a>";
+                    newfile.appendChild(eldownload);
+                    isChecks(undefined, true);
+                }
+                if(i==0 && storedResponse && storedResponse.user == false){
+                    showLogin();
+                    return;
                 }
                 element.classList.add("buttonSelected")
             })
@@ -463,7 +522,7 @@ function NewFileGui(close){
         folderselect.classList.add("folderselect")
         folderselect.innerHTML = "<p>Folder</p>"
 
-        var existing = CheckExisting()
+        var existing = checkLocalstorageExisting()
         existing.unshift("localStorage:*Home*")
 
         for(let i = 0; i < existing.length; i++){
@@ -550,3 +609,20 @@ document.addEventListener("keydown", function(e){
         }
     }
 })
+
+function exportLocalStorage(){
+    
+    var data = {},
+        keys = Object.keys(localStorage),
+        i = keys.length;
+
+    while ( i-- ) {
+        data[keys[i]] = localStorage.getItem(keys[i]);
+    }
+
+    console.log(data)
+
+    var dataProcessed = JSON.stringify(data);
+    downloadFile(dataProcessed, "WriteNoteAppStorage.txt");
+}
+

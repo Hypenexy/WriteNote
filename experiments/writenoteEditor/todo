@@ -4,3 +4,4 @@ Implement
     Image, audio, video and file dragging
     Optimization so it only displays visible text with top: 4120px style
     Audio on actions
+    Fix link function, (it might be heavy and position isn't correct and it doesn't disappear)

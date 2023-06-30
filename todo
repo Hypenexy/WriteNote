@@ -18,7 +18,7 @@ COMPLETED copy history!
 create an ascii generator
 I thought Flex was my saviour! But no, it also makes images blurry, without even resizing them!
 A great idea with sockets! In the translation page open an iframe or another page with writenote an use sockets to display changing language in real time and focus on it!
-Get the image info on a "::after element" or in the editor
+COMPLETED in a different way in experiments/ | Get the image info on a "::after element" or in the editor
 Maybe make like an integrated devtools menu to debug the html contents of the editor
 Make sure to update live changed settings with socket io
 Add version checker
@@ -26,7 +26,7 @@ socketio device info like on battery change
 changes like in git
 when creating a file, if no name specified default to untitled + number
 maybe update contextmenu in app.js so its better (with submenus and addtomenu functions uknow?)
-rework the new animations on the settings menu so they look like the old one
+COMPLETED with issues, its better programatically but i prefer the old ones | rework the new animations on the settings menu so they look like the old one
 recognize language
 logging out should reset whole app
 try creating hardware like that one screenkeyboard, writenote on a table with custom keys and stuff

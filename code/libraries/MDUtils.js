@@ -351,7 +351,7 @@ function safeJSONparse(jsonString) {
 }
 
 /**
- * This function isn't mine it's shamelessly stolen by thomas-peter on stackoverflow, thank you!
+ * This function isn't mine it's shamelessly stolen by thomas-peter on stackoverflow, thank you! Actually this might be wrong for the string value since it takes 2 bytes for UNICODE!
  * @param {*} object Any object
  * @returns A number of the approximate size of the parameter in bytes.
  */
@@ -366,7 +366,7 @@ function roughSizeOfObject(object){
             bytes += 4
         }
         else if ( typeof value === 'string' ) {
-            bytes += value.length
+            bytes += value.length * 2
         }
         else if ( typeof value === 'number' ) {
             bytes += 8
@@ -651,4 +651,64 @@ function rgbaToHex(r, g, b, a){
         }
     }
     return hex;
+}
+
+
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+         return Math.round(elapsed/1000) + ' seconds ago';   
+    }
+
+    else if (elapsed < msPerHour) {
+         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+    }
+
+    else if (elapsed < msPerDay ) {
+         return Math.round(elapsed/msPerHour ) + ' hours ago';   
+    }
+
+    else if (elapsed < msPerMonth) {
+        return Math.round(elapsed/msPerDay) + ' days ago';   
+    }
+
+    else if (elapsed < msPerYear) {
+        return Math.round(elapsed/msPerMonth) + ' months ago';   
+    }
+
+    else {
+        return Math.round(elapsed/msPerYear ) + ' years ago';   
+    }
+}
+
+/**
+ * Download data on a file
+ * @param {*} data Contents in file
+ * @param {*} filename File name
+ * @param {*} type Blob type
+ */
+function downloadFile(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
 }

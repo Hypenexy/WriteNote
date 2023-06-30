@@ -30,6 +30,7 @@ writenote.flex{
     display: flex;
 }
 writenote features{
+    background: #00000022;
     display: flex;
     overflow: auto;
     flex-wrap: wrap;
@@ -48,6 +49,7 @@ notearea.borderRadiusRight{
 }
 
 app .linkPreview{
+    z-index: 6;
     position: absolute;
     max-width: 400px;
     border-radius: 16px;
@@ -366,4 +368,49 @@ notearea tictactoe sq:not(.marked){
 }
 notearea tictactoe sq:hover:not(.marked){
     background: #333;
+}
+
+writenote .filepreview{
+    white-space: break-spaces;
+    overflow: auto;
+    user-select: text;
+    z-index: 10;
+    position: absolute;
+    top: 107px;
+    color: #eee;
+    background: #111122;
+    width: 100%;
+    height: calc(100% - 107px);
+    padding: 4px;
+    font-size: 24px;
+    transition: .3s;
+}
+writenote .filepreview.transition{
+    opacity: 0;
+    top: 100px;
+    height: calc(100% - 100px);
+}
+writenote .filepreview .header{
+    border-radius: 8px 8px 0 0;
+    background: #151522;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    color: #ddd;
+    width: 100%;
+    padding: 14px 4px;
+    transition: .3s;
+}
+writenote .filepreview .header x{
+    top: 7px;
+    right: 7px;
+}
+writenote .filepreview.transition .header{
+    top: 75px;
+}
+writenote .filepreview::-webkit-scrollbar-thumb{
+    border-radius: 12px;
+}
+writenote .filepreview::selection{
+    background: #555;
 }

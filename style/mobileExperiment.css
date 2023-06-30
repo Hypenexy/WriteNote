@@ -292,7 +292,7 @@ notificationspace{
     pointer-events: none;
     width: 500px;
     position: fixed;
-    z-index: 28;
+    z-index: 38;
     top: 60px;
     right: 0;
 }
@@ -358,6 +358,24 @@ notification ti{
 }
 notification desc{
     color: #fff;
+}
+notification btn{
+    user-select: none;
+    display: inline-block;
+    margin: 0 5px;
+    padding: 4px;
+    border-radius: 4px;
+    color: #bbb;
+    border: 1px solid #555;
+    transition: .1s;
+}
+notification btn:hover, notification btn:focus-visible, notification btn:active{
+    border: 1px solid #bbb;
+    color: #fff;
+}
+notification btn:active{
+    color: #111;
+    background: #bbb;
 }
 
 .notificationshown{

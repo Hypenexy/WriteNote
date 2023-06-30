@@ -719,10 +719,38 @@ class WriteNote{
         })
         reader.readAsDataURL(file)
     
+        this.processFile(fileEl);
         this.insertNode(fileEl)
         onElementRemoved(fileEl, function(){
             delete that.mediaData[dataId]
         })
+    }
+    processFile(fileEl){
+        var that = this
+        fileEl.addEventListener("click", function(){
+            var dataId = fileEl.getAttribute("dataId");
+            var preview = document.createElement("div");
+            preview.classList.add("transition");
+            setTimeout(() => {
+                preview.classList.remove("transition");
+            }, 10);
+            preview.classList.add("filepreview");
+            preview.textContent = atob(that.mediaData[dataId].slice(that.mediaData[dataId].indexOf(",") + 1, that.mediaData[dataId].length));
+            var xbtn = document.createElement("x");
+            xbtn.innerText = "close";
+            ButtonEvent(xbtn, function(){
+                preview.classList.add("transition");
+                setTimeout(() => {
+                    preview.remove();
+                }, 300);
+            });
+            var header = document.createElement("div");
+            header.classList.add("header");
+            header.innerHTML = "<p>"+fileEl.innerText+"</p>";
+            header.appendChild(xbtn);
+            preview.appendChild(header);
+            that.writenote.appendChild(preview);
+        });
     }
 
     insertImage(file){

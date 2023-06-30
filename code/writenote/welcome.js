@@ -1,13 +1,11 @@
 // make the background a hot water
 // inspired by Posy
-
+var FileFunction;
 var WelcomeGuiinteractable = true
 function WelcomeGui(response, element, error){
     var welcomeguimodal
     var content = element.getElementsByTagName("content")[0]
     if(response=="error"){
-
-        
         $.ajax({
             url: server + "app/errorlog.php",
             type: "post",
@@ -40,11 +38,15 @@ function WelcomeGui(response, element, error){
                 return;
             }, 10)
         }, 300)
-
-
+        
+        return;
     }
+    
 
-    if(firstTime==true){
+    if(response.status!='offline'&&response.user!=false){
+        writenoteserverconnect();
+    }
+    if(response.status && firstTime==true && element.classList[0]=="welcome"){
         var firstTimeSetup = document.createElement("div")
         firstTimeSetup.classList.add("firstTimeSetup")
         var mdblock = document.createElement("div")
@@ -52,8 +54,10 @@ function WelcomeGui(response, element, error){
         mdblock.classList.add("relative")
         var welcomeTo = locale.welcomeTo.split("\n")
         var boldText = welcomeTo[1].slice(0, welcomeTo[1].length-1)
-        mdblock.innerHTML = "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
-        // <btns><btn class='skip'>"+locale.continueWithout+"</btn><btn class='continue'>"+locale.continueDownload+"</btn><btn class='continue'>"+locale.continueAcc+"</btn></btns>
+        if(response.status=="offline"){
+            mdblock.innerHTML += "<p class='err'>We couldn't connect to the server at " + server + " <a onclick='connectToMidelightTemporary()'>Would you like to retry?</a></p>"
+        }
+        mdblock.innerHTML += "<h1>"+welcomeTo[0]+"<b class='nw'>"+boldText+"<ub>"+welcomeTo[1][welcomeTo[1].length-1]+"</ub></b></h1><p>"+locale.welcomeToSubtext+"</p>"
         var btns = document.createElement("btns")
         function nextPage(i, lastmdblock){
             var mdblock2 = document.createElement("div")
@@ -82,17 +86,14 @@ function WelcomeGui(response, element, error){
                     })
                 }
             }
-            if(i==2){
+            if(i==2){ // Login menu
                 mdblock2.innerHTML = "<form><h1><img src='"+serverAddress+"mide.png'><c>Midelight</c></h1>"+
                 "<h1>"+locale.signIn+"</h1>"+
                 "<label><f>Username</f><input name='username'></label>"+
                 "<label><f>Password</f><input name='password' type='password'></label>"+
                 "<label><btn>"+locale.signIn+"</btn></label>"+
                 "</form>"
-
-                var form = mdblock2.getElementsByTagName("form")[0]
-                var submitBtn = form.getElementsByTagName("btn")[0]
-                ButtonEvent(submitBtn, console.log, 'hii :3')
+                showLogin();
             }
             if(i==4 || i==5){
                 if(i==5){
@@ -103,9 +104,19 @@ function WelcomeGui(response, element, error){
                 mdblock2.appendChild(getLanguagesMenu())
                 // "<h2>Narrator</h2>"
 
+                mdblock2.classList.add("startwriting")
                 var btns = document.createElement("btns")
-                
-                
+                var finishbtn = document.createElement("btn");
+                finishbtn.innerText = locale.startWriting;
+                ButtonEvent(finishbtn, function(){
+                    SaveSettings();
+                    firstTimeSetup.classList.add("transition");
+                    setTimeout(() => {
+                        firstTimeSetup.remove();
+                    }, 300);
+                });
+                btns.appendChild(finishbtn);
+                mdblock2.appendChild(btns);
             }
             firstTimeSetup.appendChild(mdblock2)
             if(lastmdblock){
@@ -146,6 +157,22 @@ function WelcomeGui(response, element, error){
             if(i==1 && isApp==true){
                 continue
             }
+            if(i==0 && response.user != false && response.user){
+                continue;
+            }
+            if(i==2 && response.user != false && response.user){
+                element.innerHTML = locale.continueAs
+                if(response.user.pfp){
+                    element.innerHTML += " <img src='"+serverImage+"?s=64&i="+response.user.pfp+"'> ";
+                }
+                else{
+                    element.innerHTML += " ";
+                }
+                element.innerHTML += response.user.username;
+                ButtonEvent(element, function(){
+                    nextPage(4);
+                })
+            }
             btns.appendChild(element)
         }
         mdblock.appendChild(btns)
@@ -156,7 +183,7 @@ function WelcomeGui(response, element, error){
         setTimeout(() => {
             firstTimeSetup.style.removeProperty("transition")
             firstTimeSetup.style.removeProperty("transform")
-            firstTimeSetup.style.opacity = 1
+            firstTimeSetup.style.removeProperty("opacity");
         }, 10)
     }
 
@@ -281,11 +308,11 @@ function WelcomeGui(response, element, error){
     widgets.push(account)
     if(response.status!='offline'){
         if(response.user!=false){
-            account.innerHTML = "<img src='"+serverImage+"?s=64&i="+response.user.pfp+"'>"+response.user.username+"<a tabindex='0'>"+locale.switchacc+"</a>"
+            account.innerHTML = "<img src='"+serverImage+"?s=64&i="+response.user.pfp+"'>"+response.user.username//+"<a tabindex='0'>"+locale.switchacc+"</a>"
             account.style = "text-shadow: 1px 1px 3px #000;background-position:center;background-size:cover;background-image:url("+serverImage+"?&i="+response.user.banner+")"
-            ButtonEvent(account.getElementsByTagName("a")[0], function(){
+            //ButtonEvent(account.getElementsByTagName("a")[0], function(){
                  //do ur account switching
-            })
+            //})
         }
         else{
             account.innerHTML = "You're not logged in. <a>Login</a><a>Register</a>"
@@ -452,38 +479,58 @@ function WelcomeGui(response, element, error){
     var filesside = document.createElement("filesside")
     var filters = document.createElement("filters")
     var files = document.createElement("files")
-    function FileFunction(sort, reverse, folder){
-        filters.innerHTML ="<div tabindex='0' class='sorts'><span class='op m-i'>sort</span><a>"+locale.openeddate+"</a><i>swap_horiz</i><div><p>"+locale.openeddate+"</p><p>"+locale.modifieddate+"</p><p>"+locale.alphabetically+"</p><p>"+locale.size+"</p></div></div>"+
+    FileFunction = async function(sort, reverse, folder){
+        filters.innerHTML ="<div tabindex='0' class='sorts'><span class='op m-i'>sort</span><a>"+locale.modifieddate+"</a><i>swap_horiz</i><div><p>"+locale.openeddate+"</p><p>"+locale.modifieddate+"</p><p>"+locale.alphabetically+"</p><p>"+locale.size+"</p></div></div><div class='sorts btn'><span class='op m-i'>delete</span> Recycle Bin</div>"+
             "<span class='o m-i'>grid_view</span>"+
             "<span class='o m-i'>view_headline</span>"
+
+            
+        var bin = filters.getElementsByClassName("btn")[0];
+        ButtonEvent(bin, function(){
+            FilesSort("Recycle Bin");
+        });
     
         var sorts = filters.getElementsByClassName("sorts")[0]
         var sorttext = sorts.getElementsByTagName("a")[0]
         var sortbtns = sorts.getElementsByTagName("p")
-        switch (sort) {
-            case 0:
-                sorttext.innerText = locale.openeddate
-                break;
-            case 1:
-                sorttext.innerText = locale.modifieddate
-                break;
-            case 2:
-                sorttext.innerText = locale.alphabetically
-                break;
-            case 3:
-                sorttext.innerText = locale.size
-                break;
-            default:
-                break;
+        if(settings.sort && !sort){
+            sort = settings.sort;
         }
-        sortbtns[sort].classList.add("oselected")
+        if(sort){
+            settings.sort = sort;
+            if(sort==2){
+                delete settings.sort;
+            }
+            SaveSettings();
+
+            switch (sort) {
+                case 1:
+                    sorttext.innerText = locale.openeddate
+                    break;
+                case 2:
+                    sorttext.innerText = locale.modifieddate
+                    break;
+                case 3:
+                    sorttext.innerText = locale.alphabetically
+                    break;
+                case 4:
+                    sorttext.innerText = locale.size
+                    break;
+                default:
+                    break;
+            }
+            sortbtns[sort-1].classList.add("oselected")
+        }
+        else{
+            sortbtns[1].classList.add("oselected");
+        }
         for (let i = 0; i < sortbtns.length; i++) {
             ButtonEvent(sortbtns[i], function(){
                 if(reverse){
-                    FileFunction(i, true)
+                    FileFunction(i+1, true)
                 }
                 else{
-                    FileFunction(i, null)
+                    FileFunction(i+1, null)
                 }
             })
         }
@@ -523,7 +570,7 @@ function WelcomeGui(response, element, error){
         else{
             fileviews[0].classList.add("oselected")
         }
-        var existing = CheckExisting()
+        var existing = await CheckExisting();
     
         var filesButtons = []
     
@@ -582,28 +629,43 @@ function WelcomeGui(response, element, error){
             for(let i = 0; i < existing.length; i++){
                 var parts = existing[i].split(":")
                 var space = parts[0]
-                var pathname = parts[1]
-                pathname = pathname.split("*").slice(1).join('*')
-                var path = pathname.split("*")[0]
-                var name = pathname.split("*").slice(1).join('*')
+                if(space=="localstorage"){
+                    var pathname = parts[1];
+                    pathname = pathname.split("*").slice(1).join('*');
+                    var path = pathname.split("*")[0];
+                    var name = pathname.split("*").slice(1).join('*');
+                }
+                if(space=="wn"){
+                    parts.shift();
+                    var elementData = parts.join(':');
+                    var NID = elementData.slice(2, 8);
+                    var noteData = JSON.parse(elementData.slice(10, elementData.length-1));
+                    var path = NID;
+                    var name = noteData.name;
+                }
     
                 var displayName
-                if(!folder){
-                    if(path&&path.includes('/')){
-                        path = path.split('/')[0]
+                if(space=="localstorage"){
+                    if(!folder){
+                        if(path&&path.includes('/')){
+                            path = path.split('/')[0]
+                        }
+                    }
+                    else{
+                        if(path){
+                            displayName = path.split('/')
+                            var lastFolder = folder
+                            if(folder.includes("/")){
+                                lastFolder = folder.split('/')
+                                lastFolder = lastFolder.pop()
+                            }
+                            var index = path.split('/').indexOf(lastFolder)
+                            displayName = displayName[index+1]
+                        }
                     }
                 }
-                else{
-                    if(path){
-                        displayName = path.split('/')
-                        var lastFolder = folder
-                        if(folder.includes("/")){
-                            lastFolder = folder.split('/')
-                            lastFolder = lastFolder.pop()
-                        }
-                        var index = path.split('/').indexOf(lastFolder)
-                        displayName = displayName[index+1]
-                    }
+                if(space=="wn"){
+                    displayName = name
                 }
     
                 if(path&&foldersSet.includes(path)){}
@@ -659,7 +721,7 @@ function WelcomeGui(response, element, error){
             for(let i = 0; i < filesButtons.length; i++){
                 function createButton(path, name, space){
                     var button = document.createElement("button")
-                    if(path&&path!=folder){
+                    if(path&&path!=folder&&space=="localstorage"){
                         var folderName = path
     
                         if(folderName.includes("/")){
@@ -674,13 +736,19 @@ function WelcomeGui(response, element, error){
                                 folderName = folderName[index + 1]
                             }
                         }
+ 
+                        var fileread = localStorage.getItem("*" + path + "*" + name);
+                        var bytes = humanFileSize(fileread.length);
+                        
+                        fileread = JSON.parse(fileread);
+                        var created = timeDifference(Date.now(), fileread.fD);
                         // if(path.includes('/')){
                         //     folderName = path.split('/')[0]
                         // }
                         // if(!foldersSet.includes(folderName)){
                         //     foldersSet.push(folderName)
-                            button.classList.add("folder")
-                            button.innerHTML = "<i>folder</i> " + folderName
+                        button.classList.add("folder");
+                        button.innerHTML = "<i>folder</i> " + folderName + "<i class='more m-i'>more_vert</i>";
                         // }
                         // else{
                         //     console.log(path)
@@ -694,17 +762,43 @@ function WelcomeGui(response, element, error){
                             case "localstorage":
                                 where = '<ic><i class="m-i">web</i><t>App</t></ic>'
                                 break;
-                        
+                            case "wn":
+                                where = '<ic><i class="m-i">cloud</i><t>Cloud</t></ic>'
                             default:
                                 break;
                         }
-                        var type = '<ty><i class="m-i">description</i></ty>' // I NEED A WAY TO GET WORKPLACE AND SIZE!
-                        var bytes = '<si>' + humanFileSize(210) + '</si>'
-                        button.innerHTML = where + type + "<ti>" + name + "</ti>" + "<co>" + "some 20 chars here from the fil..." + "</co>" + bytes + "<i class='more m-i'>more_vert</i>"
+                        var type = '<ty><i class="m-i">description</i></ty>'
+                        
+                        var extractText = document.createElement("p");
+
+                        if(space == "localstorage"){
+                            var fileread = localStorage.getItem("*" + path + "*" + name);
+                            var bytes = '<si>' + humanFileSize(fileread.length) + '</si>';
+                            
+                            fileread = JSON.parse(fileread);
+                            var created = timeDifference(Date.now(), fileread.fD);
+                            var opened = timeDifference(Date.now(), fileread.fO);
+                            var edited = timeDifference(Date.now(), fileread.fM);
+                            var smallbit = fileread.content.slice(0, 80);
+                            extractText.innerHTML = smallbit;
+                        }
+
+                        if(space == "wn"){
+                            var created = timeDifference(Date.now(), noteData.fD);
+                            var bytes = '<si>' + humanFileSize(noteData.size) + '</si>';
+                            extractText.innerHTML = noteData.fL;
+
+                        }
+                        var extractedText = extractText.innerText.slice(0, 30);
+                        if(extractText.innerText.length > 30){
+                            extractedText += "...";
+                        }
+                        
+                        button.innerHTML = where + type + "<ti>" + name + "</ti>" + "<co>" + extractedText + "</co>" + bytes + "<i class='more m-i'>more_vert</i>"
                     }
                     ButtonEvent(button, function(){
                         if(WelcomeGuiinteractable){
-                            if(path&&path!=folder){
+                            if(path&&path!=folder&&space=="localstorage"){
                                 FilesSort(path)
                             }
                             else{
@@ -733,13 +827,13 @@ function WelcomeGui(response, element, error){
                                 contextMenu.style.top = e.clientY + "px"
                                 contextMenu.style.left = e.clientX + "px"
                             }
-                            if(path&&path!=folder){
+                            if(path&&path!=folder&&space=="localstorage"){
                                 contextMenu.innerHTML = '<input value="'+path+'">'+
                                 "<de>Actions</de>"+
                                 "<p><i>delete</i> Delete</p>"+
                                 "<de>Properties</de>"+
-                                "<p>edited: today</p>"+
-                                "<p>size: chonk</p>" //get the combined sizes of the things inside
+                                "<pr><i>calendar_month</i> "+created+"</pr>"+
+                                "<pr><i>save</i> "+bytes+"</pr>" //get the combined sizes of the things inside
                             }
                             else{
                                 contextMenu.innerHTML = '<input value="'+name+'" placeholder='+name+'>'+
@@ -748,8 +842,8 @@ function WelcomeGui(response, element, error){
                                 "<p><i>content_copy</i> Duplicate</p>"+
                                 "<p><i>delete</i> Delete</p>"+
                                 "<de>Properties</de>"+
-                                "<pr><i>calendar_month</i> 2 minutes ago</pr>"+
-                                "<pr><i>save</i> 210 B</pr>"
+                                "<pr><i>calendar_month</i> "+edited+"</pr>"+
+                                "<pr><i>save</i> "+bytes+"</pr>"
                                 var renameInput = contextMenu.getElementsByTagName("input")[0]
                                 renameInput.addEventListener("change", function(){
                                     var renameResult = Rename(path, name, space, this.value)
@@ -765,16 +859,13 @@ function WelcomeGui(response, element, error){
                             show()
                         }
                     }
-                    if(path&&path!=folder){}
-                    else{
-                        var moreIcon = button.getElementsByClassName("more")[0]
-                        ButtonEvent(moreIcon, function(e){
-                            e.stopPropagation()
-                            var offset = moreIcon.getBoundingClientRect()
-                            var elementPos = {left:offset.left, top:offset.top}
-                            ButtonContextMenu(elementPos)
-                        }, null, true)
-                    }
+                    var moreIcon = button.getElementsByClassName("more")[0]
+                    ButtonEvent(moreIcon, function(e){
+                        e.stopPropagation()
+                        var offset = moreIcon.getBoundingClientRect()
+                        var elementPos = {left:offset.left, top:offset.top}
+                        ButtonContextMenu(elementPos)
+                    }, null, true)
                     button.addEventListener("click", function(e){
                         e.stopPropagation()
                     })
@@ -806,7 +897,7 @@ function WelcomeGui(response, element, error){
         FilesSort(folder)
     }
 
-    FileFunction(1)
+    FileFunction()
 
     files.onmousemove = e => {
         for(const button of document.getElementsByTagName("button")) {
@@ -867,6 +958,7 @@ function connectToMidelightTemporary(){
             success: function (response) {
                 try {
                     response = JSON.parse(response)
+                    load(response)
                 } catch (error) {
                     WelcomeGui("error", welcome, [error, response])
                 }

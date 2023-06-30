@@ -1,25 +1,28 @@
 var app = document.getElementsByTagName("app")[0]
-var mobile, interacted = false
+var mobile,
+    interacted = false
 if(isApp!=true){
     var isApp = false
 }
 var animations = true
-var online
-var serverAddress = "http://midelightdev.localhost/"
-var serverImage = "http://i.midelightdev.localhost/"
-var serverWeather = "http://weather.midelightdev.localhost/"
-var serverAssets = "http://assets.midelightdev.localhost/"
-var serverApp = "http://app.midelightdev.localhost/"
-var server =  "http://writenote.midelightdev.localhost/"
-var settings = {}
-var firstTime = false
+var online,
+    socket,
+    notesonline = false;
+var serverAddress = "http://midelightdev.localhost/",
+    serverImage = "http://i.midelightdev.localhost/",
+    serverWeather = "http://weather.midelightdev.localhost/",
+    serverAssets = "http://assets.midelightdev.localhost/",
+    serverApp = "http://app.midelightdev.localhost/",
+    server =  "http://writenote.midelightdev.localhost/";
+var settings = {},
+    firstTime = false
 if(localStorage.getItem("options")){
     settings = JSON.parse(localStorage.getItem("options"))
 }
 else{
     firstTime = true
 }
-settings.version = "3.0.0"
+settings.version = "1.0.0Dev";
 var themes = {
     "Dark" : {
         "desc" : "The default WriteNote look",
@@ -361,6 +364,7 @@ function load(response){
         }
     }
     setMobileStatus()
+    UpdateMobileStatus(false)
 }
 
 function SaveSettings(space){

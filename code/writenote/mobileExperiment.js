@@ -23,7 +23,7 @@ function setMobileStatusFile(name, space){
         case "localstorage":
             statusProcessed += " <p class='m-i'>web</p> • "
             break;
-        case "online":
+        case "wn":
             statusProcessed += " <p class='m-i'>cloud</p> • "
             break;
         case "device":
@@ -152,16 +152,19 @@ if(batteryIsSupported){
     })
 }
 
-
+/**
+ * Updates the mobile status
+ * @param {*} loop Specifies whether or not to update every 2 seconds.
+ */
 function UpdateMobileStatus(loop){
     mobileHeaderButton.innerHTML = mobileHeaderButtonFile + getMobileStatus()
-    if(loop!=false){
+    if(loop==true){
         setTimeout(UpdateMobileStatus, 2000);
     }
 }
 
 setMobileStatus()
-UpdateMobileStatus()
+UpdateMobileStatus(true)
 
 mobileHeaderButton.classList.add("mobilebutton")
 ButtonEvent(mobileHeaderButton, toggleHeaderMobileMenu)
@@ -335,11 +338,11 @@ app.appendChild(notificationspace)
 
 var notificationslog = []
 /**
- * 
+ * Sends a notification to user
  * @param {String} ti Title
- * @param {HTMLElement} desc Contents
+ * @param {HTMLElement} desc Contents (<btn> tag denotes buttons)
  * @param {String} type Type, either null or "warn" 
- * @param {ArrayWithFunctions} action Array of actions for button elements
+ * @param {ArrayWithFunctions} action Array of actions for button <btn> elements
  */
 function PushNotification(ti, desc, type, action){
     var notificationid = getRandomInt(1, 4)
@@ -367,6 +370,13 @@ function PushNotification(ti, desc, type, action){
     var removed = false
     notification.tabIndex = 0
     notification.innerHTML = "<notcontent><x class='m-i'>close</x><date>"+timeformatted+"</date><ti>"+ti+"</ti><desc>"+desc+"</desc></notcontent>"
+    if(action){
+        var btns = notification.getElementsByTagName("btn");
+        for (let i = 0; i < btns.length; i++) {
+            const element = btns[i];
+            ButtonEvent(element, action[i])
+        }
+    } 
     if(mobileHeaderMenu.classList[1] == "mobilemenuactive"){
         mobileHeaderMenu.appendChild(notification)
     }
