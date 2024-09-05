@@ -1,0 +1,14 @@
+.window .settings{
+    display: flex;
+}
+
+.window .settings .sidebtns{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+}
+
+/* .window .settings .sidebtns .button{
+    padding: 12px 12px 12px 36px;
+} */

@@ -1,0 +1,182 @@
+.loading{
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%)scale(.35);
+    /* filter: invert(.75); */
+    transition: 1s;
+    animation-name: logo;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
+}
+
+.loading svg g path{
+    /* transition: 1s; Not working? */
+    fill: #bfbfbf;
+}
+
+@keyframes logo {
+    from {
+        /* filter: invert(0.1); */
+        opacity: .1;
+        transform: translate(-50%, -50%)scale(.15);
+    }
+    to {
+        /* filter: invert(.75); // #bfbfbf */
+        opacity: 1;
+        transform: translate(-50%, -50%)scale(.35);
+    }
+}
+
+.loading svg:nth-child(1){
+    position: absolute;
+}
+.loading svg:nth-child(1) path{
+    fill: none;
+    stroke: #838383;
+    stroke-width: 8px;
+    stroke-dasharray: 5500;
+    stroke-dashoffset: 5500;
+    animation: strokeoffset 5s linear forwards;
+    /* animation-timing-function: cubic-bezier(1, .5, .5, 1); */
+    animation-delay: 1s;
+
+    filter: blur(8px);
+}
+
+@keyframes strokeoffset {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.loading.loaded{
+    /* filter: invert(0.04); */
+    /* opacity: .1; */
+    animation-name: logoLoaded;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
+    animation-fill-mode: forwards;
+}
+
+@keyframes logoLoaded {
+    from {
+        /* filter: invert(.75); */
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+        /* filter: invert(0.04); */
+    }
+}
+
+.loading.waiting{
+    animation-name: logoWaiting;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
+    animation-fill-mode: forwards;
+}
+
+@keyframes logoWaiting {
+    to {
+        transform: translate(-50%, -50%)scale(.35)translateY(-150px);
+    }
+}
+
+.loading .waiting{
+    pointer-events: none;
+    
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+    opacity: 0;
+    background-color: #bfbfbf; 
+    width: 600px;
+    height: 20px;
+    border-radius: 99px;
+
+    transition: .5s;
+}
+.loading.waiting .waiting{
+    visibility: visible;
+    animation-name: logoWaitingDiv;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
+    animation-fill-mode: forwards;
+}
+.loading.errored .waiting{
+    background-color: #bf4040;
+}
+@keyframes logoWaitingDiv {
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%)translateY(350px)scale(1.65);
+    }
+}
+
+.loading.errorAttempt .waiting{
+    animation-name: logoAttempting;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
+    animation-fill-mode: forwards;
+}
+.loading.errorAttempt .waiting::after{
+    content: ' ';
+    position: absolute;
+    top: 20px;
+    display: block;
+    width: 600px;
+    height: 400px;
+    background-color: var(--main-bg);
+
+    /* filter: invert(.75); */
+}
+
+@keyframes logoAttempting {
+    from{
+        opacity: 1;
+        transform: translate(-50%, -50%)translateY(350px)scale(1.65);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%)translateY(-350px)scale(1.65);
+    }
+}
+
+
+writenote{
+    animation-name: load;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(1, .5, .5, 1);
+}
+
+@keyframes load {
+    from {background: #000;}
+    to {background: #222242;}
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url("../assets/fonts/Outfit/Outfit-VariableFont_wght.ttf");
+}
+
+.loadingRetry{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* translate(-35px, -150px) */
+    width: 340px;
+    height: 320px;
+    color: #fff;
+    z-index: 2;
+}
+
+.loadingRetry .motd{
+    color: #e98f8f;
+    font-family: "Outfit";
+    font-size: 24px;
+}

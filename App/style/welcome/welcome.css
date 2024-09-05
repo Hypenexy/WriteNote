@@ -1,0 +1,215 @@
+/* .welcome{
+    z-index: 2;
+    overflow: hidden;
+            visibility: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    max-height: 700px;
+    background: #111;
+    border-radius: 12px;
+    padding: 12px;
+    
+            background: #11111199;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+}
+
+.welcome.retryConnection{
+    max-width: 600px;
+    max-height: 400px;
+}
+
+.welcome.retryConnection .retry{
+    color: #bbb;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 24px;
+    margin-top: 12px;
+}
+
+.welcome .motd{
+    color: #bbb;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 24px;
+    margin-top: 12px;
+} */
+
+.welcome{
+    visibility: visible;
+    animation-name: welcomeLoad;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
+}
+
+@keyframes welcomeLoad {
+    from{
+        transform: translate(-50%, -50%)scale(.09); /* this originally was .9! but i forgot and i think its cool being .09 */
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.welcome .logo{
+    -webkit-user-drag: none;
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%)scale(.35);
+    /* filter: invert(.04); */
+}
+.welcome .logo g path{
+    fill: #0a0a0a;
+}
+
+
+.welcome .motd{
+    color: #e5e5e5;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 24px;
+    margin-top: 12px;
+}
+
+
+/* .welcome .userHalf{
+    margin-left: -12px;
+}
+.welcome .weatherHalf{
+    margin-right: -12px;
+} */
+.welcome .weatherHalf::after{
+    transition: .5s;
+    opacity: 1;
+}
+.welcome .weatherHalf:hover::after{
+    opacity: 0.3;
+    background: linear-gradient(90deg, #111 0%, transparent 10%);
+}
+.welcome .userHalf,
+.welcome .weatherHalf{
+    position: relative;
+    padding: 12px;
+    color: #ddd;
+    font-size: 24px;
+    width: 50%;
+    float: left;
+    height: 90px;
+}
+.welcome .userHalf::after,
+.welcome .weatherHalf::after{
+    z-index: -1;
+    content: ' ';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.welcome .userHalf::after{
+    background: linear-gradient(270deg, #111, #11111155);
+}
+.welcome .weatherHalf::after{
+    background: linear-gradient(90deg, #111, transparent);
+}
+
+.welcome .userHalf div img{
+    vertical-align: middle;
+    border: 2px solid #111;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+}
+.welcome .userHalf div p{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+.welcome .userHalf .justUser{
+    cursor: pointer;
+    user-select: none;
+
+    display: inline-block;
+    border-radius: 12px;
+    padding: 8px;
+    margin: -8px;
+    margin-left: 0;
+    transition: .2s;
+}
+.welcome .userHalf .justUser:hover{
+    background-color: #222;
+}
+
+.welcome .weatherHalf img, .welcome .userHalf div.banner{
+    left: 12px;
+    z-index: -2;
+    position: absolute;
+    background-size: cover;
+    object-fit: cover;
+    background-position: center;
+    object-position: center;
+    width: 100%;
+    height: 90px;
+    margin: -12px;
+}
+.welcome .weatherHalf{
+    text-align: right;
+    text-shadow: 1px 1px 1px #11111199;
+}
+.welcome .weatherHalf timed{
+    position: absolute;
+    right: 12px;
+    top: -32px;
+    padding-bottom: 12px;
+    font-size: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+    transform: translateY(32px);
+    color: #111;
+}
+.welcome .weatherHalf:hover timed{
+    color: #bbb;
+    visibility: visible;
+    opacity: 1;
+    transform: initial;
+}
+.welcome .weatherHalf .extra{
+    display: inline-block;
+    max-width: 0px;
+    opacity: 0;
+    transition: .2s;
+}
+.welcome .weatherHalf:hover .extra{
+    opacity: 1;
+    max-width: 40px;
+}
+.welcome .weatherHalf:hover{
+    text-shadow: 1px 1px 1px 2px #11111199;
+}
+
+@media screen and (max-width: 690px) {
+    .welcome{
+        max-height: 95%;
+    }
+    .welcome .userHalf, .welcome .weatherHalf{
+        position: relative;
+        display: block;
+        width: 100%;
+        min-height: 90px;
+        float: initial;
+        height: initial;
+        padding: 4px;
+    }
+    .welcome .userHalf p{
+        margin: 0;
+    }
+}
