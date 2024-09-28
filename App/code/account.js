@@ -179,6 +179,11 @@ function createInput(type){
         return input.value;
     }
 
+    // Just output
+    element.value = () => {
+        return input.value;
+    }
+
     // Append server errors
     element.appendError = appendError;
     
@@ -255,19 +260,84 @@ function createRegisterMenu(){
         text.classList.add("sign");
         return text;
     }
+
+    function switchElements(form, locale1, locale2, action){
+        const switchText = document.createElement("div");
+        switchText.classList.add("switchText");
+        switchText.textContent = locale1;
+        form.appendChild(switchText);
+
+        const switchbtn = document.createElement("div");
+        switchbtn.classList.add("button");
+        switchbtn.textContent = locale2;
+        form.appendChild(switchbtn);
+
+        mdutils.ButtonEvent(switchbtn, () => {
+            form.classList.add("toabove");
+            form.onanimationend = () =>{
+                form.remove();
+                form.onanimationend = "";
+                action(true);
+            };
+        });
+    }
     
-    function createLogin(){
+    function createLogin(transition){
         const form = formElement();
+        if(transition){
+            form.classList.add("frombelow");
+            form.onanimationend = () =>{
+                form.classList.remove("frombelow");
+            }
+        }
 
         const text = signElement();
         text.textContent = locale.sign_in;
         form.appendChild(text);
 
+        const usernameInput = createInput("username");
+        form.appendChild(usernameInput);
         
+        const passwordInput = createInput("password");
+        form.appendChild(passwordInput);
+        
+        function submitLogin(){
+            const username = usernameInput.value();
+            const password = passwordInput.value();
+            
+            const data = {
+                type: "login",
+                identity: username,
+                password: password,
+                device: device
+            }
+            socket.emit("account", data, (response) => {
+                if(typeof response != "object"){
+                    console.log("Server responded with invalid data!");
+                }
+                if(response.error){
+                    if(response.error == "Wrong username or password"){
+                        usernameInput.appendError("wrong_credentials");
+                    }
+                }
+            });
+            
+        }
+
+        const signButton = createSignButton(submitLogin);
+        signButton.textContent = locale.sign_in;
+        form.appendChild(signButton);
+        switchElements(form, locale.if_new, locale.create_account, createRegister);
     }
     
-    function createRegister(){
+    function createRegister(transition){
         const form = formElement();
+        if(transition){
+            form.classList.add("frombelow");
+            form.onanimationend = () => {
+                form.classList.remove("frombelow");
+            }
+        }
 
         const text = signElement();
         text.textContent = locale.create_account;
@@ -314,6 +384,8 @@ function createRegisterMenu(){
         const signButton = createSignButton(submitRegister);
         signButton.textContent = locale.sign_up;
         form.appendChild(signButton);
+
+        switchElements(form, locale.already_account, locale.sign_in, createLogin);
     }
 
     createRegister();

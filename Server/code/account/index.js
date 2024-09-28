@@ -68,7 +68,7 @@ async function register(data, sessionId, loginUID){
         return response;
     }
 
-    const UID = sql.midelightDB.escape(v4());
+    const UID = v4();
     const username = sql.midelightDB.escape(data.username.trim());
     const hash = bcrypt.hashSync(data.password, saltRounds);
     const email = sql.midelightDB.escape(data.email);
@@ -79,7 +79,7 @@ async function register(data, sessionId, loginUID){
     try{
         result = await sql.midelightDB.query(`
             INSERT INTO accounts (Username, UID, Password, Email, Date)
-            VALUES (${username}, ${UID}, '${hash}', ${email}, ${date})
+            VALUES (${username}, '${UID}', '${hash}', ${email}, ${date})
         `);
     }
     catch(error){
@@ -105,15 +105,15 @@ async function register(data, sessionId, loginUID){
 async function login(data, sessionId, loginUID){
     const response = {};
 
-    const username = sql.midelightDB.escape(data.username.trim());
-    const dateNow = sql.midelightDB.escape(Date.now());
+    const username = sql.midelightDB.escape(data.identity.trim());
+    // const dateNow = sql.midelightDB.escape(Date.now());
     
     var result = await sql.midelightDB.query(`
         SELECT * FROM accounts WHERE Username=${username} OR Email=${username};
     `);
 
     if(result[0].length == 0){
-        response.error = "Didn't find account";
+        response.error = "Wrong username or password";
         return response;
     }
 
@@ -121,13 +121,13 @@ async function login(data, sessionId, loginUID){
     const match = bcrypt.compareSync(data.password, result[0][0].Password);
 
     if(!match) {
-        response.error = "Didn't find account";
+        response.error = "Wrong username or password";
         return response;
     }
 
-    const UID = sql.midelightDB.escape(result[0][0].UID);
+    const UID = result[0][0].UID;
 
-    await createSession(sessionId, UID, "device");
+    await session.createSession(sessionId, UID, data.device);
     loginUID(UID);
 
     response.status = "success";

@@ -48,7 +48,7 @@ async function createSession(sessionId, UID, Device){
 
     await sql.midelightDB.query(`
         REPLACE INTO sessions (ID, Device, UID, Date)
-        VALUES (${escapedSessionId}, ${device}, ${UID}, ${dateNow})
+        VALUES (${escapedSessionId}, ${device}, '${UID}', ${dateNow})
     `);
 }
 

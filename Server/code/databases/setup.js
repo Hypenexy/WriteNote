@@ -6,10 +6,10 @@ const sql = require("./mysql");
 
 sql.midelightDB.query(`
     CREATE TABLE \`accounts\` (
-        \`Username\` varchar(30) NOT NULL,
         \`UID\` varchar(36) NOT NULL,
-        \`Password\` text NOT NULL,
         \`Email\` varchar(100) NOT NULL,
+        \`Username\` varchar(30) NOT NULL,
+        \`Password\` text NOT NULL,
         \`Avatar\` varchar(36) DEFAULT NULL,
         \`Banner\` varchar(36) DEFAULT NULL,
         \`Date\` bigint NOT NULL,
@@ -90,16 +90,29 @@ sql.midelightDB.query(`
 
 sql.midelightDB.query(`
     CREATE TABLE \`weatherlogs\` (
-    \`Time\` bigint NOT NULL,
-    \`Temperature\` smallint NOT NULL,
-    \`WeatherData\` text NOT NULL,
-    \`Latitude\` varchar(10) NOT NULL,
-    \`Longitude\` varchar(10) NOT NULL,
-    \`UID\` varchar(36) NOT NULL,
-    \`City\` varchar(168) NOT NULL
+        \`Time\` bigint NOT NULL,
+        \`Temperature\` smallint NOT NULL,
+        \`WeatherData\` text NOT NULL,
+        \`Latitude\` varchar(10) NOT NULL,
+        \`Longitude\` varchar(10) NOT NULL,
+        \`UID\` varchar(36) NOT NULL,
+        \`City\` varchar(168) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 `);
 
-// sql.writenoteDB.query(` fack i need to make a chat database
+sql.writenoteDB.query(`
+    CREATE TABLE \`friendRequests\` (
+        \`From\` varchar(36) NOT NULL,
+        \`To\` varchar(36) NOT NULL,
+        \`Date\` bigint NOT NULL,
+        UNIQUE KEY \`aRequest\` (\`From\`,\`To\`)
+    )
+`);
 
-// `);
+sql.writenoteDB.query(`
+    CREATE TABLE \`friends\` (
+        \`Friend1\` varchar(36) NOT NULL,
+        \`Friend2\` varchar(36) NOT NULL,
+        \`Date\` bigint NOT NULL
+    )
+`);

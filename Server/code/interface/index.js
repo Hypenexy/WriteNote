@@ -1,8 +1,10 @@
 var mysql = {};
+var clientsReference;
 
-module.exports = (midelightDB, writenoteDB) => { // I don't think there's need for passing but leave it as is for example
+module.exports = (midelightDB, writenoteDB, clients) => { // I don't think there's need for passing but leave it as is for example
     mysql.midelightDB = midelightDB;
     mysql.writenoteDB = writenoteDB;
+    clientsReference = clients;
 }
 
 const uptime = require("./../admin/uptime");
@@ -93,6 +95,7 @@ function info(){
     console.log(`${colors.blue} Commands:`)
     console.log(`${colors.purple}Status ${colors.darkWhite}[1] ${colors.darkGray}- Shows stats of server${colors.reset}`);
     console.log(`${colors.purple}Help ${colors.darkGray}- Displays this info${colors.reset}`);
+    console.log(`${colors.purple}List ${colors.darkGray}- Displays all connected users${colors.reset}`);
     console.log(`${colors.purple}Update (Username) password (New password) ${colors.darkGray}- Updates a user's password${colors.reset}`);
     console.log(`${colors.purple}Admin list (Page) ${colors.darkGray}- Shows list of administrators${colors.reset}`);
     console.log(`${colors.purple}Admin add (Username) (Key) ${colors.darkGray}- Makes a user an admin with a key${colors.reset}`);
@@ -134,20 +137,31 @@ function status(){
 
 function commandInterface(){
     rl.question("", async function(command) {
+        var tLC_command = command.toLowerCase();
         appendHistory(command);
-        if(command.toLowerCase() == "help" || command == "?"){
+        if(tLC_command == "help" || command == "?"){
             info();
         }
-        if(command.toLowerCase() == "safe exit"){
+        if(tLC_command == "safe exit"){
             safeShutdown();
         }
-        if(command.toLowerCase() == "exit" || command == 4){
+        if(tLC_command == "exit" || command == 4){
             rl.close();
         }
-        if(command.toLowerCase() == "setup database"){
+        if(tLC_command == "list"){
+            for (let i = 0; i < clientsReference.length; i++) {
+                const element = clientsReference[i];
+                if(element.UID == -1){
+                    console.log("Unlogged user");
+                    continue;
+                }
+                console.log(`${element.Username} | UID: ${element.UID}`);
+            }
+        }
+        if(tLC_command == "setup database"){
             require("./../databases/setup");
         }
-        if(command.toLowerCase() == "status" || command == 1){
+        if(tLC_command == "status" || command == 1){
             const stats = status();
 
             console.log(`${colors.blue}Status`);
@@ -165,7 +179,7 @@ function commandInterface(){
             console.log(`${colors.blue}Uptime: ${colors.purple}${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`);
             console.log(colors.reset);
         }
-        if(command.toLowerCase().startsWith("update")){
+        if(tLC_command.startsWith("update")){
             var commandArgs = command.split(" ");
             var execute = true;
             if(commandArgs.length < 3){
@@ -190,7 +204,7 @@ function commandInterface(){
         
 // console.log("\x1b[35mAdmin update (Username) key (Key)\x1b[0m");
 // console.log("\x1b[35mAdmin remove (Username)\x1b[0m");
-        if(command.toLowerCase().startsWith("admin")){
+        if(tLC_command.startsWith("admin")){
             var commandArgs = command.split(" ");
             var con = await SQLConnection();
             var result;

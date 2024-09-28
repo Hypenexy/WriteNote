@@ -27,9 +27,9 @@ function createMOTD(name){
 
 function WeatherStyled(info){ // reconsider these 💫 cute names ✨
     const temperature = info.main.temp
-    var Description;
     const altdesc = info.weather[0].description;
     const desc = info.weather[0].main;
+    var Description = desc;
     if(desc=="Thunderstorm"){
         Description = locale.thunderstorm;
     }
@@ -62,6 +62,9 @@ function WeatherStyled(info){ // reconsider these 💫 cute names ✨
     }
     if(desc=="Mist"){
         Description = locale.mist;
+    }
+    if(desc=="Haze"){
+        Description = locale.haze;
     }
     
     var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });

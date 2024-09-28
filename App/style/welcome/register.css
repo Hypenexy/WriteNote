@@ -78,6 +78,30 @@
     padding: 24px 0;
     gap: 16px;
     transition: .3s;
+
+    animation-duration: .2s;
+}
+
+.welcome form.toabove{
+    animation-name: toabove;
+}
+
+.welcome form.frombelow{
+    animation-name: frombelow;
+}
+
+@keyframes frombelow {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}
+
+@keyframes toabove {
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
 }
 
 .welcome form .label {
@@ -96,7 +120,7 @@
     position: absolute;
     left: 12px;
     pointer-events: none;
-    color: var(--input-color);
+    color: var(--input-text-color);
     transition: .2s;
 }
 .welcome form .label .text.hide {
@@ -142,10 +166,10 @@
 }
 
 .welcome form .label:has(input:focus) {
-    background-color: var(--input-hover-border);
+    background-color: var(--input-focus-border);
 }
 .welcome form .label:has(input:focus) .text.hide{
-    color: var(--input-hover-border);
+    color: var(--input-focus-border);
 }
 
 .welcome form .label .passwordShow{
@@ -167,6 +191,9 @@
     opacity: 1;
 }
 
+.welcome .switchText{
+    font-size: 20px;
+}
 
 .welcome .sideDecoration{
     position: relative;

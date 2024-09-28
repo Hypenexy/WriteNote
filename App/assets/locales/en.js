@@ -40,6 +40,7 @@ var locale = {
 
     email_taken: "Email is already taken",
     username_taken: "Username is already taken",
+    wrong_credentials: "Wrong username or password",
 
     goodmorning : "Good morning",
     goodafternoon : "Good afternoon",
@@ -57,6 +58,8 @@ var locale = {
     veryrain : "Heavy rain",
     snowrain : "Snowing & raining",
     mist : "Mist",
+    haze : "Haze",
+
     feel : "a nice",
     peaceful : "a peaceful",
     freezing : "a freezing",
@@ -64,6 +67,7 @@ var locale = {
     mild : "a mild",
     hot : "a hot",
     extremelyhot : "an extremely hot",
+
     its : "It's",
     morningin : "morning in",
     noonin : "noon in",
@@ -72,4 +76,17 @@ var locale = {
     nightin : "night in",
     midnightin : "midnight in",
     lastupdated : "Last updated",
+
+    search_for_people: "Search for people",
+    add_friend: "Add friend",
+    send_friend_request: "Send friend request",
+    pending_requests: "Pending requests",
+
+    error_friend_yourself: "You can't friend yourself silly",
+    empty_username: "Empty username",
+    couldnt_find_username: "Couldn't find username",
+    already_friends: "Already friends",
+    already_pending: "Already pending",
+    success_sent_request: "Sent a request",
+    unknown_error: "Unknown error",
 }

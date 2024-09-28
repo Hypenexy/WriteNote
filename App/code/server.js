@@ -32,10 +32,19 @@ function removeRetries(){
     });
 }
 
+var logonData;
 socket.on("logon", (data) => {
     removeRetries();
     logo_loadedConnection(); // fix this animation flows
-    showWelcome(data);
+    
+    logonData = data;
+    if(data == -1){
+        showWelcome(data);
+    }
+    else{
+        openChat() //temp design
+    }
+
 })
 
 var failedAttempts = 0;
