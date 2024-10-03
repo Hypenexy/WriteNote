@@ -42,7 +42,9 @@ socket.on("logon", (data) => {
         showWelcome(data);
     }
     else{
-        openChat() //temp design
+        // openSettings();
+        showWelcome(data);
+        // openChat() //temp design
     }
 
 })

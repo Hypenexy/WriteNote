@@ -5,9 +5,11 @@ const { v4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-module.exports = (socket, sessionId, loginUID) => {
+module.exports = (socket, sessionId, loginUID, clientInfo) => {
     socket.on("account", async (data, callback) => {
-        protocolCheck.checkDataAndCallback(data, callback);
+        if(!protocolCheck.checkDataAndCallback(data, callback)){ // This ain't work with null data
+            return;
+        }
         if(!data.type){
             callback(null, "Invalid request, type isn't specified");
             return;
@@ -17,6 +19,9 @@ module.exports = (socket, sessionId, loginUID) => {
         }
         if(data.type == "login"){
             callback(await login(data, sessionId, loginUID));
+        }
+        if(data.type == "Update avatar"){
+            require("./avatars")(data, callback, clientInfo);
         }
     });
 }

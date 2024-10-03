@@ -1,0 +1,410 @@
+header{
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    user-select: none;
+    margin: 12px;
+    padding: 6px;
+    border-radius: 99px;
+    background-color: #111111bb;
+    width: calc(100% - 24px);
+    height: 60px;
+    animation: headerShow .5s cubic-bezier(.22, .32, .2, 1);
+}
+
+@keyframes headerShow {
+    from{
+        transform: translateY(-82px)scale(.9);
+    }
+    to{
+        transform: initial;
+    }
+}
+
+header .noteList{
+    display: inline-block;
+}
+
+header .noteList .new{
+    float: right;
+    cursor: pointer;
+    /* display: inline-block; */
+    vertical-align: middle;
+    color: #bbb;
+    background-color: #222222bb;
+    margin: 4px;
+    padding: 8px;
+    border-radius: 99px;
+    transition: .1s;
+}
+header .noteList .new:hover, header .noteList .new:focus-visible{
+    color: #eee;
+    background-color: #333333bb;
+}
+
+header .note{
+    cursor: pointer;
+    position: relative;
+    padding: 4px;
+    margin-right: 6px;
+    padding-right: 28px;
+    display: inline-block;
+    vertical-align: middle;
+    color: #eee;
+    background-color: #222222bb;
+    border-radius: 99px;
+    transition: .1s;
+    animation-name: noteShow;
+    animation-duration: .5s;
+}
+header .note.hide{
+    animation-name: noteShowReverse;
+    animation-duration: .5s;
+}
+@keyframes noteShow {
+    from{
+        opacity: 0;
+        max-width: 0vw;
+    }
+    to{
+        opacity: 1;
+        max-width: 100vw;
+    }
+}
+@keyframes noteShowReverse {
+    from{
+        opacity: 1;
+        max-width: 100vw;
+    }
+    to{
+        opacity: 0;
+        max-width: 0vw;
+    }
+}
+header .note:hover, header .note:focus-visible{
+    background-color: #333333bb;
+}
+header .note i:not(.status){
+    padding: 8px;
+    vertical-align: middle;
+    background-color: #333333bb;
+    box-shadow: 2px 2px 2px #11111155;
+    border-radius: 99px;
+}
+header .note p{
+    display: inline-block;
+    vertical-align: middle;
+}
+header .note i.status{
+    vertical-align: middle;
+    font-size: 20px;
+    color: #a378ed;
+    margin-left: 6px;
+    animation-name: noteIconShow;
+    animation-duration: .3s;
+    animation-timing-function: cubic-bezier(.22, .32, .2, 1);
+    animation-fill-mode: forwards;
+}
+header .note i.status.hide{
+    animation-name: noteIconShowReverse;
+    animation-duration: .3s;
+    animation-timing-function: cubic-bezier(.22, .32, .2, 1);
+    animation-fill-mode: forwards;
+}
+@keyframes noteIconShow {
+    from{
+        color: #65baff;
+        opacity: 0;
+        width: 0px;
+        margin-left: 0px;
+    }
+    to{
+        opacity: 1;
+        width: 20px;
+        margin-left: 6px;
+    }
+}
+@keyframes noteIconShowReverse {
+    from{
+        opacity: 1;
+        width: 20px;
+        margin-left: 6px;
+    }
+    to{
+        color: #65baff;
+        opacity: 0;
+        width: 0px;
+        margin-left: 0px;
+    }
+}
+header .note i.unsaved{
+    color: #fffc65;
+}
+header .note i.binned{
+    color: #ff6565;
+}
+header .note i.status p{
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+header .note .line{
+    opacity: 0;
+    transition: .3s;
+    position: absolute;
+    width: calc(100% - 42px);
+    left: 21px;
+    bottom: 0px;
+    border: 0;
+    height: 2px;
+    border: 1px solid #65baff;
+    border-radius: 99px;
+}
+header .note.active .line{
+    opacity: 1;
+}
+header .note.unsaved .line{
+    border: 1px solid #fffc65;
+}
+header .note .x{
+    opacity: 0;
+    position: absolute;
+    padding: 7px;
+    font-size: 12px;
+    color: #bbb;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+header .note:hover .x,header .note:focus-visible .x{
+    opacity: 1;
+}
+
+header .infotainment{
+    float: right;
+}
+
+header .profile .line{
+    position: absolute;
+    right: 36px;
+    top: 36px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: #555555;
+    border-radius: 99px;
+    box-shadow: 1px -1px 1px 1px #111111bb;
+}
+
+header .profile.online .line{
+    background-color: #58da97;
+}
+header .profile.offline .line{
+    background-color: #723030;
+}
+header .profile{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: #eee;
+    background-color: #222222bb;
+    padding: 4px;
+    border-radius: 99px;
+    transition: .1s;
+}
+header .profile:hover, header .profile:focus-visible{
+    background-color: #333333bb;
+}
+header .profile p{
+    display: inline;
+    padding-right: 8px;
+    padding-left: 12px;
+}
+header .profile img{
+    margin: -4px;
+    width: 48px;
+    vertical-align: middle;
+    border-radius: 99px;
+    box-shadow: -2px 0 2px #111111bb;
+}
+
+header .weather{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: #eee;
+    background-color: #222222bb;
+    background-size: cover;
+    margin-right: 8px;
+    border-radius: 99px;
+    min-width: 80px;
+    text-align: center;
+
+    transition: .1s;
+}
+header .weather div{
+    padding: 15px;
+    width: 100%;
+    height: 100%;
+    border-radius: 99px;
+    background: #00000099;
+    transition: .2s;
+}
+header .weather:hover div, header .weather:focus-visible div{
+    background: #00000011;
+    text-shadow: 1px 1px 2px #000, 0 0 1em #000, 0 0 0.2em #000;
+}
+
+header .showSubHeader{
+    display: none;
+}
+
+header.noSubHeader .showSubHeader{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 7px;
+    padding: 4px;
+}
+@media screen and (max-width: 590px) {
+    header .noteList .note .x{
+        display: none;
+    }
+    header .noteList .note:not(.active){
+        display: none;
+    }
+    header .new{
+        display: none;
+    }
+    header .weather{
+        display: none;
+    }
+}
+
+.subHeader{
+    z-index: 2;
+    position: absolute;
+    top: 72px;
+    background-color: #111111bb;
+    width: calc(100% - 88px);
+    margin: 0 44px;
+    padding: 6px;
+    height: 47px;
+    border-radius: 0 0 12px 12px;
+    animation: headerShow .5s cubic-bezier(.22, .32, .2, 1);
+    transition: .2s;
+}
+.subHeader.hidden{
+    opacity: 0;
+    top: 10px;
+}
+
+@media screen and (max-width: 590px) {
+    .subHeader{
+        display: flex;
+        height: auto;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}
+
+
+.subHeader .btn{
+    vertical-align: middle;
+    padding: 4px;
+    margin-right: 4px;
+}
+
+.subHeader .btn.submit{
+    vertical-align: middle;
+    background-color: #65baff;
+    color: #111;
+    border-radius: 99px;
+    padding: 12px;
+}
+
+.subHeader .vl{
+    vertical-align: middle;
+    display: inline-block;
+    height: calc(100% - 12px);
+    border-left: 2px solid #333333bb;
+    margin: 6px 4px;
+}
+
+.subHeader .hideMenu{
+    float: right;
+    top: 1px;
+}
+
+.headerDropdown{
+    z-index: 4;
+    position: absolute;
+    background-color: #111111ee;
+    color: #bbb;
+    padding: 12px;
+    border-radius: 12px;
+    animation-name: headerDropdown;
+    animation-duration: .3s;
+}
+
+@keyframes headerDropdown {
+    from{
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to{
+        opacity: 1;
+        transform: initial;
+    }
+}
+
+.headerDropdown .mobile{
+    display: none;
+}
+
+.noteExtraInfo{
+    min-width: 260px;
+    max-width: 350px;
+}
+.noteExtraInfo .btn{
+    display: block;
+    margin-top: 6px;
+}
+
+.noteExtraInfo .info{
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #fffc65;
+    color: #111;
+}
+.noteExtraInfo .info i{
+    vertical-align: middle;
+    margin-right: 8px;
+}
+.noteExtraInfo .info p{
+    display: inline;
+    vertical-align: middle;
+}
+
+@media screen and (max-width: 590px){
+    .headerDropdown{
+        left: 0!important;
+        width: 100%;
+    }
+    .headerDropdown .mobile{
+        display: initial;
+    }
+    .headerDropdown .opennotes{
+        font-size: 20px;
+    }
+    .noteExtraInfo{
+        min-width: initial;
+        max-width: initial;
+        width: 100%;
+    }
+    .noteExtraInfo .btn{
+        display: inline-block;
+        margin: 0;
+    }
+} 

@@ -62,3 +62,7 @@ function getUIImage(headers, req, res){
 module.exports.getUIImage = getUIImage;
 
 log('s', "Assets loaded");
+
+
+const avatar = require("./avatar");
+module.exports.getAvatar = avatar.getAvatar;

@@ -67,7 +67,7 @@
     /* filter: invert(.04); */
 }
 .welcome .logo g path{
-    fill: #0a0a0a;
+    fill: var(--main-logo-bg);
 }
 
 
@@ -123,9 +123,9 @@
 
 .welcome .userHalf div img{
     vertical-align: middle;
-    border: 2px solid #111;
-    width: 66px;
-    height: 66px;
+    /* border: 2px solid #111; */
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
 }
 .welcome .userHalf div p{
@@ -211,5 +211,29 @@
     }
     .welcome .userHalf p{
         margin: 0;
+    }
+    .welcome .userHalf{
+        position: absolute;
+        z-index: 2;
+        width: 300px;
+    }
+    .welcome .userHalf::after{
+        background: none;
+    }
+    .welcome .weatherHalf::after{
+        top: -8px;
+    }
+}
+@media screen and (max-width: 625px) {
+    .welcome .userHalf{
+        position: initial;
+        z-index: initial;
+        width: initial;
+    }
+    .welcome .userHalf::after{
+        background: none;
+    }
+    .welcome .weatherHalf::after{
+        top: -8px;
     }
 }

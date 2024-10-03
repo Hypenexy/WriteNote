@@ -1,0 +1,183 @@
+.contextMenu{
+    position: absolute;
+    overflow: auto;
+    z-index: 50;
+    
+    color: #eee;
+    background: #222;
+    box-shadow: 1px 1px 3px #111;
+    border: 1px solid #444;
+    border-radius: 12px;
+    
+    padding: 12px;
+    
+    
+    animation-name: contextMenu;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.contextMenu.hide{
+    animation-name: contextMenuReverse;
+    animation-fill-mode: forwards;
+}
+
+@keyframes contextMenu {
+    from{
+        transform: translateY(-5px);
+        opacity: 0;
+    }
+}
+
+@keyframes contextMenuReverse {
+    to{
+        transform: translateY(-5px);
+        opacity: 0;
+    }
+}
+.contextMenu .drag{
+    user-select: none;
+    cursor: move;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 10px;
+}
+.contextMenu::-webkit-scrollbar-thumb{
+    border-radius: 8px;
+}
+.contextMenu input{
+    padding: 6px 0 0 0;
+    width: 100%;
+    padding: 6px;
+    background: #111;
+    border-radius: 4px;
+    border-bottom: 1px solid #444;
+    transition: .1s;
+}
+.contextMenu input:hover{
+    background: #151515;
+    border-bottom: 1px solid #555;
+}
+.contextMenu input:focus{
+    border-bottom: 1px solid #999;
+}
+.contextMenu de{
+    display: block;
+    margin: 9px 0;
+    color: #999;
+    font-size: 14px;
+}
+.contextMenu .btn, .contextMenu .text{
+    color: inherit;
+    background: inherit;
+    border: initial;
+    white-space: nowrap;
+    display: block;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px;
+    padding: 8px;
+    transition: .2s;
+}
+.contextMenu .btn:hover, .contextMenu .btn:focus-visible{
+    background: #444;
+}
+.contextMenu .btn:active{
+    color: #111;
+    background: #eee;
+}
+.contextMenu .btn.disabled{
+    pointer-events: none;
+    color: #555;
+    background: #222;
+}
+.contextMenu .selected{
+    color: #111;
+    background: #65baff;
+} 
+.contextMenu .text{
+    color: #ddd;
+    cursor: initial;
+    user-select: text;
+}
+.contextMenu .text i{
+    pointer-events: none;
+    user-select: none;
+}
+.contextMenu .hr{
+    border: 0;
+    border-top: 1px solid #555;
+    margin: 5px;
+}
+.contextMenu .extra{
+    cursor: pointer;
+    user-select: none;
+    padding: 8px;
+}
+.contextMenu .extra i:last-child{
+    position: absolute;
+    right: 8px;
+    left: initial;
+    transition: .2s;
+}
+.contextMenu .extra:hover i:last-child{
+    /* right: 6px; */
+    transform: scaleX(-1)translateY(-50%);
+}
+
+.contextMenu.submenu{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-8px);
+    transition: .2s, top 0s, left 0s;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 52;
+    box-shadow: 1px 1px 4px 1px #111;
+}
+
+.contextMenu.submenu.visible{
+    opacity: 1;
+    visibility: visible;
+    transform: initial;
+    /* animation-name: submenuAppear;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1); */
+}
+
+/* .contextMenu.submenu.hide{
+    animation-name: submenuAppearReverse;
+} */
+/* @keyframes submenuAppear {
+    from{
+        opacity: .2;
+        transform: translateX(-8px);
+    }
+    to{
+        transform: initial;
+    }
+}
+@keyframes submenuAppearReverse {
+    to{
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+    from{
+        transform: initial;
+    }
+} */
+
+.contextMenu .i{
+    position: relative;
+    padding-left: 36px;
+}
+.contextMenu .i i{
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}

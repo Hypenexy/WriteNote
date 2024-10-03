@@ -1,3 +1,5 @@
+var cachedChatRequestData;
+
 function openChat(){
     const windowElement = createWindow("chat");
     if(typeof windowElement == "string"){
@@ -6,13 +8,15 @@ function openChat(){
 
     var friends = [];
 
-    socket.emit("chat", {type: "load"}, (data) => {
-        console.log(data);
-        friends = data.friends;
-        friendRequests = data.friendRequests;
-        friendRequestsOutgoing = data.friendRequestsOutgoing;
-        listUsers();
-    });
+    if(!cachedChatRequestData){
+        socket.emit("chat", {type: "load"}, (data) => {
+            cachedChatRequestData = data; // If an error is loaded it will cache the error!
+            friends = data.friends;
+            friendRequests = data.friendRequests;
+            friendRequestsOutgoing = data.friendRequestsOutgoing;
+            listUsers();
+        });
+    }
 
     function addUser(data){
         const friendElement = document.createElement("div");

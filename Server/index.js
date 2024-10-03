@@ -32,6 +32,10 @@ server = http.createServer(async function (req, res) {
       'Access-Control-Allow-Credentials': "true",
     };
 
+    if(req.url.startsWith("/avatar/")){
+        images.getAvatar(headers, req, res);
+        return;
+    }
     if(req.url.startsWith("/ui/")){
         images.getUIImage(headers, req, res);
         return;
@@ -76,7 +80,7 @@ const clients = [];
 
 function initiateServer(){
     const io = require("socket.io")(server, {
-        // maxHttpBufferSize: 1e9,
+        maxHttpBufferSize: 1e9,
         cors: {
             origin: "http://127.0.0.1:5500",
             credentials: true,
@@ -139,11 +143,12 @@ function initiateServer(){
         }
 
 
-        require("./code/account")(socket, sessionId, loginUID);
+        require("./code/account")(socket, sessionId, loginUID, clientInfo);
 
         function loadUserProtocols(){
+            socket.join(UID);
             require("./code/user/logon")(socket, UID, notes, weather, clientInfo);
-            require("./code/user/userProtocols")(socket, sessionId, clientInfo, chat, clients, io);
+            require("./code/user/userProtocols")(socket, sessionId, clientInfo, chat, clients, io, notes);
         }
         
         if(UID == -1){

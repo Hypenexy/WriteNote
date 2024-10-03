@@ -1,0 +1,43 @@
+.window.createNote{
+    max-width: 600px;
+    height: initial;
+    box-shadow: 1px 1px 3px 2px var(--window-shadow);
+    /* border: 1px solid #1c1c1c; */
+    padding: 16px;
+
+    user-select: none;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+}
+.window.createNote.golden{
+    background-color: var(--window-golden-bg);
+    color: var(--window-golden-fg);
+}
+.window.createNote .header{
+    font-size: 20px;
+    text-align: center;
+}
+
+/* .window.createNote label{
+    flex: 1;
+} */
+.window.createNote .text{
+    padding-bottom: 12px;
+    /* text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    color: #999; */
+}
+/* .window.createNote label input{
+    width: 100%;
+} */
+
+.window.createNote .submit{
+    text-align: center;
+    align-self: center;
+    min-width: 100px;
+    max-width: 300px;
+}

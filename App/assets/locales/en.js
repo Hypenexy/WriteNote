@@ -20,6 +20,7 @@ var locale = {
     audio_player: "audio player",
     notes_app: "notes app",
     logged_out: "Logged out",
+
     password: "Password",
     caps_enabled: "Caps Lock is enabled",
     wrong_password: "Wrong password",
@@ -27,16 +28,20 @@ var locale = {
     at_least_change: "At least change it",
     sign_in_qr: "Sign In with QR",
     open_notes: "Open notes",
+
     username: "Username",
     username_too_long: "Username is too long",
     if_new: "Don't have an account?",
     create_account: "Create an account",
     already_account: "Already have an account?",
+
     email: "Email",
     email_invalid: "Email is incorrectly formatted",
     starts_with_whitespace: "Your password starts with space",
     ends_with_whitespace: "Your password ends with space",
     incorrect_username_password: "Incorrect username or password",
+
+    username_or_email: "Username or Email",
 
     email_taken: "Email is already taken",
     username_taken: "Username is already taken",
@@ -89,4 +94,20 @@ var locale = {
     already_pending: "Already pending",
     success_sent_request: "Sent a request",
     unknown_error: "Unknown error",
+
+    change_username: "Change your username",
+    change_avatar: "Change your avatar",
+    select_photo: "Select photo",
+
+    cancel: "Cancel",
+    change: "Change",
+    set: "Set",
+
+    create_new: "Create new",
+    open_new: "Open new",
+
+    create_new_project: "Create a new project",
+    name: "Name",
+    type: "Type",
+    create: "Create",
 }

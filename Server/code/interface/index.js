@@ -156,6 +156,7 @@ function commandInterface(){
                     continue;
                 }
                 console.log(`${element.Username} | UID: ${element.UID}`);
+                console.log(element);
             }
         }
         if(tLC_command == "setup database"){

@@ -22,12 +22,81 @@ function openSettings(){
         element.classList.add("i");
         element.innerHTML = `<i>${icon}</i>${locale[settings_tabs[i]]}`;
         sideButtonsElement.appendChild(element);
+
+        mdutils.ButtonEvent(element, () => {
+            var lastActive = sideButtonsElement.querySelector(".active");
+            if(lastActive){
+                lastActive.classList.remove("active")
+            }
+            element.classList.add("active");
+            openMain(settings_tabs[i]);
+        });
+    }
+
+    const settingsMain = document.createElement("div")
+    settingsMain.classList.add("settingsMain");
+    settingsElement.appendChild(settingsMain);
+
+    function createSetting(setting){
+        const element = document.createElement("div");
+        element.classList.add("setting");
+        const labelElement = mdutils.createAppendElement("label", element);
+        labelElement.textContent = locale[setting.label]; 
+        if(setting.type == "input"){
+            const inputElement = document.createElement("input");
+            element.appendChild(inputElement);
+            if(setting.onload){
+                setting.onload(inputElement);
+            }
+        }
+        if(setting.type == "avatar"){
+            element.classList.add("avatarSetting");
+            const pfp = document.createElement("img");
+            pfp.src = getUserPfpURL(logonData.user, pfp);
+            element.appendChild(pfp);
+            const button = document.createElement("div");
+            button.classList.add("button", "i");
+            button.innerHTML = `<i>image</i>${locale.select_photo}`;
+            element.appendChild(button);
+
+            mdutils.ButtonEvent(pfp, changeAvatar);
+            mdutils.ButtonEvent(button, changeAvatar);
+        }
+
+        return element;
+    }
+
+    function openMain(section){
+        settingsMain.innerHTML = "";
+        const headerElement = mdutils.createAppendElement("header", settingsMain);
+        headerElement.textContent = locale[section];
+        const settingsElement = mdutils.createAppendElement("settingsContainer", settingsMain);
+        const settingsList = Object.keys(settings_keys[section].settings);
+        for (let i = 0; i < settingsList.length; i++) {
+            const element = settings_keys[section].settings[settingsList[i]];
+            settingsElement.appendChild(createSetting(element));
+        }
     }
 }
 
 const settings_keys = {
     "account" : {
-        icon: "person"
+        icon: "person",
+        settings: {
+            change_username: {
+                label: "change_username",
+                type: "input",
+                onload: (input) => {
+                    input.value = logonData.user.Username;
+                    input.name = "fname";
+                },
+                action: changeUsername
+            },
+            change_avatar: {
+                label: "change_avatar",
+                type: "avatar"
+            }
+        }
     },
     "editor" : {
         icon: "border_color"
