@@ -44,8 +44,10 @@
 
     /* Color codes */
     --error-color: #f35959;
-
+    --blue: #65baff;
     --accept-color: #65ff7f;
+
+    --main-color-text: #111;
     /* --coolr: #00ff7f; */
 
     /* Chat colors */
@@ -73,4 +75,26 @@
     /* Settings colors */
     --setting-bg: #1a1a1a;
     --setting-label: #bbb;
+
+    /* WriteNote colors */
+    --writenote: #222242;
+    --wn-unloaded: #050505;
+
+    /* Header */
+    --line-text: #111;
+    --unsaved: #fffc65;
+
+    /* Notes list */
+    --note-title-color: #eee;
+    --note-summary-color: #999;
+    --note-sortData-bg: #171717;
+    --note-sortData-color: #666;
+
+    --note-active-title-color: #333;
+    --note-active-summary-color: #666;
+    --note-active-sortData-bg: #666;
+    --note-active-sortData-color: #222;
+
+    /* Canvas */
+    /* --writenote-canvas-bg: #444; */
 }

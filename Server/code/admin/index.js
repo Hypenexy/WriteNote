@@ -55,6 +55,7 @@ const addAdmin = async (con, username, key) => {
             await con.query(`INSERT INTO admins VALUES (${con.escape(UID)}, ${con.escape(hash)}, ${con.escape(Date.now())})`);
             return "success";
         } catch (error) {
+            console.log(error);
             if(error.code == "ER_DUP_ENTRY"){
                 return "username already admin";
             }

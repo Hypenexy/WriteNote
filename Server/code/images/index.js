@@ -11,14 +11,14 @@ fs.readdir(weather_assetsDir, (err, list) => {
     );
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
-        weatherAssets.push(fs.readFileSync(`${weather_assetsDir}${element}`));
+        weatherAssets[element] = fs.readFileSync(`${weather_assetsDir}${element}`);
     }
 });
 
-const weatherAssets = [];
+const weatherAssets = {};
 
 function getWeatherImage(headers, req, res){
-    const imageID = req.url.substring(9, req.url.length - 4);
+    const imageID = req.url.substring(9, req.url.length);
     
     headers["Content-Type"] = "image/jpeg";
     res.writeHead(200, headers);

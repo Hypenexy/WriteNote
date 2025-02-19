@@ -22,7 +22,8 @@ sql.midelightDB.query(`
 sql.midelightDB.query(`
     CREATE TABLE \`admins\` (
         \`UID\` varchar(36) NOT NULL,
-        \`Key\` text NOT NULL
+        \`Key\` text NOT NULL,
+        \`Date\` bigint NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 `);
 
@@ -86,6 +87,18 @@ sql.midelightDB.query(`
         \`Date\` bigint DEFAULT NULL,
         PRIMARY KEY (\`ID\`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+`);
+
+sql.midelightDB.query(`
+    CREATE TABLE \`weatherimages\` (
+        \`ID\` varchar(24) NOT NULL,
+        \`TimeMin\` int NOT NULL,
+        \`TimeMax\` int NOT NULL,
+        \`TemperatureMin\` smallint NOT NULL,
+        \`TemperatureMax\` smallint NOT NULL,
+        \`WeatherType\` varchar(40) NOT NULL,
+        PRIMARY KEY (\`ID\`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 `);
 
 sql.midelightDB.query(`

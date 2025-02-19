@@ -116,7 +116,7 @@ function WeatherStyled(info){ // reconsider these 💫 cute names ✨
 
     const lastUpdated = new Date(info.lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
 
-    return '<img src="'+WriteNoteServer+'/weather/'+info.image+'.jpg"><timed> '+locale.lastupdated+ ' ' + lastUpdated + '</timed><p>' + timedescription +'.</p><w>' + temperature.toString().split('.')[0] + "<span class='extra'>."+temperature.toString().split('.')[1]+"</span>" + '°C ' + Description + '</w>';
+    return '<img src="'+WriteNoteServer+'/weather/'+info.image+'"><timed> '+locale.lastupdated+ ' ' + lastUpdated + '</timed><p>' + timedescription +'.</p><w>' + temperature.toString().split('.')[0] + "<span class='extra'>."+temperature.toString().split('.')[1]+"</span>" + '°C ' + Description + '</w>';
 }
 
 function createUserWeather(userData, weatherData){
@@ -130,7 +130,8 @@ function createUserWeather(userData, weatherData){
     }
     
     userHalf.innerHTML += `<div class='justUser'><img src='${getUserPfpURL(userData)}'> <p>${userData.Username}</p></div>`;
-    
+    openProfileMenuBind(userHalf);
+
     const justUser = userHalf.getElementsByClassName("justUser")[0];
     // attachTooltip(justUser, locale.view_profile);
 

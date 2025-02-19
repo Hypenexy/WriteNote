@@ -5,7 +5,7 @@ const { v4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-module.exports = (socket, sessionId, loginUID, clientInfo) => {
+module.exports = (socket, sessionId, clientInfo, loginUID, logoutReference) => {
     socket.on("account", async (data, callback) => {
         if(!protocolCheck.checkDataAndCallback(data, callback)){ // This ain't work with null data
             return;
@@ -22,6 +22,9 @@ module.exports = (socket, sessionId, loginUID, clientInfo) => {
         }
         if(data.type == "Update avatar"){
             require("./avatars")(data, callback, clientInfo);
+        }
+        if(data.type == "logout"){
+            callback(await logout(sessionId, logoutReference));
         }
     });
 }
@@ -136,6 +139,21 @@ async function login(data, sessionId, loginUID){
     loginUID(UID);
 
     response.status = "success";
+
+    return response;
+}
+
+async function logout(sessionId, logoutReference){
+    const response = {};
+    const sessionResult = await sql.midelightDB.query(`DELETE FROM sessions WHERE ID = ${sql.midelightDB.escape(sessionId)}`);
+
+    if(sessionResult.affectedRows == 1){
+        response.status = "success";
+    }
+    else{
+        response.error = true;
+        logoutReference();
+    }
 
     return response;
 }

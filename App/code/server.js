@@ -36,6 +36,10 @@ var logonData;
 socket.on("logon", (data) => {
     removeRetries();
     logo_loadedConnection(); // fix this animation flows
+    writenote.loadAnimation();
+    if(openedWindows["welcome"]){
+        openedWindows["welcome"].close();
+    }
     
     logonData = data;
     if(data == -1){

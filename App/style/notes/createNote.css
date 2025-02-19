@@ -35,6 +35,56 @@
     width: 100%;
 } */
 
+
+.window.createNote .typeContainer{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.window.createNote .typeContainer .type{
+    cursor: pointer;
+
+    background-color: var(--button-bg);
+    padding: 12px;
+    border-radius: 8px;
+
+    border: 1px solid var(--button-bg);
+
+    transition: .3s;
+}
+.window.createNote .typeContainer .type .title,
+.window.createNote .typeContainer .type i{
+    color: var(--button-fg);
+    /* font-size: 18px; */
+    transition: .2s;
+}
+.window.createNote .typeContainer .type .description{
+    color: var(--input-text-hide-color);
+    font-size: 16px;
+}
+.window.createNote .typeContainer .type:hover,
+.window.createNote .typeContainer .type:focus-visible{
+    background-color: var(--button-hover-bg);
+    border: 1px solid var(--button-hover-border);
+}
+.window.createNote .typeContainer .type:hover .title,
+.window.createNote .typeContainer .type:hover i,
+.window.createNote .typeContainer .type:focus-visible .title,
+.window.createNote .typeContainer .type:focus-visible i{
+    color: var(--button-text-active);
+}
+
+.window.createNote .typeContainer .type.active{
+    background-color: #65baff;
+}
+.window.createNote .typeContainer .type.active .title,
+.window.createNote .typeContainer .type.active i{
+    color: #111;
+}
+.window.createNote .typeContainer .type.active .description{
+    color: #2c2c2c;
+}
+
 .window.createNote .submit{
     text-align: center;
     align-self: center;

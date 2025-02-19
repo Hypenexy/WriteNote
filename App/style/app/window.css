@@ -1,5 +1,6 @@
 .window{
-    position: absolute;
+    z-index: 10;
+    position: absolute;;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -16,6 +17,8 @@
     animation-name: windowShow;
     animation-duration: .2s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    
+    transition: max-width .4s, max-height .4s, border-radius .4s;
 }
 
 /* Test on mobile when its magically fixed */

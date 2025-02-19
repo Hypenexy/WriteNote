@@ -47,6 +47,15 @@
     animation-timing-function: cubic-bezier(.9, -.2, .2, 1);
 }
 
+.welcome.fast:not(.hide){
+    animation-name: windowShow;
+}
+.welcome.hide,
+.welcome.fast{
+    animation-timing-function: initial;
+    animation-duration: 0.3s;
+}
+
 @keyframes welcomeLoad {
     from{
         transform: translate(-50%, -50%)scale(.09); /* this originally was .9! but i forgot and i think its cool being .09 */
@@ -79,7 +88,9 @@
     margin-top: 12px;
 }
 
-
+.welcome .halves{
+    height: 90px;
+}
 /* .welcome .userHalf{
     margin-left: -12px;
 }
@@ -225,6 +236,9 @@
     }
 }
 @media screen and (max-width: 625px) {
+    .welcome .halves{
+        height: initial;
+    }
     .welcome .userHalf{
         position: initial;
         z-index: initial;

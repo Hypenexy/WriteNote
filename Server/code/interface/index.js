@@ -1,10 +1,14 @@
 var mysql = {};
-var clientsReference;
+var clientsReference,
+    ioReference,
+    startDateReference;
 
-module.exports = (midelightDB, writenoteDB, clients) => { // I don't think there's need for passing but leave it as is for example
+module.exports = (midelightDB, writenoteDB, clients, io, startDate) => { // I don't think there's need for passing but leave it as is for example
     mysql.midelightDB = midelightDB;
     mysql.writenoteDB = writenoteDB;
     clientsReference = clients;
+    ioReference = io;
+    startDateReference = startDate;
 }
 
 const uptime = require("./../admin/uptime");
@@ -80,7 +84,7 @@ const colors = {
     reset: "\x1b[0m",
 }
 
-const admin  = require("./../admin");
+const admin = require("./../admin");
 const os = require("os");
 const readline = require("readline");
 const rl = readline.createInterface({
@@ -90,7 +94,7 @@ const rl = readline.createInterface({
 function info(){
     console.log();
     console.log(`${colors.blue} WriteNote Server`);
-    console.log(`${colors.blue} Version: ${colors.purple}${process.env.npm_package_version}`);
+    console.log(`${colors.blue} Version: ${colors.purple}${version.join(".")}`);
     console.log();
     console.log(`${colors.blue} Commands:`)
     console.log(`${colors.purple}Status ${colors.darkWhite}[1] ${colors.darkGray}- Shows stats of server${colors.reset}`);
@@ -102,6 +106,7 @@ function info(){
     console.log(`${colors.purple}Admin update (Username) key (Key) ${colors.darkGray}- Updates an admin's key${colors.reset}`);
     console.log(`${colors.purple}Admin remove (Username) ${colors.darkGray}- Revokes admin priveleges from a user${colors.reset}`);
     console.log(`${colors.purple}Setup database ${colors.darkGray}- Creates tables and columns for the mysql database${colors.reset}`);
+    console.log(`${colors.purple}Crop weather images ${colors.darkGray}- Compresses and crops images in the "fullResolution" folder${colors.reset}`);
     console.log(`${colors.purple}Lock ${colors.darkWhite}[2] ${colors.darkGray}- Locks this console interface${colors.reset}`);
     console.log(`${colors.purple}Safe exit ${colors.darkWhite}[3] ${colors.darkGray}- Attempts a safe shutdown by warning clients of disconnect${colors.reset}`);
     console.log(`${colors.purple}Exit ${colors.darkWhite}[4] ${colors.darkGray}- Shutsdown server immediately${colors.reset}`);
@@ -162,14 +167,17 @@ function commandInterface(){
         if(tLC_command == "setup database"){
             require("./../databases/setup");
         }
+        if(tLC_command == "crop weather images"){
+            require("./cropWeatherImages");
+        }
         if(tLC_command == "status" || command == 1){
             const stats = status();
 
             console.log(`${colors.blue}Status`);
-            console.log(`${colors.blue}Online users: ${colors.purple}${io.engine.clientsCount}`);
+            console.log(`${colors.blue}Online users: ${colors.purple}${ioReference.engine.clientsCount}`);
             console.log(`${colors.blue}Memory usage: ${colors.purple}${stats.ram.humanizedMemoryUsed} / ${stats.ram.humanizedTotalMemory} (${stats.ram.humanizedUsagePercentage}%)`);
 
-            var delta = Date.now() - startupDate;
+            var delta = Date.now() - startDateReference;
             var deltaInSeconds = delta / 1000;
             var days = Math.floor(deltaInSeconds / 86400);
             var hours = Math.floor(deltaInSeconds / 3600) % 24;
@@ -207,16 +215,14 @@ function commandInterface(){
 // console.log("\x1b[35mAdmin remove (Username)\x1b[0m");
         if(tLC_command.startsWith("admin")){
             var commandArgs = command.split(" ");
-            var con = await SQLConnection();
             var result;
-            await con.connect();
             switch (commandArgs[1]) {
                 case "list":
                     if(commandArgs.length < 2){
-                        await admin.adminList(con);
+                        await admin.adminList(mysql.midelightDB);
                     }
                     else{
-                        await admin.adminList(con, commandArgs[2]);
+                        await admin.adminList(mysql.midelightDB, commandArgs[2]);
                     }
                     break;
                 case "add":
@@ -228,7 +234,7 @@ function commandInterface(){
                         log('f', "Key not set");
                         break;
                     }
-                    result = await admin.addAdmin(con, commandArgs[2], commandArgs[3]);
+                    result = await admin.addAdmin(mysql.midelightDB, commandArgs[2], commandArgs[3]);
                     if(result == "success"){
                         console.log(`\x1b[32mSuccessfully made ${commandArgs[2]} an admin\x1b[0m`);
                     }
@@ -242,7 +248,7 @@ function commandInterface(){
                         log('f', "Key not set");
                         break;
                     }
-                    result = await admin.updateAdminKey(con, commandArgs[2], commandArgs[4]);
+                    result = await admin.updateAdminKey(mysql.midelightDB, commandArgs[2], commandArgs[4]);
                     if(result == "success"){
                         console.log(`\x1b[32mSuccessfully changed ${commandArgs[2]}'s key\x1b[0m`);
                     }
@@ -252,7 +258,7 @@ function commandInterface(){
                         log('f', "Username not set");
                         break;
                     }
-                    result = await admin.removeAdmin(con, commandArgs[2]);
+                    result = await admin.removeAdmin(mysql.midelightDB, commandArgs[2]);
                     if(result == "success"){
                         console.log(`\x1b[32mSuccessfully revoked ${commandArgs[2]}'s admin priveleges\x1b[0m`);
                     }
@@ -270,7 +276,6 @@ function commandInterface(){
             if(result == "username already admin"){
                 console.log("\x1b[31mUser already an admin\x1b[0m");
             }
-            con.end();
         }
         commandInterface();
     });
@@ -288,7 +293,7 @@ async function closeServer(){
 }
 
 function safeShutdown(){
-    io.emit("serverShutdown");
+    ioReference.emit("serverShutdown");
     setTimeout(() => {
         closeServer();
     }, 1000 * 30);

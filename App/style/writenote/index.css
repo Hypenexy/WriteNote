@@ -1,0 +1,41 @@
+.writenote{
+    z-index: 1;
+    position: relative;
+    display: block;
+    height: 100%;
+    transition: 0.2s;
+    /* background-color: #111124; */
+    /* background-color: #0c0c0c; */
+    background-color: var(--wn-unloaded);
+}
+
+.writenote.loaded{
+    background-color: var(--writenote);
+    animation-name: writenoteLoad;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(1, .5, .5, 1);
+}
+
+@keyframes writenoteLoad {
+    from {background: var(--wn-unloaded)}
+    to {background: var(--writenote)}
+}
+
+.writenote.flex{
+    display: flex;
+}
+/* .writenote features{
+    background: #00000022;
+    display: flex;
+    overflow: auto;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    min-width: 300px;
+    transition: .4s; */
+    /* z-index: 1;
+    box-shadow: -1px 0 2px #111; */
+/* }
+.writenote features.transition{
+    opacity: 0;
+    min-width: 0px;
+} idk what this does */

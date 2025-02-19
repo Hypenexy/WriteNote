@@ -107,9 +107,23 @@
     user-select: none;
 }
 .contextMenu .hr{
+    position: relative;
     border: 0;
     border-top: 1px solid #555;
     margin: 5px;
+}
+.contextMenu .hr span{
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    padding: 0 4px;
+    transform: translateX(-50%);
+
+    background-color: #222;
+    color: #888;
+    font-size: 12px;
+    font-weight: 600;
+    /* text-transform: uppercase; */
 }
 .contextMenu .extra{
     cursor: pointer;

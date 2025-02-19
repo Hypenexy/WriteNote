@@ -1,8 +1,17 @@
 const mysql = require("./../databases/mysql");
 const apiKeys = require('./APIKeys.json');
+const fs = require("fs");
 
 function getRandomArbitrary(min, max) {
     return Math.round(Math.random() * (max - min) + min);
+}
+
+const weatherFolder = "./assets/images/weather";
+const filenames = fs.readdirSync(weatherFolder);
+
+async function getWeatherImage(data) {
+    var i = getRandomArbitrary(0, 74);
+    return filenames[i];
 }
 
 async function getWeather(userIP, UID){
@@ -30,8 +39,8 @@ async function getWeather(userIP, UID){
     if(cacheResult[0].length > 0){
         const weatherData = JSON.parse(cacheResult[0][0].WeatherData); // check if in array last one is the first or the last
         weatherData.lastUpdated = cacheResult[0][0].Time;
-        const imageRandom = getRandomArbitrary(1, 42);
-        weatherData.image = imageRandom;
+        // const imageRandom = getRandomArbitrary(1, 42);
+        weatherData.image = await getWeatherImage();
         return weatherData;
     }
 
@@ -57,8 +66,8 @@ async function getWeather(userIP, UID){
     `);
 
     weatherData.lastUpdated = Date.now();
-    const imageRandom = getRandomArbitrary(1, 42 + 1);
-    weatherData.image = imageRandom;
+    // const imageRandom = getRandomArbitrary(1, 42 + 1);
+    weatherData.image = await getWeatherImage();
 
     return weatherData;
 }

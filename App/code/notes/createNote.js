@@ -1,7 +1,7 @@
 function createNewButton(){
     const element = document.createElement("div");
     element.classList.add("button");
-    element.textContent = locale.create_new;
+    element.innerHTML = `<i>add</i>${locale.create_new}`;
     mdutils.ButtonEvent(element, createNoteGUI);
     return element;
 }
@@ -24,17 +24,42 @@ function createNoteGUI(){
 
     // Project types
 
+    const typeText = mdutils.createAppendElement("text", windowElement);
+    typeText.textContent = locale.type;
+
     var type = "note";
+
+    const typeContainer = mdutils.createAppendElement("typeContainer", windowElement);
 
     var filetypes = {
         [locale.note] : [locale.note_description, "description"],
-        [locale.calculator] : [locale.calculator_description, "calculate"],
+        [locale.calculator_type] : [locale.calculator_description, "calculate"],
         [locale.webapp] : [locale.webapp_description, "web_asset"],
-        [locale.presentation] : [locale.presentation_description, "web_asset"]
+        [locale.presentation] : [locale.presentation_description, "web_asset"],
+        [locale.canvas] : [locale.canvas_description, "brush"]
     };
+    
+    var filetypesKeys = Object.keys(filetypes);
 
-    const typeText = mdutils.createAppendElement("text", windowElement);
-    typeText.textContent = locale.type;
+    for (let i = 0; i < filetypesKeys.length; i++) {
+        const element = mdutils.createAppendElement("type", typeContainer);
+        const data = filetypes[filetypesKeys[i]];
+
+        if(i==0){
+            element.classList.add("active");
+        }
+        element.innerHTML = `<div><i>${data[1]}</i><span class="title">${filetypesKeys[i]}</span></div>
+        <p class="description">${data[0]}</p>`;
+
+        mdutils.ButtonEvent(element, () => {
+            var lastActive = typeContainer.querySelector(".active");
+            if(lastActive){
+                lastActive.classList.remove("active");
+            }
+            type = filetypesKeys[i];
+            element.classList.add("active");
+        });
+    }
 
 
     // Submit button
@@ -56,10 +81,38 @@ function createNoteGUI(){
             if(success){
                 openedWindows["createNote"].close();
                 console.log(success);
+                addToNoteList(success);
             }
             if(error){
-
-
+                switch (error) {
+                    case "Invalid project type":
+                        
+                        break;
+                    case "Name is invalid format":
+                        
+                        break;
+                    case "Name is not set":
+                        
+                        break;
+                    case "Name is too long":
+                        
+                        break;
+                    case "Name is nonexistent":
+                        
+                        break;
+                    case "Parent is invalid format":
+                        
+                        break;
+                    case "Type is invalid":
+                        
+                        break;
+                    case "Invalid project type":
+                        
+                        break;
+                    default:
+                        break;
+                }
+                
                 if(error.startsWith("Internal server error or you got really")){
                     windowElement.classList.add("golden");
                 }
@@ -67,4 +120,24 @@ function createNoteGUI(){
         }
         );
     }
+}
+
+function createFolder(){
+    console.log("Hi kur!s");
+    socket.emit("notes", {
+        type: "createNote",
+        options: {
+            name: "New folder",
+            type: "folder"
+        }
+    },
+    (success, error) => {
+        if(success){
+            openedWindows["createNote"].close();
+            addToNoteList(success);
+        }
+        if(error){
+
+        }
+    });
 }

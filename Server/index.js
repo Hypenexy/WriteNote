@@ -1,6 +1,31 @@
-const port = 2053;
+const port = 2053,
+    version = [1, 0, 0];
+
+global.version = version;
 // Server
 const startDate = Date.now();
+
+// Settings
+const fs = require('fs');
+const settingsFileURL = './serverdata/settings';
+try {
+    let rawdata = fs.readFileSync(settingsFileURL);
+    global.settings = JSON.parse(rawdata);
+} catch (error) {
+    if(error.code == "ENOENT"){
+        let data = JSON.stringify({version: version});
+        fs.writeFileSync(settingsFileURL, data);
+    }
+    console.log("Settings file error other than that, that it doesn't exist.");
+    // throw new Error("")
+}
+
+function setSetting(property, value){
+    global.settings[property] = value;
+    fs.writeFileSync(settingsFileURL, JSON.stringify({version: version}));
+}
+
+
 function setUptime(){
     const uptime = require("./code/admin/uptime");
     uptime.newUptime(startDate);
@@ -71,21 +96,22 @@ require("./code/databases/fileSystemCheck");
 // Command Interface
 
 function initInterface(){
-    require("./code/interface/index")(mysql.midelightDB, mysql.writenoteDB, clients);
+    require("./code/interface/index")(mysql.midelightDB, mysql.writenoteDB, clients, io, startDate);
 }
 mysql.onLoadActions.push(initInterface);
 
 // Socket IO
 const clients = [];
 
+const io = require("socket.io")(server, {
+    maxHttpBufferSize: 1e9,
+    cors: {
+        origin: "http://127.0.0.1:5500",
+        credentials: true,
+    }
+});
+
 function initiateServer(){
-    const io = require("socket.io")(server, {
-        maxHttpBufferSize: 1e9,
-        cors: {
-            origin: "http://127.0.0.1:5500",
-            credentials: true,
-        }
-    });
     
     const adminStats = require("./code/admin/stats")(io);
     
@@ -113,6 +139,7 @@ function initiateServer(){
     const usageTime = require("./code/user/usageTime");
     const session = require("./code/user/session");
     const notes = require("./code/user/notes");
+    const admin = require("./code/admin/admin");
     const weather = require("./code/user/weather");
     const chat = require("./code/chat");
     
@@ -121,6 +148,7 @@ function initiateServer(){
         const clientInfo = new Object();
         clientInfo.socketId = socket.id;
         clients.push(clientInfo);
+        var handshakeData = socket.request._query;
     
         log('server', 'user', socket.id, 'connected');
         adminStats.updateAdminStats("socketCount", io.engine.clientsCount);
@@ -142,13 +170,39 @@ function initiateServer(){
             loadUserProtocols();
         }
 
+        function logout(){
+            socket.leave(UID);
+            UID = -1;
+            clientInfo.UID = UID;
+            var clientInfoKeys = Object.keys(clientInfo);
+            for (let i = 0; i < clientInfoKeys.length; i++) {
+                if(clientInfoKeys[i] != "socketId" && clientInfoKeys != "UID"){
+                    delete clientInfo[clientInfoKeys[i]];
+                }
+            }
+            
+            unloadUserProtocols();
+        }
 
-        require("./code/account")(socket, sessionId, loginUID, clientInfo);
+        require("./code/account")(socket, sessionId, clientInfo, loginUID, logout);
 
+        var loadedProtocols = false;
         function loadUserProtocols(){
-            socket.join(UID);
-            require("./code/user/logon")(socket, UID, notes, weather, clientInfo);
-            require("./code/user/userProtocols")(socket, sessionId, clientInfo, chat, clients, io, notes);
+            // if(handshakeData.admin == true){ No separate client is used
+            //     return;
+            // }
+            if(!loadedProtocols){
+                loadedProtocols = true;
+                socket.join(UID);
+                require("./code/user/logon")(socket, UID, notes, weather, clientInfo);
+                require("./code/user/userProtocols")(socket, clientInfo, chat, clients, io, notes);
+                require("./code/admin/adminProtocols")(socket, clientInfo, clients, io, admin);
+            }
+        }
+
+        function unloadUserProtocols(){
+            loadedProtocols = false;
+            socket.emit("logon", UID);
         }
         
         if(UID == -1){
@@ -158,7 +212,6 @@ function initiateServer(){
             loadUserProtocols();
         }
     
-        var handshakeData = socket.request._query;
         console.log("Client loaded in", Date.now() - handshakeData.loadStartDate, "ms");
         if(handshakeData.disconnectDate){
             console.log("Client reconnected in", Date.now() - handshakeData.disconnectDate, "ms");
