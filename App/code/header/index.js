@@ -42,14 +42,21 @@ function loadHeader(){
     // mdutils.ButtonEvent(showSubHeader, toggleSubHeader);
 
     const weather = mdutils.createAppendElement("weather", infotainment);
-    weather.innerHTML = "<div>" + logonData.weather.main.temp.toString().split('.')[0] + "°C</div>";
-    weather.style.backgroundImage = `url("${WriteNoteServer}/weather/${logonData.weather.image}")`;
-    // mdutils.ButtonEvent(weather, openWeather);
+    if(logonData.weather){
+        weather.innerHTML = "<div>" + logonData.weather.main.temp.toString().split('.')[0] + "°C</div>";
+        weather.style.backgroundImage = `url("${WriteNoteServer}/weather/${logonData.weather.image}")`;
+        // mdutils.ButtonEvent(weather, openWeather);
+    }
 
     const profile = mdutils.createAppendElement("profile", infotainment);
     // attachOnlineStatus(profile);
     attachTooltip(profile, locale["view_profile"]);
-    profile.innerHTML = "<div class='line'></div><i class='status'>devices</i>1<p>"+logonData.user.Username+"</p> ";
+    // profile.innerHTML = "<div class='line'></div><i class='status'>devices</i>1<p>"+logonData.user.Username+"</p> ";
+
+    const userStatusElement = mdutils.createAppendElement("line", profile);
+    addUserOnlineStatusElement(userStatusElement);
+
+
     const pfpURL = getUserPfpURL(logonData.user);
     profile.innerHTML += "<img src='"+pfpURL+"'>";
     mdutils.ButtonEvent(profile, function(e){

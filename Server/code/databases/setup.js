@@ -4,6 +4,9 @@ const sql = require("./mysql");
 // sql.midelightDB.query(`CREATE DATABASE Midelight`);
 // sql.midelightDB.query(`USE Midelight`);
 
+const log = require("./../interface/log");
+log("i", "Creating tables");
+
 sql.midelightDB.query(`
     CREATE TABLE \`accounts\` (
         \`UID\` varchar(36) NOT NULL,
@@ -129,3 +132,5 @@ sql.writenoteDB.query(`
         \`Date\` bigint NOT NULL
     )
 `);
+
+log("s", "All tables succesfully created");
