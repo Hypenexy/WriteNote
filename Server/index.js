@@ -14,6 +14,10 @@ try {
     global.settings = JSON.parse(rawdata);
 } catch (error) {
     if(error.code == "ENOENT"){
+        var dir = './serverdata';
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
         let data = JSON.stringify({version: version});
         fs.writeFileSync(settingsFileURL, data);
     }
