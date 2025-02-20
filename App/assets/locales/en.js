@@ -150,6 +150,7 @@ var locale = {
     type: "Type",
     sort_by: "Sort by",
     options: "Options",
+    foldersFirst: "Folders first",
     reversed: "Reversed",
 
     view_as: "View as",
