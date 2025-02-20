@@ -44,3 +44,24 @@ function openProfileMenuBind(button){
         profileMenu.append(e, button);
     });
 }
+
+var statuses = [
+    "Online",
+    "Away",
+    "DND",
+    "Offline"
+    // Maybe invisible but it's a bad idea in a text editor
+];
+
+var userOnlineStatus = statuses[0];
+window.addEventListener("DOMContentLoaded", () => {
+    if(settings.user && settings.user.status){
+        userOnlineStatus = settings.user.status;
+    }
+});
+var userOnlineStatusElements = [];
+
+function addUserOnlineStatusElement(element){
+    userOnlineStatusElements.push(element);
+    element.classList.add(userOnlineStatus);
+}

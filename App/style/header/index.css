@@ -197,11 +197,16 @@ header .profile .line{
     box-shadow: 1px -1px 1px 1px #111111bb;
 }
 
-header .profile.online .line{
-    background-color: #58da97;
+header .profile .line.Online{
+    background-color: var(--accept-color)
+    /* #58da97; */
 }
-header .profile.offline .line{
-    background-color: #723030;
+header .profile .line.Away{
+    background-color: var(--unsaved)
+}
+header .profile .line.DND{
+    background-color: var(--error-color)
+    /* #723030; */
 }
 header .profile{
     position: relative;
