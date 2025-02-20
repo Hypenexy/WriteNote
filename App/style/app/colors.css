@@ -1,0 +1,29 @@
+:root{
+    --main-bg: #050505;
+
+    --window-bg: #111;
+    --window-fg: #eee;
+
+    /* Buttons */
+    --button-bg: #222;
+    --button-fg: #bbb;
+
+    --button-hover-border: #333;
+    --button-hover-fg: #eee;
+    --button-hover-bg: #232323;
+
+    --button-active-fg: #111;
+
+    /* Inputs */
+    --input-border: #555;
+    --input-color: #999;
+    --input-bg: #141414;
+
+    --input-hover-border: #888;
+
+    --input-text-hide-color: #555;
+    --input-text-hide-bg: #111;
+
+    /* Color codes */
+    --error-color: #f35959;
+}

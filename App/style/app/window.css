@@ -1,0 +1,52 @@
+.window{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: var(--window-fg);
+    background: var(--window-bg);
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    max-height: 700px;
+    
+    border-radius: 12px;
+
+    animation-name: windowShow;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+/* Test on mobile when its magically fixed */
+@media screen and (max-width: 790px) {
+    .window {
+        max-height: 95%;
+    }
+}
+
+@keyframes windowShow {
+    0%{
+        opacity: 0;
+        transform: translate(-50%, -50%)scale(.91);
+    }
+    100%{
+        opacity: 1;
+        transform: translate(-50%, -50%)scale(1);
+    }
+}
+
+.window.hide{
+    animation-name: windowShow_Reverse;
+}
+
+@keyframes windowShow_Reverse {
+    100%{
+        opacity: 0;
+        transform: translate(-50%, -50%)scale(.91);
+    }
+    0%{
+        opacity: 1;
+        transform: translate(-50%, -50%)scale(1);
+    }
+}

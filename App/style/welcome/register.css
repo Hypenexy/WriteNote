@@ -1,0 +1,278 @@
+.welcome.register{
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.welcome.register .register{
+    flex: 1;
+}
+
+.welcome.register .welcomeText, .welcome.register .trait{
+    font-size: 32px;
+    margin: 60px 0 0 0;
+}
+
+.welcome.register .trait{
+    margin: 0;
+    font-weight: bold;
+}
+
+.welcome.register .trait.animate{
+    animation-name: trait;
+    animation-duration: 1s;
+    animation-delay: 1s;
+    /* animation-iteration-count: 5; doesn't delay */
+}
+.welcome.register .trait.animateAlt{
+    animation-name: traitAlt;
+    animation-duration: 1s;
+    animation-delay: .5s;
+}
+.welcome.register .trait.shortAnimations{
+    animation-delay: .5s;
+}
+
+@keyframes trait {
+    0%{
+        opacity: 1;
+    }
+    50%{
+        transform: translateX(20px);
+        opacity: 0;
+    }
+    51%{
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes traitAlt {
+    0%{
+        opacity: 1;
+    }
+    50%{
+        transform: translateX(20px);
+        opacity: 0;
+    }
+    51%{
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.welcome .sign{
+    font-size: 20px;
+}
+
+.welcome form{
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 0;
+    gap: 16px;
+    transition: .3s;
+}
+
+.welcome form .label {
+    border-radius: 12px;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: var(--input-border);
+    padding: 1px;
+
+    transition: .2s;
+}
+.welcome form .label .text {
+    position: absolute;
+    left: 12px;
+    pointer-events: none;
+    color: var(--input-color);
+    transition: .2s;
+}
+.welcome form .label .text.hide {
+    color: var(--input-text-hide-color);
+    background-color: var(--input-text-hide-bg);
+    transform: translateY(-20px);
+}
+
+.welcome form .label .text.hide span{
+    color: var(--error-color);
+}
+.welcome form .label .text span{
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    margin-left: 0;
+    width: 300px;
+    bottom: -55px;
+    transition: .3s;
+}
+.welcome form .label .text span:nth-child(2){
+    bottom: -75px;
+}
+.welcome form .label .text span:only-child{
+    position: initial;
+    left: initial;
+    margin-left: 6px;
+    width: initial;
+    bottom: initial;
+}
+.welcome .label .text span.hide{
+    transform: translateX(-6px);
+    opacity: 0;
+}
+
+
+.welcome form .label input {
+    padding: 11px;
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    background-color: var(--input-bg);
+}
+
+.welcome form .label:has(input:focus) {
+    background-color: var(--input-hover-border);
+}
+.welcome form .label:has(input:focus) .text.hide{
+    color: var(--input-hover-border);
+}
+
+.welcome form .label .passwordShow{
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+
+    position: absolute;
+    right: 5px;
+    padding: 4px;
+}
+
+.welcome form .label:has(input:focus) .passwordShow,
+.welcome form .label:has(input:hover) .passwordShow,
+.welcome form .label .passwordShow:hover,
+.welcome form .label .passwordShow:focus-visible
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.welcome .sideDecoration{
+    position: relative;
+    width: 300px;
+    height: 150%;
+}
+
+.welcome .sideDecoration .line{
+    pointer-events: none;
+    
+    /* background-color: #0099ff; */
+    transform: rotate(-90deg);
+    height: 100%;
+    width: 1000px;
+    top: -150px;
+    left: -50px;
+    position: absolute;
+}
+
+.welcome .sideDecoration .line svg{
+    position: absolute;
+}
+.welcome .sideDecoration .line svg path{
+    /* fill: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 100%); */
+    fill: url(#sunset);
+}
+
+.welcome .sideDecoration .line svg:nth-child(2n) path{
+    fill: var(--window-bg);
+}
+
+.welcome .sideDecoration .line svg:nth-child(2) path{
+    /* transform: translateY(3px); */
+    animation: line2 2s ease-in-out forwards;
+}
+@keyframes line2 {
+    to{
+        transform: translateY(3px);
+    }
+}
+.welcome .sideDecoration .line svg:nth-child(3) path{
+    /* transform: translateY(9px); */
+    animation: line3 2s ease-in-out forwards;
+}
+@keyframes line3 {
+    to{
+        transform: translateY(9px);
+    }
+}
+.welcome .sideDecoration .line svg:nth-child(4) path{
+    /* transform: translateY(16px); */
+    animation: line4 2s ease-in-out forwards;
+}
+@keyframes line4 {
+    to{
+        transform: translateY(16px);
+    }
+}
+.welcome .sideDecoration .line svg:nth-child(5) path{
+    /* transform: translateY(24px); */
+    animation: line5 2s ease-in-out forwards;
+}
+@keyframes line5 {
+    to{
+        transform: translateY(24px);
+    }
+}
+.welcome .sideDecoration .line svg:nth-child(6) path{
+    /* transform: translateY(36px); */
+    animation: line6 2s ease-in-out forwards;
+}
+@keyframes line6 {
+    to{
+        transform: translateY(36px);
+    }
+}
+.welcome .sideDecoration .line svg:nth-child(7) path{
+    /* transform: translateY(48px); */
+    animation: line7 2s ease-in-out forwards;
+}
+@keyframes line7 {
+    to{
+        transform: translateY(48px);
+    }
+}
+
+
+@media screen and (max-width: 790px) {
+    .welcome.register{
+        flex-direction: column;
+    }
+
+    .welcome .sideDecoration{
+        top: initial;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+    }
+
+    .welcome .sideDecoration .line{
+        transform: initial;
+        /* top: -50px; */
+        /* height: 100%;
+        width: 900px;
+        left: -300px; */
+    }
+
+}

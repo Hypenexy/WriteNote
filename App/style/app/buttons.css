@@ -1,0 +1,44 @@
+.button{
+    position: relative;
+    display: inline-block;
+    user-select: none;
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid var(--button-bg);
+    background: var(--button-bg);
+    color: var(--button-fg);
+    border-radius: 8px;
+    transition: .1s;
+}
+.button.i{
+    padding-left: 36px;
+}
+.button i{
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.button:hover, .button:focus-visible{
+    border: 1px solid var(--button-hover-border);
+    background: var(--button-hover-bg);
+    color: var(--button-hover-fg);
+}
+
+.button:active{
+    border: 1px solid var(--button-fg);
+    background: var(--button-fg);
+    color: var(--button-active-fg);
+}
+
+
+/* .button{ oldschool test
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #444;
+    border-bottom: 1px solid #444;
+    border-radius: 0;
+    background: #000;
+    color: #fff;
+} */
