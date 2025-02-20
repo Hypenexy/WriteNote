@@ -34,7 +34,7 @@ module.exports = async (socket, UID, notes, weather, clientInfo) => {
 
     data.notes = await notes.getNotes(UID);
 
-    data.weather = await weather.getWeather(userIP, UID);
+    // data.weather = await weather.getWeather(userIP,   UID);
 
     socket.emit("logon", data);
 }

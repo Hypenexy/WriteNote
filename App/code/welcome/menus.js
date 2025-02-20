@@ -137,10 +137,12 @@ function createUserWeather(userData, weatherData){
 
     halves.appendChild(userHalf);
 
-    const weatherHalf = document.createElement("div");
-    weatherHalf.classList.add("weatherHalf");
-    weatherHalf.innerHTML = WeatherStyled(weatherData);
-    halves.appendChild(weatherHalf);
+    if(weatherData){
+        const weatherHalf = document.createElement("div");
+        weatherHalf.classList.add("weatherHalf");
+        weatherHalf.innerHTML = WeatherStyled(weatherData);
+        halves.appendChild(weatherHalf);
+    }
 
     return halves;
 }
