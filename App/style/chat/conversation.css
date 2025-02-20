@@ -1,0 +1,55 @@
+.conversation .chatheader{
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: -6px;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background-color: var(--conversation-chatheader-bg);
+}
+
+.conversation .chatheader .profile{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 20px;
+}
+
+.conversation .chatheader .profile img{
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+.conversation .chatheader i{
+    cursor: pointer;
+    color: var(--conversation-chatheader-icon);
+}
+.conversation .chatheader i:hover,
+.conversation .chatheader i:focus-visible
+{
+    color: var(--conversation-chatheader-icon-hover);
+}
+
+.conversation .chatbox{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.conversation .message{
+    max-width: 80%;
+    background-color: var(--conversation-message-bg);
+    padding: 10px;
+    border-radius: 99px;
+}
+
+.conversation .message.me{
+    margin-left: auto;
+    background-color: var(--conversation-message-me-bg);
+}

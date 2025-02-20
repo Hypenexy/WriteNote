@@ -67,11 +67,12 @@ require("./code/databases/fileSystemCheck");
 // Command Interface
 
 function initInterface(){
-    require("./code/interface/index")(mysql.midelightDB, mysql.writenoteDB);
+    require("./code/interface/index")(mysql.midelightDB, mysql.writenoteDB, clients);
 }
 mysql.onLoadActions.push(initInterface);
 
 // Socket IO
+const clients = [];
 
 function initiateServer(){
     const io = require("socket.io")(server, {
@@ -113,6 +114,9 @@ function initiateServer(){
     
     io.on('connection', async (socket) => {
         const connectDate = Date.now();
+        const clientInfo = new Object();
+        clientInfo.socketId = socket.id;
+        clients.push(clientInfo);
     
         log('server', 'user', socket.id, 'connected');
         adminStats.updateAdminStats("socketCount", io.engine.clientsCount);
@@ -126,9 +130,11 @@ function initiateServer(){
         }
     
         var UID = await session.getSessionUID(sessionId);
+        clientInfo.UID = UID;
 
         function loginUID(newUID){
             UID = newUID;
+            clientInfo.UID = UID;
             loadUserProtocols();
         }
 
@@ -136,8 +142,8 @@ function initiateServer(){
         require("./code/account")(socket, sessionId, loginUID);
 
         function loadUserProtocols(){
-            require("./code/user/logon")(socket, UID, notes, weather);
-            require("./code/user/userProtocols")(socket, sessionId, UID, chat);
+            require("./code/user/logon")(socket, UID, notes, weather, clientInfo);
+            require("./code/user/userProtocols")(socket, sessionId, clientInfo, chat, clients, io);
         }
         
         if(UID == -1){
@@ -157,6 +163,9 @@ function initiateServer(){
     
         socket.on('disconnect', () => {
             const disconnectDate = Date.now();
+
+            var position = clients.indexOf(clientInfo);
+            clients.splice(position, 1);
     
             log('server', 'user', socket.id, 'disconnected');
             io.to("admin").emit("stats", {socketCount: io.engine.clientsCount});

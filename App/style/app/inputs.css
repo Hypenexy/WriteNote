@@ -1,0 +1,16 @@
+.input{
+    position: relative;
+    display: inline-block;
+    user-select: none;
+    padding: 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    border-radius: 8px;
+    transition: .1s;
+}
+.input:hover{
+    border-color: var(--input-hover-border);
+}
+.input:focus{
+    border-color: var(--input-focus-border);
+}

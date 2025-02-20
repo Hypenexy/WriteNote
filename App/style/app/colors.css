@@ -16,14 +16,40 @@
 
     /* Inputs */
     --input-border: #555;
-    --input-color: #999;
     --input-bg: #141414;
-
-    --input-hover-border: #888;
-
+    
+    --input-hover-border: #777;
+    --input-focus-border: #888;
+    
+    --input-text-color: #999;
     --input-text-hide-color: #555;
     --input-text-hide-bg: #111;
 
     /* Color codes */
     --error-color: #f35959;
+
+    --accept-color: #65ff7f;
+    /* --coolr: #00ff7f; */
+
+    /* Chat colors */
+    --chat-main-bg: #141417;
+    --chat-button-active-bg: #bbb;
+    --chat-button-active-color: #222;
+
+    --chat-main-hrtext: #28282d;
+
+    --chat-friendRequest-bg: #33333c;
+    --chat-friendRequest-btn: #3c3c4c;
+    --chat-decline-fade: #f3595966;
+    --chat-accept-fade: #65ff7f66;
+    --chat-color-fade: #eee;
+    --chat-color-active: #111;
+    --chat-friendAdd-text-color: #bbb;
+
+    --conversation-chatheader-bg: #0e0f14;
+    --conversation-chatheader-icon: #ddd;
+    --conversation-chatheader-icon-hover: #eee;
+
+    --conversation-message-bg: #2e2f34;
+    --conversation-message-me-bg: #0a1757;
 }

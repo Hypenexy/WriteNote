@@ -1,0 +1,214 @@
+.window.chat{
+    display: flex;
+    overflow: hidden;
+}
+
+.chat .messages{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    width: 220px;
+    padding: 6px;
+}
+
+.chat .searchPeople{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    background: var(--input-bg);
+
+    transition: .3s;
+}
+
+.chat .searchPeople .searchPart{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+/* .chat .searchPeople.visible{
+    border-radius: 12px 12px 0 0;
+} */
+.chat .searchPeople input{
+    padding: 8px;
+}
+.chat .searchPeople i{
+    pointer-events: none;
+    user-select: none;
+    padding: 4px;
+}
+
+.chat .searchPeople .result{
+    /* position: relative; */
+    /* flex: 1; */
+    top: 100%;
+    /* left: 0; */
+    width: 100%;
+    /* width: calc(100% + 2px); */
+    background-color: var(--input-border);
+    /* border-radius: 0 0 12px 12px; */
+
+    transition: .3s;
+}
+
+.chat .messages .button.active{
+    background-color: var(--chat-button-active-bg);
+    border-color: var(--chat-button-active-bg);
+    color: var(--chat-button-active-color);
+}
+
+.chat .messages .messagesList{
+    display: flex;
+    flex-direction: column;
+}
+
+.chat .messages .friend{
+    /* background-color: var(--button-bg); */
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.chat .main{
+    flex: 1;
+    background-color: var(--chat-main-bg);
+
+    padding: 6px;
+}
+
+.chat .main .form{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 0;
+}
+.chat .main .inputContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.chat .main .inputContainer .texthide{
+    position: absolute;
+    left: 9px;
+    background-color: var(--chat-main-bg);
+    color: var(--chat-friendAdd-text-color);
+    transition: .1s;
+}
+.chat .main .inputContainer.hide .texthide{
+    transform: translateY(-16px);
+    color: var(--input-text-color);
+}
+.chat .main .inputContainer.hide .texthide span:last-child{
+    margin-left: 8px;
+}
+.chat .main .inputContainer.hide .texthide .error{
+    color: var(--error-color);
+    animation-name: showFriendAddError;
+    animation-duration: .2s;
+}
+.chat .main .inputContainer.hide .texthide .success{
+    color: var(--accept-color);
+    animation-name: showFriendAddError;
+    animation-duration: .2s;
+}
+.chat .main .inputContainer.hide .texthide .hide{
+    animation-name: showFriendAddErrorReverse
+}
+
+@keyframes showFriendAddError {
+    from{
+        opacity: 0;
+        margin-left: 0px;
+    }
+    to{
+        opacity: 1;
+        margin-left: 8px;
+    }
+}
+@keyframes showFriendAddErrorReverse {
+    to{
+        opacity: 0;
+        margin-left: 0px;
+    }
+}
+
+
+
+.chat .main .form input{
+    width: 100%;
+}
+.chat .main .form .inputContainer{
+    flex: 1;
+    max-width: 300px;
+}
+
+.chat .main .hrtext{
+    border-color: var(--chat-main-hrtext);
+    margin-top: 16px;
+}
+
+.chat .main .hrtext span{
+    background-color: var(--chat-main-bg);
+    padding-right: 8px;
+}
+
+.chat .friendRequestsElement{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chat .friendRequestsElement .friendRequest{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px;
+    background-color: var(--chat-friendRequest-bg);
+    border-radius: 12px;
+}
+
+.chat .friendRequestsElement .friendRequest .m-i{
+    cursor: pointer;
+    user-select: none;
+
+    border-radius: 99px;
+    margin-left: 6px;
+    padding: 6px;
+    background-color: var(--chat-friendRequest-btn);
+
+    transition: .2s, box-shadow 1s;
+}
+.chat .friendRequestsElement .accept{
+    color: var(--accept-color);
+}
+.chat .friendRequestsElement .accept:hover,
+.chat .friendRequestsElement .accept:focus-visible
+{
+    color: var(--chat-color-fade);
+    background-color: var(--chat-accept-fade);
+}
+.chat .friendRequestsElement .accept:active{
+    color: var(--chat-color-active);
+    background-color: var(--accept-color);
+    box-shadow: 0 0 6px var(--accept-color);
+}
+
+
+.chat .friendRequestsElement .decline{
+    color: var(--error-color);
+}
+.chat .friendRequestsElement .decline:hover,
+.chat .friendRequestsElement .decline:focus-visible
+{
+    color: var(--chat-color-fade);
+    background-color: var(--chat-decline-fade);
+}
+.chat .friendRequestsElement .decline:active{
+    color: var(--chat-color-active);
+    background-color: var(--error-color);
+    box-shadow: 0 0 6px var(--error-color);
+}

@@ -1,0 +1,9 @@
+.hrtext{
+    width: 100%;
+    border-bottom: 1px solid #555;
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+}
+.hrtext span{
+    background-color: #222;
+}

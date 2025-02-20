@@ -2,7 +2,7 @@ const fs = require('fs');
 const sql = require("../databases/mysql");
 const collection = global.collection;
 
-module.exports = async (socket, UID, notes, weather) => {
+module.exports = async (socket, UID, notes, weather, clientInfo) => {
     const data = {};
 
     const userIP = socket.handshake.headers['x-forwarded-for'];
@@ -21,6 +21,7 @@ module.exports = async (socket, UID, notes, weather) => {
     // Get user details
     const result = await sql.midelightDB.query("SELECT Avatar, Banner, Date, Email, Username FROM accounts WHERE UID="+sql.midelightDB.escape(UID));
     data.user = result[0][0];
+    clientInfo.Username = result[0][0].Username;
 
     data.usageSize = await notes.getUsageSize(UID);
 
