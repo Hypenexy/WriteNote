@@ -1,5 +1,6 @@
 const port = 2053,
-    version = [1, 0, 0];
+    version = [1, 0, 0],
+    allowURL = "http://127.0.0.1:5500";
 
 global.version = version;
 // Server
@@ -51,7 +52,7 @@ const images = require("./code/images");
 
 server = http.createServer(async function (req, res) {
     const headers = {
-      'Access-Control-Allow-Origin': "http://127.0.0.1:5500",
+      'Access-Control-Allow-Origin': allowURL,
       'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
       'Access-Control-Max-Age': 2592000,
       'Access-Control-Allow-Credentials': "true",
@@ -74,6 +75,7 @@ server = http.createServer(async function (req, res) {
 
 const log = require("./code/interface/log");
 server.listen(port, () => {
+    log("s", 'Allowing connections on: ' + allowURL);
     log("s", 'Server listening on *:' + port);
 });
 
@@ -106,7 +108,7 @@ const clients = [];
 const io = require("socket.io")(server, {
     maxHttpBufferSize: 1e9,
     cors: {
-        origin: "http://127.0.0.1:5500",
+        origin: allowURL,
         credentials: true,
     }
 });

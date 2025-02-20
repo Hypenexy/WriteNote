@@ -1,9 +1,32 @@
+.window.welcome{
+    display: flex;
+    flex-direction: column;
+}
+.notesListContainer{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* flex-grow: 1; */
+    overflow: hidden; /* Credit to a specific chat that I needed an overflow hidden here */
+}
+
 .notesList{
     padding: 12px;
     
     display: flex;
+    /* flex-grow: 1;
+    min-height: 0; */
+    height: 100%;
+    justify-content: flex-start;
+    align-content: flex-start;
+    overflow: auto;
     gap: 8px;
     flex-wrap: wrap;
+}
+
+.list .notesList{
+    flex-wrap: initial;
+    flex-direction: column;
 }
 
 .notesListContainer .top{
@@ -16,6 +39,15 @@
 }
 .notesListContainer .top .sort p:first-child{
     color: var(--note-summary-color);
+}
+
+.list .notesList .button{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+    padding: 0 8px;
+    min-height: 60px;
 }
 
 .notesList .button{

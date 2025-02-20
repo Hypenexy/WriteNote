@@ -38,7 +38,19 @@ function createNotesListElement(){
             if(typeof b == "undefined"){
                 return -1;
             }
+        }
 
+        var currentView = "grid";
+        if(settings.noteslist && settings.noteslist.view){
+            currentView = settings.noteslist.view;
+        }
+        if(currentView == "grid"){
+            if(notesListElement.classList.contains("list")){
+                notesListElement.classList.remove("list");
+            }
+        }
+        else if(currentView == "list"){
+            notesListElement.classList.add("list");
         }
         
         var currentSort = sortsInfo.sorts[0];
@@ -95,6 +107,14 @@ function createNotesListElement(){
         if(settings.noteslist && settings.noteslist.reversed){
             notesArray.reverse();
         }
+        
+        if(settings.noteslist && !settings.noteslist.noFolderPriority){
+            notesArray.sort(function(a, b){
+                if(a.data.type == "folder" && b.data.type != "folder") { return -1; }
+                if(a.data.type != "folder" && b.data.type == "folder") { return 1; } // This second line isn't really needed.
+                return 0;
+            });
+        }
     
         for (let i = 0; i < notesArray.length; i++) {
             const data = logonData.notes[notesArray[i].NID];
@@ -127,9 +147,11 @@ const sortsInfo = {
         "save",
         "note",
     ]
-}
+};
 
 function topElement(element){
+    // Sort options
+
     const sortButton = mdutils.createAppendElement("button", element);
     sortButton.classList.add("i", "sort");
     
@@ -185,6 +207,24 @@ function topElement(element){
         }
     
         sortMenu.add("line", locale.options);
+        
+        const foldersFirst_checkbox = mdutils.createAppendElement("btn", sortMenu.node);
+        foldersFirst_checkbox.classList.add("i");
+        if(settings && settings.noteslist){
+            if(!settings.noteslist.noFolderPriority){
+                foldersFirst_checkbox.classList.add("selected");
+            }
+        }
+        foldersFirst_checkbox.innerHTML = `<i>folder</i> ${locale.foldersFirst}`;
+        mdutils.ButtonEvent(foldersFirst_checkbox, () => {
+            if(foldersFirst_checkbox.classList.contains("selected")){
+                setSort(null, "noFolderPriority", true);
+            }
+            else{
+                setSort(null, "noFolderPriority", false);
+            }
+            foldersFirst_checkbox.classList.toggle("selected");
+        });
     
         const reversed_checkbox = mdutils.createAppendElement("btn", sortMenu.node);
         reversed_checkbox.classList.add("i");
@@ -212,9 +252,63 @@ function topElement(element){
 
     setSort();
 
+
+    // View options
+
     const viewButton = mdutils.createAppendElement("button", element);
     viewButton.classList.add("i", "sort");
-    viewButton.innerHTML = `<i>view_carousel</i> <div><p>${locale.view_as}</p><p>${locale.grid}</p></div>`;
+
+    var views = [["grid", "grid_view"], ["list", "view_list"]];
+    
+    function setView(view){
+        if(!settings.noteslist){
+            settings.noteslist = {};
+        }
+        if(view){
+            if(view == views[0][0]){
+                delete settings.noteslist.view;
+            }
+            else{
+                settings.noteslist.view = view;
+            }
+            notesListElement.updateList();
+        }
+
+        var currentView = views[0][0];
+        if(settings.noteslist && settings.noteslist.view){
+            currentView = settings.noteslist.view;
+        }
+        viewButton.innerHTML = `<i>view_carousel</i> <div><p>${locale.view_as}</p><p>${locale[currentView]}</p></div>`;
+        var viewMenu = contextMenu();
+        document.addEventListener("click", viewMenu.remove);
+    
+        // var indexCurrentView = views.sorts.indexOf(currentView);
+    
+        for (let i = 0; i < views.length; i++) {
+            const type = views[i][0];
+            if(i==3){
+                viewMenu.add("line");
+            }
+            var selected = false;
+            if(currentView == views[i][0]){
+                selected = true;
+            }
+            viewMenu.add("button", locale[type], {
+                "action": () => {
+                    setView(type);
+                },
+                "icon": views[i][1],
+                "selected": selected
+            });
+        }
+    
+        mdutils.ButtonEvent(viewButton, (event) => {viewMenu.append(event, viewButton)}, null, true);
+        viewButton.addEventListener("contextmenu", (e) => {
+            viewMenu.append(e, viewButton);
+        });
+    }
+
+    setView();
 
 }
 
@@ -231,6 +325,8 @@ function createNoteElement(data, NID){
     const element = document.createElement("div");
     element.classList.add("button");
     element.setAttribute("NID", NID);
+
+    noteContextMenu(data, element);
 
     if(data.type == "folder"){
         // do folder stuff
