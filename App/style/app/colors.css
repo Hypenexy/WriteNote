@@ -1,8 +1,20 @@
 :root{
     --main-bg: #050505;
+    --main-logo-bg: #0a0a0a;
 
     --window-bg: #111;
     --window-fg: #eee;
+
+    --window-shadow: #00000044;
+
+    --window-x-color: #999;
+    --window-x-hover-color: #e4e4e4;
+    --window-x-hover-bg: #33333399;
+    --window-x-active-color: #f3f3f3;
+    --window-x-active-bg: #66666699;
+
+    --window-golden-bg: #ffbf00;
+    --window-golden-fg: #574100;
 
     /* Buttons */
     --button-bg: #222;
@@ -24,6 +36,11 @@
     --input-text-color: #999;
     --input-text-hide-color: #555;
     --input-text-hide-bg: #111;
+
+    /* Tooltips */
+    --tooltip-color: #bbb;
+    --tooltip-bg: #11111199;
+    --tooltip-border: #555;
 
     /* Color codes */
     --error-color: #f35959;
@@ -52,4 +69,8 @@
 
     --conversation-message-bg: #2e2f34;
     --conversation-message-me-bg: #0a1757;
+
+    /* Settings colors */
+    --setting-bg: #1a1a1a;
+    --setting-label: #bbb;
 }

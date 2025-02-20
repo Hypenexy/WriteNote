@@ -1,0 +1,33 @@
+.tooltip{
+    white-space: nowrap;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    font-size: initial;
+    color: var(--tooltip-color);
+    background-color: var(--tooltip-bg);
+    /* border: 1px solid var(--tooltip-border); */
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.tooltip.delayed.active{
+    animation-delay: .5s;
+}
+.tooltip.active{
+    animation-name: tooltipShow;
+    animation-timing-function: ease-in-out;
+    animation-duration: .2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes tooltipShow {
+    from{
+        opacity: 0;
+        visibility: hidden;
+    }
+    to{
+        opacity: 1;
+        visibility: visible;
+    }
+}

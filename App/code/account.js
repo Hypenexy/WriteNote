@@ -1,4 +1,4 @@
-function createInput(type){
+function createInput(type, isLogin){
     const element = document.createElement("div");
     element.classList.add("label");
 
@@ -41,14 +41,29 @@ function createInput(type){
     if(type == "email"){
         text.textContent = locale.email;   
         input.type = "email";
+        input.name = "email";
+        input.autocomplete = "email";
     }
     if(type == "username"){
-        text.textContent = locale.username;   
+        if(isLogin){
+            text.textContent = locale.username_or_email;
+        }
+        else{
+            text.textContent = locale.username;   
+        }
         input.type = "username";
+        input.name = "fname";
     }
     if(type == "password"){
         text.textContent = locale.password;
         input.type = "password";
+        input.name = "password";
+        if(isLogin){
+            input.autocomplete = "current-password";
+        }
+        else{
+            input.autocomplete = "new-password";
+        }
 
         const showPasswordButton = document.createElement("div");
         showPasswordButton.classList.add("button", "m-i", "passwordShow");
@@ -295,10 +310,10 @@ function createRegisterMenu(){
         text.textContent = locale.sign_in;
         form.appendChild(text);
 
-        const usernameInput = createInput("username");
+        const usernameInput = createInput("username", true);
         form.appendChild(usernameInput);
         
-        const passwordInput = createInput("password");
+        const passwordInput = createInput("password", true);
         form.appendChild(passwordInput);
         
         function submitLogin(){

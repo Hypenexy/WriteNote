@@ -2,6 +2,11 @@ function showWelcome(options){
     const element = createWindow("welcome");
     element.innerHTML = logoSVG;
 
+    function onWindowClose(){
+        loadHeader();
+    }
+    openedWindows["welcome"].onCloseActions.push(onWindowClose);
+
     // Unlogged check and screen
     if(typeof options == "number" && options == -1){
         element.classList.add("register");
@@ -18,6 +23,8 @@ function showWelcome(options){
     element.appendChild(createMOTD(options.user.Username));
     
     element.appendChild(createUserWeather(options.user, options.weather));
+
+    element.appendChild(createNotesListElement());
 
     console.log(options);
 }

@@ -1,8 +1,14 @@
 const log = require("./../interface/log");
 const fs = require('fs');
 
-const userdataDir = "userdata";
-if(!fs.existsSync(userdataDir)){
-    fs.mkdirSync(userdataDir);
-    log("s", "Created folder " + userdataDir);
+function folderChecks(URL){
+    if(!fs.existsSync(URL)){
+        fs.mkdirSync(URL);
+        log("s", "Created folder " + URL);
+    }
 }
+
+const userdataDir = "userdata";
+folderChecks(userdataDir);
+
+folderChecks(`${userdataDir}/images`);

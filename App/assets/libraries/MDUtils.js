@@ -73,5 +73,80 @@ class MDUtils{
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
     };
-      
+
+    /**
+     * Creates an element and appends it
+     * @param {String} tag The class of the element
+     * @param {Element} parent The parent to append it to
+     * @returns The created element
+     */
+    createAppendElement(tag, parent){
+        const element = document.createElement("div");
+        element.classList.add(tag);
+        parent.appendChild(element);
+        return element;
+    }
+
+    
+    /**
+     * Returns getBoundingClientRect() as an object
+     * @param {Element} element Any DOM node
+     * @returns the getBoundingClientRect() as an object
+     */
+    getBoundingClientRectObject(element) {
+        var rect = element.getBoundingClientRect()
+        return {
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height,
+            x: rect.x,
+            y: rect.y
+        }
+    }
+
+    
+    /**
+     * Takes an elements position and size and returns a position that doesn't put it out the screen
+     * @param {JSON} offset Takes a JSON as a parameter
+     * @returns the same JSON but with calculated value if it's out of the screen 
+     */
+    normalizeOffsetRightBottom(offset){
+        if(offset.right === undefined){ // I'm not sure if this is a proper way to check for undefined
+            if(offset.width&&offset.left){
+                offset.right = offset.left+offset.width
+            }
+        }
+        if(offset.right > window.innerWidth){
+            offset.left = offset.left - (offset.right - window.innerWidth)
+        }
+        if(offset.bottom === undefined){
+            if(offset.height&&offset.top){
+                offset.bottom = offset.top+offset.height
+            }
+        }
+        if(offset.bottom > window.innerHeight){
+            offset.top = offset.top - (offset.bottom - window.innerHeight)
+        }
+        return offset
+    }
+    
+    normalizeOffset(offset){
+        if(offset[0] <= 0){
+            offset[0] = 0;
+        }
+        if(offset[1] <= 0){
+            offset[1] = 0;
+        }
+        if(offset[2] >= window.innerWidth){
+            offset[0] = offset[0] - (offset[2] - window.innerWidth);
+        }
+        if(offset[3] >= window.innerHeight){
+            offset[1] = offset[1] - (offset[3] - window.innerHeight); 
+        }
+        return offset;
+    }
+    
 }

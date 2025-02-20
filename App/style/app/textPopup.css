@@ -1,0 +1,57 @@
+.textPopupsContainer{
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+
+    bottom: 6px;
+    width: 100%;
+    z-index: 99;
+}
+
+.textPopups{
+    display: inline-block;
+    position: relative;
+    bottom: 0;
+
+    color: #999;
+    background-color: #05050599;
+    border: 2px solid #555;
+    border-radius: 8px;
+
+    padding: 6px;
+
+    animation-name: textPopup;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.textPopups.hide{
+    animation-name: textPopupReverse;
+    animation-fill-mode: forwards;
+}
+
+
+@keyframes textPopup {
+    from{
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes textPopupReverse {
+    to{
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    from{
+        transform: scale(1);
+        opacity: 1;
+    }
+}

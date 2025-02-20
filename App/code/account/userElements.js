@@ -1,7 +1,19 @@
-function getUserPfpURL(userData){
+var avatarElements = [];
+
+function getUserPfpURL(userData, element){
     var pfpURL = WriteNoteServer+"/ui/pfp.png";
     if(userData.Avatar){
-        pfpURL = imageServer+"?i="+userData.Avatar;
+        pfpURL = `${WriteNoteServer}/avatar/${userData.Avatar}.jpg`;
+    }
+    if(element){
+        avatarElements.push(element);
     }
     return pfpURL;
+}
+
+function updateAvatarElements(newURL){
+    for (let i = 0; i < avatarElements.length; i++) {
+        const element = avatarElements[i];
+        element.src = newURL;
+    }
 }

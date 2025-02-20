@@ -1,7 +1,7 @@
 const sql = require("../databases/mysql");
 const protocolCheck = require("./protocolCheck");
 
-module.exports = (socket, sessionId, clientInfo, chat, clientsReference, io) => {
+module.exports = (socket, sessionId, clientInfo, chat, clientsReference, io, notes) => {
     socket.on("notes", async (data, callback) => {
         if(!protocolCheck.checkDataAndCallback(data, callback)){
             return;
@@ -10,6 +10,8 @@ module.exports = (socket, sessionId, clientInfo, chat, clientsReference, io) => 
             callback(null, "Invalid request, type isn't specified");
             return;
         }
+        
+        notes.protocol(data, callback, socket, clientInfo, clientsReference, io);
         // if(data.type == "register"){
         //     callback(await register(data, sessionId, loginUID));
         // }

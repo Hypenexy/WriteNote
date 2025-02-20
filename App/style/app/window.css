@@ -50,3 +50,29 @@
         transform: translate(-50%, -50%)scale(1);
     }
 }
+
+.window .x{
+    z-index: 40;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 8px;
+
+    cursor: pointer;
+    user-select: none;
+
+    color: var(--window-x-color);
+    border-radius: 45%;
+
+    transition: .2s;
+}
+
+.window .x:hover, .window .x:focus-visible{
+    color: var(--window-x-hover-color);
+    background-color: var(--window-x-hover-bg);
+    border-radius: 50%;
+}
+.window .x:active{
+    color: var(--window-x-active-color);
+    background-color: var(--window-x-active-bg);
+}

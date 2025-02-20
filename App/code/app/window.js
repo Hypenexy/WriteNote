@@ -8,18 +8,32 @@ function createWindow(id){
 
     var window = document.createElement("div");
 
+    var onCloseActions = [];
+
     function close(){
         delete openedWindows[id];
         window.classList.add("hide");
         window.addEventListener("animationend", () => {
             window.remove();
         });
+        
+        for (let i = 0; i < onCloseActions.length; i++) {
+            onCloseActions[i]();
+        }
     }
+    
+
+    const closeButton = document.createElement("div");
+    closeButton.classList.add("x");
+    closeButton.textContent = "close";
+    mdutils.ButtonEvent(closeButton, close);
+    window.appendChild(closeButton);
 
     openedWindows[id] = {
         element: window,
         id: id,
-        close: close
+        close: close,
+        onCloseActions: onCloseActions
     };
 
     window.classList.add("window");
