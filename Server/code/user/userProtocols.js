@@ -1,7 +1,8 @@
 const sql = require("../databases/mysql");
 const protocolCheck = require("./protocolCheck");
+// var socketStream = require('socket.io-stream');
 
-module.exports = (socket, sessionId, clientInfo, chat, clientsReference, io, notes) => {
+module.exports = (socket, clientInfo, chat, clientsReference, io, notes) => {
     socket.on("notes", async (data, callback) => {
         if(!protocolCheck.checkDataAndCallback(data, callback)){
             return;
@@ -16,6 +17,10 @@ module.exports = (socket, sessionId, clientInfo, chat, clientsReference, io, not
         //     callback(await register(data, sessionId, loginUID));
         // }
     });
+
+    // socketStream(socket).on("streamNote", async (data, callback) => {
+    //     notes.stream(data, callback, socket, clientInfo);
+    // });
 
     socket.on("chat", async (data, callback) => {
         if(!protocolCheck.checkDataAndCallback(data, callback)){

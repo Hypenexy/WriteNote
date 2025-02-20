@@ -70,6 +70,22 @@ function openSettings(){
         settingsMain.innerHTML = "";
         const headerElement = mdutils.createAppendElement("header", settingsMain);
         headerElement.textContent = locale[section];
+        if(section == "about"){
+            headerElement.addEventListener("click", (e) => {
+                if(e.detail == 3){
+                    settings_keys["admin"] = {};
+                    settings_keys["admin"].icon = "admin_panel_settings";
+                }
+            });
+        }
+        if(windowElement.classList.contains("admin") && section != "admin"){
+            windowElement.classList.remove("admin");
+        }
+        if(section == "admin"){
+            windowElement.classList.add("admin");
+            settingsMain.appendChild(loadAdminPanel());
+            return;
+        }
         const settingsElement = mdutils.createAppendElement("settingsContainer", settingsMain);
         const settingsList = Object.keys(settings_keys[section].settings);
         for (let i = 0; i < settingsList.length; i++) {

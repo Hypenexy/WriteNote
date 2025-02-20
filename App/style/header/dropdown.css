@@ -1,0 +1,31 @@
+/* .headerDropdown{
+
+} */
+
+.headerDropdown .line{
+    color: var(--line-text);
+    background-color: var(--blue);
+    padding: 8px 4px;
+    padding-top: 0;
+    /* padding-left: 32px; */
+    
+    margin-top: -15px;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    
+    border-radius: 0 0 8px 8px;
+}
+.headerDropdown .line i{
+    transform: translateY(4px);
+}
+.headerDropdown .line.unsaved{
+    background-color: var(--unsaved);
+}
+
+.headerDropdown .buttonsRow{
+    display: flex;
+    gap: 4px;
+}
+.headerDropdown .buttonsRow i{
+    font-size: 20px;
+}

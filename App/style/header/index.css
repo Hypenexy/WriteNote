@@ -138,7 +138,7 @@ header .note i.status.hide{
     }
 }
 header .note i.unsaved{
-    color: #fffc65;
+    color: var(--unsaved);
 }
 header .note i.binned{
     color: #ff6565;
@@ -158,14 +158,14 @@ header .note .line{
     bottom: 0px;
     border: 0;
     height: 2px;
-    border: 1px solid #65baff;
+    border: 1px solid var(--blue);
     border-radius: 99px;
 }
 header .note.active .line{
     opacity: 1;
 }
 header .note.unsaved .line{
-    border: 1px solid #fffc65;
+    border: 1px solid var(--unsaved);
 }
 header .note .x{
     opacity: 0;
@@ -317,7 +317,7 @@ header.noSubHeader .showSubHeader{
 
 .subHeader .btn.submit{
     vertical-align: middle;
-    background-color: #65baff;
+    background-color: var(--blue);
     color: #111;
     border-radius: 99px;
     padding: 12px;
@@ -375,7 +375,7 @@ header.noSubHeader .showSubHeader{
     margin-top: 8px;
     padding: 8px;
     border-radius: 4px;
-    background-color: #fffc65;
+    background-color: var(--unsaved);
     color: #111;
 }
 .noteExtraInfo .info i{

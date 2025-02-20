@@ -1,0 +1,22 @@
+.progressiveLine{
+    
+    position: absolute;
+    left: 20px;
+    right: 860px;
+    top: 20px;
+    /* width: 100px; */
+    height: 4px;
+    border-radius: 99px;
+    background-color: #65baff;
+
+    transition: .3s, right 1s, left 1s .25s;
+}
+
+.progressiveLine.error{
+    background-color: var(--error-color);
+}
+
+.progressiveLine.switch{
+    right: 800px;
+    left: 60px;
+}

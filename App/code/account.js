@@ -335,6 +335,11 @@ function createRegisterMenu(){
                         usernameInput.appendError("wrong_credentials");
                     }
                 }
+                else{
+                    console.log(response);
+                    // socket.disconnect();
+                    // socket.connect()
+                }
             });
             
         }

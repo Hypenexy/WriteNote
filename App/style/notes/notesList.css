@@ -1,0 +1,78 @@
+.notesList{
+    padding: 12px;
+    
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.notesListContainer .top{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    
+    padding-top: 12px;
+    padding-left: 12px;
+}
+.notesListContainer .top .sort p:first-child{
+    color: var(--note-summary-color);
+}
+
+.notesList .button{
+    padding: 12px;
+    min-height: 80px;
+    min-width: 120px;
+}
+.notesList .button[NID]{
+    padding-bottom: 0;
+    overflow: hidden;
+}
+.notesList .button:not([NID]){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.notesList .button i{
+    position: initial;
+    transform: initial;
+}
+
+.notesList .button .title{
+    color: var(--note-title-color);
+    display: flex;
+    align-items: center;
+    transition: .1s;
+}
+.notesList .button .summary{
+    color: var(--note-summary-color);
+    padding: 6px 0;
+    transition: .2s;
+}
+.notesList .button .sortData{
+    background-color: var(--note-sortData-bg);
+    color: var(--note-sortData-color);
+    margin: 0 -12px;
+    padding: 4px 12px;
+    transition: .3s;
+}
+
+.notesList .button:active .title{
+    color: var(--note-active-title-color);
+}
+.notesList .button:active .summary{
+    color: var(--note-active-summary-color);
+}
+.notesList .button:active .sortData{
+    background-color: var(--note-active-sortData-bg);
+    color: var(--note-active-sortData-color);
+}
+
+.notesList .button.folder{
+    background-color: var(--note-sortData-bg);
+}
+.notesList .button.folder:active{
+    background-color: var(--button-fg);
+}
+.notesList .button.folder .title{
+    padding: 15px;
+}

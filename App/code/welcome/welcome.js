@@ -1,9 +1,14 @@
 function showWelcome(options){
     const element = createWindow("welcome");
+    if(element == "already opened"){
+        return;
+    }
     element.innerHTML = logoSVG;
 
     function onWindowClose(){
-        loadHeader();
+        if(options != -1){
+            loadHeader();
+        }
     }
     openedWindows["welcome"].onCloseActions.push(onWindowClose);
 
@@ -26,7 +31,14 @@ function showWelcome(options){
 
     element.appendChild(createNotesListElement());
 
+    notesListContextMenu.attach(element);
+
     console.log(options);
+}
+
+function reshowWelcome(data){
+    showWelcome(data);
+    openedWindows["welcome"].element.classList.add("fast");
 }
 
 function sideDecoration(){

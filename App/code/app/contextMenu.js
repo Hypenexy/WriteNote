@@ -1,4 +1,3 @@
-
 /**
  * Creates a contextMenu to attach to specific element
  * @param {*} type not used 
@@ -66,6 +65,9 @@ function contextMenu(type){
                 break;
             case "line":
                 element.classList.add("hr");
+                if(typeof text == "string"){
+                    element.innerHTML = `<span>${text}</span>`;
+                }
                 break;
             case "extra":
                 element.classList.add("extra", "btn");
@@ -75,7 +77,7 @@ function contextMenu(type){
             default:
                 break;
             }
-        if(typeof text == "string"){
+        if(typeof text == "string" && type != "line"){
             element.innerHTML = text;
         }
         if(options && typeof options.submenu == "object"){
@@ -161,9 +163,17 @@ function contextMenu(type){
         if(contextMenu.node.classList.contains("hide")){
             contextMenu.node.classList.remove("hide");
         }
-        // compute width here
-        contextMenu.node.style.top = event.clientY + "px"; // test event.clientY with buttons and mobile browsers
-        contextMenu.node.style.left = event.clientX + "px";// and make functions for fitting inside the app
+        
+        if(toElement){
+            const bounds = toElement.getBoundingClientRect();
+            contextMenu.node.style.top = bounds.bottom + "px";
+            contextMenu.node.style.left = bounds.left + "px";
+        }
+        else{
+            // compute width here
+            contextMenu.node.style.top = event.clientY + "px"; // test event.clientY with buttons and mobile browsers
+            contextMenu.node.style.left = event.clientX + "px";// and make functions for fitting inside the app
+        }
         app.appendChild(contextMenu.node);
         // contextMenu.node.children[0].focus(); Doesn't focus
         for (let i = 0; i < contextMenu.submenus.length; i++) {

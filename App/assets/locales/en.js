@@ -7,6 +7,7 @@ var locale = {
     account: "Account",
     editor: "Editor",
     about: "About",
+    admin: "Admin",
 
     sign_up: "Sign Up",
     sign_in: "Sign In",
@@ -110,4 +111,63 @@ var locale = {
     name: "Name",
     type: "Type",
     create: "Create",
+
+    note: "Note",
+    note_description: "Text with media",
+    calculator_type: "Calculator",
+    calculator_description: "Math optimized workspace",
+    webapp: "Web App",
+    webapp_description: "Site builder",
+    presentation: "Presentation",
+    presentation_description: "Slides environment",
+    canvas: "Canvas",
+    canvas_description: "Draw collaborately",
+
+    save: "Save",
+    rename: "Rename",
+    move_to_bin: "Move to Bin",
+    close: "Close",
+    note_is_saved: "Note is saved",
+    note_isnt_saved: "Note isn't saved",
+    unsaved_changes: "Unsaved changes",
+
+    years: "years",
+    months: "months",
+    days: "days",
+    hours: "hours",
+    minutes: "minutes",
+    seconds: "seconds",
+    ago: "ago",
+    never_modified: "Never modified",
+    never_opened: "Never opened",
+    // never_modified: "Never modified",
+
+    modified_date: "Modified date",
+    opened_date: "Opened date",
+    created_date: "Created date",
+    alphabetically: "Alphabetically",
+    size: "Size",
+    type: "Type",
+    sort_by: "Sort by",
+    options: "Options",
+    reversed: "Reversed",
+
+    view_as: "View as",
+    grid: "Grid",
+    list: "List",
+
+    select_all: "Select all",
+    new_folder: "New folder",
+
+    key: "Key",
+    wrong_key_or_not_an_admin: "Wrong key or not an admin",
+    success: "Success",
+
+    view_profile: "View profile",
+    log_out: "Log out",
+
+
+    create_join_room_share: "Create or join a room to share",
+    create_room: "Create a room",
+    join_room: "Join a room",
 }

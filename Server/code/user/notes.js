@@ -1,6 +1,9 @@
 const { readdir, stat } = require('fs/promises');
 const { v4 } = require("uuid");
 const fs = require("fs");
+// const socketStream = require("socket.io-stream");
+const gitDiff = require('git-diff');
+const { convert } = require('html-to-text');
 
 /**
  * Gets the user's notes as a list.
@@ -43,7 +46,16 @@ async function getUsageSize(UID){
 
 module.exports.getUsageSize = getUsageSize;
 
-
+function updateNoteProperty(UID, NID, property, value) {
+    global.collection.updateOne(
+        { _id: UID, [`notes.${NID}`]: {$exists: true} },
+        {
+            $set: {
+                [`notes.${NID}.${property}`]: value
+            }
+        }
+    )
+}
 
 async function createNote(UID, options, callback, socket){
     // I got 55c600, 72ad03, 348612, d5acfb, 27b8a5, 479d01, 2bf7cf
@@ -73,7 +85,7 @@ async function createNote(UID, options, callback, socket){
     if(options.parent){
         if(typeof options.parent != "string" || options.parent.length != 6){
             // maybe check if folder exists
-            callback(null, "Name is invalid format");
+            callback(null, "Parent is invalid format");
             return;
         }
 
@@ -83,7 +95,7 @@ async function createNote(UID, options, callback, socket){
         // notes = JSON.parse(notes);
         // log('f', notes);
     }
-    if(!["note", "folder", "web app", "presentation"].includes(options.type)){
+    if(!["note", "folder", "web app", "presentation", "canvas"].includes(options.type)){
         callback(null, "Type is invalid");
         return;
     }
@@ -128,8 +140,146 @@ async function createNote(UID, options, callback, socket){
     callback({NID: NID, note: note});
 }
 
+async function getNoteRecord(UID, NID) {
+    const notesNID = "notes."+NID;
+    const projection = {[notesNID]: true, _id: false};
+    const cursor = await collection.find({
+        _id: UID,
+        [notesNID]: { $exists: true }
+    }).project(projection);
+    
+    return await cursor.toArray()//.notes[NID];
+}
+
+async function openNote(UID, data, callback, socket){
+    const result = getNoteRecord(UID, data.NID);
+
+    if(!result.toString().length > 0){
+        callback({error: "Not found"});
+        return;
+    }
+    updateNoteProperty(UID, data.NID, "date_opened", Date.now());
+
+    // activeNIDs.push(NID);
+    // activeNID = NID;
+    socket.join(data.NID);
+
+    socket.broadcast.to(UID).emit('notesInfo', {type: "opened", NID: data.NID});
+
+    const noteDir = `userdata/${UID}/${data.NID}`;
+    const noteDirIndex = `${noteDir}/${(data.version) ? data.version : "0"}`;
+    
+    if(fs.existsSync(noteDirIndex)){
+        // var fileStats = fs.statSync(noteDirIndex);
+        // callback({size: fileStats.size});
+        var readFile = fs.readFileSync(noteDirIndex);
+        // var enc = new TextDecoder("utf-8");
+        // readFile = enc.decode(readFile);
+        callback({content: readFile});
+    }
+    else{
+        callback({error: "Note empty"});
+    }
+
+    callback("success");
+}
+
+// A concept that didn't work at this moment
+// function streamNote(UID, data, callback, socket) {
+//     const noteDir = `userdata/${UID}/${data.NID}`;
+//     const noteDirIndex = `${noteDir}/${(data.version) ? data.version : "0"}`;
+//     if(fs.existsSync(noteDirIndex)){
+//         var fileStats = fs.statSync(noteDirIndex);
+//         callback({size: fileStats.size});
+//         // response = [fs.readFileSync(noteDirIndex)];
+//         // var enc = new TextDecoder("utf-8");
+//         // response[0] = enc.decode(response[0]);
+//         var fileStream = fs.createReadStream(noteDirIndex);
+
+
+//         data.stream.pipe(fileStream);
+//     }
+//     else{
+//         callback({error: "Note empty"});
+//     }
+// }
+
+async function saveNote(UID, data, callback, socket) {
+    const result = await getNoteRecord(UID, data.NID);
+    if(!result.toString().length > 0){
+        callback({error: "Not found"});
+        return;
+    }
+    var noteData = result[0].notes[data.NID];
+
+    var newVersion = "1.0";
+    if(noteData.v){
+        newVersion = noteData.v;
+        newVersion = newVersion.split('.');
+        if(data.trigger == "autosave"){
+            newVersion[1]++;
+        }
+        else{
+            newVersion[0]++;
+        }
+        newVersion = newVersion.join('.');
+    }
+
+    const noteDir = `userdata/${UID}/${data.NID}`;
+    const noteDirIndex = `${noteDir}/0`;
+
+    if(noteData.v){
+        const noteDirVersion = `${noteDir}/${noteData.v}`;
+        var enc = new TextDecoder("utf-8");
+        const lastContent = enc.decode(fs.readFileSync(noteDirIndex));
+        const verDiff = gitDiff(lastContent, data.content);
+        if(typeof verDiff == "undefined"){
+            callback(null, "Same content");
+            return;
+        }
+        fs.writeFileSync(noteDirVersion, verDiff);
+    }
+
+    fs.writeFileSync(noteDirIndex, data.content);
+
+    const size = await dirSize(noteDir);
+    var summary = convert(data.content.slice(0, 30)).slice(0, 20);
+    const dateNow = Date.now();
+
+    const updateResult = await collection.updateOne(
+        { _id: UID, [`notes.${data.NID}`]: {$exists: true} },
+        {
+            $set: {
+                [`notes.${data.NID}.date_modified`]: dateNow,
+                [`notes.${data.NID}.size`]: size,
+                [`notes.${data.NID}.v`]: newVersion,
+                [`notes.${data.NID}.summary`]: summary
+            } 
+        }
+    );
+
+    if(updateResult.modifiedCount == 1){
+        callback({success:true});
+    }
+    else{
+        callback({error: true});
+    }
+}
+
 module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {
     if(data.type == "createNote"){
         createNote(clientInfo.UID, data.options, callback, socket);
     }
+    if(data.type == "open"){
+        openNote(clientInfo.UID, data, callback, socket);
+    }
+    if(data.type == "save"){
+        saveNote(clientInfo.UID, data, callback, socket);
+    }
 }
+
+// module.exports.stream = (data, callback, socket, clientInfo) => {
+//     if(data.type == "read"){
+//         streamNote(clientInfo.UID, data, callback, socket);
+//     }
+// }

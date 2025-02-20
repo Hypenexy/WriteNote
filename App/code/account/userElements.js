@@ -17,3 +17,30 @@ function updateAvatarElements(newURL){
         element.src = newURL;
     }
 }
+
+function logout(){
+    socket.emit("account", {
+        type: "logout"
+    }, (response) => {
+        if(response.status){
+            console.log(response);
+        }
+        if(response.error){
+            console.log(response.error);
+        }
+    });
+}
+
+const profileMenu = contextMenu();
+document.addEventListener("click", profileMenu.remove);
+profileMenu.add("button", locale.log_out, {
+    "action": logout,
+    "icon": "logout"
+});
+
+function openProfileMenuBind(button){
+    mdutils.ButtonEvent(button, (event) => {profileMenu.append(event, button)}, null, true);
+    button.addEventListener("contextmenu", (e) => {
+        profileMenu.append(e, button);
+    });
+}
