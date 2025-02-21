@@ -250,4 +250,19 @@ class MDUtils{
             }
         }
     };
+
+    /**
+     * Find element or parent with Selectors
+     * @param {Element} targeted Element to match against
+     * @param {Selector} selector String to match with Selector
+     * @returns The searched element
+     */
+    findElement(targeted, selector){
+        if(targeted.matches(selector)){
+            return targeted;
+        }
+        else{
+            return targeted.closest(selector);
+        }
+    }
 }

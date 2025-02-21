@@ -2,12 +2,8 @@ function draggableElement(element, header, options){
     var pos1 = 0, 
         pos2 = 0,
         pos3 = 0,
-<<<<<<< HEAD
         pos4 = 0,
         target = element;
-=======
-        pos4 = 0;
->>>>>>> 5e5a15a7c4e6bb4e5db6add18b3d5fefc4a975b8
     if(header){
         header.onmousedown = dragMouseDown;
     }
@@ -27,30 +23,72 @@ function draggableElement(element, header, options){
 
             target = clonedElement;
 
-            mdutils.copyComputedStyle(element, clonedElement, true);
-            
-            clonedElement.style.setProperty("position", "absolute");
-            clonedElement.style.setProperty("z-index", 50);
-            clonedElement.style.setProperty("transition", "initial");
-            clonedElement.style.setProperty("opacity", "0.6");
-            // clonedElement.style.setProperty("cursor", "grab!important"); Wouldn't work with pointer events none
-            
-            clonedElement.style.setProperty("pointer-events", "none");
+            function copyElement(element, clonedElementReference){
+                mdutils.copyComputedStyle(element, clonedElementReference, true);
+                
+                clonedElementReference.style.setProperty("position", "absolute");
+                clonedElementReference.style.setProperty("z-index", 60);
+                clonedElementReference.style.setProperty("transition", "initial");
+                clonedElementReference.style.setProperty("opacity", "0.6");
+                element.style.setProperty("opacity", "0.4")
+                // clonedElementReference.style.setProperty("cursor", "grab!important"); Wouldn't work with pointer events none
+                
+                clonedElementReference.style.setProperty("pointer-events", "none");
 
-            var clonedElements = clonedElement.getElementsByTagName("*");
-            for (var i = clonedElements.length; i--;) {
-                clonedElements[i].style.setProperty("pointer-events", "none");
+                var clonedElements = clonedElementReference.getElementsByTagName("*");
+                for (var i = clonedElements.length; i--;) {
+                    clonedElements[i].style.setProperty("pointer-events", "none");
+                }
             }
-            
+
             var boundingRect = element.getBoundingClientRect();
+
+            var extraElements = [];
+            if(element.matches(".selected")){
+                const selectedElements = element.parentNode.querySelectorAll(".selected");
+
+                var i = 0;
+                for(const selectedElement of selectedElements){
+                    if(selectedElement == element){
+                        continue;
+                    }
+                    i++;
+                    const clonedElement = selectedElement.cloneNode(true);
+                    clonedElement.elementReference = selectedElement;
+                    extraElements.push(clonedElement);
+
+                    copyElement(selectedElement, clonedElement);
+
+                    var selected_boundingRect = selectedElement.getBoundingClientRect();
+
+                    clonedElement.style.setProperty("z-index", 60 - i);
+                    clonedElement.style.setProperty("transition", "transform .4s");
+                    setTimeout(() => {
+                        var minusCondition = "";
+                        if(boundingRect.left < selected_boundingRect.left){
+                            minusCondition = "-";
+                        }
+                        clonedElement.style.setProperty("transform", `translateY(-${20 * i}px)translateX(${minusCondition}${Math.abs(selected_boundingRect.left - boundingRect.left)}px)`); // logarithmic will be best
+                    }, 10);
+
+                    clonedElement.style.setProperty("left", selected_boundingRect.x+"px");
+                    clonedElement.style.setProperty("top", selected_boundingRect.y+"px");
+
+
+                    app.appendChild(clonedElement);
+                }
+                
+            }
+
+            copyElement(element, clonedElement);
             
             clonedElement.style.setProperty("left", boundingRect.x+"px");
             clonedElement.style.setProperty("top", boundingRect.y+"px");
 
             app.appendChild(clonedElement);
     
-            document.onmouseup = () => {closeDragElement(event, clonedElement)};
-            document.onmousemove = (event) => {elementDrag(event, clonedElement)};
+            document.onmouseup = () => {closeDragElement(event, clonedElement, extraElements)};
+            document.onmousemove = (event) => {elementDrag(event, clonedElement, extraElements)};
 
             return;
         }
@@ -64,7 +102,7 @@ function draggableElement(element, header, options){
         document.onmousemove = elementDrag;
     }
 
-    function elementDrag(e){
+    function elementDrag(e, clonedElement, extraElements){
         e = e || window.event;
         e.preventDefault();
 
@@ -80,6 +118,13 @@ function draggableElement(element, header, options){
         
         target.style.left = target.offsetLeft - pos1 + "px";
         target.style.top = target.offsetTop - pos2 + "px";
+
+        if(extraElements){
+            for (let i = 0; i < extraElements.length; i++) {
+                extraElements[i].style.left = extraElements[i].offsetLeft - pos1 + "px";
+                extraElements[i].style.top = extraElements[i].offsetTop - pos2 + "px";
+            }
+        }
         
         // var normalized = mdutils.normalizeOffset([(element.offsetLeft - pos1), (element.offsetTop - pos2), (element.offsetLeft + element.offsetWidth) + 10, (element.offsetTop + element.offsetHeight) + 10]);
         // if(options && options.isSelection == true){
@@ -93,17 +138,22 @@ function draggableElement(element, header, options){
         // element.style.top = normalized[1] + "px";
     }
 
-    function closeDragElement(e, clonedElement){
+    function closeDragElement(e, clonedElement, extraElements){
         if(options && options.changePosition){
             element.style.removeProperty("position");
             element.style.removeProperty("top");
             element.style.removeProperty("left");
         }
         if(options && typeof options.onDrop == "function"){
-            options.onDrop(e);
+            options.onDrop(e, extraElements);
         }
         if(clonedElement){
+            element.style.removeProperty("opacity");
             clonedElement.remove();
+            for (let i = 0; i < extraElements.length; i++) {
+                extraElements[i].elementReference.style.removeProperty("opacity");
+                extraElements[i].remove();
+            }
         }
         document.onmouseup = null;
         document.onmousemove = null;
