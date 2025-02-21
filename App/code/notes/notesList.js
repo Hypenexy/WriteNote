@@ -403,6 +403,7 @@ function createNoteElement(data, NID){
 
     mdutils.ButtonEvent(element, () => {openNote(NID, data)});
 
+<<<<<<< HEAD
     // Drag functionality
     draggableElement(element, null, {
         ghostElement: true,
@@ -433,6 +434,8 @@ function createNoteElement(data, NID){
         }
     });
 
+=======
+>>>>>>> 5e5a15a7c4e6bb4e5db6add18b3d5fefc4a975b8
     listElement.appendChild(element);
 }
 

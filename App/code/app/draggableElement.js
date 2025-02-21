@@ -2,8 +2,12 @@ function draggableElement(element, header, options){
     var pos1 = 0, 
         pos2 = 0,
         pos3 = 0,
+<<<<<<< HEAD
         pos4 = 0,
         target = element;
+=======
+        pos4 = 0;
+>>>>>>> 5e5a15a7c4e6bb4e5db6add18b3d5fefc4a975b8
     if(header){
         header.onmousedown = dragMouseDown;
     }
