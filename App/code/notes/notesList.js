@@ -122,19 +122,20 @@ function createNotesListElement(){
         }
 
         listElement.appendChild(createNewButton());
+
+        createDragSelector(listElement, "[nid]");
+        // const ds = new DragSelect({
+        //     selectables: element.querySelectorAll("[nid]"),
+        //     area: element
+        // });
+        
+        // ds.subscribe("DS:end", (e) => {
+        //     console.log(e);
+        // });
     }
 
-    element.updateList()
+    element.updateList();
 
-    // createDragSelector(element, ".button");
-    const ds = new DragSelect({
-        selectables: element.querySelectorAll(".button"),
-        area: element
-    });
-      
-    ds.subscribe("DS:end", (e) => {
-        console.log(e);
-    });
 
 
     return element;
@@ -401,31 +402,49 @@ function createNoteElement(data, NID){
         sortData.innerHTML = data.type; // Do it with locales
     }
 
-    mdutils.ButtonEvent(element, () => {openNote(NID, data)});
+    mdutils.ButtonEvent(element,
+        (event) => {
+            if(event.ctrlKey == true){
+                
+                return;
+            }
+            openNote(NID, data);
+        }, 
+    null, true);
 
-<<<<<<< HEAD
     // Drag functionality
     draggableElement(element, null, {
         ghostElement: true,
-        onDrop: (event) => {
+        onDrop: (event, extra) => {
             const target = event.target;
 
-            function findElement(targeted, selector){
-                if(targeted.matches(selector)){
-                    return targeted;
-                }
-                else{
-                    return targeted.closest(selector);
-                }
-            }
+            // function findElement(targeted, selector){ Moved to MDUtils
+            //     if(targeted.matches(selector)){
+            //         return targeted;
+            //     }
+            //     else{
+            //         return targeted.closest(selector);
+            //     }
+            // }
 
             // Loading note by dropping it on notearea or header
             
-            var writenote = findElement(target, ".writenote"),
-                header = findElement(target, "header"),
-                folderNid = findElement(target, ".folder[nid]");
+            var writenote = mdutils.findElement(target, ".writenote"),
+                header = mdutils.findElement(target, "header"),
+                folderNid = mdutils.findElement(target, ".folder[nid]");
 
             if(writenote || header){
+                if(extra){
+                    for (let i = 0; i < extra.length; i++) {
+                        console.log("hi")
+                        var NID = extra[i].getAttribute("nid");
+                        if(NID){
+                            console.log(logonData.notes[NID]);
+                            openNote(NID, logonData.notes[NID]);
+                        }
+                    }
+                }
+                console.log(logonData.notes[NID]);
                 openNote(NID, data);
             }
             if(folderNid){
@@ -434,8 +453,6 @@ function createNoteElement(data, NID){
         }
     });
 
-=======
->>>>>>> 5e5a15a7c4e6bb4e5db6add18b3d5fefc4a975b8
     listElement.appendChild(element);
 }
 

@@ -154,7 +154,19 @@ function contextMenu(type){
             const element = contextMenu.selectedConditions[i];
             element();   
         }
-        const allContextMenus = app.getElementsByClassName("contextMenu"); // test for performance
+
+        // function ESC_Close(event){
+        //     if(event.code == "Escape"){
+        //         const allContextMenus = app.querySelectorAll(".contextMenu"); // test for performance
+        //         if(allContextMenus.length > 0){
+        //             allContextMenus[0].remove();
+        //         }
+        //         event.stopPropagation();
+        //     }
+        // }
+        // document.addEventListener("keydown", ESC_Close);
+        
+        const allContextMenus = app.querySelectorAll(".contextMenu"); // test for performance
         if(allContextMenus.length > 0){
             allContextMenus[0].remove();
         }

@@ -55,9 +55,9 @@
     min-height: 80px;
     min-width: 120px;
 }
-.button.ds-selected{
+.button.selected{
     border: 1px solid var(--button-fg);
-    background: var(--button-fg);
+    background: var(--blue);
     color: var(--button-active-fg);
 }
 .notesList .button[NID]{

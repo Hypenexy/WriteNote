@@ -1,13 +1,6 @@
 .dragSelector{
-    position: absolute;
-    border: 1px solid #65baff;
-    background-color: #65baff55;
+  z-index: 50;
+  position: absolute;
+  border: 1px solid #65baff;
+  background-color: #65baff55;
 }
-  .drag-select {
-    z-index: 60;
-    background-color: rgba(20, 137, 189, 0.5);
-  }
-  .intersected {
-    border: 5px solid red;
-    box-sizing: border-box;
-  }
