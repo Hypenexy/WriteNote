@@ -126,6 +126,16 @@ function createNotesListElement(){
 
     element.updateList()
 
+    // createDragSelector(element, ".button");
+    const ds = new DragSelect({
+        selectables: element.querySelectorAll(".button"),
+        area: element
+    });
+      
+    ds.subscribe("DS:end", (e) => {
+        console.log(e);
+    });
+
 
     return element;
 }
@@ -392,6 +402,36 @@ function createNoteElement(data, NID){
     }
 
     mdutils.ButtonEvent(element, () => {openNote(NID, data)});
+
+    // Drag functionality
+    draggableElement(element, null, {
+        ghostElement: true,
+        onDrop: (event) => {
+            const target = event.target;
+
+            function findElement(targeted, selector){
+                if(targeted.matches(selector)){
+                    return targeted;
+                }
+                else{
+                    return targeted.closest(selector);
+                }
+            }
+
+            // Loading note by dropping it on notearea or header
+            
+            var writenote = findElement(target, ".writenote"),
+                header = findElement(target, "header"),
+                folderNid = findElement(target, ".folder[nid]");
+
+            if(writenote || header){
+                openNote(NID, data);
+            }
+            if(folderNid){
+                // MOVE INTO THAT FOLDER
+            }
+        }
+    });
 
     listElement.appendChild(element);
 }
