@@ -29,7 +29,7 @@ function draggableElement(element, header, options){
                 clonedElementReference.style.setProperty("position", "absolute");
                 clonedElementReference.style.setProperty("z-index", 60);
                 clonedElementReference.style.setProperty("transition", "initial");
-                clonedElementReference.style.setProperty("opacity", "0.6");
+                clonedElementReference.style.setProperty("opacity", "0.95"); // Alternative is 0.6 but visiblity is bad
                 element.style.setProperty("opacity", "0.4")
                 // clonedElementReference.style.setProperty("cursor", "grab!important"); Wouldn't work with pointer events none
                 
@@ -63,13 +63,28 @@ function draggableElement(element, header, options){
 
                     clonedElement.style.setProperty("z-index", 60 - i);
                     clonedElement.style.setProperty("transition", "transform .4s");
+
+                    var x = Math.abs(selected_boundingRect.left - boundingRect.left),
+                        y = -(Math.sqrt(i)*5*Math.PI + Math.abs(selected_boundingRect.top - boundingRect.top));
+                        // Math.log(20 * i)*10 Is an alternative
+                        // As is (20 * i)
+                        // Math.sqrt(i)*5*Math.pow(Math.PI, 2)
+
+                    var minusConditionX = "";
+                    if(boundingRect.left < selected_boundingRect.left){
+                        minusConditionX = "-";
+                    }
+
+                    if(boundingRect.top > selected_boundingRect.top){
+                        y = -(Math.sqrt(i)*5*Math.PI - Math.abs(selected_boundingRect.top - boundingRect.top));
+                    }
+                    
+                    clonedElement.toTransition = `translateY(${y}px)translateX(${minusConditionX}${x}px)`;
+                    clonedElement.style.setProperty("opacity", (100 - Math.sqrt(selectedElements.length-i)*5*Math.PI)/100 + .1);
+
                     setTimeout(() => {
-                        var minusCondition = "";
-                        if(boundingRect.left < selected_boundingRect.left){
-                            minusCondition = "-";
-                        }
-                        clonedElement.style.setProperty("transform", `translateY(-${20 * i}px)translateX(${minusCondition}${Math.abs(selected_boundingRect.left - boundingRect.left)}px)`); // logarithmic will be best
-                    }, 10);
+                        clonedElement.style.setProperty("transform", clonedElement.toTransition); // logarithmic will be best
+                    }, 10 * i);
 
                     clonedElement.style.setProperty("left", selected_boundingRect.x+"px");
                     clonedElement.style.setProperty("top", selected_boundingRect.y+"px");

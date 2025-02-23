@@ -123,7 +123,8 @@ function createNotesListElement(){
 
         listElement.appendChild(createNewButton());
 
-        createDragSelector(listElement, "[nid]");
+        // createDragSelector(listElement, "[nid]"); // Scroll is broken anyways
+        createDragSelector(element, "[nid]", {dragContainer: element}); // scroll doesnt work at all here
         // const ds = new DragSelect({
         //     selectables: element.querySelectorAll("[nid]"),
         //     area: element
@@ -404,7 +405,7 @@ function createNoteElement(data, NID){
 
     mdutils.ButtonEvent(element,
         (event) => {
-            if(event.ctrlKey == true){
+            if(event.ctrlKey == true || event.shiftKey == true){
                 
                 return;
             }
@@ -434,17 +435,20 @@ function createNoteElement(data, NID){
                 folderNid = mdutils.findElement(target, ".folder[nid]");
 
             if(writenote || header){
-                if(extra){
+                if(extra.length > 0){
+                    var NIDs = [];
                     for (let i = 0; i < extra.length; i++) {
-                        console.log("hi")
-                        var NID = extra[i].getAttribute("nid");
-                        if(NID){
-                            console.log(logonData.notes[NID]);
-                            openNote(NID, logonData.notes[NID]);
+                        var NIDextra = extra[i].getAttribute("nid");
+                        if(NIDextra){
+                            NIDs.push(NIDextra);
+                            // openNote(NIDextra, logonData.notes[NIDextra]);
                         }
                     }
+                    NIDs.push(NID);
+                    openMultipleNotes(NIDs);
+                    return;
                 }
-                console.log(logonData.notes[NID]);
+                
                 openNote(NID, data);
             }
             if(folderNid){

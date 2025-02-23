@@ -1,4 +1,4 @@
-function createDragSelector(element, selectableElementsSelector){
+function createDragSelector(element, selectableElementsSelector, options){
     const selector = document.createElement("div");
     selector.classList.add("dragSelector");
     
@@ -71,9 +71,18 @@ function createDragSelector(element, selectableElementsSelector){
         // if(mdutils.findElement(e.target, selectableElementsSelector)){
         //     return;
         // }
-        if(e.target != element){
-            return;
+        if(options){
+            if(e.target == options.dragContainer || e.target.parentNode == options.dragContainer);
+            else{
+                return;
+            }
         }
+        else{
+            if(e.target != element){
+                return;
+            }
+        }
+        
         const x = e.clientX,
             y = e.clientY;
 

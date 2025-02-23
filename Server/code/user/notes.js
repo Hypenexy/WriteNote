@@ -184,6 +184,20 @@ async function openNote(UID, data, callback, socket){
     callback("success");
 }
 
+async function openMultipleNotes(UID, data, callback, socket){
+    var contents = [];
+    for (let i = 0; i < data.NIDs.length; i++) {
+        const NID = data.NIDs[i];
+        openNote(UID, {NID: NID}, (response) => {
+            response.NID = NID;
+            contents.push(response);
+            if(i == data.NIDs.length - 1){
+                callback(contents);
+            }
+        }, socket);
+    }
+}
+
 // A concept that didn't work at this moment
 // function streamNote(UID, data, callback, socket) {
 //     const noteDir = `userdata/${UID}/${data.NID}`;
@@ -272,6 +286,9 @@ module.exports.protocol = (data, callback, socket, clientInfo, clientsReference,
     }
     if(data.type == "open"){
         openNote(clientInfo.UID, data, callback, socket);
+    }
+    if(data.type == "openMultiple"){
+        openMultipleNotes(clientInfo.UID, data, callback, socket);
     }
     if(data.type == "save"){
         saveNote(clientInfo.UID, data, callback, socket);
