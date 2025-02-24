@@ -28,7 +28,14 @@ function createPfpElement(){
 function createUserBannerElement(){
     var banner = document.createElement("div");
     banner.classList.add("banner");
+    bannerElements.push(banner);
 
+    if(logonData.user.Avatar){
+        banner.style.setProperty("background-image", `url(${WriteNoteServer}/avatar/${logonData.user.Avatar}.jpg)`);
+    }
+    else{
+        banner.style.setProperty("background-image", "./images");
+    }
     // banner.style.setProperty("background-image", url);
     // banner.src = WriteNoteServer+"/ui/banner.jpg";
     return banner;
@@ -59,6 +66,11 @@ const profileMenu = contextMenu();
 document.addEventListener("click", profileMenu.remove);
 
 function initMiniProfileMenu(){
+    var alreadyInitCheck = profileMenu.node.querySelectorAll("*:not(.drag)");
+    alreadyInitCheck.forEach(element => {
+        element.remove();
+    });
+    
     profileMenu.node.classList.add("miniprofile");
     
     const banner = createUserBannerElement();
@@ -80,11 +92,18 @@ function initMiniProfileMenu(){
     logoutBtn.textContent = "logout";
     attachTooltip(logoutBtn, locale.log_out, true);
     mdutils.ButtonEvent(logoutBtn, logout);
+
+    var devices = devicesElement();
+    profileMenu.node.appendChild(devices);
     
-    profileMenu.add("button", locale.log_out, {
-        "action": logout,
-        "icon": "logout"
+    profileMenu.add("button", locale.settings, {
+        "action": openSettings,
+        "icon": "settings"
     });
+    // profileMenu.add("button", locale.log_out, {
+    //     "action": logout,
+    //     "icon": "logout"
+    // });
 }
 
 function openProfileMenuBind(button){

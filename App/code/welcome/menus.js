@@ -125,9 +125,9 @@ function createUserWeather(userData, weatherData){
 
     const userHalf = document.createElement("div");
     userHalf.classList.add("userHalf");
-    if(userData.Banner){
-        // userHalf.innerHTML = "<div class='banner' style='background-image: url(\""+imageServer+"?i="+userData.Banner+"\")'>"
-    }
+    
+    const bannerElement = createUserBannerElement();
+    userHalf.appendChild(bannerElement);
     
     const justUser = mdutils.createAppendElement("justUser", userHalf);
     const pfpElement = document.createElement("img");

@@ -16,3 +16,30 @@
     height: 64px;
     border-radius: 99px;
 }
+
+.miniprofile .banner .nameBio p:first-child{
+    font-weight: 600;
+    color: #eee;
+    text-shadow: 1px 1px 3px #11111199;
+}
+.miniprofile .banner .nameBio p:last-child{
+    color: #bbb;
+}
+
+.miniprofile .deviceList{
+    width: 100%;
+    
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    background-color: #272147;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.miniprofile .deviceList .device{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

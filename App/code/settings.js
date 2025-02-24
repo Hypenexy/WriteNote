@@ -1,6 +1,6 @@
 var settings = {};
 
-function openSettings(){
+function openSettings(section){
     const windowElement = createWindow("settings");
     if(typeof windowElement == "string"){
         return;
@@ -103,6 +103,25 @@ function openSettings(){
             const element = settings_keys[section].settings[settingsList[i]];
             settingsElement.appendChild(createSetting(element));
         }
+    }
+
+    if(section){
+        var btns = sideButtonsElement.querySelectorAll(".button");
+        switch (section) {
+            case "editor":
+                btns[1].click();
+                break;
+            case "about":
+                btns[2].click();
+            case "admin":
+                openMain("admin");
+            default:
+                btns[0].click();
+                break;
+        }
+    }
+    else{
+        sideButtonsElement.querySelector(".button").click();
     }
 }
 

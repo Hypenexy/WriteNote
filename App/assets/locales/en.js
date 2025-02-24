@@ -170,6 +170,8 @@ var locale = {
     switch_profile: "Switch profile",
     log_out: "Log out",
 
+    settings: "Settings", // Could be "preferences"
+
 
     create_join_room_share: "Create or join a room to share",
     create_room: "Create a room",

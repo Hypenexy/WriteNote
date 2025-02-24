@@ -200,11 +200,26 @@ function contextMenu(type){
         }
     }
 
+    function isInside(x1, x2, n){
+        if(x1 < n && x2 > n){
+            return true;
+        }
+    }
+
     contextMenu.remove = (event) => {
         if(!contextMenu.node.classList.contains("hide")){
             var animationDuration = contextMenu.node.computedStyleMap().get('animation-duration');
             animationDuration = animationDuration ? animationDuration : 0.1;
             
+            var boundingRect = contextMenu.node.getBoundingClientRect();
+            if(
+                isInside(boundingRect.left, boundingRect.right, event.clientX) &&
+                isInside(boundingRect.top, boundingRect.bottom, event.clientY)
+            ){
+                return;
+            }
+            
+
             // var composedPath = event.composedPath();
             // if(composedPath.includes(contextMenu.node) || composedPath.some(r=> contextMenu.submenus.includes(r))){
             // this is way too slow!
