@@ -73,10 +73,12 @@ function initMiniProfileMenu(){
     var switchBtn = mdutils.createAppendElement("button", banner);
     switchBtn.classList.add("m-i");
     switchBtn.textContent = "switch_account";
+    attachTooltip(switchBtn, locale.switch_profile, true);
 
     var logoutBtn = mdutils.createAppendElement("button", banner);
     logoutBtn.classList.add("m-i");
     logoutBtn.textContent = "logout";
+    attachTooltip(logoutBtn, locale.log_out, true);
     mdutils.ButtonEvent(logoutBtn, logout);
     
     profileMenu.add("button", locale.log_out, {
@@ -86,7 +88,6 @@ function initMiniProfileMenu(){
 }
 
 function openProfileMenuBind(button){
-    
     mdutils.ButtonEvent(button, (event) => {profileMenu.append(event, button)}, null, true);
     button.addEventListener("contextmenu", (e) => {
         profileMenu.append(e, button);

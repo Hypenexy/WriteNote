@@ -167,6 +167,7 @@ var locale = {
     success: "Success",
 
     view_profile: "View profile",
+    switch_profile: "Switch profile",
     log_out: "Log out",
 
 
