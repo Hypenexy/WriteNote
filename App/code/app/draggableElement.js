@@ -83,7 +83,7 @@ function draggableElement(element, header, options){
                     clonedElement.style.setProperty("opacity", (100 - Math.sqrt(selectedElements.length-i)*5*Math.PI)/100 + .1);
 
                     setTimeout(() => {
-                        clonedElement.style.setProperty("transform", clonedElement.toTransition); // logarithmic will be best
+                        clonedElement.style.setProperty("transform", clonedElement.toTransition);
                     }, 10 * i);
 
                     clonedElement.style.setProperty("left", selected_boundingRect.x+"px");

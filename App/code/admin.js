@@ -17,6 +17,7 @@ function loadAdminPanel(){
             }, (response) => {
                 if(response.success){
                     status.textContent = locale.success;
+                    loadDashboard();
                 }
                 if(response.error){
                     status.textContent = locale.wrong_key_or_not_an_admin;
@@ -26,6 +27,9 @@ function loadAdminPanel(){
     });
     element.appendChild(inputKey);
 
+    function loadDashboard(){
+        // load admin
+    }
 
     return element;
 }

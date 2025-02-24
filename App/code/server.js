@@ -42,6 +42,7 @@ socket.on("logon", (data) => {
     }
     
     logonData = data;
+    initMiniProfileMenu();
     if(data == -1){
         showWelcome(data);
     }

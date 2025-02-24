@@ -1,4 +1,5 @@
 var avatarElements = [];
+var bannerElements = [];
 
 function getUserPfpURL(userData, element){
     var pfpURL = WriteNoteServer+"/ui/pfp.png";
@@ -11,10 +12,33 @@ function getUserPfpURL(userData, element){
     return pfpURL;
 }
 
-function updateAvatarElements(newURL){
+function createPfpElement(){
+    const element = document.createElement("img");
+    if(logonData.user.Avatar){
+        element.src = `${WriteNoteServer}/avatar/${logonData.user.Avatar}.jpg`;
+    }
+    else{
+        element.src = WriteNoteServer+"/ui/pfp.png";
+    }
+    avatarElements.push(element);
+
+    return element;
+}
+
+function createUserBannerElement(){
+    var banner = document.createElement("div");
+    banner.classList.add("banner");
+
+    // banner.style.setProperty("background-image", url);
+    // banner.src = WriteNoteServer+"/ui/banner.jpg";
+    return banner;
+}
+
+function updateAvatarElements(newID){
     for (let i = 0; i < avatarElements.length; i++) {
         const element = avatarElements[i];
-        element.src = newURL;
+        element.src = `${WriteNoteServer}/avatar/${newID}.jpg`;
+        logonData.user.Avatar = newID;
     }
 }
 
@@ -33,12 +57,36 @@ function logout(){
 
 const profileMenu = contextMenu();
 document.addEventListener("click", profileMenu.remove);
-profileMenu.add("button", locale.log_out, {
-    "action": logout,
-    "icon": "logout"
-});
+
+function initMiniProfileMenu(){
+    profileMenu.node.classList.add("miniprofile");
+    
+    const banner = createUserBannerElement();
+    profileMenu.node.appendChild(banner);
+    
+    const pfp = createPfpElement();
+    banner.appendChild(pfp);
+
+    const nameBio = mdutils.createAppendElement("nameBio", banner);
+    nameBio.innerHTML = `<p>${logonData.user.Username}</p><p>${(logonData.user.Bio) ? logonData.user.Bio : logonData.user.Email}</p>`;
+
+    var switchBtn = mdutils.createAppendElement("button", banner);
+    switchBtn.classList.add("m-i");
+    switchBtn.textContent = "switch_account";
+
+    var logoutBtn = mdutils.createAppendElement("button", banner);
+    logoutBtn.classList.add("m-i");
+    logoutBtn.textContent = "logout";
+    mdutils.ButtonEvent(logoutBtn, logout);
+    
+    profileMenu.add("button", locale.log_out, {
+        "action": logout,
+        "icon": "logout"
+    });
+}
 
 function openProfileMenuBind(button){
+    
     mdutils.ButtonEvent(button, (event) => {profileMenu.append(event, button)}, null, true);
     button.addEventListener("contextmenu", (e) => {
         profileMenu.append(e, button);

@@ -65,18 +65,16 @@ function changeAvatar(){
                     }, (response) => {
                         if(response.success){
                             openedWindows["avatarChange"].close();
+                            updateAvatarElements(response.success);
                         }
                         if(response.error){
                             console.log(response.error);
                         }
                     });
                 });
-            });
-            
+            });   
         }
-         
-        
-        console.log(file);
+        // console.log(file);
     }
 
     input.click();

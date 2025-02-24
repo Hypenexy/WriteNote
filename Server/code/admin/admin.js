@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt');
 
 async function key(clientInfo, data, callback){
     const adminResult = await sql.midelightDB.query(`SELECT \`Key\` FROM admins WHERE UID = ${sql.midelightDB.escape(clientInfo.UID)}`);
-    console.log(adminResult[0][0].Key);
+    console.log(adminResult);
     if(adminResult[0].length > 0){
         const match = bcrypt.compareSync(data.Key, adminResult[0][0].Key);
         if(match) {
             clientInfo.admin = true;
+            socket.join("admin");
             callback({success: true});
             return true;
         }

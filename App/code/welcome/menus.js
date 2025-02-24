@@ -129,10 +129,17 @@ function createUserWeather(userData, weatherData){
         // userHalf.innerHTML = "<div class='banner' style='background-image: url(\""+imageServer+"?i="+userData.Banner+"\")'>"
     }
     
-    userHalf.innerHTML += `<div class='justUser'><img src='${getUserPfpURL(userData)}'> <p>${userData.Username}</p></div>`;
+    const justUser = mdutils.createAppendElement("justUser", userHalf);
+    const pfpElement = document.createElement("img");
+    pfpElement.src = getUserPfpURL(userData, pfpElement);
+    justUser.appendChild(pfpElement);
+    const userText = document.createElement("p");
+    userText.textContent = userData.Username; // One day this will update too
+    justUser.appendChild(userText);
+
     openProfileMenuBind(userHalf);
 
-    const justUser = userHalf.getElementsByClassName("justUser")[0];
+    // const justUser = userHalf.getElementsByClassName("justUser")[0];
     // attachTooltip(justUser, locale.view_profile);
 
     halves.appendChild(userHalf);

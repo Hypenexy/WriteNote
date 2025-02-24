@@ -20,7 +20,7 @@ function openNote(NID, note){
         var enc = new TextDecoder("utf-8");
         var content = enc.decode(response.content);
 
-        if(note.type != "note"){
+        if(note.type != "note" && content){
             content = JSON.parse(content);
         }
 
@@ -33,11 +33,6 @@ function openNote(NID, note){
 function openMultipleNotes(NIDs){
     writenote.initLoad();
 
-    const lastNID = NIDs[NIDs.length];
-    
-    switchNote(lastNID);
-    activeNID = lastNID;
-
     var loadedNIDIndexs = [];
     for (let i = 0; i < NIDs.length; i++)
         if(openNotesContain(NIDs[i]))
@@ -47,6 +42,13 @@ function openMultipleNotes(NIDs){
     for (var i = loadedNIDIndexs.length -1; i >= 0; i--)
         NIDs.splice(loadedNIDIndexs[i],1);
 
+    const lastNID = NIDs[NIDs.length - 1];
+
+    if(NIDs.length == 0){
+        return;
+    }
+    switchNote(lastNID);
+    activeNID = lastNID;
 
     // var versions = [];
     // for (let i = 0; i < NIDs.length; i++) {
@@ -78,6 +80,9 @@ function openMultipleNotes(NIDs){
 
             if(note.type != "note" && content){
                 content = JSON.parse(content);
+            }
+            if(!content){
+                content = "<p><br></p>";
             }
             
             openNotesPush(NID, note);

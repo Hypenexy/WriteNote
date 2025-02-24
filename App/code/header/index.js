@@ -56,9 +56,10 @@ function loadHeader(){
     const userStatusElement = mdutils.createAppendElement("line", profile);
     addUserOnlineStatusElement(userStatusElement);
 
-
-    const pfpURL = getUserPfpURL(logonData.user);
-    profile.innerHTML += "<img src='"+pfpURL+"'>";
+    const imgElement = document.createElement("img");
+    const pfpURL = getUserPfpURL(logonData.user, imgElement);
+    imgElement.src = pfpURL;
+    profile.appendChild(imgElement);
     mdutils.ButtonEvent(profile, function(e){
         e.stopPropagation();
         const element = document.createElement("div");

@@ -42,6 +42,17 @@ function openSettings(){
         element.classList.add("setting");
         const labelElement = mdutils.createAppendElement("label", element);
         labelElement.textContent = locale[setting.label]; 
+        if(setting.type == "toggle"){
+            // if(settings[]) == true
+            // make active
+
+            //else
+            var lastState = false;
+
+            lastState = !lastState;
+
+            mdutils.ButtonEvent(element, setting.action, lastState);
+        }
         if(setting.type == "input"){
             const inputElement = document.createElement("input");
             element.appendChild(inputElement);
@@ -115,7 +126,21 @@ const settings_keys = {
         }
     },
     "editor" : {
-        icon: "border_color"
+        icon: "border_color",
+        settings: {
+            // no_animations: { // This looks absolutely horrible
+            //     label: "no_animations",
+            //     type: "toggle",
+            //     action: (state) => {
+            //         if(state == true){
+            //             document.body.classList.add("noanimations");
+            //         }
+            //         else{
+            //             document.body.classList.remove("noanimations");
+            //         }
+            //     }
+            // }
+        }
     },
     "about" : {
         icon: "info"

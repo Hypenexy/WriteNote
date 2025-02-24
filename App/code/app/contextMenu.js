@@ -202,6 +202,9 @@ function contextMenu(type){
 
     contextMenu.remove = (event) => {
         if(!contextMenu.node.classList.contains("hide")){
+            var animationDuration = contextMenu.node.computedStyleMap().get('animation-duration');
+            animationDuration = animationDuration ? animationDuration : 0.1;
+            
             // var composedPath = event.composedPath();
             // if(composedPath.includes(contextMenu.node) || composedPath.some(r=> contextMenu.submenus.includes(r))){
             // this is way too slow!
@@ -217,7 +220,7 @@ function contextMenu(type){
             contextMenu.node.classList.add("hide");
             setTimeout(() => {
                 contextMenu.node.remove();
-            }, contextMenu.node.computedStyleMap().get('animation-duration').value * 1000);
+            }, animationDuration * 1000);
         }
     }
 

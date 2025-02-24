@@ -1,0 +1,18 @@
+.miniprofile .banner{
+    min-width: 220px;
+    max-width: 450px;
+    height: 100px;
+
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    background-color: #272147;
+    border-radius: 12px;
+    padding: 12px;
+}
+.miniprofile .banner img{
+    width: 64px;
+    height: 64px;
+    border-radius: 99px;
+}

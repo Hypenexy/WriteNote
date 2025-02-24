@@ -100,6 +100,8 @@ var locale = {
     change_avatar: "Change your avatar",
     select_photo: "Select photo",
 
+    no_animations: "Disable animations",
+
     cancel: "Cancel",
     change: "Change",
     set: "Set",

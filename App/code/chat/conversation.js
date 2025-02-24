@@ -8,7 +8,12 @@ function openConversation(userData){
 
     const profile = document.createElement("div");
     profile.classList.add("profile");
-    profile.innerHTML = `<img src="${getUserPfpURL(userData)}">${userData.Username}`;
+    const imgElement = document.createElement("img");
+    imgElement.src = getUserPfpURL(userData, imgElement);
+    profile.appendChild(imgElement);
+    const text = document.createElement("span");
+    text.textContent = userData.Username;
+    profile.appendChild(text);
     chatheader.appendChild(profile);
     
     const headerbuttons = document.createElement("div");
