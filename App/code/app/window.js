@@ -22,6 +22,7 @@ function createWindow(id){
         }
     }
     
+    escapeStack.push([window, close]);
 
     const closeButton = document.createElement("div");
     closeButton.classList.add("x");
@@ -44,26 +45,6 @@ function createWindow(id){
 
     return window;
 }
-
-function closeFocusedWindow(){
-    const Keys = Object.keys(openedWindows);
-
-    if(!Keys.includes(focusedWindow)){
-        return "not opened";
-    }
-    openedWindows[focusedWindow].close();
-    
-    if(Keys.length > 1){
-        focusedWindow = openedWindows[Keys[Keys.length - 2]].id;
-    }
-}
-
-document.addEventListener("keydown", (e) => {
-    if(e.code == "Escape"){
-        closeFocusedWindow();
-    }
-});
-
 
 
 /**
