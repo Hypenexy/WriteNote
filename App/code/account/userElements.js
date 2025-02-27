@@ -14,11 +14,13 @@ function getUserPfpURL(userData, element){
 
 function createPfpElement(){
     const element = document.createElement("img");
-    if(logonData.user.Avatar){
-        element.src = `${WriteNoteServer}/avatar/${logonData.user.Avatar}.jpg`;
-    }
-    else{
-        element.src = WriteNoteServer+"/ui/pfp.png";
+    if(logonData.user){
+        if(logonData.user.Avatar){
+            element.src = `${WriteNoteServer}/avatar/${logonData.user.Avatar}.jpg`;
+        }
+        else{
+            element.src = WriteNoteServer+"/ui/pfp.png";
+        }
     }
     avatarElements.push(element);
 
@@ -30,11 +32,13 @@ function createUserBannerElement(){
     banner.classList.add("banner");
     bannerElements.push(banner);
 
-    if(logonData.user.Avatar){
-        banner.style.setProperty("background-image", `url(${WriteNoteServer}/avatar/${logonData.user.Avatar}.jpg)`);
-    }
-    else{
-        banner.style.setProperty("background-image", "./images");
+    if(logonData.user){
+        if(logonData.user.Avatar){
+            banner.style.setProperty("background-image", `url(${WriteNoteServer}/avatar/${logonData.user.Avatar}.jpg)`);
+        }
+        else{
+            banner.style.setProperty("background-image", "./images");
+        }
     }
     // banner.style.setProperty("background-image", url);
     // banner.src = WriteNoteServer+"/ui/banner.jpg";
@@ -80,7 +84,9 @@ function initMiniProfileMenu(){
     banner.appendChild(pfp);
 
     const nameBio = mdutils.createAppendElement("nameBio", banner);
-    nameBio.innerHTML = `<p>${logonData.user.Username}</p><p>${(logonData.user.Bio) ? logonData.user.Bio : logonData.user.Email}</p>`;
+    if(logonData.user){
+        nameBio.innerHTML = `<p>${logonData.user.Username}</p><p>${(logonData.user.Bio) ? logonData.user.Bio : logonData.user.Email}</p>`;
+    }
 
     var switchBtn = mdutils.createAppendElement("button", banner);
     switchBtn.classList.add("m-i");
