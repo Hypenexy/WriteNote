@@ -116,7 +116,7 @@ function openSettings(section){
             case "admin":
                 openMain("admin");
             default:
-                btns[0].click();
+                // btns[0].click();
                 break;
         }
     }
