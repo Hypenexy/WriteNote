@@ -1,5 +1,11 @@
 const mysql = require("./../databases/mysql");
-const apiKeys = require('./APIKeys.json');
+const log = require("./../interface/log");
+var apiKeys;
+try {
+    apiKeys = require('./APIKeys.json');
+} catch{
+    log("i", "Weather API keys are not set. Users won't recieve weather info.");
+}
 const fs = require("fs");
 
 function getRandomArbitrary(min, max) {
@@ -15,6 +21,9 @@ async function getWeatherImage(data) {
 }
 
 async function getWeather(userIP, UID){
+    if(!apiKeys){
+        return;
+    }
     var lat, lon;
     if(userIP){
         const ipServer = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKeys["geo.api"]}&ip=${userIP}`;

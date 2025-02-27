@@ -155,16 +155,7 @@ function contextMenu(type){
             element();   
         }
 
-        // function ESC_Close(event){
-        //     if(event.code == "Escape"){
-        //         const allContextMenus = app.querySelectorAll(".contextMenu"); // test for performance
-        //         if(allContextMenus.length > 0){
-        //             allContextMenus[0].remove();
-        //         }
-        //         event.stopPropagation();
-        //     }
-        // }
-        // document.addEventListener("keydown", ESC_Close);
+        escapeStack.push([contextMenu.node, contextMenu.removeElement]);
         
         const allContextMenus = app.querySelectorAll(".contextMenu"); // test for performance
         if(allContextMenus.length > 0){
@@ -208,8 +199,7 @@ function contextMenu(type){
 
     contextMenu.remove = (event) => {
         if(!contextMenu.node.classList.contains("hide")){
-            var animationDuration = contextMenu.node.computedStyleMap().get('animation-duration');
-            animationDuration = animationDuration ? animationDuration : 0.1;
+
             
             var boundingRect = contextMenu.node.getBoundingClientRect();
             if(
@@ -219,24 +209,27 @@ function contextMenu(type){
                 return;
             }
             
-
-            // var composedPath = event.composedPath();
-            // if(composedPath.includes(contextMenu.node) || composedPath.some(r=> contextMenu.submenus.includes(r))){
-            // this is way too slow!
-            if(event.target == contextMenu.node || contextMenu.submenus.includes(event.target)){
+            if(contextMenu.submenus.includes(event.target)){
                 return;
             }
-            for (let i = 0; i < contextMenu.submenus.length; i++) {
-                const element = contextMenu.submenus[i];
-                if(element.classList.contains("visible")){
-                    hideSubmenu(element);
-                }
-            }
-            contextMenu.node.classList.add("hide");
-            setTimeout(() => {
-                contextMenu.node.remove();
-            }, animationDuration * 1000);
+
+            contextMenu.removeElement();
         }
+    }
+    contextMenu.removeElement = () => {
+        var animationDuration = contextMenu.node.computedStyleMap().get('animation-duration');
+        animationDuration = animationDuration ? animationDuration : 0.1;
+    
+        for (let i = 0; i < contextMenu.submenus.length; i++) {
+            const element = contextMenu.submenus[i];
+            if(element.classList.contains("visible")){
+                hideSubmenu(element);
+            }
+        }
+        contextMenu.node.classList.add("hide");
+        setTimeout(() => {
+            contextMenu.node.remove();
+        }, animationDuration * 1000);
     }
 
     return contextMenu;

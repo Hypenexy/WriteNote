@@ -196,7 +196,7 @@ function topElement(element){
         }
         sortButton.innerHTML = `<i>sort</i> <div><p>${locale.sort_by}</p><p>${locale[currentSort]}</p></div>`;
         var sortMenu = contextMenu();
-        document.addEventListener("click", sortMenu.remove);
+        // document.addEventListener("click", sortMenu.remove);
     
         var indexCurrentSort = sortsInfo.sorts.indexOf(currentSort);
     
@@ -292,7 +292,7 @@ function topElement(element){
         }
         viewButton.innerHTML = `<i>view_carousel</i> <div><p>${locale.view_as}</p><p>${locale[currentView]}</p></div>`;
         var viewMenu = contextMenu();
-        document.addEventListener("click", viewMenu.remove);
+        // document.addEventListener("click", viewMenu.remove);
     
         // var indexCurrentView = views.sorts.indexOf(currentView);
     

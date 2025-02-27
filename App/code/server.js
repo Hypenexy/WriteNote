@@ -49,6 +49,7 @@ socket.on("logon", (data) => {
     else{
         // openSettings();
         showWelcome(data);
+        // openSettings("admin");
         // openChat() //temp design
     }
 
