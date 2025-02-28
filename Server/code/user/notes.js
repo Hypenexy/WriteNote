@@ -184,6 +184,12 @@ async function openNote(UID, data, callback, socket){
     callback("success");
 }
 
+function closeNote(UID, NID){
+    socket.leave(data.NID);
+
+    socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: data.NID});
+}
+
 async function openMultipleNotes(UID, data, callback, socket){
     var contents = [];
     for (let i = 0; i < data.NIDs.length; i++) {
@@ -292,6 +298,9 @@ module.exports.protocol = (data, callback, socket, clientInfo, clientsReference,
     }
     if(data.type == "save"){
         saveNote(clientInfo.UID, data, callback, socket);
+    }
+    if(data.type == "close"){
+
     }
 }
 

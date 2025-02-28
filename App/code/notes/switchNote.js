@@ -1,3 +1,5 @@
+var lastActiveNID;
+
 function switchNote(NID){
     if(activeNID){
         openNotes[activeNID].content = writenote.getData();
@@ -10,5 +12,6 @@ function switchNote(NID){
         // else{ Commenting this line out fixed the issue. It took me around 30 mins to read my own code...
             // writenote.setData("", openNotes[NID].type);
         // }
+        lastActiveNID = activeNID;
     }
 }

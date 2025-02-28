@@ -125,13 +125,22 @@ var locale = {
     canvas: "Canvas",
     canvas_description: "Draw collaborately",
 
+    
     save: "Save",
     rename: "Rename",
     move_to_bin: "Move to Bin",
     close: "Close",
+
     note_is_saved: "Note is saved",
     note_isnt_saved: "Note isn't saved",
     unsaved_changes: "Unsaved changes",
+
+    note_saving_error: "Note couldn't be saved",
+    couldnt_connect: "Lost connection to server",
+    no_space: "You don't have space to save",
+    no_access: "You don't have access to save",
+    unknown_error: "Unknown error",
+
 
     years: "years",
     months: "months",
@@ -176,4 +185,7 @@ var locale = {
     create_join_room_share: "Create or join a room to share",
     create_room: "Create a room",
     join_room: "Join a room",
+
+    unsaved_progress: "Unsaved progress",
+    dont_save: "Don't save",   
 }

@@ -1,0 +1,8 @@
+.areYouSure .text{
+    text-align: center;
+}
+
+.areYouSure .buttons{
+    display: flex;
+    /* flex-direction: row; */
+}

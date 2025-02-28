@@ -25,6 +25,7 @@
 .headerDropdown .buttonsRow{
     display: flex;
     gap: 4px;
+    justify-content: center;
 }
 .headerDropdown .buttonsRow i{
     font-size: 20px;

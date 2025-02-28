@@ -34,6 +34,7 @@ function saveNote(NID){
             content: content
         },
         (response) => {
+            console.log(response); // it didn't work ONCE?
             if(response.success){
                 openNotes[NID].saved = true;
                 changeHeaderNote(NID, {type: "saveChange"});
