@@ -140,6 +140,9 @@ header .note i.status.hide{
 header .note i.unsaved{
     color: var(--unsaved);
 }
+header .note i.error{
+    color: var(--error-color);
+}
 header .note i.binned{
     color: #ff6565;
 }
@@ -161,6 +164,19 @@ header .note .line{
     border: 1px solid var(--blue);
     border-radius: 99px;
 }
+
+@media (resolution: 1.25dppx) {
+    header .note .line{
+        border: 2px solid var(--blue);
+    }
+    header .note.unsaved .line{
+        border: 2px solid var(--unsaved);
+    }
+    header .note.error .line{
+        border: 2px solid var(--error-color);
+    }
+}
+
 header .note.active .line{
     opacity: 1;
 }

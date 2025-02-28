@@ -23,7 +23,7 @@ function notelistDropdown(element, NID){
     
     var button_icons = ["save", "edit", "delete", "close"];
     var button_locales = ["save", "rename", "move_to_bin", "close"];
-    var button_actions = [() => { saveNote(NID) }, () => {}, () => {}, () => {}];
+    var button_actions = [() => { saveNote(NID) }, () => {}, () => {}, () => { closeNote(NID) }];
 
     for (let i = 0; i < button_icons.length; i++) {
         const icon = button_icons[i];
@@ -59,6 +59,7 @@ function notelistDropdown(element, NID){
 
         if(dropdownElement.node.parentElement != app){
             dropdownElement.append(event, element);
+            dropdownElement.node.style.setProperty("top", dropdownElement.node.style.getPropertyValue("top").slice(0, 2)*1 + 10 + "px");
         }
     }
 

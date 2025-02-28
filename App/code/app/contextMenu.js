@@ -139,7 +139,9 @@ function contextMenu(type){
      * if context clicked will spawn the menu
      */
     contextMenu.attach = (element) =>{
-        element.addEventListener("contextmenu", contextMenu.append);
+        if(element){
+            element.addEventListener("contextmenu", contextMenu.append);
+        }
         document.addEventListener("click", contextMenu.remove);
     }
 
@@ -161,8 +163,10 @@ function contextMenu(type){
         if(allContextMenus.length > 0){
             allContextMenus[0].remove();
         }
-        event.stopPropagation();
-        event.preventDefault();
+        if(event){
+            event.stopPropagation();
+            event.preventDefault();
+        }
         if(contextMenu.node.classList.contains("hide")){
             contextMenu.node.classList.remove("hide");
         }

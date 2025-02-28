@@ -35,11 +35,11 @@ function addHeaderNote(NID, note){
     notelistDropdown(element, NID);
 
     mdutils.ButtonEvent(closeButton, function(e){
-        // e.stopPropagation();
+        e.stopPropagation();
         // if(headerDropdown.innerHTML != ""){
         //     hideHeaderDropdown(true);
         // }
-        // closeNote(element, noteData);
+        closeNote(NID, element);
     }, null, true);
 
     // element.addEventListener("contextmenu", (e) => {
@@ -73,6 +73,17 @@ function removeIconHeaderNote(headerElement, customClass){
 }
 
 function changeHeaderNote(NID, options){
+    if(options.type == "error"){
+        var element = noteList.querySelector(`[NID="${NID}"]`);
+        if(options.status == true){
+            element.classList.add("error");
+            addIconHeaderNote(element, "warning", locale.note_saving_error, "error");
+        }
+        else{
+            element.classList.remove("error");
+            removeIconHeaderNote(element, "error");
+        }
+    }
     if(options.type == "saveChange"){
         var element = noteList.querySelector(`[NID="${NID}"]`);
         if(openNotes[NID].saved){
