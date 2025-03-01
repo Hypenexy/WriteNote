@@ -184,10 +184,11 @@ async function openNote(UID, data, callback, socket){
     callback("success");
 }
 
-function closeNote(UID, NID){
-    socket.leave(data.NID);
-
-    socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: data.NID});
+function closeNote(UID, NID, socket){
+    socket.leave(NID);
+    console.log(NID, UID);
+    console.log("KURSUCCESS!");
+    socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: NID});
 }
 
 async function openMultipleNotes(UID, data, callback, socket){
@@ -300,7 +301,7 @@ module.exports.protocol = (data, callback, socket, clientInfo, clientsReference,
         saveNote(clientInfo.UID, data, callback, socket);
     }
     if(data.type == "close"){
-
+        closeNote(clientInfo.UID, data, socket);
     }
 }
 

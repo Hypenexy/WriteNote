@@ -1,7 +1,7 @@
 const sql = require("./../databases/mysql");
 const bcrypt = require('bcrypt');
 
-async function key(clientInfo, data, callback){
+async function key(clientInfo, data, callback, socket){
     const adminResult = await sql.midelightDB.query(`SELECT \`Key\` FROM admins WHERE UID = ${sql.midelightDB.escape(clientInfo.UID)}`);
     console.log(adminResult);
     if(adminResult[0].length > 0){
@@ -23,7 +23,7 @@ async function key(clientInfo, data, callback){
 
 module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {
     if(data.type == "key"){
-        key(clientInfo, data, callback);
+        key(clientInfo, data, callback, socket);
     }
 
     if(clientInfo.admin == true){
