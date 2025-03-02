@@ -8,3 +8,17 @@
     border-radius: 0px;
 }
 
+.admin .keyStatus.hide{
+    animation: adminHide .3s ease-in-out;
+}
+
+.admin input.hide{
+    animation: adminHide .3s ease-in-out;
+}
+
+@keyframes adminHide {
+    to{
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}

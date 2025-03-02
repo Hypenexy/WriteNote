@@ -48,8 +48,14 @@ socket.on("logon", (data) => {
     }
     else{
         // openSettings();
+
         showWelcome(data);
-        // openSettings("admin");
+
+        // openSettings("admin"); // Simulation to enter admin panel on live reload
+        // const input = app.querySelector("input[placeholder='Key']");
+        // input.value = "ok";
+        // input.dispatchEvent(new KeyboardEvent("keydown", {'key': "Enter"}));
+
         // openChat() //temp design
     }
 

@@ -230,10 +230,15 @@ function contextMenu(type){
                 hideSubmenu(element);
             }
         }
+        function remove(){
+            contextMenu.node.remove()
+            contextMenu.node.removeEventListener("animationend", remove);
+        }
+        contextMenu.node.addEventListener("animationend", remove);
         contextMenu.node.classList.add("hide");
-        setTimeout(() => {
-            contextMenu.node.remove();
-        }, animationDuration * 1000);
+        // setTimeout(() => {
+        //     contextMenu.node.remove();
+        // }, animationDuration * 1000);
     }
 
     return contextMenu;

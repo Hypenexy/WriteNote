@@ -28,7 +28,18 @@ function loadAdminPanel(){
     element.appendChild(inputKey);
 
     function loadDashboard(){
-        // load admin
+        var elements = element.querySelectorAll("*");
+        for (let i = 0; i < elements.length; i++) {
+            const element = elements[i];
+            element.classList.add("hide");
+            element.onanimationend = () => {
+                element.remove();
+            }
+        }
+
+        // const weatherFullImage = document.createElement("img");
+        // weatherFullImage.src = WriteNoteServer+'/weather/'+logonData.weather.image;
+        // element.appendChild(weatherFullImage);
     }
 
     return element;
