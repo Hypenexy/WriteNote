@@ -14,21 +14,39 @@ function closeNote(NID, element){
 
         delete logonData.notes[NID].content;
         delete logonData.notes[NID].saved;
+
+        if(activeNID == NID && headerElements.length == 1){
+            writenote.setData("", "note");
+            writenote.enabled(false);
+        }
         
         if(activeNID != NID){
             return;
         }
+
+        if(headerElements.length == 1)
+            return;
         
         if(lastActiveNID){
             switchNote(lastActiveNID);
         }
         
-        
+        var indexOfElement;
         for (let i = 0; i < headerElements.length; i++) {
             const element = headerElements[i];
-            console.log(headerElement == element);
+            if(headerElement == element){
+                indexOfElement = i;
+            }
         }
-        console.log(headerElements.indexOf(headerElement))
+
+        var nextOrPreviousNID;
+        if(headerElements.length > indexOfElement+1){
+            nextOrPreviousNID = headerElements[indexOfElement+1].getAttribute("NID");
+        }
+        else{
+            nextOrPreviousNID = headerElement[indexOfElement-1].getAttribute("NID");
+        }
+        switchNote(nextOrPreviousNID);
     }
     if(openNotes[NID].saved == false){
         const areYouSure = contextMenu();
@@ -50,7 +68,7 @@ function closeNote(NID, element){
             buttons.appendChild(element);
         }
 
-        createButton("save", locale.save, () => { saveNote(NID);justClose();areYouSure.removeElement() });
+        createButton("save", locale.save, () => { saveNote(NID);justClose();areYouSure.removeElement() }); // i need to modify this part to await to save the note! callback wouldnt be bad.
         createButton("close", locale.dont_save, () => { justClose();areYouSure.removeElement() });
         createButton("cancel", locale.cancel, areYouSure.removeElement);
 

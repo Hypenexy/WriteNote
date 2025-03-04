@@ -60,16 +60,23 @@ function loadHeader(){
     const pfpURL = getUserPfpURL(logonData.user, imgElement);
     imgElement.src = pfpURL;
     profile.appendChild(imgElement);
-    mdutils.ButtonEvent(profile, function(e){
-        e.stopPropagation();
-        const element = document.createElement("div");
-        const closeNotebtn = mdutils.createAppendElement("btn", element);
-        closeNotebtn.innerText = "Close";
-        mdutils.ButtonEvent(closeNotebtn, function(){
+    // mdutils.ButtonEvent(profile, function(e){
+    //     e.stopPropagation();
+    //     const element = document.createElement("div");
+    //     const closeNotebtn = mdutils.createAppendElement("btn", element);
+    //     closeNotebtn.innerText = "Close";
+    //     mdutils.ButtonEvent(closeNotebtn, function(){
             
-        });
-        showHeaderDropdown("account", profile, element);
-    }, null, true);
+    //     });
+    //     showHeaderDropdown("account", profile, element);
+    // }, null, true);
+    
+    gestureElement(profile, null, {
+        contextMenu: profileMenu,
+        direction: "down",
+        diff: 300
+    });
+    
 
     openProfileMenuBind(profile);
 
