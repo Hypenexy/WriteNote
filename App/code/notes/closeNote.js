@@ -3,7 +3,7 @@ function closeNote(NID, element){
         socket.emit("notes", {
             type: "close",
             NID: NID
-        });
+        }, ()=>{});
 
 
         var headerElement = header.querySelector(`[NID="${NID}"]`);

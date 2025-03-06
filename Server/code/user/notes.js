@@ -186,8 +186,6 @@ async function openNote(UID, data, callback, socket){
 
 function closeNote(UID, NID, socket){
     socket.leave(NID);
-    console.log(NID, UID);
-    console.log("KURSUCCESS!");
     socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: NID});
 }
 
