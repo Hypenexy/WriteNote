@@ -1,0 +1,32 @@
+.deviceContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.deviceContainer .device{
+    flex: 1 0 21%;
+    /* box-shadow: 0 0 3px var(--offline-device); */
+    border: 1px solid var(--offline-device);
+    
+    border-radius: 12px;
+    padding: 4px;
+
+    animation-name: deviceFadeIn;
+    animation-duration: .3s;
+}
+
+@keyframes deviceFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {}
+}
+
+.deviceContainer .device p{
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    align-items: center;
+}

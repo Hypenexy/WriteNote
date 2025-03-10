@@ -142,12 +142,14 @@ function initiateServer(){
     });
     
     
-    const usageTime = require("./code/user/usageTime");
-    const session = require("./code/user/session");
-    const notes = require("./code/user/notes");
-    const admin = require("./code/admin/admin");
-    const weather = require("./code/user/weather");
-    const chat = require("./code/chat");
+    const usageTime = require("./code/user/usageTime"),
+        session = require("./code/user/session"),
+        notes = require("./code/user/notes"),
+        admin = require("./code/admin/admin"),
+        weather = require("./code/user/weather"),
+        chat = require("./code/chat"),
+        forensic = require("./code/user/forensic"),
+        devices = require("./code/devices");
     
     io.on('connection', async (socket) => {
         const connectDate = Date.now();
@@ -201,7 +203,7 @@ function initiateServer(){
                 loadedProtocols = true;
                 socket.join(UID);
                 require("./code/user/logon")(socket, UID, notes, weather, clientInfo);
-                require("./code/user/userProtocols")(socket, clientInfo, chat, clients, io, notes);
+                require("./code/user/userProtocols")(socket, clientInfo, chat, clients, io, notes, sessionId, forensic, devices);
                 require("./code/admin/adminProtocols")(socket, clientInfo, clients, io, admin);
             }
         }

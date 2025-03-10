@@ -97,4 +97,9 @@
 
     /* Canvas */
     /* --writenote-canvas-bg: #444; */
+
+    /* Device list */
+    --you-device: #272147;
+    --online-device: #21d03e;
+    --offline-device: #ad1f1f;
 }

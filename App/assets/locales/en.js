@@ -180,6 +180,7 @@ var locale = {
     log_out: "Log out",
 
     settings: "Settings", // Could be "preferences"
+    devices: "Devices",
 
 
     create_join_room_share: "Create or join a room to share",

@@ -74,6 +74,11 @@ function openSettings(section){
             mdutils.ButtonEvent(button, changeAvatar);
         }
 
+        if(setting.type == "devices"){
+            const devicesElement = createDevicesElement();
+            element.appendChild(devicesElement);
+        }
+
         return element;
     }
 
@@ -141,6 +146,10 @@ const settings_keys = {
             change_avatar: {
                 label: "change_avatar",
                 type: "avatar"
+            },
+            devices: {
+                label: "devices",
+                type: "devices"
             }
         }
     },
