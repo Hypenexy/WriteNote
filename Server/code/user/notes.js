@@ -4,6 +4,7 @@ const fs = require("fs");
 // const socketStream = require("socket.io-stream");
 const gitDiff = require('git-diff');
 const { convert } = require('html-to-text');
+const { createHash } = require('crypto');
 
 /**
  * Gets the user's notes as a list.
@@ -166,6 +167,11 @@ async function openNote(UID, data, callback, socket){
 
     socket.broadcast.to(UID).emit('notesInfo', {type: "opened", NID: data.NID});
 
+    if(data.offlineLoad == true){
+        callback("success offline");
+        return;
+    }
+
     const noteDir = `userdata/${UID}/${data.NID}`;
     const noteDirIndex = `${noteDir}/${(data.version) ? data.version : "0"}`;
     
@@ -265,6 +271,9 @@ async function saveNote(UID, data, callback, socket) {
     var summary = convert(data.content.slice(0, 30)).slice(0, 20);
     const dateNow = Date.now();
 
+    // Create a hash
+    var noteHash = createHash('sha256').update(data.content).digest('hex');
+
     const updateResult = await collection.updateOne(
         { _id: UID, [`notes.${data.NID}`]: {$exists: true} },
         {
@@ -272,7 +281,8 @@ async function saveNote(UID, data, callback, socket) {
                 [`notes.${data.NID}.date_modified`]: dateNow,
                 [`notes.${data.NID}.size`]: size,
                 [`notes.${data.NID}.v`]: newVersion,
-                [`notes.${data.NID}.summary`]: summary
+                [`notes.${data.NID}.summary`]: summary,
+                [`notes.${data.NID}.hash`]: noteHash
             } 
         }
     );

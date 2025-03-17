@@ -1,4 +1,4 @@
-function saveNote(NID){
+async function saveNote(NID){
     if(openNotes[NID].saved == false){
         // changeHeaderNote(NID, {type: "saveChange"});
 
@@ -28,6 +28,19 @@ function saveNote(NID){
             content = JSON.stringify(content);
         }
 
+        // Create hash
+        var hash = await sha256(content);
+
+        // Remove last if exists
+        const key = localStorage.getItem(NID);
+        localStorage.removeItem(key);
+
+        var encryptedData = CryptoJS.AES.encrypt(content, logonData.user.Password);
+        
+        // Create new cache
+        localStorage.setItem(NID, hash);
+        localStorage.setItem(hash, encryptedData);
+
         socket.emit("notes", {
             type: "save",
             NID: NID,
@@ -52,7 +65,7 @@ window.addEventListener("keydown", function(e){
 
 writenote.notearea.addEventListener("input", () => {
     if(openNotes[activeNID].saved == true){
-        openNotes[activeNID].saved = false;
+        openNotes[activeNID].saved = false; 
         changeHeaderNote(activeNID, {type: "saveChange"});
     }
 });

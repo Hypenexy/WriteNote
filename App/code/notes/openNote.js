@@ -12,11 +12,29 @@ function openNote(NID, note){
     note.date_opened = Date.now();
     note.saved = true;
 
+    var hash = localStorage.getItem(NID),
+        offlineLoad = false;
+
+    if(hash){
+        offlineLoad = true;
+        var encryptedData = localStorage.getItem(hash);
+        var decryptedData = CryptoJS.AES.decrypt(encryptedData, logonData.user.Password);
+        var content = decryptedData.toString(CryptoJS.enc.Utf8);
+        if(note.type != "note" && content){
+            content = JSON.parse(content);
+        }
+        writenote.setData(content, note.type);
+    }
+
     socket.emit("notes", {
         type: "open",
-        NID: NID
+        NID: NID,
+        offlineLoad: offlineLoad
     },
     response => {
+        if(response == "success offline"){
+            return;
+        }
         var enc = new TextDecoder("utf-8");
         var content = enc.decode(response.content);
 
@@ -25,8 +43,6 @@ function openNote(NID, note){
         }
 
         writenote.setData(content, note.type);
-        // if(content){
-        // }
     });
 }
 
