@@ -102,4 +102,9 @@
     --you-device: #272147;
     --online-device: #21d03e;
     --offline-device: #ad1f1f;
+
+    /* FileShare */
+    --profile-bg: #1d1d1d;
+    --profile-bg-hover: #252525;
+    --profile-bg-active: #3d3d3d;
 }

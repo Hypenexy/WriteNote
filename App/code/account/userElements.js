@@ -139,3 +139,19 @@ function addUserOnlineStatusElement(element){
     userOnlineStatusElements.push(element);
     element.classList.add(userOnlineStatus);
 }
+
+function createProfileElement(){
+    const element = document.createElement("div");
+    element.classList.add("profile");
+
+    openProfileMenuBind(element);
+
+    const pfp = createPfpElement();
+    element.appendChild(pfp);
+
+    const name = document.createElement("span");
+    name.innerHTML = logonData.user.Username;
+    element.appendChild(name);
+
+    return element;
+}

@@ -186,7 +186,12 @@ var locale = {
     create_join_room_share: "Create or join a room to share",
     create_room: "Create a room",
     join_room: "Join a room",
+    server_connection_online: "Server connection online",
+    server_connection_offline: "Server connection offline",
+    peer_to_peer: "Peer-to-Peer",
+    server_pass: "Server passthrough",
+    server_host: "Host a server",
 
     unsaved_progress: "Unsaved progress",
-    dont_save: "Don't save",   
+    dont_save: "Don't save",
 }

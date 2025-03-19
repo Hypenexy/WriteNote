@@ -50,6 +50,10 @@ var http, server;
 // }
 // else{
 
+// QR Codes
+const QRCodes = require("./code/user/QRCodes");
+
+// Init server
 http = require('http');
 
 const images = require("./code/images");

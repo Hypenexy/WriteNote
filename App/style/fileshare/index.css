@@ -2,8 +2,12 @@
     display: flex;
 }
 
-.window.fileshare .share{
+.window.fileshare .main{
     flex: 1;
+}
+.window.fileshare .share{
+    height: 100%;
+    width: 100%;
 
     display: flex;
     justify-content: center;
@@ -22,5 +26,93 @@
 
 
 .window.fileshare .options{
-    min-width: 100px;
+    padding: 8px;
+    width: 240px;
+}
+
+.window.fileshare .options > div{
+    width: 100%;
+    background-color: var(--profile-bg);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.window.fileshare .options > div{
+    animation-name: reverse_hideShare;
+    animation-duration: .5s;
+    /* animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1); */
+    animation-fill-mode: forwards;
+}
+
+.window.fileshare .options > div:nth-child(2){
+    animation-delay: .05s;
+    opacity: 0;
+}
+.window.fileshare .options > div:nth-child(3){
+    animation-delay: .1s;
+    opacity: 0;
+}
+
+.window.fileshare .options .profile{
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: .1s;
+}
+
+.window.fileshare .options .profile:hover,
+.window.fileshare .options .profile:focus-visible{
+    background-color: var(--profile-bg-hover);
+}
+.window.fileshare .options .profile:active{
+    background-color: var(--profile-bg-active);
+}
+
+.window.fileshare .options .profile img{
+    width: 48px;
+    height: 48px;
+    border-radius: 99px;
+}
+
+
+.window.fileshare .share.hide{
+    animation-name: hideShare;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(.75,0,1,1);
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideShare {
+    to{
+        transform: translateY(40px);
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+@keyframes reverse_hideShare {
+    from{
+        transform: translateY(40px);
+        opacity: 0;
+        pointer-events: none;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+@keyframes showRoom {
+    from{
+        transform: translateY(-40px);
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+.window.fileshare .room{
+    animation-name: showRoom;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(0,0,.25,1);
 }

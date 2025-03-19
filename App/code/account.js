@@ -341,8 +341,10 @@ function createRegisterMenu(){
                     // socket.connect()
                 }
             });
-            
         }
+
+        const qrCodeContainer = createQRCode();
+        form.appendChild(qrCodeContainer);
 
         const signButton = createSignButton(submitLogin);
         signButton.textContent = locale.sign_in;

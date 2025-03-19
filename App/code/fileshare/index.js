@@ -4,7 +4,8 @@ function openFileShare(){
         return;
     }
 
-    const share = mdutils.createAppendElement("share", windowElement);
+    const main = mdutils.createAppendElement("main", windowElement);
+    const share = mdutils.createAppendElement("share", main);
 
     var textElement = document.createElement("h2");
     textElement.textContent = locale.create_join_room_share;
@@ -12,14 +13,41 @@ function openFileShare(){
 
     const createbtn = mdutils.createAppendElement("button", share);
     createbtn.textContent = locale.create_room;
+    mdutils.ButtonEvent(createbtn, ()=>{
+        share.classList.add("hide");
+        share.onanimationend = () => {
+            share.remove();
+            createRoom(main);
+        }
+    });
 
     const joinbtn = mdutils.createAppendElement("button", share);
     joinbtn.textContent = locale.join_room;
 
     const options = mdutils.createAppendElement("options", windowElement);
-    options.innerHTML = "HeY";
     
+    const serverElement = serverStatusElement();
+    options.appendChild(serverElement);
 
+    const profileElement = createProfileElement();
+    options.appendChild(profileElement);
+}
+
+function createRoom(main){
+    const element = document.createElement("div");
+    element.classList.add("room");
+    
+    const select_Method = createSelect();
+    select_Method.addOption("WebRTC", locale.peer_to_peer);
+    select_Method.addOption("Server", locale.server_pass);
+    select_Method.addOption("Host", locale.server_host);
+    element.appendChild(select_Method);
+
+    const test = createPfpElement();
+    test.style.width = "50%";
+    element.appendChild(test);
+
+    main.prepend(element);
 }
 
 
