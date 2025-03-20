@@ -1,0 +1,43 @@
+.select{
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    color: #eee;
+    background: #222;
+    border: 1px solid #333;
+    padding: 8px;
+    border-radius: 8px;
+    padding-right: 28px;
+    transition: .1s;
+}
+.select:hover, .select:focus-visible{
+    border: 1px solid #555;
+}
+.select:active{
+    background: #555;
+}
+.select i{
+    position: absolute;
+    top: 5px;
+}
+
+.selectMenu .btn.hide{
+    animation-name: hideSelectOption;
+    animation-duration: .2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideSelectOption {
+    from{
+        position: absolute;
+        pointer-events: none;
+    }
+    to{
+        position: absolute;
+        pointer-events: none;
+
+        transform: translateX(20px);
+        opacity: 0;
+    }
+}

@@ -194,4 +194,6 @@ var locale = {
 
     unsaved_progress: "Unsaved progress",
     dont_save: "Don't save",
+
+    search_the_list: "Search the list",
 }

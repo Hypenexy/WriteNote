@@ -138,8 +138,14 @@ function contextMenu(type){
      * @param {HTMLElement} element An html element that
      * if context clicked will spawn the menu
      */
-    contextMenu.attach = (element) =>{
-        if(element){
+    contextMenu.attach = (element, toElement, leftClick) => {
+        if(toElement){
+            element.addEventListener("contextmenu", (event) => {contextMenu.append(event, toElement)});
+            if(leftClick){
+                element.addEventListener("click", (event) => {contextMenu.append(event, toElement)});
+            }
+        }
+        else{
             element.addEventListener("contextmenu", contextMenu.append);
         }
         document.addEventListener("click", contextMenu.remove);

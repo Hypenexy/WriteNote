@@ -37,10 +37,12 @@ function createRoom(main){
     const element = document.createElement("div");
     element.classList.add("room");
     
-    const select_Method = createSelect();
-    select_Method.addOption("WebRTC", locale.peer_to_peer);
-    select_Method.addOption("Server", locale.server_pass);
-    select_Method.addOption("Host", locale.server_host);
+    var options = [
+        ["WebRTC", locale.peer_to_peer],
+        ["Server", locale.server_pass],
+        ["Host", locale.server_host]
+    ]
+    const select_Method = createSelect(options);
     element.appendChild(select_Method);
 
     const test = createPfpElement();
