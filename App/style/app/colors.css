@@ -79,6 +79,8 @@
     /* WriteNote colors */
     --writenote: #222242;
     --wn-unloaded: #050505;
+    
+    --caret: #c4e4ff;
 
     /* Header */
     --line-text: #111;

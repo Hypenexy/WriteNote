@@ -26,35 +26,27 @@ class WriteNote{
 
         // Init editor
         
-        this.notearea.contentEditable = true;
+        // this.notearea.contentEditable = true;
         this.notearea.tabIndex = '0';
         this.enabled(false);
 
         this.writenote.appendChild(this.notearea);
         app.appendChild(this.writenote);
         
-        // Select all
-        function SelectAll(){
-            window.getSelection().selectAllChildren(this.notearea);
-            this.notearea.focus();
-        }
+        // // Select all
+        // function SelectAll(){
+        //     window.getSelection().selectAllChildren(this.notearea);
+        //     this.notearea.focus();
+        // }
         
-        this.notearea.addEventListener('click', function (e){
-            if(e.detail === 3){
-                if(e.target.classList[0] == "notearea" || e.target.nodeName == "P"){
-                    e.preventDefault();
-                    SelectAll();
-                }
-            }
-        });
-
-        // First line in editor
-        var initP = document.createElement("p");
-        initP.innerHTML = "<br>";
-        this.notearea.appendChild(initP);
-        // this.lastSave = this.data();
-
-
+        // this.notearea.addEventListener('click', function (e){
+        //     if(e.detail === 3){
+        //         if(e.target.classList[0] == "notearea" || e.target.nodeName == "P"){
+        //             e.preventDefault();
+        //             SelectAll();
+        //         }
+        //     }
+        // });
     }
 
     
@@ -91,24 +83,6 @@ class WriteNote{
 
     setData(data, type){
         this.setWorkplace(data, type);
-        if(this.workspaceData.type != "note"){
-            return;
-        }
-        if(data){
-            this.notearea.innerHTML = data;
-        }
-        else{
-            this.notearea.innerHTML = "";
-            var initP = document.createElement("p");
-            initP.innerHTML = "<br>";
-            this.notearea.appendChild(initP);
-        }
-        
-        // if(this.workspaceData.type){
-        //     delete this.workspaceData.type;
-        //     this.setWorkplace(type);
-        // }
-        // this.workspaceData.type = type;
     }
 
     getData(){
@@ -138,7 +112,7 @@ class WriteNote{
     }
 
     loadEditor(data){
-        InitializeEditor(this.notearea, data);
+        InitializeEditor(data);
     }
 
     loadWorkplace_Webapp(){

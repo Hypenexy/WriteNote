@@ -5,7 +5,7 @@ function createMOTD(name){
     var now24 = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false });
     var hour = parseInt(now24.slice(0, 2));
     var welcomeMessage = locale.goodmorning; // From 6 to 12
-    if(hour>12&&hour<18){ // From 13:00 to 17:00
+    if(hour>11&&hour<18){ // From 12:00 to 17:00
         welcomeMessage = locale.goodafternoon;
     }
     if(hour>17&&hour<23){ // From 18:00 to 22:00
