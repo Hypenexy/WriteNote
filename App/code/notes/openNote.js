@@ -20,7 +20,7 @@ function openNote(NID, note){
         var encryptedData = localStorage.getItem(hash);
         var decryptedData = CryptoJS.AES.decrypt(encryptedData, logonData.user.Password);
         var content = decryptedData.toString(CryptoJS.enc.Utf8);
-        if(note.type != "note" && content){
+        if(content){
             content = JSON.parse(content);
         }
         writenote.setData(content, note.type);
@@ -38,7 +38,7 @@ function openNote(NID, note){
         var enc = new TextDecoder("utf-8");
         var content = enc.decode(response.content);
 
-        if(note.type != "note" && content){
+        if(content){
             content = JSON.parse(content);
         }
 
@@ -94,11 +94,8 @@ function openMultipleNotes(NIDs){
             var enc = new TextDecoder("utf-8");
             var content = enc.decode(element.content);
 
-            if(note.type != "note" && content){
+            if(content){
                 content = JSON.parse(content);
-            }
-            if(!content){
-                content = "<p><br></p>";
             }
             
             openNotesPush(NID, note);

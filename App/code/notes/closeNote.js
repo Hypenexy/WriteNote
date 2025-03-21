@@ -19,15 +19,19 @@ function closeNote(NID, element){
             writenote.setData("", "note");
             writenote.enabled(false);
         }
+
+        openNotesRemove(NID);
         
         if(activeNID != NID){
             return;
         }
+        
+        activeNID = undefined;
 
         if(headerElements.length == 1)
             return;
         
-        if(lastActiveNID){
+        if(lastActiveNID != NID){
             switchNote(lastActiveNID);
         }
         

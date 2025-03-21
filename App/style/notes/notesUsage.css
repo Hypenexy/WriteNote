@@ -1,0 +1,50 @@
+.notesUsage .bar{
+    width: 100%;
+    background-color: var(--input-bg);
+    padding: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.notesUsage .bar > div{
+    position: relative;
+    display: inline-block;
+    height: 12px;
+    text-align: center;
+}
+.notesUsage .bar > div:first-child .color{
+    border-radius: 99px 0 0 99px;
+}
+.notesUsage .bar > div:last-child .color{
+    border-radius: 0 99px 99px 0;
+}
+.notesUsage .bar > div span{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+.notesUsage .bar > div .color{
+    width: 100%;
+    height: 12px;
+    filter: brightness(2);
+}
+
+.notesUsage .detailedView{
+    flex-direction: column;
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+}
+
+.notesUsage .detailedView > div{
+    display: flex;
+    gap: 6px;
+}
+
+.notesUsage .detailedView .circle{
+    display: inline-block;
+    border-radius: 99px;
+    width: 16px;
+    height: 16px;
+    filter: brightness(2);
+}

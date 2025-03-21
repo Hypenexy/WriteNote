@@ -112,10 +112,7 @@ class WriteNote{
     }
 
     getData(){
-        if(this.workspaceData.type != "note"){
-            return this.workspaceData.state;
-        }
-        return this.notearea.innerHTML;
+        return this.workspaceData.state;
     }
 
     setWorkplace(data, type){
@@ -129,12 +126,19 @@ class WriteNote{
         }
         this.workspaceData.type = type;
 
+        if(type == "note"){
+            this.loadEditor(data);
+        }
         if(type == "web app"){
             this.loadWorkplace_Webapp();
         }
         if(type == "canvas"){
             this.loadWorkplace_Canvas(data);
         }
+    }
+
+    loadEditor(data){
+        InitializeEditor(this.notearea, data);
     }
 
     loadWorkplace_Webapp(){

@@ -79,6 +79,11 @@ function openSettings(section){
             element.appendChild(devicesElement);
         }
 
+        if(setting.type == "notesUsage"){
+            const notesUsage = createNotesUsageElement();
+            element.appendChild(notesUsage);
+        }
+
         return element;
     }
 
@@ -150,6 +155,10 @@ const settings_keys = {
             devices: {
                 label: "devices",
                 type: "devices"
+            },
+            notesUsage: {
+                label: "notesUsage",
+                type: "notesUsage"
             }
         }
     },

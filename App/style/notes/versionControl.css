@@ -1,0 +1,36 @@
+.versionControl{
+    z-index: 20;
+
+    position: absolute;
+    top: 50%;
+    height: 80%;
+    min-height: 200px;
+    right: 8px;
+    transform: translateY(-50%);
+
+    color: #eee;
+    background-color: #22448899;
+    backdrop-filter: blur(8px);
+
+    padding: 12px;
+    border-radius: 12px;
+
+    animation-name: versionShow;
+    animation-duration: .3s;
+}
+.versionControl.hide{
+    animation-name: versionHide;
+}
+
+@keyframes versionShow {
+    from{
+        transform: translateY(-50%)translateX(8px);
+        opacity: 0;
+    }
+}
+@keyframes versionHide {
+    to{
+        transform: translateY(-50%)translateX(8px);
+        opacity: 0;
+    }
+}

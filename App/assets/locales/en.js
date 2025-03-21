@@ -181,6 +181,7 @@ var locale = {
 
     settings: "Settings", // Could be "preferences"
     devices: "Devices",
+    notesUsage: "Notes usage",
 
 
     create_join_room_share: "Create or join a room to share",

@@ -146,7 +146,9 @@ function contextMenu(type){
             }
         }
         else{
-            element.addEventListener("contextmenu", contextMenu.append);
+            if(element){
+                element.addEventListener("contextmenu", contextMenu.append);
+            }
         }
         document.addEventListener("click", contextMenu.remove);
     }

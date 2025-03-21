@@ -12,3 +12,7 @@ function openNotesPush(NID, note){
     openNotes[NID] = note;
     addHeaderNote(NID, note);
 }
+
+function openNotesRemove(NID){
+    delete openNotes[NID];
+}
