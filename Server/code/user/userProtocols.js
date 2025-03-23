@@ -30,7 +30,7 @@ module.exports = (socket, clientInfo, chat, clientsReference, io, notes, session
             callback({error: "Invalid request, type isn't specified"});
             return;
         }
-        devices.protocol(data, callback, socket, clientInfo);
+        devices.protocol(data, callback, socket, clientInfo, clientsReference);
     });
 
 

@@ -10,9 +10,16 @@ async function sessionsList(UID, callback){
     callback(result[0]);
 }
 
+const devices = require("./devices");
 
-module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {
+module.exports["deviceList"] = devices;
+
+
+module.exports.protocol = (data, callback, socket, clientInfo, clientsReference) => {
     if(data.type == "sessionList"){
         sessionsList(clientInfo.UID, callback);
+    }
+    if(data.type == "openOn"){
+        devices.openOn(clientInfo.UID, data, socket, clientsReference);
     }
 }

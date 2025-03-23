@@ -2,7 +2,7 @@ const fs = require('fs');
 const sql = require("../databases/mysql");
 const collection = global.collection;
 
-module.exports = async (socket, UID, notes, weather, clientInfo) => {
+module.exports = async (socket, UID, notes, weather, clientInfo, devices, handshakeData) => {
     const data = {};
 
     const userIP = socket.handshake.headers['x-forwarded-for'];
@@ -33,6 +33,8 @@ module.exports = async (socket, UID, notes, weather, clientInfo) => {
     data.usageSize = await notes.getUsageSize(UID);
 
     data.notes = await notes.getNotes(UID);
+    data.devices = await devices.deviceList.getDevices(UID);
+    devices.deviceList.updateDevices(UID, socket, true, userIP, JSON.parse(handshakeData.device));
 
     data.weather = await weather.getWeather(userIP, UID);
 

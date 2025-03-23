@@ -1,3 +1,11 @@
+.notearea{
+    cursor: text;
+}
+
+.notearea .line{
+    min-height: 28px;
+}
+
 .overlay{
     position: absolute;
     top: 0;
@@ -18,7 +26,10 @@
     background: var(--caret);
     animation: blink 1s infinite step-start;
 
-    transform: translate(5px, 2px);
+    transform: translate(2px, 4px);
+}
+.caret.bold{
+    width: 4px;
 }
 .selection {
     background: var(--blue);

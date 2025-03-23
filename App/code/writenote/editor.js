@@ -17,7 +17,7 @@ function InitializeEditor(state) {
     var data = [
         {meta: {v: version}}
     ],
-        cursors = [{ line: 0, start: 0, end: 0 }];
+        cursors = [{ line: 1, start: 0, end: 0 }];
 
     if(typeof state == "object"){
         if(state.data){
@@ -25,8 +25,9 @@ function InitializeEditor(state) {
         }
     }
 
-    data.push({ id: 1, text: "Line 1: Editable text", styles: {} })
+    data.push({ id: 1, segments: [{ t: "Hello ", s: "" }, { t: "bold", s: "b" }] })
     data.push({ id: 2, text: "Line 2: Another line", styles: { bold: true } })
+    data.push({ id: 3, segments: [{ img: "./assets/untitled5-16.png" }] })
 
     notearea.addEventListener("keydown", (event) => {
         event.preventDefault();
@@ -67,6 +68,13 @@ function InitializeEditor(state) {
 
         if(event.key === "ArrowLeft"){
             for (let i = 0; i < cursors.length; i++) {
+                if(cursors[i].start == 0){
+                    if(cursors[i].line > 1){
+                        cursors[i].line--;
+                        cursors[i].start = data[cursors[i].line].text.length + 1;
+                        cursors[i].end = data[cursors[i].line].text.length + 1;
+                    }
+                }
                 if(cursors[i].start > 0){
                     cursors[i].start--;
                 }
@@ -75,15 +83,26 @@ function InitializeEditor(state) {
         }
         if(event.key === "ArrowRight"){
             for (let i = 0; i < cursors.length; i++) {
-                var line = notearea.children[cursors[i].line - 1];
-                if(cursors[i].start < line.innerText.length){
-                    cursors[i].start++;
+                if(cursors[i].line != data.length-1 && cursors[i].start == data[cursors[i].line].text.length){
+                    if(cursors[i].line < data.length){
+                        cursors[i].line++;
+                        cursors[i].start = 0;
+                    }
+                }
+                else{
+                    if(cursors[i].start < data[cursors[i].line].text.length){
+                        cursors[i].start++;
+                    }
                 }
             }
             renderEditor();
         }
         if(event.key === "ArrowUp"){
             for (let i = 0; i < cursors.length; i++) {
+                if(cursors[i].line == 1){
+                    cursors[i].start = 0;
+                    cursors[i].end = 0;
+                }
                 if(cursors[i].line > 1){
                     cursors[i].line--;
                 }
@@ -92,8 +111,11 @@ function InitializeEditor(state) {
         }
         if(event.key === "ArrowDown"){
             for (let i = 0; i < cursors.length; i++) {
-                if(cursors[i].line < notearea.children.length){
+                if(cursors[i].line < data.length - 1){
                     cursors[i].line++;
+                    if(cursors[i].start > data[cursors[i].line].text.length){
+                        cursors[i].start = data[cursors[i].line].text.length;
+                    }
                 }
             }
             renderEditor();
@@ -116,7 +138,7 @@ function InitializeEditor(state) {
             return [notearea.children.length, data[data.length - 1].text.length];
         }
         const font = window.getComputedStyle(clickedLine).font;
-        const character = getCharacterIndexOptimized(event, clickedLine, clickedLine.innerText, new TextMeasurer(font));
+        const character = getCharacterIndex(event, clickedLine, new TextMeasurer()) + 1;
         return [clickedLine.getAttribute("data-id"), character];
     }
     
@@ -154,9 +176,7 @@ function InitializeEditor(state) {
             caret.classList.add("caret");
             var line = notearea.children[cursors[i].line - 1];
             var top = line.getBoundingClientRect().top;
-            const font = window.getComputedStyle(line).font;
-            var left = new TextMeasurer(font).getCharWidths(line.innerText.slice(0, cursors[i].start));
-            left = left[left.length-1];
+            var left = new TextMeasurer().getWidthOfNCharacters(line, cursors[i].start);
             
             caret.style.left = left + "px";
             caret.style.top = top + "px";

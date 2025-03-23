@@ -16,6 +16,13 @@ async function getNotes(UID){
     const cursor = await global.collection.find({_id: UID}).project(projection);
     const result = await cursor.toArray();
     
+//     return result[0].notes; problem when signing in for the first time? or just this case where I probably deleted the record of mongodb?
+//     ^
+
+// TypeError: Cannot read properties of undefined (reading 'notes')
+// at Object.getNotes (C:\Users\Hypenexy\WriteNote-New\Server\code\user\notes.js:19:22)
+// at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+// at async module.exports (C:\Users\Hypenexy\WriteNote-New\Server\code\user\logon.js:35:18)
     return result[0].notes;
 }
 
@@ -152,6 +159,7 @@ async function getNoteRecord(UID, NID) {
     return await cursor.toArray()//.notes[NID];
 }
 
+const devices = require("./../devices/devices");
 async function openNote(UID, data, callback, socket){
     const result = getNoteRecord(UID, data.NID);
 
@@ -164,8 +172,9 @@ async function openNote(UID, data, callback, socket){
     // activeNIDs.push(NID);
     // activeNID = NID;
     socket.join(data.NID);
+    devices.updateNote(UID, data.NID, socket, true);
 
-    socket.broadcast.to(UID).emit('notesInfo', {type: "opened", NID: data.NID});
+    // socket.broadcast.to(UID).emit('notesInfo', {type: "opened", NID: data.NID});
 
     if(data.offlineLoad == true){
         callback("success offline");
@@ -192,6 +201,7 @@ async function openNote(UID, data, callback, socket){
 
 function closeNote(UID, NID, socket){
     socket.leave(NID);
+    devices.updateNote(UID, NID, socket);
     socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: NID});
 }
 

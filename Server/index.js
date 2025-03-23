@@ -206,7 +206,7 @@ function initiateServer(){
             if(!loadedProtocols){
                 loadedProtocols = true;
                 socket.join(UID);
-                require("./code/user/logon")(socket, UID, notes, weather, clientInfo);
+                require("./code/user/logon")(socket, UID, notes, weather, clientInfo, devices, handshakeData);
                 require("./code/user/userProtocols")(socket, clientInfo, chat, clients, io, notes, sessionId, forensic, devices);
                 require("./code/admin/adminProtocols")(socket, clientInfo, clients, io, admin);
             }
@@ -237,6 +237,9 @@ function initiateServer(){
             var position = clients.indexOf(clientInfo);
             clients.splice(position, 1);
     
+            if(UID != -1){
+                devices.deviceList.updateDevices(UID, socket);
+            }
             log('server', 'user', socket.id, 'disconnected');
             io.to("admin").emit("stats", {socketCount: io.engine.clientsCount});
     

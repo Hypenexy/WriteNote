@@ -5,6 +5,7 @@ var loadStartDate = Date.now();
 var connectQuery = {
     version: version,
     loadStartDate: loadStartDate,
+    device: JSON.stringify(device)
 }
 
 socket = io(WriteNoteServer, {
@@ -50,6 +51,8 @@ socket.on("logon", (data) => {
         // openSettings();
 
         showWelcome(data);
+
+        setDeviceList(data.devices);
 
         // openSettings("admin"); // Simulation to enter admin panel on live reload
         // const input = app.querySelector("input[placeholder='Key']");
