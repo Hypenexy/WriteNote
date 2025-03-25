@@ -73,7 +73,7 @@ function updateNote(UID, NID, socket, isJoin){
         );
     }
     else{
-        socket.to(UID).emit("devices", {type: "close", a:{id: socket.id, NID: NID}});
+        socket.to(UID).emit("devices", {type: "close", data:{id: socket.id, NID: NID}});
 
         collection.updateOne(
             {_id: UID},

@@ -134,6 +134,9 @@ var locale = {
     note_is_saved: "Note is saved",
     note_isnt_saved: "Note isn't saved",
     unsaved_changes: "Unsaved changes",
+    device_connected: "Device connected",
+    devices_connected: "Devices connected",
+
 
     note_saving_error: "Note couldn't be saved",
     couldnt_connect: "Lost connection to server",

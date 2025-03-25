@@ -199,10 +199,10 @@ async function openNote(UID, data, callback, socket){
     callback("success");
 }
 
-function closeNote(UID, NID, socket){
-    socket.leave(NID);
-    devices.updateNote(UID, NID, socket);
-    socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: NID});
+function closeNote(UID, Data, socket){
+    socket.leave(Data.NID);
+    devices.updateNote(UID, Data.NID, socket);
+    // socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: NID});
 }
 
 async function openMultipleNotes(UID, data, callback, socket){

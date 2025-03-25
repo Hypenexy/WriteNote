@@ -73,8 +73,8 @@ function removeIconHeaderNote(headerElement, customClass){
 }
 
 function changeHeaderNote(NID, options){
+    var element = noteList.querySelector(`[NID="${NID}"]`);
     if(options.type == "error"){
-        var element = noteList.querySelector(`[NID="${NID}"]`);
         if(options.status == true){
             element.classList.add("error");
             addIconHeaderNote(element, "warning", locale.note_saving_error, "error");
@@ -85,7 +85,6 @@ function changeHeaderNote(NID, options){
         }
     }
     if(options.type == "saveChange"){
-        var element = noteList.querySelector(`[NID="${NID}"]`);
         if(openNotes[NID].saved){
             openNotes[NID].changeStatus("saved");
             element.classList.remove("unsaved");
@@ -95,6 +94,19 @@ function changeHeaderNote(NID, options){
             element.classList.add("unsaved");
             openNotes[NID].changeStatus("unsaved");
             addIconHeaderNote(element, "save", locale.unsaved_changes, "unsaved");
+        }
+    }
+    if(options.type == "devices"){
+        if(openNotes[NID].collabDevices.length > 0){
+            if(openNotes[NID].collabDevices.length > 1){
+                addIconHeaderNote(element, "devices", locale.devices_connected, "devices");
+            }
+            else{
+                addIconHeaderNote(element, "devices", locale.device_connected, "devices");
+            }
+        }
+        else{
+            removeIconHeaderNote(element, "devices");
         }
     }
 }

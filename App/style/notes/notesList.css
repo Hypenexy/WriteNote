@@ -113,3 +113,36 @@
 .notesList .button.folder .title{
     padding: 15px;
 }
+
+.notesList .button .device{
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    border: 1px solid var(--blue);
+    background-color: #222;
+    border-radius: 99px;
+}
+.notesList .button .device span{
+    display: none;
+}
+
+.notesList .button .device.hide{
+    animation-name: devicePopout;
+    animation-duration: .3s;
+    animation-timing-function: cubic-bezier(.41,-0.3,.86,.69);
+}
+
+@keyframes devicePopout {
+    to{
+        transform: translateY(-12px);
+        opacity: 0;
+    }
+}

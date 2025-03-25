@@ -6,6 +6,10 @@
     min-height: 28px;
 }
 
+.notearea img{
+    max-width: 50%;
+}
+
 .overlay{
     position: absolute;
     top: 0;
