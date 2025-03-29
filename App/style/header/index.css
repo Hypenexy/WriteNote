@@ -6,7 +6,7 @@ header{
     margin: 12px;
     padding: 6px;
     border-radius: 99px;
-    background-color: #111111bb;
+    background-color: var(--header-bg);
     width: calc(100% - 24px);
     height: 60px;
     animation: headerShow .5s cubic-bezier(.22, .32, .2, 1);
@@ -428,4 +428,50 @@ header.noSubHeader .showSubHeader{
         display: inline-block;
         margin: 0;
     }
-} 
+}
+
+header.app{
+    -webkit-app-region: drag;
+    padding-right: 140px;
+}
+
+header.app *{
+    -webkit-app-region: no-drag;
+}
+
+header .osHeaderButtons{
+    position: absolute;
+    right: 0;
+    top: 0;
+    
+    padding: 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+header .osHeaderButtons i{
+    cursor: pointer;
+    color: var(--header-button-focused);
+    
+    border-radius: 99px; /* controversial */
+
+    height: 100%;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .15s;
+}
+
+header.blur .osHeaderButtons i{
+    color: var(--header-button-blurred);
+}
+
+header .osHeaderButtons i:hover, header .osHeaderButtons i:focus-visible{
+    background-color: var(--header-button-hover);
+}
+
+header.blur{
+    background-color: var(--header-bg-blurred);
+}

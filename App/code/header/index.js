@@ -1,8 +1,58 @@
 const header = document.createElement("header");
 const noteList = mdutils.createAppendElement("noteList", header);
+var loadedApp = false;
 
-function loadHeader(){
-    if(header.parentElement != null){
+function loadHeader(isApp){
+    if(header.parentElement != null && loadedApp == true){
+        return;
+    }
+
+    if(isApp){
+        loadedApp = true;
+
+        document.body.classList.add("app-round");
+        header.classList.add("app");
+
+        const headerContextMenu = contextMenu();
+
+        const btnsContainer = mdutils.createAppendElement("osHeaderButtons", header);
+
+        buttons = ["minimize", "maximize", "close"];
+
+        for (let i = 0; i < buttons.length; i++) {
+            const icon = buttons[i];
+
+            var buttonElement = document.createElement("i");
+            buttonElement.textContent = icon;
+
+            var action = () => {
+                window.ipcRender.send(`window:${icon}`);
+            };
+            
+            headerContextMenu.add("button", locale[icon], {action: action});
+
+            mdutils.ButtonEvent(buttonElement, action);
+
+            btnsContainer.appendChild(buttonElement);
+        }
+
+        headerContextMenu.attach(header); // drag area doesnt allow this other than the buttons
+
+        window.addEventListener('focus', function() {
+            header.classList.remove('blur');
+        });
+          
+        window.addEventListener('blur', function() {
+            header.classList.add('blur');
+        });
+
+        header.addEventListener("click", (e) => {
+            if(e.detail == 2){
+                window.ipcRender.send(`window:maximize`); // doesnt allow this either ^
+            }
+        })
+
+        app.appendChild(header);
         return;
     }
 
@@ -42,7 +92,7 @@ function loadHeader(){
     // mdutils.ButtonEvent(showSubHeader, toggleSubHeader);
 
     const weather = mdutils.createAppendElement("weather", infotainment);
-    if(logonData.weather){
+    if(logonData && logonData.weather){
         weather.innerHTML = "<div>" + logonData.weather.main.temp.toString().split('.')[0] + "°C</div>";
         weather.style.backgroundImage = `url("${WriteNoteServer}/weather/${logonData.weather.image}")`;
         // mdutils.ButtonEvent(weather, openWeather);
@@ -57,9 +107,11 @@ function loadHeader(){
     addUserOnlineStatusElement(userStatusElement);
 
     const imgElement = document.createElement("img");
-    const pfpURL = getUserPfpURL(logonData.user, imgElement);
-    imgElement.src = pfpURL;
-    profile.appendChild(imgElement);
+    if(logonData){
+        const pfpURL = getUserPfpURL(logonData.user, imgElement);
+        imgElement.src = pfpURL;
+        profile.appendChild(imgElement);
+    }
     // mdutils.ButtonEvent(profile, function(e){
     //     e.stopPropagation();
     //     const element = document.createElement("div");

@@ -72,7 +72,6 @@
 }
 
 .welcome form{
-    max-width: 320px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -107,6 +106,7 @@
 
 .welcome form .label {
     border-radius: 12px;
+    max-width: 320px;
     width: 100%;
 
     display: flex;
@@ -303,4 +303,32 @@
         left: -300px; */
     }
 
+}
+
+.register .sidebyside{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+}
+.register .sidebyside .inputsSide{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+    max-width: 320px;
+    width: 100%;
+}
+
+
+.QRContainer p{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 6px;
+}
+.QRContainer .QR{
+    border: 4px solid #eee;
+    border-radius: 4px;
 }

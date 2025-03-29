@@ -86,6 +86,13 @@
     --line-text: #111;
     --unsaved: #fffc65;
 
+    --header-button-hover: #222222bb;
+    --header-button-focused: #eee;
+    --header-button-blurred: #555;
+
+    --header-bg: #111111bb;
+    --header-bg-blurred: #111111;
+
     /* Notes list */
     --note-title-color: #eee;
     --note-summary-color: #999;

@@ -9,7 +9,17 @@ html, body, app{
     display: block;
     width: 100%;
     height: 100%;
+}
+app{
     background-color: var(--main-bg);
+}
+
+html:has(body.app-round){
+    overflow: hidden;
+}
+body.app-round{
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 /* html, body {

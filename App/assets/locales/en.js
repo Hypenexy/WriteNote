@@ -200,4 +200,9 @@ var locale = {
     dont_save: "Don't save",
 
     search_the_list: "Search the list",
+
+
+    minimize: "Minimize",
+    maximize: "Maximize",
+    restore: "Restore",
 }

@@ -1,4 +1,4 @@
-function createInput(type, isLogin){
+function createInput(type, isLogin, passwordAction){
     const element = document.createElement("div");
     element.classList.add("label");
 
@@ -100,6 +100,10 @@ function createInput(type, isLogin){
             }
         }
         if(e.key == "Enter" || e.key == "ArrowDown"){
+            if(passwordAction){
+                passwordAction();
+                return;
+            }
             if(element.nextElementSibling.classList.contains("button")){
                 element.nextElementSibling.focus();
                 return;
@@ -171,6 +175,7 @@ function createInput(type, isLogin){
             if(errors.length > 0){
                 removeError("empty");
                 removeError("username_taken");
+                removeError("wrong_credentials");
             }
             if(input.value.length > 30){
                 appendError("username_too_long");
@@ -306,15 +311,20 @@ function createRegisterMenu(){
             }
         }
 
+        const sidebyside = document.createElement("div");
+        sidebyside.classList.add("sidebyside");
+        form.appendChild(sidebyside);
+        const inputsSide = mdutils.createAppendElement("inputsSide", sidebyside); 
+
         const text = signElement();
         text.textContent = locale.sign_in;
-        form.appendChild(text);
+        inputsSide.appendChild(text);
 
         const usernameInput = createInput("username", true);
-        form.appendChild(usernameInput);
+        inputsSide.appendChild(usernameInput);
         
-        const passwordInput = createInput("password", true);
-        form.appendChild(passwordInput);
+        const passwordInput = createInput("password", true, submitLogin);
+        inputsSide.appendChild(passwordInput);
         
         function submitLogin(){
             const username = usernameInput.value();
@@ -344,7 +354,7 @@ function createRegisterMenu(){
         }
 
         const qrCodeContainer = createQRCode();
-        form.appendChild(qrCodeContainer);
+        sidebyside.appendChild(qrCodeContainer);
 
         const signButton = createSignButton(submitLogin);
         signButton.textContent = locale.sign_in;
@@ -371,7 +381,7 @@ function createRegisterMenu(){
         const usernameInput = createInput("username");
         form.appendChild(usernameInput);
         
-        const passwordInput = createInput("password");
+        const passwordInput = createInput("password", null, submitRegister);
         form.appendChild(passwordInput);
 
         function submitRegister(){
