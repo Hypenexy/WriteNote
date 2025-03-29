@@ -1,0 +1,48 @@
+.themes{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.themes .theme{
+    cursor: pointer;
+    padding: 11px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    max-width: 240px;
+    min-height: 160px;
+    border-radius: 12px;
+
+    background-color: var(--theme-bg);
+    border: 1px solid var(--theme-bg-hover);
+
+    transition: .1s;
+}
+.themes .theme:hover, .themes .theme:focus-visible{
+    background-color: var(--theme-bg-hover);
+    border: 1px solid var(--theme-bg-active);
+}
+.themes .theme:active{
+    background-color: var(--theme-bg-active);
+    border: 1px solid var(--theme-bg-active);
+}
+
+.themes .theme.active{
+    border: 1px solid var(--blue);
+}
+
+.themes .theme .preview{
+    border-radius: 12px;
+    height: 116px;
+    overflow: hidden;
+
+    margin-bottom: 6px;
+}
+.themes .theme .title{
+    color: var(--setting-label);
+}
+.themes .theme .description{
+    color: var(--setting-sublabel);
+}

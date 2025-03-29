@@ -101,6 +101,8 @@ var locale = {
     select_photo: "Select photo",
 
     no_animations: "Disable animations",
+    square_header: "Square Header",
+    removes_edges: "Removes the rounded corners of the Header and sticks it to the top.",
 
     cancel: "Cancel",
     change: "Change",
@@ -205,4 +207,13 @@ var locale = {
     minimize: "Minimize",
     maximize: "Maximize",
     restore: "Restore",
+
+    
+    themes: "Themes",
+
+    dark: "Dark",
+    dark_description: "The default look of WriteNote.",
+
+    fun: "Fun",
+    fun_description: "Goofy looking UI with unique elements.",
 }

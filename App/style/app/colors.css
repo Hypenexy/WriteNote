@@ -75,6 +75,14 @@
     /* Settings colors */
     --setting-bg: #1a1a1a;
     --setting-label: #bbb;
+    --setting-sublabel: #666;
+    --setting-bg-hover: #1f1f1f;
+    --setting-border-hover: #252525;
+    --setting-border-active: #2e2e2e;
+
+    --setting-checkbox-bg: #3b3b3b;
+    --setting-checkbox-border: #494949;
+    --setting-checkbox-ball: #eee;
 
     /* WriteNote colors */
     --writenote: #222242;
@@ -116,4 +124,9 @@
     --profile-bg: #1d1d1d;
     --profile-bg-hover: #252525;
     --profile-bg-active: #3d3d3d;
+
+    /* Themes */
+    --theme-bg: #222;
+    --theme-bg-hover: #333;
+    --theme-bg-active: #444;
 }

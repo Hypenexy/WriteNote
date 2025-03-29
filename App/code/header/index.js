@@ -1,15 +1,13 @@
 const header = document.createElement("header");
 const noteList = mdutils.createAppendElement("noteList", header);
-var loadedApp = false;
+var headerLoaded = false;
 
 function loadHeader(isApp){
-    if(header.parentElement != null && loadedApp == true){
+    if(headerLoaded){
         return;
     }
-
+    
     if(isApp){
-        loadedApp = true;
-
         document.body.classList.add("app-round");
         header.classList.add("app");
 
@@ -133,4 +131,5 @@ function loadHeader(isApp){
     openProfileMenuBind(profile);
 
     app.appendChild(header);
+    headerLoaded = true;
 }

@@ -10,6 +10,17 @@ header{
     width: calc(100% - 24px);
     height: 60px;
     animation: headerShow .5s cubic-bezier(.22, .32, .2, 1);
+    transition: .1s;
+}
+
+.headerTheme{
+    position: absolute;
+    width: calc(100% - 48px);
+    height: 6px;
+    margin: 12px;
+    padding: 6px;
+    border-radius: 99px;
+    background-color: var(--header-bg);
 }
 
 @keyframes headerShow {
@@ -474,4 +485,11 @@ header .osHeaderButtons i:hover, header .osHeaderButtons i:focus-visible{
 
 header.blur{
     background-color: var(--header-bg-blurred);
+}
+
+header.square{
+    margin: 0px;
+    width: 100%;
+    border-radius: 0px;
+    transition: 1s;
 }

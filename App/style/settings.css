@@ -87,3 +87,87 @@
     width: 128px;
     border-radius: 99px;
 }
+
+
+.window .settingsMain .setting.toggle{
+    cursor: pointer;
+    
+    display: flex;
+    padding: 31px 11px;
+    border: 1px solid var(--setting-bg);
+    justify-content: space-between;
+    align-items: center;
+    transition: .1s;
+}
+
+.window .settingsMain .setting.toggle:hover, .window .settingsMain .setting.toggle:focus-visible{
+    background-color: var(--setting-bg-hover);
+    border: 1px solid var(--setting-border-hover);
+}
+.window .settingsMain .setting.toggle:active{
+    border: 1px solid var(--setting-border-active);
+}
+
+.window .settingsMain .setting.toggle .label{
+    margin-bottom: 0;
+}
+.window .settingsMain .setting.toggle .text:last-child{
+    color: var(--setting-sublabel);
+}
+
+
+.window .settingsMain .setting.toggle .checkbox{
+    width: 4em;
+    height: 2em;
+    position: relative;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+    background: var(--setting-checkbox-bg);
+    border-radius: 2em;
+    padding: 2px;
+    transition: all 0.4s ease;
+    border: 1px solid var(--setting-checkbox-border);
+}
+.window .settingsMain .setting.toggle .checkbox::after,
+.window .settingsMain .setting.toggle .checkbox::before
+{
+    position: relative;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+}
+
+.window .settingsMain .setting.toggle .checkbox::after{
+    left: 0;
+    top: -26px;
+    border-radius: 2em;
+    background: var(--setting-checkbox-ball);
+    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);
+}
+.window .settingsMain .setting.toggle:hover .checkbox:after{
+    will-change: padding;
+}
+.window .settingsMain .setting.toggle:active .checkbox:after{
+    padding-right: 0.4em;
+}
+.window .settingsMain .setting.toggle.active:active .checkbox:after{
+    margin-left: -0.4em;
+}
+.window .settingsMain .setting.toggle.active .checkbox::after{
+    left: 50%;
+}
+.window .settingsMain .setting.toggle.active .checkbox{
+    background-color: var(--online-device);
+}
+
+.window .settingsMain .setting.toggle:active .checkbox{
+    box-shadow: inset 0 0 0 2em #e8eae9;
+}
+.window .settingsMain .setting.toggle.active:active .checkbox{
+    box-shadow: none;
+}

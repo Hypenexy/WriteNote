@@ -16,6 +16,12 @@
     animation-timing-function: cubic-bezier(1, .5, .5, 1);
 }
 
+.writenoteTheme{
+    height: 100%;
+    width: 100%;
+    background-color: var(--writenote);
+}
+
 @keyframes writenoteLoad {
     from {background: var(--wn-unloaded)}
     to {background: var(--writenote)}

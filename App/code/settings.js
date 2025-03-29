@@ -1,5 +1,21 @@
 var settings = {};
 
+function getSettings(){
+    var localSettings = localStorage.getItem("settings");
+    if(localSettings){
+        settings = JSON.parse(localSettings)
+    }
+    loadedSettings();
+}
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    getSettings();
+});
+
+function saveSettings(){
+    localStorage.setItem("settings", JSON.stringify(settings));
+}
+
 function openSettings(section){
     const windowElement = createWindow("settings");
     if(typeof windowElement == "string"){
@@ -37,21 +53,42 @@ function openSettings(section){
     settingsMain.classList.add("settingsMain");
     settingsElement.appendChild(settingsMain);
 
-    function createSetting(setting){
+    function createSetting(setting, section){
         const element = document.createElement("div");
         element.classList.add("setting");
         const labelElement = mdutils.createAppendElement("label", element);
-        labelElement.textContent = locale[setting.label]; 
+        const title = mdutils.createAppendElement("text", labelElement);
+        title.textContent = locale[setting.label];
+
         if(setting.type == "toggle"){
-            // if(settings[]) == true
-            // make active
+            element.classList.add("toggle");
+            const description = mdutils.createAppendElement("text", labelElement);
+            description.textContent = locale[setting.description];
 
-            //else
             var lastState = false;
+            if(settings[section] && settings[section][setting.label]){
+                element.classList.add("active");
+                lastState = true;
+            }
 
-            lastState = !lastState;
+            var checkbox = mdutils.createAppendElement("checkbox", element);
 
-            mdutils.ButtonEvent(element, setting.action, lastState);
+            mdutils.ButtonEvent(element, () => {
+                lastState = !lastState;
+                setting.action(lastState);
+                if(lastState == true){
+                    if(!settings[section]){
+                        settings[section] = {};
+                    }
+                    settings[section][setting.label] = true;
+                    element.classList.add("active");
+                }
+                else{
+                    delete settings[section][setting.label];
+                    element.classList.remove("active");
+                }
+                saveSettings();
+            });
         }
         if(setting.type == "input"){
             const inputElement = document.createElement("input");
@@ -83,6 +120,11 @@ function openSettings(section){
             const notesUsage = createNotesUsageElement();
             element.appendChild(notesUsage);
         }
+        
+        if(setting.type == "themes"){
+            const themes = themesElement();
+            element.appendChild(themes);
+        }
 
         return element;
     }
@@ -111,7 +153,7 @@ function openSettings(section){
         const settingsList = Object.keys(settings_keys[section].settings);
         for (let i = 0; i < settingsList.length; i++) {
             const element = settings_keys[section].settings[settingsList[i]];
-            settingsElement.appendChild(createSetting(element));
+            settingsElement.appendChild(createSetting(element, section));
         }
     }
 
@@ -177,6 +219,23 @@ const settings_keys = {
             //         }
             //     }
             // }
+            square_header: {
+                label: "square_header",
+                description: "removes_edges",
+                type: "toggle",
+                action: (state) => {
+                    if(state == true){
+                        header.classList.add("square");
+                    }
+                    else{
+                        header.classList.remove("square");
+                    }
+                }
+            },
+            themes: {
+                label: "themes",
+                type: "themes"
+            }
         }
     },
     "about" : {
