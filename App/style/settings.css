@@ -1,5 +1,6 @@
 .window .settings{
     display: flex;
+    max-height: 100%;
 }
 
 .window .settings .sidebtns{
@@ -21,6 +22,7 @@
 .window .settingsMain{
     flex: 1;
     padding: 16px;
+    overflow: auto;
 }
 
 
