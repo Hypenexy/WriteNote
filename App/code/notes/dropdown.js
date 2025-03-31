@@ -4,12 +4,7 @@ function noteContextMenu(noteData, element){
     if(!noteData.size){
         noteData.size = 0;
     }
-    const size = mdutils.humanFileSize(noteData.size);
-    const dateOpen = new Date(noteData.date_opened);
-    const dateOpenFormatted = dateOpen.toLocaleDateString() + ", " + dateOpen.toLocaleTimeString();
-    const dateModified = new Date(noteData.date_modified);
-    const dateModifiedFormatted = dateModified.toLocaleDateString() + ", " + dateModified.toLocaleTimeString();
-    
+
     const noteContextMenu = contextMenu();
 
     noteContextMenu.add("input", name); // add rename functions
@@ -25,9 +20,24 @@ function noteContextMenu(noteData, element){
     });}});
 
     noteContextMenu.add("text", locale.properties);
+
+    const dateCreatedFormatted = `${locale.created} ${moment(noteData.date_created).fromNow()}`;
+    noteContextMenu.add("text", dateCreatedFormatted, {
+        "icon":"calendar_month",
+        "tooltip":moment(noteData.date_created).format()
+    });
     
-    noteContextMenu.add("text", dateOpenFormatted, {"icon":"calendar_month"});
-    noteContextMenu.add("text", dateModifiedFormatted, {"icon":"calendar_month"});
+    
+    if(noteData.date_opened){
+        const dateOpenFormatted = `${locale.opened} ${moment(noteData.date_opened).fromNow()}`;
+        noteContextMenu.add("text", dateOpenFormatted, {"icon":"calendar_month", "tooltip":moment(noteData.date_opened).format()});
+    }
+    if(noteData.date_modified){
+        const dateModifiedFormatted = `${locale.modified} ${moment(noteData.date_modified).fromNow()}`;
+        noteContextMenu.add("text", dateModifiedFormatted, {"icon":"calendar_month", "tooltip":moment(noteData.date_modified).format()});
+    }
+
+    const size = mdutils.humanFileSize(noteData.size);
     noteContextMenu.add("text", size, {"icon":"save"});
 
     noteContextMenu.attach(element);

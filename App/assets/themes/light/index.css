@@ -35,22 +35,22 @@
     --input-text-hide-bg: #111;
 
     /* Tooltips */
-    --tooltip-color: #bbb;
-    --tooltip-bg: #11111199;
-    --tooltip-border: #555;
+    --tooltip-color: #111;
+    --tooltip-bg: #bbbbbb99;
+    --tooltip-border: #999;
 
     /* Color codes */
     --error-color: #f35959;
     --blue: #65baff;
     --accept-color: #65ff7f;
 
-    --main-color-text: #111;
+    --main-color-text: #eee;
     /* --coolr: #00ff7f; */
 
     /* Chat colors */
-    --chat-main-bg: #141417;
-    --chat-button-active-bg: #bbb;
-    --chat-button-active-color: #222;
+    --chat-main-bg: #e8e8ff;
+    --chat-button-active-bg: #d5d5e7;
+    --chat-button-active-color: #222325;
 
     --chat-main-hrtext: #28282d;
 
@@ -83,10 +83,10 @@
     --setting-checkbox-ball: #eee;
 
     /* WriteNote colors */
-    --writenote: #222242;
+    --writenote: #d6e2e6;
     --wn-unloaded: #050505;
     
-    --caret: #c4e4ff;
+    --caret: #002341;
 
     /* Header */
     --line-text: #111;
@@ -96,13 +96,13 @@
     --header-button-focused: #eee;
     --header-button-blurred: #555;
 
-    --header-bg: #111111bb;
+    --header-bg: #d6e2e6bb;
     --header-bg-blurred: #111111;
 
     /* Notes list */
-    --note-title-color: #eee;
-    --note-summary-color: #999;
-    --note-sortData-bg: #171717;
+    --note-title-color: #111;
+    --note-summary-color: #555;
+    --note-sortData-bg: #cecece;
     --note-sortData-color: #666;
 
     --note-active-title-color: #333;
@@ -124,7 +124,21 @@
     --profile-bg-active: #3d3d3d;
 
     /* Themes */
-    --theme-bg: #222;
-    --theme-bg-hover: #333;
-    --theme-bg-active: #444;
+    --theme-bg: #d8d8d8;
+    --theme-bg-hover: #cfcfcf;
+    --theme-bg-active: #919191;
+}
+
+header{
+    box-shadow: 0 2px 4px #00000077;
+}
+
+
+.themes .theme:hover, .themes .theme:focus-visible{
+    transform: translateY(-4px);
+    box-shadow: 0 4px 0 #00000088;
+}
+.themes .theme:active{
+    transform: initial;
+    box-shadow: inset 0 2px 2px #00000088;
 }

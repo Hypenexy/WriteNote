@@ -11,6 +11,7 @@ function loadTheme(theme, loadFromSettings){
     unloadActiveTheme();
     if(theme == "dark"){
         delete settings.theme;
+        saveSettings();
         return;
     }
     settings.theme = theme;

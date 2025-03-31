@@ -34,12 +34,35 @@
     gap: 8px;
     flex-wrap: wrap;
     
-    padding-top: 12px;
-    padding-left: 12px;
+    padding: 12px;
+    padding-bottom: 0;
 }
 .notesListContainer .top .sort p:first-child{
     color: var(--note-summary-color);
 }
+
+.notesListContainer .top .bin{
+    margin-left: auto;
+    
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+    padding-right: 16px;
+}
+.notesListContainer .top .bin i:first-child{
+    transition: .3s;
+    /* transform: translateY(-12px); */
+    clip-path: polygon(0 0, 100% 0, 100% 29%, 0 29%);
+}
+.notesListContainer .top .bin i:nth-child(2){
+    clip-path: polygon(0 100%, 100% 100%, 100% 29%, 0 29%);
+}
+
+.notesListContainer .top .bin:hover i:first-child,
+.notesListContainer .top .bin:focus-visible i:first-child{
+    transform: translateY(-16px)rotate(25deg);
+}
+
 
 .list .notesList .button{
     display: flex;

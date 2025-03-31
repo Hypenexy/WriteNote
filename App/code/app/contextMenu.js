@@ -33,7 +33,13 @@ function contextMenu(type){
         const element = document.createElement("div");
         if(options){
             if(typeof options.action == "function" && options.disabled != true){
-                mdutils.ButtonEvent(element, options.action, null, options.actionEvent);
+                mdutils.ButtonEvent(element, ()=>{
+                    options.action();
+                    if(options.disableAutoClosing == true){
+                        return;
+                    }
+                    contextMenu.removeElement();
+                }, null, options.actionEvent);
             }
             if(options.disabled == true){
                 element.classList.add("disabled");
@@ -54,6 +60,9 @@ function contextMenu(type){
                         element.classList.remove("selected");
                     }
                 });
+            }
+            if(options.tooltip){
+                attachTooltip(element, options.tooltip, true);
             }
         }
         switch (type) {

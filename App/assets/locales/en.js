@@ -168,6 +168,7 @@ var locale = {
     options: "Options",
     foldersFirst: "Folders first",
     reversed: "Reversed",
+    bin: "Bin",
 
     view_as: "View as",
     grid: "Grid",
@@ -219,4 +220,18 @@ var locale = {
 
     fun: "Fun",
     fun_description: "Goofy looking UI with unique elements.",
+
+    experience: "Experience",
+    experience_description: "An oldschool look filled with nostalgia.",
+
+
+
+    actions: "Actions",
+    share: "Share",
+    duplicate: "Duplicate",
+    delete: "Delete",
+    properties: "Properties",
+    opened: "Opened",
+    modified: "Modified",
+    created: "Created",
 }

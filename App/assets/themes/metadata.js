@@ -11,8 +11,8 @@ var themesInfo = {
         title: "light",
         description: "light_description",
         colors: {
-            header: "ffffffbb",
-            writenote: "ffffff"
+            header: "d6e2e6bb",
+            writenote: "d6e2e6"
         }
     },
     fun: {
@@ -22,6 +22,15 @@ var themesInfo = {
         colors: {
             header: "412635bb",
             writenote: "512362"
+        }
+    },
+    experience: {
+        title: "experience",
+        description: "experience_description",
+        files: ["XP.css"],
+        colors: {
+            header: "95ffca",
+            writenote: "b6ffdb"
         }
     }
 }

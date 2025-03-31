@@ -6,21 +6,87 @@
 </div>
 
 <style> */
-.checkbox-wrapper-5 .check {
+
+/* Remove default styles */
+
+.window .settingsMain .setting.toggle .checkbox{
+    width: initial;
+    height: initial;
+    position: initial;
+    -webkit-user-select: initial;
+       -moz-user-select: initial;
+        -ms-user-select: initial;
+            user-select: initial;
+
+    background: initial;
+    border-radius: initial;
+    padding: initial;
+    transition: initial;
+    border: initial;
+}
+.window .settingsMain .setting.toggle .checkbox::after,
+.window .settingsMain .setting.toggle .checkbox::before
+{
+    position: initial;
+    display: initial;
+    content:initial;
+    width: initial;
+    height: initial;
+}
+
+.window .settingsMain .setting.toggle .checkbox::after{
+    left: initial;
+    top: initial;
+    border-radius: initial;
+    background: initial;
+    transition: initial;
+    box-shadow: initial;
+}
+.window .settingsMain .setting.toggle:hover .checkbox:after{
+    will-change: initial;
+}
+.window .settingsMain .setting.toggle:active .checkbox:after{
+    padding-right: initial;
+}
+.window .settingsMain .setting.toggle.active:active .checkbox:after{
+    margin-left: initial;
+}
+.window .settingsMain .setting.toggle.active .checkbox::after{
+    left: initial;
+}
+.window .settingsMain .setting.toggle.active .checkbox{
+    background-color: initial;
+}
+
+.window .settingsMain .setting.toggle:active .checkbox{
+    box-shadow: initial;
+}
+.window .settingsMain .setting.toggle.active:active .checkbox{
+    box-shadow: initial;
+}
+
+
+/* Introduce fun */
+
+.window .settingsMain .setting.toggle .checkbox{
     --size: 40px;
 
     position: relative;
-    background: linear-gradient(90deg, #f19af3, #f099b5);
     line-height: 0;
     perspective: 400px;
     font-size: var(--size);
+    /* transition: .2s; */
+}
+.window .settingsMain .setting.toggle.active .checkbox{
+    background: #f19af3;
+    /* background: linear-gradient(90deg, #f19af3, #f099b5); */
+
 }
 
-.checkbox-wrapper-5 .check input[type="checkbox"],
-.checkbox-wrapper-5 .check label,
-.checkbox-wrapper-5 .check label::before,
-.checkbox-wrapper-5 .check label::after,
-.checkbox-wrapper-5 .check {
+.window .settingsMain .setting.toggle .checkbox,
+.window .settingsMain .setting.toggle .checkbox::after,
+.window .settingsMain .setting.toggle .checkbox::before
+{
     appearance: none;
     display: inline-block;
     border-radius: var(--size);
@@ -30,36 +96,16 @@
     cursor: pointer;
 }
 
-.checkbox-wrapper-5 .check label {
+.window .settingsMain .setting.toggle .checkbox{
     width: calc(2.2 * var(--size));
     height: var(--size);
     background: #d7d7d7;
     overflow: hidden;
 }
 
-.checkbox-wrapper-5 .check input[type="checkbox"] {
-    position: absolute;
-    z-index: 1;
-    width: calc(.8 * var(--size));
-    height: calc(.8 * var(--size));
-    top: calc(.1 * var(--size));
-    left: calc(.1 * var(--size));
-    background: linear-gradient(45deg, #dedede, #ffffff);
-    box-shadow: 0 6px 7px rgba(0,0,0,0.3);
-    outline: none;
-    margin: 0;
-}
 
-.checkbox-wrapper-5 .check input[type="checkbox"]:checked {
-    left: calc(1.3 * var(--size));
-}
-
-.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label {
-    background: transparent;
-}
-
-.checkbox-wrapper-5 .check label::before,
-.checkbox-wrapper-5 .check label::after {
+.window .settingsMain .setting.toggle .checkbox::after,
+.window .settingsMain .setting.toggle .checkbox::before{
     content: "· ·";
     position: absolute;
     overflow: hidden;
@@ -67,7 +113,7 @@
     top: calc(.5 * var(--size));
     height: var(--size);
     letter-spacing: calc(-0.04 * var(--size));
-    color: #9b9b9b;
+    color: #222;
     font-family: "Times New Roman", serif;
     z-index: 2;
     font-size: calc(.6 * var(--size));
@@ -76,7 +122,7 @@
     backface-visibility: hidden;
 }
 
-.checkbox-wrapper-5 .check label::after {
+.window .settingsMain .setting.toggle .checkbox::after{
     content: "●";
     top: calc(.65 * var(--size));
     left: calc(.2 * var(--size));
@@ -86,15 +132,16 @@
     transform-origin: 0 0 calc(-0.4 * var(--size));
 }
 
-.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::before,
-.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+
+.window .settingsMain .setting.toggle.active .checkbox::after,
+.window .settingsMain .setting.toggle.active .checkbox::before{
     left: calc(1.55 * var(--size));
     top: calc(.4 * var(--size));
     line-height: calc(.1 * var(--size));
     transform: rotateY(360deg);
-  }
+}
 
-.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+.window .settingsMain .setting.toggle.active .checkbox::after{
     height: calc(.16 * var(--size));
     top: calc(.55 * var(--size));
     left: calc(1.6 * var(--size));
@@ -103,7 +150,35 @@
 }
 
 
-.button{
-    transform: translateY(4px);
-    border-bottom: 4px #333;
+.notesList .button{
+    transform: rotate3d(0, 1, .1, 1turn);
+    transition: .3s;
+
+    animation: rat 10s linear;
+
+    /* animation: rat 10s linear;
+    animation-iteration-count: infinite; */
 }
+
+.notesList .button:hover{
+    transform: rotate3d(0, 1, .1, 0turn);
+}
+/* .notesList .button::after{
+    content: " ";
+    background-color: #222;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(-20px);
+} */
+@keyframes rat {
+    from {
+        transform: rotate3d(0, 0, 0, 0);
+    }
+    to {
+        transform: rotate3d(0, 1, .1, 1turn);
+    }
+}
+
+
+

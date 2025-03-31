@@ -2,11 +2,19 @@
 const notesListElement = document.createElement("div");
 notesListElement.classList.add("notesListContainer");
 
+function selectAllNotes(){
+    const notesList = notesListElement.querySelector(".notesList");
+    const allNotes = notesList.querySelectorAll("[nid]");
+    for (let i = 0; i < allNotes.length; i++) {
+        allNotes[i].classList.add("selected");
+    }
+}
+
 const notesListContextMenu = contextMenu();
 
 notesListContextMenu.add("button", locale.select_all, {
     "icon": "select_all",
-    "action": createFolder
+    "action": selectAllNotes
 });
 notesListContextMenu.add("button", locale.new_folder, {"icon": "folder"});
 
@@ -322,6 +330,10 @@ function topElement(element){
 
     setView();
 
+    
+    const bin = mdutils.createAppendElement("button", element);
+    bin.innerHTML = `<i>delete</i><i>delete</i><div><p>${locale.bin}</p></div>`;
+    bin.classList.add("i", "bin");
 }
 
 const typesIcons = {

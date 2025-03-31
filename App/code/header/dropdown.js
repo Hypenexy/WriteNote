@@ -63,14 +63,14 @@ function notelistDropdown(element, NID){
         }
     }
 
-    var timeout = null;
-    element.onmouseover = function(event) {
-        timeout = setTimeout(() => {showDropdown(event)}, 500);
-    };
+    // var timeout = null; TS PMO GANG 💔
+    // element.onmouseover = function(event) {
+    //     timeout = setTimeout(() => {showDropdown(event)}, 500);
+    // };
 
-    element.onmouseout = function() {
-        clearTimeout(timeout);
-    }
+    // element.onmouseout = function() {
+    //     clearTimeout(timeout);
+    // }
 
     // dropdownElement.attach(element);
     element.addEventListener("contextmenu", (e) => {
