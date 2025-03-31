@@ -1,0 +1,130 @@
+:root{
+    --main-bg: #f9f9f9;
+    --main-logo-bg: #0a0a0a;
+
+    --window-bg: #f7f7f7;
+    --window-fg: #111;
+
+    --window-shadow: #00000088;
+
+    --window-x-color: /*If you're*/ #555; /*then I'm 666*/
+    --window-x-hover-color: #666;
+    --window-x-hover-bg: #f3f3f3ee;
+    --window-x-active-color: #333;
+    --window-x-active-bg: #e4e4e4ee;
+    
+    /* Buttons */
+    --button-bg: #e4e4e4;
+    --button-fg: #222;
+
+    --button-hover-border: #aeaeae;
+    --button-hover-fg: #111;
+    --button-hover-bg: #cecece;
+
+    --button-active-fg: #999;
+
+    /* Inputs */
+    --input-border: #555;
+    --input-bg: #141414;
+    
+    --input-hover-border: #777;
+    --input-focus-border: #888;
+    
+    --input-text-color: #999;
+    --input-text-hide-color: #555;
+    --input-text-hide-bg: #111;
+
+    /* Tooltips */
+    --tooltip-color: #bbb;
+    --tooltip-bg: #11111199;
+    --tooltip-border: #555;
+
+    /* Color codes */
+    --error-color: #f35959;
+    --blue: #65baff;
+    --accept-color: #65ff7f;
+
+    --main-color-text: #111;
+    /* --coolr: #00ff7f; */
+
+    /* Chat colors */
+    --chat-main-bg: #141417;
+    --chat-button-active-bg: #bbb;
+    --chat-button-active-color: #222;
+
+    --chat-main-hrtext: #28282d;
+
+    --chat-friendRequest-bg: #33333c;
+    --chat-friendRequest-btn: #3c3c4c;
+    --chat-decline-fade: #f3595966;
+    --chat-accept-fade: #65ff7f66;
+    --chat-color-fade: #eee;
+    --chat-color-active: #111;
+    --chat-friendAdd-text-color: #bbb;
+
+    --conversation-chatheader-bg: #0e0f14;
+    --conversation-chatheader-icon: #ddd;
+    --conversation-chatheader-icon-hover: #eee;
+
+    --conversation-message-bg: #2e2f34;
+    --conversation-message-me-bg: #0a1757;
+
+    /* Settings colors */
+    --setting-bg: #eeeeee;
+    --setting-label: #222;
+    --setting-sublabel: #666;
+    
+    --setting-bg-hover: #dbdbdb;
+    --setting-border-hover: #bbb;
+    --setting-border-active: #444;
+
+    --setting-checkbox-bg: #d0d0d0;
+    --setting-checkbox-border: #494949;
+    --setting-checkbox-ball: #eee;
+
+    /* WriteNote colors */
+    --writenote: #222242;
+    --wn-unloaded: #050505;
+    
+    --caret: #c4e4ff;
+
+    /* Header */
+    --line-text: #111;
+    --unsaved: #fffc65;
+
+    --header-button-hover: #222222bb;
+    --header-button-focused: #eee;
+    --header-button-blurred: #555;
+
+    --header-bg: #111111bb;
+    --header-bg-blurred: #111111;
+
+    /* Notes list */
+    --note-title-color: #eee;
+    --note-summary-color: #999;
+    --note-sortData-bg: #171717;
+    --note-sortData-color: #666;
+
+    --note-active-title-color: #333;
+    --note-active-summary-color: #666;
+    --note-active-sortData-bg: #666;
+    --note-active-sortData-color: #222;
+
+    /* Canvas */
+    /* --writenote-canvas-bg: #444; */
+
+    /* Device list */
+    --you-device: #272147;
+    --online-device: #21d03e;
+    --offline-device: #ad1f1f;
+
+    /* FileShare */
+    --profile-bg: #1d1d1d;
+    --profile-bg-hover: #252525;
+    --profile-bg-active: #3d3d3d;
+
+    /* Themes */
+    --theme-bg: #222;
+    --theme-bg-hover: #333;
+    --theme-bg-active: #444;
+}

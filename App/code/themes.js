@@ -7,7 +7,6 @@ function loadCSSFile(theme, filename){
     document.getElementsByTagName("head")[0].appendChild(ref);
 }
 
-var activeTheme = "dark";
 function loadTheme(theme, loadFromSettings){
     unloadActiveTheme();
     if(theme == "dark"){
@@ -15,11 +14,16 @@ function loadTheme(theme, loadFromSettings){
         return;
     }
     settings.theme = theme;
-    for (let i = 0; i < themesInfo[theme].files.length; i++) {
-        const filename = themesInfo[theme].files[i];
-        if(filename.endsWith(".css")){
-            loadCSSFile(theme, filename);
+    if(themesInfo[theme].files){
+        for (let i = 0; i < themesInfo[theme].files.length; i++) {
+            const filename = themesInfo[theme].files[i];
+            if(filename.endsWith(".css")){
+                loadCSSFile(theme, filename);
+            }
         }
+    }
+    else{
+        loadCSSFile(theme, "index.css");
     }
     if(loadFromSettings){
         return;
@@ -28,13 +32,12 @@ function loadTheme(theme, loadFromSettings){
 }
 
 function unloadActiveTheme(){
-    if(activeTheme=="dark"){
-        return;
+    if(settings.theme){
+        var themeItems = document.querySelectorAll(`.theme${settings.theme}`);
+        themeItems.forEach(element => {
+            element.remove();
+        });
     }
-    var themeItems = document.querySelectorAll(`.theme${activeTheme}`);
-    themeItems.forEach(element => {
-        element.remove();
-    });
 }
 
 function themesElement(){

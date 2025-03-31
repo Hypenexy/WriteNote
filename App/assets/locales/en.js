@@ -214,6 +214,9 @@ var locale = {
     dark: "Dark",
     dark_description: "The default look of WriteNote.",
 
+    light: "Light",
+    light_description: "More visible and sunlier appearance.",
+
     fun: "Fun",
     fun_description: "Goofy looking UI with unique elements.",
 }

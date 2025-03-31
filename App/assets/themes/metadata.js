@@ -7,6 +7,14 @@ var themesInfo = {
             writenote: "222242"
         }
     },
+    light: {
+        title: "light",
+        description: "light_description",
+        colors: {
+            header: "ffffffbb",
+            writenote: "ffffff"
+        }
+    },
     fun: {
         title: "fun",
         description: "fun_description",
