@@ -169,6 +169,10 @@ function contextMenu(type){
      * the context menu will position (appear) under it
      */
     contextMenu.append = (event, toElement) => {
+        if(typeof contextMenu.preventRun == "function"){
+            if(contextMenu.preventRun() == true)
+                return;
+        }
         for (let i = 0; i < contextMenu.selectedConditions.length; i++) {
             const element = contextMenu.selectedConditions[i];
             element();   

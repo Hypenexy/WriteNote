@@ -5,7 +5,21 @@ function noteContextMenu(noteData, element){
         noteData.size = 0;
     }
 
+
+    // if(element.classList.contains("selected")){
+    //     var allSelectedElements = element.parentElement.querySelectorAll("");
+    // }
+
     const noteContextMenu = contextMenu();
+
+    noteContextMenu.preventRun = () => {
+        if(element.classList.contains("selected")){
+            var allSelectedElements = element.parentElement.querySelectorAll("");
+            var manyNotesContextMenu = contextMenu();
+            return true;
+        }
+        return false;
+    }
 
     noteContextMenu.add("input", name); // add rename functions
 

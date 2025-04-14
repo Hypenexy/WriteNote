@@ -305,6 +305,13 @@ async function saveNote(UID, data, callback, socket) {
     }
 }
 
+async function binNote(UID, data, callback, socket) {
+    updateNoteProperty(UID, data.NID, "date_opened", Date.now());
+}
+async function binMultipleNotes(UID, data, callback, socket) {
+    updateNoteProperty(UID, data.NID, "date_opened", Date.now());
+}
+
 module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {
     if(data.type == "createNote"){
         createNote(clientInfo.UID, data.options, callback, socket);
@@ -320,6 +327,12 @@ module.exports.protocol = (data, callback, socket, clientInfo, clientsReference,
     }
     if(data.type == "close"){
         closeNote(clientInfo.UID, data, socket);
+    }
+    if(data.type == "bin"){
+        binNote(clientInfo.UID, data, callback, socket);
+    }
+    if(data.type == "binMultiple"){
+        binMultipleNotes(clientInfo.UID, data, callback, socket);
     }
 }
 

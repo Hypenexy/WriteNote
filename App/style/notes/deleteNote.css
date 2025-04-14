@@ -1,0 +1,32 @@
+.notesListContainer .top .bin .items div{
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    left: 16px;
+    bottom: 19px;
+    border-radius: .5px;
+}
+.notesListContainer .top .bin .items div:nth-child(2){
+    left: 20px;
+    bottom: 20px;
+}
+.notesListContainer .top .bin .items div:nth-child(3){
+    left: 16px;
+    bottom: 22px;
+}
+.notesListContainer .top .bin .items div:nth-child(4){
+    left: 19px;
+    bottom: 23px;
+}
+.notesListContainer .top .bin .items div:nth-child(5){
+    left: 15px;
+    bottom: 26px;
+}
+.notesListContainer .top .bin .items div:nth-child(6){
+    left: 20px;
+    bottom: 27px;
+}
+.notesListContainer .top .bin .items div:nth-child(7){
+    left: 16px;
+    bottom: 28px;
+}

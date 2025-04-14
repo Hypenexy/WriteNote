@@ -140,6 +140,7 @@ var locale = {
     devices_connected: "Devices connected",
 
 
+    note_in_bin: "Note is in Bin",
     note_saving_error: "Note couldn't be saved",
     couldnt_connect: "Lost connection to server",
     no_space: "You don't have space to save",

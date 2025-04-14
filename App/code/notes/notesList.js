@@ -10,6 +10,25 @@ function selectAllNotes(){
     }
 }
 
+function getSelectedNotes(){
+    return notesListElement.querySelectorAll(".selected");
+}
+
+document.addEventListener("keydown", (e) => {
+    if(logonData != -1 && escapeStack[escapeStack.length-1][0].classList.contains("welcome")){
+        if(e.ctrlKey && e.code == "KeyA"){
+            e.preventDefault();
+            selectAllNotes();
+        }
+        if(e.code == "Delete"){
+            var selectedNotes = getSelectedNotes();
+            selectedNotes.forEach(element => {
+                
+            });
+        }
+    }
+})
+
 const notesListContextMenu = contextMenu();
 
 notesListContextMenu.add("button", locale.select_all, {
@@ -332,7 +351,7 @@ function topElement(element){
 
     
     const bin = mdutils.createAppendElement("button", element);
-    bin.innerHTML = `<i>delete</i><i>delete</i><div><p>${locale.bin}</p></div>`;
+    bin.innerHTML = `<i>delete</i><i>delete</i><div><p>${locale.bin}</p></div><div class="items"></div>`;
     bin.classList.add("i", "bin");
 }
 
