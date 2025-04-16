@@ -1,4 +1,6 @@
 function removeNoteFromList(NID){
+    logonData.notes[NID].binned = true;
+    displayInBin(NID);
     if(Object.keys(openNotes).includes(NID)){
         var element = noteList.querySelector(`[NID="${NID}"]`);
         addIconHeaderNote(element, "warning", locale.note_in_bin, "error");
@@ -34,7 +36,7 @@ function deleteMultipleNotes(NIDs){
         type: "binMultiple",
         NIDs: NIDs
     },
-    () => {
+    (response) => {
         if(response.status == true){
             NIDs.forEach(NID => {
                 removeNoteFromList(NID);

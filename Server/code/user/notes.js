@@ -62,8 +62,19 @@ function updateNoteProperty(UID, NID, property, value) {
                 [`notes.${NID}.${property}`]: value
             }
         }
-    )
+    );
 }
+function deleteNoteProperty(UID, NID, property) {
+    global.collection.updateOne(
+        { _id: UID, [`notes.${NID}`]: {$exists: true} },
+        {
+            $unset: {
+                [`notes.${NID}.${property}`]: { $exists : true }
+            }
+        }
+    );
+}
+
 
 async function createNote(UID, options, callback, socket){
     // I got 55c600, 72ad03, 348612, d5acfb, 27b8a5, 479d01, 2bf7cf
@@ -306,10 +317,25 @@ async function saveNote(UID, data, callback, socket) {
 }
 
 async function binNote(UID, data, callback, socket) {
-    updateNoteProperty(UID, data.NID, "date_opened", Date.now());
+    updateNoteProperty(UID, data.NID, "binned", true);
+    callback({status: true});
 }
 async function binMultipleNotes(UID, data, callback, socket) {
-    updateNoteProperty(UID, data.NID, "date_opened", Date.now());
+    data[NIDs].forEach(NID => {
+        updateNoteProperty(UID, NID, "binned", true);
+    });
+    callback({status: true});
+}
+
+async function unbinNote(UID, data, callback, socket) {
+    deleteNoteProperty(UID, data.NID, "binned");
+    callback({status: true});
+}
+async function unbinMultipleNotes(UID, data, callback, socket) {
+    data[NIDs].forEach(NID => {
+        deleteNoteProperty(UID, NID, "binned");
+    });
+    callback({status: true});
 }
 
 module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {

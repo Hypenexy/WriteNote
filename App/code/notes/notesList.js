@@ -145,7 +145,7 @@ function createNotesListElement(){
     
         for (let i = 0; i < notesArray.length; i++) {
             const data = logonData.notes[notesArray[i].NID];
-            createNoteElement(data, notesArray[i].NID, listElement);
+            createNoteElement(data, notesArray[i].NID);
         }
 
         listElement.appendChild(createNewButton());
@@ -353,6 +353,7 @@ function topElement(element){
     const bin = mdutils.createAppendElement("button", element);
     bin.innerHTML = `<i>delete</i><i>delete</i><div><p>${locale.bin}</p></div><div class="items"></div>`;
     bin.classList.add("i", "bin");
+    mdutils.ButtonEvent(bin, openFolder, "bin");
 }
 
 const typesIcons = {
@@ -363,17 +364,52 @@ const typesIcons = {
     "canvas": "brush"
 }
 
-function createNoteElement(data, NID){
+function openFolder(NID){
+    const folderElement = mdutils.createAppendElement("notesList", notesListElement);
+    var folderNotes = [];
+    
+    var NIDs = Object.keys(logonData.notes);
+
+    if(NID == "bin"){
+        folderElement.classList.add("binFolder");
+        for (let i = 0; i < NIDs.length; i++) {
+            if(logonData.notes[NIDs[i]].binned == true){
+                folderNotes.push(NIDs[i]);
+            }
+        }
+    }
+    else{
+        for (let i = 0; i < NIDs.length; i++) {
+            if(logonData.notes[NIDs[i]].folder == NID){
+                folderNotes.push(NIDs[i]);
+            }
+        }
+    }
+
+    for (let i = 0; i < folderNotes.length; i++) {
+        console.log(logonData.notes[folderNotes[i]], folderNotes[i], folderElement)
+        createNoteElement(logonData.notes[folderNotes[i]], folderNotes[i], folderElement);
+        
+    }
+    console.log(folderNotes);
+}
+
+function createNoteElement(data, NID, parentElement){
+    if(data.binned == true && parentElement && !parentElement.classList.contains("binFolder")){
+        displayInBin(NID);
+        return;
+    }
+
     const listElement = notesListElement.querySelector(".notesList");
+    if(!parentElement){
+        parentElement = listElement;
+    }
+    console.log(parentElement)
     const element = document.createElement("div");
     element.classList.add("button");
     element.setAttribute("NID", NID);
 
     noteContextMenu(data, element);
-
-    if(data.type == "folder"){
-        // do folder stuff
-    }
 
     // element.textContent = data.name;
     var icon = "description";
@@ -440,6 +476,10 @@ function createNoteElement(data, NID){
                 
                 return;
             }
+            if(data.type == "folder"){
+                openFolder(NID);
+                return;
+            }
             openNote(NID, data);
         }, 
     null, true);
@@ -460,21 +500,23 @@ function createNoteElement(data, NID){
             // }
 
             // Loading note by dropping it on notearea or header
+
+            var NIDs = [];
+            for (let i = 0; i < extra.length; i++) {
+                var NIDextra = extra[i].getAttribute("nid");
+                if(NIDextra){
+                    NIDs.push(NIDextra);
+                    // openNote(NIDextra, logonData.notes[NIDextra]);
+                }
+            }
             
             var writenote = mdutils.findElement(target, ".writenote"),
                 header = mdutils.findElement(target, "header"),
-                folderNid = mdutils.findElement(target, ".folder[nid]");
+                folderNid = mdutils.findElement(target, ".folder[nid]"),
+                bin = mdutils.findElement(target, ".bin");
 
             if(writenote || header){
                 if(extra.length > 0){
-                    var NIDs = [];
-                    for (let i = 0; i < extra.length; i++) {
-                        var NIDextra = extra[i].getAttribute("nid");
-                        if(NIDextra){
-                            NIDs.push(NIDextra);
-                            // openNote(NIDextra, logonData.notes[NIDextra]);
-                        }
-                    }
                     NIDs.push(NID);
                     openMultipleNotes(NIDs);
                     return;
@@ -485,10 +527,19 @@ function createNoteElement(data, NID){
             if(folderNid){
                 // MOVE INTO THAT FOLDER
             }
+
+            if(bin){
+                console.log("im binning it")
+                if(extra.length > 0){
+                    deleteMultipleNotes(NIDs);
+                    return;
+                }
+                binNote(NID);
+            }
         }
     });
 
-    listElement.appendChild(element);
+    parentElement.appendChild(element);
 }
 
 function addToNoteList(data){
