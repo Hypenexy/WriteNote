@@ -31,9 +31,40 @@ function binNote(NID){
         }
     });
 }
-function deleteMultipleNotes(NIDs){
+function binMultipleNotes(NIDs){
     socket.emit("notes", {
         type: "binMultiple",
+        NIDs: NIDs
+    },
+    (response) => {
+        if(response.status == true){
+            NIDs.forEach(NID => {
+                removeNoteFromList(NID);
+            });
+        }
+        if(response.error){
+
+        }
+    });
+}
+
+function unbinNote(NID){
+    socket.emit("notes", {
+        type: "unbin",
+        NID: NID
+    },
+    (response) => {
+        if(response.status == true){
+            // removeNoteFromList(NID);
+        }
+        if(response.error){
+
+        }
+    });
+}
+function unbinMultipleNotes(NIDs){
+    socket.emit("notes", {
+        type: "unbinMultiple",
         NIDs: NIDs
     },
     (response) => {

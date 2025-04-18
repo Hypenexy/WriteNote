@@ -14,7 +14,13 @@ function noteContextMenu(noteData, element){
 
     noteContextMenu.preventRun = () => {
         if(element.classList.contains("selected")){
-            var allSelectedElements = element.parentElement.querySelectorAll("");
+            var allSelectedElements = element.parentElement.querySelectorAll(".selected");
+            var NIDs = [];
+            allSelectedElements.forEach(element => {
+                NIDs.push(element.getAttribute("NID"));
+            });
+            
+            console.log(NIDs);
             var manyNotesContextMenu = contextMenu();
             return true;
         }

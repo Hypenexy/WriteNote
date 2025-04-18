@@ -360,6 +360,12 @@ module.exports.protocol = (data, callback, socket, clientInfo, clientsReference,
     if(data.type == "binMultiple"){
         binMultipleNotes(clientInfo.UID, data, callback, socket);
     }
+    if(data.type == "unbin"){
+        unbinNote(clientInfo.UID, data, callback, socket);
+    }
+    if(data.type == "unbinMultiple"){
+        unbinMultipleNotes(clientInfo.UID, data, callback, socket);
+    }
 }
 
 // module.exports.stream = (data, callback, socket, clientInfo) => {
