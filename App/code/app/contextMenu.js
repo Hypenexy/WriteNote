@@ -140,6 +140,7 @@ function contextMenu(type){
                 }
             }
         }
+        return element;
     }
 
     /**
@@ -164,13 +165,14 @@ function contextMenu(type){
 
     /**
      * Display the created context menu.
-     * @param {Object} Event event info
-     * @param {HTMLElement} toElement If an element is specified
-     * the context menu will position (appear) under it
+     * @param {Object} Event If event info is specificed:
+     * @param {HTMLElement} toElement If an element is specified:
+     * the context menu will position (appear) under it.
+     * It is REQUIRED that at least one of the arguments is present.
      */
     contextMenu.append = (event, toElement) => {
         if(typeof contextMenu.preventRun == "function"){
-            if(contextMenu.preventRun() == true)
+            if(contextMenu.preventRun(event) == true)
                 return;
         }
         for (let i = 0; i < contextMenu.selectedConditions.length; i++) {

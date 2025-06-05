@@ -38,6 +38,12 @@ notesListContextMenu.add("button", locale.select_all, {
 notesListContextMenu.add("button", locale.new_folder, {"icon": "folder"});
 
 
+notesListContextMenu.preventRun = (event) => {
+    if(mdutils.findElement(event.target, "[nid]") && mdutils.findElement(event.target, "[nid]").classList.contains("selected")){
+        return true;
+    }
+};
+
 function createNotesListElement(){
     // const element = document.createElement("div");
     const element = notesListElement;
@@ -283,10 +289,11 @@ function topElement(element){
             reversed_checkbox.classList.toggle("selected");
         });
     
+        // sortButton.addEventListener("contextmenu", (e) => {
+            //     sortMenu.append(e, sortButton);
+            // });
         mdutils.ButtonEvent(sortButton, (event) => {sortMenu.append(event, sortButton)}, null, true);
-        sortButton.addEventListener("contextmenu", (e) => {
-            sortMenu.append(e, sortButton);
-        });
+        sortMenu.attach(sortButton);
     }
 
     setSort();
@@ -364,38 +371,9 @@ const typesIcons = {
     "canvas": "brush"
 }
 
-function openFolder(NID){
-    const folderElement = mdutils.createAppendElement("notesList", notesListElement);
-    var folderNotes = [];
-    
-    var NIDs = Object.keys(logonData.notes);
-
-    if(NID == "bin"){
-        folderElement.classList.add("binFolder");
-        for (let i = 0; i < NIDs.length; i++) {
-            if(logonData.notes[NIDs[i]].binned == true){
-                folderNotes.push(NIDs[i]);
-            }
-        }
-    }
-    else{
-        for (let i = 0; i < NIDs.length; i++) {
-            if(logonData.notes[NIDs[i]].folder == NID){
-                folderNotes.push(NIDs[i]);
-            }
-        }
-    }
-
-    for (let i = 0; i < folderNotes.length; i++) {
-        console.log(logonData.notes[folderNotes[i]], folderNotes[i], folderElement)
-        createNoteElement(logonData.notes[folderNotes[i]], folderNotes[i], folderElement);
-        
-    }
-    console.log(folderNotes);
-}
 
 function createNoteElement(data, NID, parentElement){
-    if(data.binned == true && parentElement && !parentElement.classList.contains("binFolder")){
+    if(data.binned == true && !parentElement){
         displayInBin(NID);
         return;
     }
@@ -409,7 +387,7 @@ function createNoteElement(data, NID, parentElement){
     element.classList.add("button");
     element.setAttribute("NID", NID);
 
-    noteContextMenu(data, element);
+    noteContextMenu(NID, element);
 
     // element.textContent = data.name;
     var icon = "description";

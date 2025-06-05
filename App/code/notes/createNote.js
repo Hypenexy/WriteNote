@@ -1,16 +1,20 @@
-function createNewButton(){
+function createNewButton(folderNID){
     const element = document.createElement("div");
     element.classList.add("button");
     element.innerHTML = `<i>add</i>${locale.create_new}`;
-    mdutils.ButtonEvent(element, createNoteGUI);
+    mdutils.ButtonEvent(element, createNoteGUI, folderNID);
     return element;
 }
 
-function createNoteGUI(){
+function createNoteGUI(folderNID){
     const windowElement = createWindow("createNote");
     
     const header = mdutils.createAppendElement("header", windowElement);
     header.textContent = locale.create_new_project;
+
+    if(folderNID){
+        header.textContent = `${locale.create_new_project} ${locale.in} ${logonData.notes[folderNID].name}`;
+    }
 
     // Project name
 
@@ -69,13 +73,18 @@ function createNoteGUI(){
     submitButton.textContent = locale.create;
     mdutils.ButtonEvent(submitButton, createNote);
 
+    var options = {
+        name: input.value,
+        type: type
+    };
+    if(folderNID){
+        options.folder = folderNID;
+    }
+
     function createNote(){
         socket.emit("notes", {
             type: "createNote",
-            options: {
-                name: input.value,
-                type: type
-            }
+            options: options
         },
         (success, error) => {
             if(success){

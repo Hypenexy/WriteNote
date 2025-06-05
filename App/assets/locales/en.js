@@ -112,6 +112,7 @@ var locale = {
     open_new: "Open new",
 
     create_new_project: "Create a new project",
+    in: "in",
     name: "Name",
     type: "Type",
     create: "Create",
@@ -231,8 +232,11 @@ var locale = {
     share: "Share",
     duplicate: "Duplicate",
     delete: "Delete",
+    recover: "Recover",
     properties: "Properties",
     opened: "Opened",
     modified: "Modified",
     created: "Created",
+
+    notes_selected: "notes selected",
 }

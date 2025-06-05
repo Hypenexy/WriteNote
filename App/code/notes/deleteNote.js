@@ -6,6 +6,11 @@ function removeNoteFromList(NID){
         addIconHeaderNote(element, "warning", locale.note_in_bin, "error");
     }
     
+    var element = notesListElement.querySelector(`[NID="${NID}"]`);
+    element.classList.add("delete");
+    element.onanimationend = () => {
+        element.remove();
+    };
 }
 
 function displayInBin(NID){

@@ -30,11 +30,17 @@ class TextMeasurer {
                     countedChars++;
                 }
             } else if (node.nodeType === Node.ELEMENT_NODE) {
-                const styles = this.getElementStyles(node);
-                for (let char of node.textContent) {
+                if (node.tagName === "IMG") {
                     if (countedChars >= charCount) return totalWidth;
-                    totalWidth += this.measureStyledText(char, styles);
+                    totalWidth += node.width || node.getBoundingClientRect().width;
                     countedChars++;
+                } else {
+                    const styles = this.getElementStyles(node);
+                    for (let char of node.textContent) {
+                        if (countedChars >= charCount) return totalWidth;
+                        totalWidth += this.measureStyledText(char, styles);
+                        countedChars++;
+                    }
                 }
             }
         }
@@ -64,15 +70,27 @@ function getCharacterIndex(event, lineElement, measurer) {
     let index = 0;
 
     for (let node of lineElement.childNodes) {
-        if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
+        if (node.nodeType === Node.TEXT_NODE) {
             for (let char of node.textContent) {
-                const styles = node.nodeType === Node.ELEMENT_NODE 
-                    ? measurer.getElementStyles(node)
-                    : measurer.getElementStyles(lineElement);
+                const styles = measurer.getElementStyles(lineElement);
                 totalWidth += measurer.measureStyledText(char, styles);
-                
+
                 if (totalWidth >= relativeX) return index;
                 index++;
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName === "IMG") {
+                totalWidth += node.width || node.getBoundingClientRect().width;
+                if (totalWidth >= relativeX) return index;
+                index++;
+            } else {
+                const styles = measurer.getElementStyles(node);
+                for (let char of node.textContent) {
+                    totalWidth += measurer.measureStyledText(char, styles);
+
+                    if (totalWidth >= relativeX) return index;
+                    index++;
+                }
             }
         }
     }

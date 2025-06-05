@@ -30,3 +30,15 @@
     left: 16px;
     bottom: 28px;
 }
+
+.notesList .button.delete{
+    animation-name: deletion;
+    animation-duration: .3s;
+}
+
+@keyframes deletion {
+    to{
+        transform: translateY(-12px);
+        opacity: 0;
+    }
+}

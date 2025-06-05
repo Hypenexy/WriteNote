@@ -1,0 +1,23 @@
+.notesListContainer.folderIn, .notesListContainer.folderOut{
+    animation-duration: .15s;
+}
+
+.notesListContainer.folderIn{
+    animation-name: folderIn;
+}
+.notesListContainer.folderOut{
+    animation-name: folderOut;
+}
+
+@keyframes folderIn {
+    from{
+        transform: translateX(20px);
+        opacity: 0;
+    }
+}
+@keyframes folderOut {
+    to{
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+}
