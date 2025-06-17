@@ -48,6 +48,23 @@ function attachTooltip(element, text, isInstant){
     }
     element.addEventListener("mouseleave", toolMouseLeave);
 
+    var in_dom = document.body.contains(element);
+    var observer = new MutationObserver(function(mutations) {
+        if (document.body.contains(element)) {
+            if (!in_dom) {
+                // console.log("element inserted"); Could improve this.
+            }
+            in_dom = true;
+        } else if (in_dom) {
+            in_dom = false;
+            toolMouseLeave();
+        }
+
+    });
+    observer.observe(document.body, {childList: true, subtree: true});
+
+
+
     function removeTooltip(){
         tooltipElement.remove();
         tooltipElement.classList.remove("active");
@@ -55,6 +72,7 @@ function attachTooltip(element, text, isInstant){
         element.removeEventListener("mousemove", toolMouseMove);
         element.removeEventListener("mouseenter", toolMouseEnter);
         element.removeEventListener("mouseleave", toolMouseLeave);
+        observer.disconnect();
     }
 
     return removeTooltip;

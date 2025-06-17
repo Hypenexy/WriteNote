@@ -1,0 +1,56 @@
+.webapp{
+    width: 100%;
+    height: 100%;
+    padding-top: 76px;
+
+    display: flex;
+
+}
+
+.webapp .explorer{
+    color: var(--window-fg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.webapp .explorer,
+.webapp .properties{
+    padding: 4px;
+}
+.webapp .explorer .title,
+.webapp .properties .title{
+    place-self: flex-start;
+    color: var(--ab-explorer-title);
+    font-size: 16px;
+    font-weight: 600;
+}
+.webapp .explorer .elementPreview{
+    cursor: grab;
+    user-select: none;
+    
+    border: 2px solid var(--ab-explorer-item-bg);
+    border-radius: 12px;
+    width: 160px;
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.webapp .explorer .elementPreview:active{
+    cursor: grabbing;
+}
+.webapp .explorer .elementPreview .input{
+    width: 100px;
+}
+
+
+.webapp .preview{
+    flex: 1;
+}
+
+
+.webapp .properties{
+    width: 220px;
+}

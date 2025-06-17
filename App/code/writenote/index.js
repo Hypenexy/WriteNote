@@ -116,19 +116,12 @@ class WriteNote{
     }
 
     loadWorkplace_Webapp(){
-        const workspace = document.createElement("div");
-        this.workspaceData.element = workspace; 
-        workspace.classList.add("webapp");
-
-        const explorer = document.createElement("div");
-        explorer.classList.add("explorer");
-        workspace.appendChild(explorer)
-
-        const preview = document.createElement("div");
-        preview.classList.add("preview");
-        workspace.appendChild(preview);
-
-        this.writenote.appendChild(workspace);
+        this.enabled(false);
+        this.backgroundColor(false);
+        
+        const appBuilder = new AppBuilder();
+        console.log(appBuilder.debugData());
+        // appBuilder.openInExternal()
     }
 
     

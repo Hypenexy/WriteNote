@@ -73,15 +73,16 @@ function createNoteGUI(folderNID){
     submitButton.textContent = locale.create;
     mdutils.ButtonEvent(submitButton, createNote);
 
-    var options = {
-        name: input.value,
-        type: type
-    };
-    if(folderNID){
-        options.folder = folderNID;
-    }
 
     function createNote(){
+        var options = {
+            name: input.value,
+            type: type
+        };
+        if(folderNID){
+            options.folder = folderNID;
+        }
+
         socket.emit("notes", {
             type: "createNote",
             options: options
@@ -95,10 +96,10 @@ function createNoteGUI(folderNID){
             if(error){
                 switch (error) {
                     case "Invalid project type":
-                        
+                        console.log(error);
                         break;
                     case "Name is invalid format":
-                        
+                        console.log(error);
                         break;
                     case "Name is not set":
                         
@@ -107,13 +108,14 @@ function createNoteGUI(folderNID){
                         
                         break;
                     case "Name is nonexistent":
-                        
+                        console.log("???");
+                        console.log(error);
                         break;
                     case "Parent is invalid format":
                         
                         break;
                     case "Type is invalid":
-                        
+                        console.log(error);
                         break;
                     case "Invalid project type":
                         

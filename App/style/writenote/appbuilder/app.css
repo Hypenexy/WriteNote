@@ -1,0 +1,15 @@
+.webapp .preview{
+    color: #ffffff;
+    background-color: #151622;
+
+    padding: 8px;
+}
+
+.webapp .preview .heading{
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.webapp .preview *:hover{
+    outline: 1px dashed rgba(255, 36, 156);
+}

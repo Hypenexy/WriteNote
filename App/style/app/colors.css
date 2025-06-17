@@ -129,4 +129,9 @@
     --theme-bg: #222;
     --theme-bg-hover: #333;
     --theme-bg-active: #444;
+
+    /* App builder */
+    /* Explorer */
+    --ab-explorer-title: #999;
+    --ab-explorer-item-bg: #1f1f1f;
 }

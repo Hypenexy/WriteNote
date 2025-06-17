@@ -16,7 +16,7 @@ const weatherFolder = "./assets/images/weather";
 const filenames = fs.readdirSync(weatherFolder);
 
 async function getWeatherImage(data) {
-    var i = getRandomArbitrary(0, 74);
+    var i = getRandomArbitrary(1, 74);
     return filenames[i];
 }
 
