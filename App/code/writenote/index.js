@@ -104,7 +104,7 @@ class WriteNote{
             this.loadEditor(data);
         }
         if(type == "web app"){
-            this.loadWorkplace_Webapp();
+            this.loadWorkplace_Webapp(data);
         }
         if(type == "canvas"){
             this.loadWorkplace_Canvas(data);
@@ -115,11 +115,11 @@ class WriteNote{
         InitializeEditor(data);
     }
 
-    loadWorkplace_Webapp(){
+    loadWorkplace_Webapp(data){
         this.enabled(false);
         this.backgroundColor(false);
         
-        const appBuilder = new AppBuilder();
+        const appBuilder = new AppBuilder(data);
         console.log(appBuilder.debugData());
         // appBuilder.openInExternal()
     }

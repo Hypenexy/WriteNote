@@ -15,7 +15,7 @@ function getSelectedNotes(){
 }
 
 document.addEventListener("keydown", (e) => {
-    if(logonData != -1 && escapeStack[escapeStack.length-1][0].classList.contains("welcome")){
+    if(logonData != -1 && escapeStack.length > 0 && escapeStack[escapeStack.length-1][0].classList.contains("welcome")){
         if(e.ctrlKey && e.code == "KeyA"){
             e.preventDefault();
             selectAllNotes();

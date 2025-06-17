@@ -7,7 +7,7 @@
  * @param {String} text Text displayed at the tooltip
  * @param {Boolean} isInstant True if the tooltip will show instantly and not when hovered for .5 seconds
  */
-function attachTooltip(element, text, isInstant){
+function attachTooltip(element, text, isInstant, classText){
     const tooltipElement = document.createElement("div");
     tooltipElement.classList.add("tooltip");
     tooltipElement.innerHTML = text;
@@ -63,6 +63,23 @@ function attachTooltip(element, text, isInstant){
     });
     observer.observe(document.body, {childList: true, subtree: true});
 
+    if(classText){
+        const element = document.querySelector('div');
+        let prevState = element.classList.contains('is-busy');
+        const observer = new MutationObserver((mutations) => { 
+            mutations.forEach((mutation) => {
+                const { target } = mutation;
+
+                if (mutation.attributeName === 'class') {
+                    const currentState = mutation.target.classList.contains('is-busy');
+                    if (prevState !== currentState) {
+                        prevState = currentState;
+                        console.log(`'is-busy' class ${currentState ? 'added' : 'removed'}`);
+                    }
+                }
+            });
+        });
+    }
 
 
     function removeTooltip(){

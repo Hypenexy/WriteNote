@@ -368,4 +368,17 @@ class MDUtils{
         return h;
     }
     
+    onRemoveEvent(element, onDetachCallback) {
+        const observer = new MutationObserver(function () {
+            if (!document.contains(element)) {
+                observer.disconnect();
+                onDetachCallback();
+            }
+        })
+
+        observer.observe(document, {
+            childList: true,
+            subtree: true
+        });
+    }
 }

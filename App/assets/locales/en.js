@@ -239,4 +239,10 @@ var locale = {
     created: "Created",
 
     notes_selected: "notes selected",
+
+
+    elements: "Elements",
+    run: "Run",
+    stop: "Stop",
+    run_in_external: "Run in external window",
 }

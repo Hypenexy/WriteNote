@@ -23,6 +23,9 @@ function createWindow(id){
     }
     
     escapeStack.push([window, close]);
+    mdutils.onRemoveEvent(window, ()=>{
+        escapeStack.splice(escapeStack.findIndex(item => item[0] === window), 1);
+    });
 
     const closeButton = document.createElement("div");
     closeButton.classList.add("x");

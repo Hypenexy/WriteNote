@@ -1,10 +1,41 @@
 .webapp{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.webapp .viewContainer{
     width: 100%;
     height: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.webapp .actions{
+    width: 100%;
+    height: 120px;
+    padding: 4px;
     padding-top: 76px;
 
     display: flex;
+    gap: 8px;
+}
+.webapp .actions .title{
+    margin-right: 128px;
+}
 
+.webapp .actions .button{
+    width: 32px;
+    height: 32px;
+    padding: 3px;
+}
+
+.webapp .actions .button.play{
+    color: #69c979;
+}
+.webapp .actions .button.stop{
+    color: #e0474c;
 }
 
 .webapp .explorer{
@@ -19,7 +50,8 @@
     padding: 4px;
 }
 .webapp .explorer .title,
-.webapp .properties .title{
+.webapp .properties .title,
+.webapp .actions .title{
     place-self: flex-start;
     color: var(--ab-explorer-title);
     font-size: 16px;
@@ -53,4 +85,10 @@
 
 .webapp .properties{
     width: 220px;
+}
+
+
+.overlay.webapp input{
+    position: absolute;
+    color: #fff;
 }

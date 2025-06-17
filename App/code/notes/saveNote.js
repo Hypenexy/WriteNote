@@ -65,7 +65,7 @@ window.addEventListener("keydown", function(e){
 
 writenote.notearea.addEventListener("input", () => {
     if(openNotes[activeNID].saved == true){
-        openNotes[activeNID].saved = false; 
+        openNotes[activeNID].saved = false;
         changeHeaderNote(activeNID, {type: "saveChange"});
     }
 });
