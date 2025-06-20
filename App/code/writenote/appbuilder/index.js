@@ -73,12 +73,30 @@ class AppBuilder {
         return this.app;
     }
 
+    loadCSSFile(DOM, href){
+        var ref = document.createElement("link");
+        ref.rel = "stylesheet";
+        ref.type = "text/css";
+        ref.href = href;
+        // ref.classList.add(`theme${theme}`);
+        DOM.getElementsByTagName("head")[0].appendChild(ref);
+    }
+
     openInExternal(){
         var projectName = logonData.notes[this.NID].name;
         var wnd = window.open("about:blank", "", "_blank");
         // wnd.document.write(html);
         wnd.document.title = projectName;
-        wnd.document.body.innerHTML = "nou";
+        // wnd.document.body.innerHTML = "nou";
+
+        this.loadCSSFile(wnd.document, "./");
+        
+        for (let i = 1; i < this.data.length; i++) {
+            const data = this.data[i];
+            
+            const element = this.createElement(data);
+            wnd.document.body.appendChild(element);
+        }
     }
 
     elements = {
@@ -151,16 +169,37 @@ class AppBuilder {
     }
 
     createPreview(){
+        this.viewport = document.createElement("div");
+        this.viewport.classList.add("viewport");
+        this.viewContainer.appendChild(this.viewport);
+
+        const zoompan = document.createElement("div");
+        zoompan.classList.add("zoompan");
+        this.viewport.appendChild(zoompan);
+
+        
         this.preview = document.createElement("div");
         this.preview.classList.add("preview");
-        this.viewContainer.appendChild(this.preview);
-        // panzoom(this.preview, { this is a mess atm
-        //     maxZoom: 1,
-        //     minZoom: 0.1,
-        //     initialX: 300,
-        //     initialY: 500,
-        //     initialZoom: 1
-        // });
+        zoompan.appendChild(this.preview);
+        panzoom(zoompan, {
+            maxZoom: 2,
+            minZoom: 0.5,
+            initialX: 300,
+            initialY: 500,
+            initialZoom: 1,
+            contain: 'inside',
+
+            beforeMouseDown: function(e) {
+                var shouldIgnore = !e.ctrlKey;
+                return shouldIgnore;
+            },
+            beforeWheel: function(e) {
+                var shouldIgnore = !e.ctrlKey;
+                return shouldIgnore;
+            },
+            zoomSpeed: 1,
+            zoomDoubleClickSpeed: 1,
+        });
     }
 
     createActions(){
@@ -269,6 +308,17 @@ class AppBuilder {
         }
     }
 
+    createElement(data){
+        const element = document.createElement("div");
+        element.classList.add(data.element);
+
+        element.setAttribute("eid", data.eid); 
+
+        element.textContent = data.text;
+
+        return element;
+    }
+
     render(run){
         this.running(run);
 
@@ -288,12 +338,7 @@ class AppBuilder {
         for (let i = 1; i < this.data.length; i++) {
             const data = this.data[i];
             
-            const element = document.createElement("div");
-            element.classList.add(data.element);
-
-            element.setAttribute("eid", data.eid); 
-
-            element.textContent = data.text;
+            const element = this.createElement(data);
 
             this.preview.appendChild(element);
 

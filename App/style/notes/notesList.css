@@ -63,6 +63,87 @@
     transform: translateY(-16px)rotate(25deg);
 }
 
+.notesListContainer .top .viewAnimate i,
+.notesListContainer .top .sortAnimate i{
+    transition: .3s;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.notesListContainer .top .viewAnimate i:first-child{
+    clip-path: polygon(0 0, 25% 0, 25% 100%, 0% 100%);
+}
+
+.notesListContainer .top .viewAnimate i:nth-child(2){
+    clip-path: polygon(74% 0, 26% 0, 26% 100%, 74% 100%);
+}
+
+.notesListContainer .top .viewAnimate i:nth-child(3){
+    clip-path: polygon(75% 0, 100% 0, 100% 100%, 75% 100%);
+}
+
+.notesListContainer .top .viewAnimate:hover i:first-child,
+.notesListContainer .top .viewAnimate:focus-visible i:first-child{
+    transform: translateX(-2px)translateY(-50%);
+}
+/* .notesListContainer .top .viewAnimate:hover i:nth-child(2),
+.notesListContainer .top .viewAnimate:focus-visible i:nth-child(2){
+    transform: translateY(-50%)scale(.95, .95);
+} */
+.notesListContainer .top .viewAnimate:hover i:nth-child(3),
+.notesListContainer .top .viewAnimate:focus-visible i:nth-child(3){
+    transform: translateX(2px)translateY(-50%);
+}
+
+
+.notesListContainer .top .sortAnimate i:first-child{
+    clip-path: polygon(0 40%, 100% 40%, 100% 0, 0 0);
+}
+
+.notesListContainer .top .sortAnimate i:nth-child(2){
+    clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+}
+
+.notesListContainer .top .sortAnimate i:nth-child(3){
+    clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+}
+
+.notesListContainer .top .sortAnimate:hover i:nth-child(2),
+.notesListContainer .top .sortAnimate:focus-visible i:nth-child(2){
+    animation-name: SecondLineSort;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes SecondLineSort {
+    0%{
+        transform: translateY(-50%);
+    }
+    50%{
+        transform: translateX(4px)scaleX(1.25)translateY(-50%);
+    }
+    100%{
+        transform: translateX(6px)translateY(-50%);
+    }
+}
+
+.notesListContainer .top .sortAnimate:hover i:nth-child(3),
+.notesListContainer .top .sortAnimate:focus-visible i:nth-child(3){
+    animation-name: ThirdLineSort;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes ThirdLineSort {
+    0%{
+        transform: translateY(-50%);
+    }
+    50%{
+        transform: translateX(11px)scaleX(2)translateY(-50%);
+    }
+    100%{
+        transform: translateX(11px)translateY(-50%);
+    }
+}
 
 .list .notesList .button{
     display: flex;

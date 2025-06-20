@@ -10,11 +10,6 @@
     font-weight: bold;
 }
 
-/* .webapp .preview.editor{
-    background-color: #000000;
-    opacity: 0.1
-    background: linear-gradient(135deg, #272d9b55 25%, transparent 25%) -9px 0/ 18px 18px, linear-gradient(225deg, #272d9b 25%, transparent 25%) -9px 0/ 18px 18px, linear-gradient(315deg, #272d9b55 25%, transparent 25%) 0px 0/ 18px 18px, linear-gradient(45deg, #272d9b 25%, #000000 25%) 0px 0/ 18px 18px;
-} */
 
 .webapp .preview.editor *:hover{
     outline: 1px dashed rgba(255, 36, 156);

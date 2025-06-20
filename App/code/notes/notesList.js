@@ -227,7 +227,8 @@ function topElement(element){
         if(settings.noteslist && settings.noteslist.sort){
             currentSort = settings.noteslist.sort;
         }
-        sortButton.innerHTML = `<i>sort</i> <div><p>${locale.sort_by}</p><p>${locale[currentSort]}</p></div>`;
+        sortButton.innerHTML = `<i>sort</i><i>sort</i><i>sort</i> <div><p>${locale.sort_by}</p><p>${locale[currentSort]}</p></div>`;
+        sortButton.classList.add("sortAnimate");
         var sortMenu = contextMenu();
         // document.addEventListener("click", sortMenu.remove);
     
@@ -324,7 +325,8 @@ function topElement(element){
         if(settings.noteslist && settings.noteslist.view){
             currentView = settings.noteslist.view;
         }
-        viewButton.innerHTML = `<i>view_carousel</i> <div><p>${locale.view_as}</p><p>${locale[currentView]}</p></div>`;
+        viewButton.innerHTML = `<i>view_carousel</i><i>view_carousel</i><i>view_carousel</i> <div><p>${locale.view_as}</p><p>${locale[currentView]}</p></div>`;
+        viewButton.classList.add("viewAnimate");
         var viewMenu = contextMenu();
         // document.addEventListener("click", viewMenu.remove);
     
