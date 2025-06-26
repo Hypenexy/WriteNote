@@ -81,9 +81,15 @@
 .webapp .viewport{
     flex: 1;
     background-color: #000000;
+    border-radius: 12px;
+    
     /* background: linear-gradient(135deg, #272d9b55 25%, transparent 25%) -9px 0/ 18px 18px, linear-gradient(225deg, #272d9b 25%, transparent 25%) -9px 0/ 18px 18px, linear-gradient(315deg, #272d9b55 25%, transparent 25%) 0px 0/ 18px 18px, linear-gradient(45deg, #272d9b 25%, #000000 25%) 0px 0/ 18px 18px; */
     background: linear-gradient(135deg, #272d9b22 25%, transparent 25%) -9px 0/ 18px 18px, linear-gradient(225deg, #272d9b44 25%, transparent 25%) -9px 0/ 18px 18px, linear-gradient(315deg, #272d9b22 25%, transparent 25%) 0px 0/ 18px 18px, linear-gradient(45deg, #272d9b44 25%, #000000 25%) 0px 0/ 18px 18px;
     overflow: auto;
+}
+
+.webapp .zoompan{
+    transition: .3s;
 }
 
 .webapp .preview{

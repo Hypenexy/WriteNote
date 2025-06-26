@@ -414,6 +414,26 @@ class AppBuilder {
                     }
                 });
 
+                // Context menu
+
+                const elementContextMenu = contextMenu();
+    
+                elementContextMenu.add("line");
+                
+                elementContextMenu.add("button", locale["type"], {
+                    "action": () => {
+                        setSort(type);
+                    },
+                    "icon": sortsInfo.icons[i]
+                });
+                
+            
+                elementContextMenu.add("line", locale.options);
+
+                elementContextMenu.attach(element);
+
+
+                // Selecting
                 
                 element.addEventListener("click", () => {
                     this.selectElement(element);
