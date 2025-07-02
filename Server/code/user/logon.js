@@ -14,7 +14,7 @@ module.exports = async (socket, UID, notes, weather, clientInfo, devices, handsh
 
     if(await collection.countDocuments({_id: UID}, { limit: 1 }) == 0){
         // const insertResult = await
-        collection.insertOne({_id : UID, notes : {}});
+        await collection.insertOne({_id : UID, notes : {}});
         // console.log("siuccess")
         // log('server', 'user', socket.id, "added an init record", insertResult);
     }

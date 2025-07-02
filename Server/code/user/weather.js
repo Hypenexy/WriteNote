@@ -57,9 +57,16 @@ async function getWeather(userIP, UID){
 
     const responseWeather = await fetch(weatherServer)
     .catch((error) => {
+        log("f", "Failure fetching openweathermap data!");
+        console.log(error);
         return false;
     })
     const weatherData = await responseWeather.json();
+    
+    if(weatherData.message == 'Invalid API key. Please see https://openweathermap.org/faq#error401 for more info.'){
+        log("f", "Invalid openweathermap key! Check (Server/code/user/APIKeys.json) (clicking it opens the .example for some reason)");
+        return false;
+    }
 
     await mysql.midelightDB.query(`
         INSERT INTO weatherlogs (Time, Temperature, WeatherData, Latitude, Longitude, UID, City)

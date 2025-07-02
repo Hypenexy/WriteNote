@@ -89,7 +89,10 @@
 }
 
 .webapp .zoompan{
-    transition: .3s;
+    transition: .1s;
+}
+.webapp:active .zoompan{
+    transition: 0s;
 }
 
 .webapp .preview{
