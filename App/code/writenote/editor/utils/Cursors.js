@@ -39,8 +39,5 @@ function renderCarets(carets, cursors, notearea, data) {
         }
 
         carets.appendChild(caret);
-        
-        console.log(cursors[i]);
-        console.log(cursors[i]);
     }
 }

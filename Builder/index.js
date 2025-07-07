@@ -38,9 +38,13 @@ console.log("\x1b[34m Version: \x1b[35m" + process.env.npm_package_version);
 console.log();
 console.log("\x1b[34m Commands:");
 console.log("\x1b[35m  Build (1) [Version]");
-console.log("\x1b[35m  Status (2)");
-console.log("\x1b[35m  Clean (3)");
-console.log("\x1b[35m  Exit (4)");
+console.log("\x1b[35m  Configure SSH (2)");
+console.log("\x1b[35m  Upload (3) [Version]");
+console.log("\x1b[35m  Build & Upload (4) [Version]");
+console.log("\x1b[35m  Start remote server (5)");
+console.log("\x1b[35m  Status (6)");
+console.log("\x1b[35m  Clean (7)");
+console.log("\x1b[35m  Exit (8)");
 console.log(colors.reset);
 
 function commandInterface(){
@@ -57,15 +61,34 @@ function commandInterface(){
                 build();
             }
         }
-        if(command == "status" || command == 2){
+        if(command.startsWith("configure") || commands[0] == 2){
+
+        }
+        if(commands[0] == "upload" || commands[0] == 3){
+            commandMatched = true;
+            if(commands.length > 1){
+                upload(commands[1]);
+            }
+            else{
+                upload();
+            }
+        }
+        if(commands[0] == "build & upload" || commands[0] == 4){
+            commandMatched = true;
+            // build and upload
+        }
+        if(command.startsWith("start") || command == 5){
+            run();
+        }
+        if(command == "status" || command == 6){
             commandMatched = true;
             status();
         }
-        if(command == "clean" || command == 3){
+        if(command == "clean" || command == 7){
             commandMatched = true;
             clean();
         }
-        if(command == "exit" || command == 4){
+        if(command == "exit" || command == 8){
             commandMatched = true;
             rl.close();
         }
@@ -221,4 +244,42 @@ function twirlTimer(){
       x &= 3;
     }, 250);
 };
-  
+
+function configureSSH(){
+    // username password etc..
+}
+
+let Client = require('ssh2-sftp-client');
+
+function upload(params) {
+    let sftp = new Client();
+    sftp.connect({
+        host: '192.168.1.',
+        port: '22',
+        username: 'ye',
+        password: 'a'
+    }).then(() => {
+        return sftp.list('/media/storageUltra');
+    }).then(data => {
+        console.log(data, 'the data info');
+    }).catch(err => {
+        console.log(err, 'catch error');
+    });
+}
+
+function run(){
+    var SSH = require('simple-ssh');
+
+    var ssh = new SSH({
+        host: '192.168.1.',
+        user: 'ye',
+        pass: 'a'
+    });
+
+    ssh.exec('screen node /media/storageUltra/writenote/server', {
+        out: function(stdout) {
+            console.log(stdout);
+        }
+    }).start();
+
+}
