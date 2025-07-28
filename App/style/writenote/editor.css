@@ -1,9 +1,20 @@
 .notearea{
     cursor: text;
+    caret-color: transparent;
 }
 
 .notearea .line{
     min-height: 28px;
+
+    /* animation-name: lineAppear;
+    animation-duration: .2s; */
+}
+
+@keyframes lineAppear {
+    from{
+        opacity: 0;
+        transform: translateX(-4px);
+    }
 }
 
 .notearea img{

@@ -14,15 +14,30 @@ fs.readdir(weather_assetsDir, (err, list) => {
         weatherAssets[element] = fs.readFileSync(`${weather_assetsDir}${element}`);
     }
 });
+fs.readdir(`${weather_assetsDir}/fullResolution`, (err, list) => {
+    list.pop();
+    for (let i = 0; i < list.length; i++) {
+        const element = list[i];
+        weatherFullAssets[element] = fs.readFileSync(`${weather_assetsDir}/fullResolution/${element}`);
+    }
+});
 
-const weatherAssets = {};
+const weatherAssets = {},
+    weatherFullAssets = {};
 
 function getWeatherImage(headers, req, res){
-    const imageID = req.url.substring(9, req.url.length);
-    
+    var imageID = req.url.substring(9, req.url.length);
+
     headers["Content-Type"] = "image/jpeg";
     res.writeHead(200, headers);
-    res.end(weatherAssets[imageID]);
+
+    if(imageID.endsWith("full")){
+        imageID = imageID.substring(0, imageID.length - 4);
+        res.end(weatherFullAssets[imageID]);
+    }
+    else{
+        res.end(weatherAssets[imageID]);
+    }
 }
 
 module.exports.getWeatherImage = getWeatherImage;

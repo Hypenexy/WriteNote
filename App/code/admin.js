@@ -37,9 +37,14 @@ function loadAdminPanel(){
             }
         }
 
-        // const weatherFullImage = document.createElement("img");
-        // weatherFullImage.src = WriteNoteServer+'/weather/'+logonData.weather.image;
-        // element.appendChild(weatherFullImage);
+        const weatherHeader = document.createElement("div");
+        weatherHeader.classList.add("weather");
+        element.appendChild(weatherHeader);
+
+        const weatherFullImage = document.createElement("img");
+        weatherFullImage.src = WriteNoteServer+'/weather/'+logonData.weather.image+"full";
+
+        weatherHeader.appendChild(weatherFullImage);
     }
 
     return element;

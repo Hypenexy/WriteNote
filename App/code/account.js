@@ -420,7 +420,7 @@ function createRegisterMenu(){
         switchElements(form, locale.already_account, locale.sign_in, createLogin);
     }
 
-    createRegister();
+    createLogin();
     return element;
 }
 
