@@ -1,6 +1,6 @@
 .notearea{
     cursor: text;
-    caret-color: transparent;
+    /* caret-color: transparent; */
 }
 
 .notearea .line{

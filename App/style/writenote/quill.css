@@ -1,0 +1,13 @@
+
+.notearea.ql-container{
+    padding: 0;
+}
+.ql-editor{
+    padding: 8px 4px;
+    padding-top: 76px;
+    height: 100%;
+}
+
+.ql-editor p:last-child{
+    padding-bottom: calc(100vh - 24px);
+}
