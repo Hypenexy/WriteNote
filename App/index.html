@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="style/device/sessionList.css">
     <link rel="stylesheet" href="assets/libraries/cropper.min.css">
     <link rel="stylesheet" href="assets/libraries/ol.css">
-    <link rel="stylesheet" href="style/writenote/quill.css">
+    <!-- <link rel="stylesheet" href="style/writenote/quill.css"> -->
 </head>
 <body>
     <!-- Libraries -->
@@ -59,7 +59,7 @@
     <script src="assets/libraries/moment-with-locales.min.js"></script>
     <script src="assets/libraries/panzoom.min.js"></script>
     <script src="assets/libraries/ol.js"></script>
-    <script src="assets/libraries/quill.js"></script>
+    <!-- <script src="assets/libraries/quill.js"></script> -->
     <!-- <script src="assets/libraries/peerjs.min.js"></script> -->
     <!-- WriteNote Code -->
     <script src="assets/locales/en.js"></script>
@@ -69,7 +69,24 @@
     <script src="code/writenote/editor/utils/Cursors.js"></script>
     <script src="code/writenote/editor/utils/Render.js"></script>
     <script src="code/writenote/editor/index.js"></script> -->
-    <script src="code/writenote/quill.js"></script>
+    <!-- <script src="code/writenote/quill.js"></script> -->
+    <script type="importmap">
+      {
+        "imports": {
+          "lexical": "./assets/libraries/lexical/Lexical.prod.mjs",
+          "@lexical/clipboard": "./assets/libraries/lexical/LexicalClipboard.prod.mjs",
+          "@lexical/history": "./assets/libraries/lexical/LexicalHistory.prod.mjs",
+          "@lexical/html": "./assets/libraries/lexical/LexicalHtml.prod.mjs",
+          "@lexical/link": "./assets/libraries/lexical/LexicalLink.prod.mjs",
+          "@lexical/rich-text": "./assets/libraries/lexical/LexicalRichText.prod.mjs",
+          "@lexical/selection": "./assets/libraries/lexical/LexicalSelection.prod.mjs",
+          "@lexical/table": "./assets/libraries/lexical/LexicalTable.prod.mjs",
+          "@lexical/utils": "./assets/libraries/lexical/LexicalUtils.prod.mjs",
+          "@lexical/Yjs": "./assets/libraries/lexical/LexicalYjs.prod.mjs"
+        }
+      }
+    </script>
+    <script type="module" src="code/writenote/lexical.js"></script>
     <script src="code/writenote/appbuilder/index.js"></script>
     <script src="code/writenote/canvas.js"></script>
     <script src="code/writenote/index.js"></script>

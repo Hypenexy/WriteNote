@@ -16,7 +16,8 @@ function closeNote(NID, element){
         delete logonData.notes[NID].saved;
 
         if(activeNID == NID && headerElements.length == 1){
-            writenote.setData("", "note");
+            // writenote.setData("", "note");
+            writenote.notearea.innerHTML = "";
             writenote.enabled(false);
         }
 
