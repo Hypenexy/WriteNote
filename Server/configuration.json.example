@@ -1,0 +1,4 @@
+{
+    "ssl.key": "/etc/apache2/sites-enabled/midelight.net.key",
+    "ssl.cert": "/etc/apache2/sites-enabled/midelight.net.pem"
+}

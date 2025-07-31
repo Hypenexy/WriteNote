@@ -19,7 +19,7 @@ function noteContextMenu(NID, element){
             }
             var NIDs = [];
             allSelectedElements.forEach(element => {
-                NIDs.push(element.getAttribute("NID"));
+                NIDs.push(element.getAttribute("nid"));
             });
             
             console.log(NIDs);

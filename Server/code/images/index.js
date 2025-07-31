@@ -6,9 +6,11 @@ const weather_assetsDir = "./assets/images/weather/";
 fs.readdir(weather_assetsDir, (err, list) => {
     list.shift();
     list.pop();
+    list.pop();
     list.sort(
         (a, b) => a.substring(0, a.length - 4) - b.substring(0, b.length - 4)
     );
+    console.log(list)
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
         weatherAssets[element] = fs.readFileSync(`${weather_assetsDir}${element}`);

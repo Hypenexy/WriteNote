@@ -1,10 +1,13 @@
 var lastActiveNID;
 
 function switchNote(NID){
+    console.log(NID)
     if(NID == activeNID){
         return;
     }
     if(activeNID){
+        console.log(activeNID)
+        console.log(NID)
         openNotes[activeNID].content = writenote.getData();
         if(writenote.workspaceData.save){
             openNotes[activeNID].content.data = writenote.workspaceData.save();

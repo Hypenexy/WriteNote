@@ -46,10 +46,10 @@ function closeNote(NID, element){
 
         var nextOrPreviousNID;
         if(headerElements.length > indexOfElement+1){
-            nextOrPreviousNID = headerElements[indexOfElement+1].getAttribute("NID");
+            nextOrPreviousNID = headerElements[indexOfElement+1].getAttribute("nid");
         }
         else{
-            nextOrPreviousNID = headerElement[indexOfElement-1].getAttribute("NID");
+            nextOrPreviousNID = headerElements[indexOfElement-1].getAttribute("nid");
         }
         switchNote(nextOrPreviousNID);
     }

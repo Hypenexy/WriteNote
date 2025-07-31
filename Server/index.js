@@ -38,27 +38,31 @@ function setUptime(){
 
 var http, server;
 
-// var isWin = process.platform === "win32";
-// const fs = require('fs');
-// if(!isWin){
-//     options = {
-//         key: fs.readFileSync('/etc/apache2/sites-enabled/midelight.net.key'),
-//         cert: fs.readFileSync('/etc/apache2/sites-enabled/midelight.net.pem')
-//     }
-//     http = require('https');
-//     server = http.createServer(options);
-// }
-// else{
-
 // QR Codes
 const QRCodes = require("./code/user/QRCodes");
 
 // Init server
-http = require('http');
 
 const images = require("./code/images");
 
-server = http.createServer(async function (req, res) {
+const configuration = require('./configuration.json');
+const options = {};
+
+if(configuration['ssl.key']){
+    options.key = fs.readFileSync(configuration['ssl.key']);
+}
+if(configuration['ssl.cert']){
+    options.cert = fs.readFileSync(configuration['ssl.cert']);
+}
+
+if(configuration['ssl.key'] && configuration["ssl.cert"]){
+    http = require('https');
+}
+else{
+    http = require('http');
+}
+
+server = http.createServer(options, async function (req, res) {
     const headers = {
       'Access-Control-Allow-Origin': allowURL,
       'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
