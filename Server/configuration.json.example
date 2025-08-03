@@ -1,4 +1,7 @@
 {
     "ssl.key": "/etc/apache2/sites-enabled/midelight.net.key",
-    "ssl.cert": "/etc/apache2/sites-enabled/midelight.net.pem"
+    "ssl.cert": "/etc/apache2/sites-enabled/midelight.net.pem",
+    
+    "server.allowURL": "http://192.168.16.103",
+    "server.port": 2053
 }

@@ -6,11 +6,10 @@ const weather_assetsDir = "./assets/images/weather/";
 fs.readdir(weather_assetsDir, (err, list) => {
     list.shift();
     list.pop();
-    list.pop();
     list.sort(
         (a, b) => a.substring(0, a.length - 4) - b.substring(0, b.length - 4)
     );
-    console.log(list)
+    console.log(list); // On linux its weird
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
         weatherAssets[element] = fs.readFileSync(`${weather_assetsDir}${element}`);
@@ -60,6 +59,9 @@ function fileExtensionToHeaders(filename){
     }
     if(filename.endsWith(".jpg") || filename.endsWith(".jpeg")){
         return "image/jpeg";
+    }
+    if(filename.endsWith(".svg")){
+        return "image/svg+xml";
     }
     return "";
 }

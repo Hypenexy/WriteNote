@@ -1,9 +1,20 @@
-const port = 2053,
+/*
+
+    MideLight Server
+
+    https://github.com/Hypenexy/WriteNote/Server
+
+    Below are the default variables for the server.
+    You can change them in the configuration.json file. (Look at the example file configuration.example.json)
+*/
+
+var port = 2053,
     version = [1, 0, 0],
     allowURL = "http://127.0.0.1:5500";
 
 global.version = version;
 // Server
+const log = require("./code/interface/log");
 const startDate = Date.now();
 
 // Settings
@@ -38,31 +49,49 @@ function setUptime(){
 
 var http, server;
 
-// QR Codes
-const QRCodes = require("./code/user/QRCodes");
 
 // Init server
 
 const images = require("./code/images");
-
-const configuration = require('./configuration.json');
-const options = {};
-
-if(configuration['ssl.key']){
-    options.key = fs.readFileSync(configuration['ssl.key']);
+var configuration;
+try {
+    configuration = require('./configuration.json');
 }
-if(configuration['ssl.cert']){
-    options.cert = fs.readFileSync(configuration['ssl.cert']);
+catch (error) {
+    log("i", "Configuration file is not created, if you want to use Https you'll have to manually create it.");
 }
 
-if(configuration['ssl.key'] && configuration["ssl.cert"]){
+const optionsServer = {};
+
+if(configuration){
+    if(configuration['ssl.key']){
+        optionsServer.key = fs.readFileSync(configuration['ssl.key']);
+    }
+    if(configuration['ssl.cert']){
+        optionsServer.cert = fs.readFileSync(configuration['ssl.cert']);
+    }
+    
+    
+    if(configuration['server.port']){
+        port = configuration['server.port'];
+    }
+    if(configuration['server.allowURL']){
+        allowURL = configuration['server.allowURL'];
+    }
+}
+
+if(configuration && configuration['ssl.key'] && configuration["ssl.cert"]){
     http = require('https');
 }
 else{
     http = require('http');
 }
 
-server = http.createServer(options, async function (req, res) {
+
+// QR Codes
+const QRCodes = require("./code/user/QRCodes");
+
+server = http.createServer(optionsServer, async function (req, res) {
     const headers = {
       'Access-Control-Allow-Origin': allowURL,
       'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
@@ -82,13 +111,24 @@ server = http.createServer(options, async function (req, res) {
         images.getWeatherImage(headers, req, res);
         return;
     }
-});
-// }
 
-const log = require("./code/interface/log");
+    if(req.url.startsWith("/code/")){
+        QRCodes.getHTML(headers, req, res);
+        // QRCodes.getQRCode(headers, req, res);
+        return;
+    }
+});
+
 server.listen(port, () => {
     log("s", 'Allowing connections on: ' + allowURL);
     log("s", 'Server listening on *:' + port);
+    
+    var isHttps = configuration && configuration['ssl.key'] && configuration["ssl.cert"];
+    if(isHttps){
+        log("s", 'HTTPS server active');
+    }
+
+    // log("s", isHttps ? "https" : "http", "://" + allowURL + ":" + port);
 });
 
 // Database
@@ -211,7 +251,7 @@ function initiateServer(){
                 loadedProtocols = true;
                 socket.join(UID);
                 require("./code/user/logon")(socket, UID, notes, weather, clientInfo, devices, handshakeData);
-                require("./code/user/userProtocols")(socket, clientInfo, chat, clients, io, notes, sessionId, forensic, devices);
+                require("./code/user/userProtocols")(socket, clientInfo, chat, clients, io, notes, sessionId, forensic, devices, QRCodes);
                 require("./code/admin/adminProtocols")(socket, clientInfo, clients, io, admin);
             }
         }
@@ -223,6 +263,7 @@ function initiateServer(){
         
         if(UID == -1){
             socket.emit("logon", UID);
+            require("./code/user/qrCodeProtocol")(socket, clientInfo, QRCodes);
         }
         if(UID != -1){
             loadUserProtocols();
@@ -249,8 +290,8 @@ function initiateServer(){
     
             usageTime.endUsageTime(socket.id, UID, sessionId, disconnectDate)
         });
-    
     });
+
 
     log('s', "Socket server active");
 }

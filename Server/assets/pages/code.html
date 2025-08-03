@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WriteNote QR Code</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Roboto", sans-serif;
+        }
+
+        html, body{
+            background: #502a9b;
+            height: 100%;
+        }
+
+        body{
+            background: #502a9b;
+            background: linear-gradient(171deg, rgba(80, 42, 155, 1) 0%, rgba(34, 34, 72, 1) 100%);
+        }
+
+        .container{
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        h1{
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p{
+            color: #eee;
+            text-align: center;
+        }
+
+        .status{
+            color: #fff;
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 20px;
+            
+            /* height: 120px; */
+        }
+
+        .button{
+            cursor: pointer;
+
+            text-align: center;
+            width: 128px;
+            margin: 0 auto;
+
+            color: #bbb;
+            transition: .2s;
+        }
+
+        .button:first-child{
+            /* border: 1px solid #65ff7f; */
+            font-weight: bold;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .button:hover{
+            color: #fff;
+        }
+
+        .status{
+            border-radius: 12px;
+            padding: 12px;
+            max-width: 400px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        .status.inform{
+            background-color: #9084321a;
+            border: 2px solid #908432;
+        }
+
+        .already{
+            height: 280px;
+            width: 500px;
+            background-image: url("./../ui/cominginsidethehouse.png");
+        }
+
+        
+        .logo {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+
+            background-color: #323290;
+            /* or 432d6a */
+            -webkit-mask: url(./../ui/logo.svg) no-repeat center;
+            mask: url(./../ui/logo.svg) no-repeat center;
+            mask-size: cover;
+
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .status,
+        .title,
+        .buttons
+        {
+            z-index: 2;
+        }
+
+        .hide{
+            visibility: hidden;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo"></div>
+
+        <div class="title">
+            <h1>WriteNote</h1>
+            <p>Confirm <b>Sign In</b> to WriteNote on that device?</p>
+        </div>
+    
+        <div class="status"></div>
+    
+        <div class="buttons">
+            <div class="button">Sign In</div>
+            <div class="button">Cancel</div>
+        </div>
+    </div>
+
+    <script>
+        const status = {$status},
+            statusElement = document.querySelector('.status'),
+            signButtonElement = document.querySelector(".button");
+
+        // Update the status message based on the QR code status
+        // if(status == "Already logged in!"){
+        //     statusElement.textContent = "You are already logged in on another device.";
+        // } else if(status == "QR Code generated!"){
+        //     statusElement.textContent = "QR code generated successfully. Please scan it with your WriteNote app.";
+        // } else if(status == "QR Code not generated!"){
+        //     statusElement.textContent = "Failed to generate QR code. Please try again.";
+        // } else if(status == "QR Code scanned! Please confirm sign in."){
+        //     statusElement.textContent = "QR code scanned. Please confirm sign in on your device.";
+        // } else if(status == "Sign in confirmed!"){
+        //     statusElement.textContent = "Sign in confirmed. You can now use WriteNote.";
+        // } else if(status == "QR Code not found!"){
+        //     statusElement.textContent = "No QR code found. Please generate a new one.";
+        // } else if(status == "QR Code expired!"){
+        //     statusElement.textContent = "The QR code has expired. Please generate a new one.";
+        // } else if(status == "QR Code scanned! Please confirm sign in."){
+        //     statusElement.textContent = "QR code scanned successfully. Please confirm sign in on your device.";
+        // } else if(status == "Sign in confirmed!"){
+        //     statusElement.textContent = "You are now signed in!";
+        // } else if(status == "Unknown status: " + status){
+        //     statusElement.textContent = "An unknown error occurred. Please try again.";
+        // } else {
+        //     statusElement.textContent = "Status: " + status;
+        // }
+
+        if(status == "Unlogged!"){
+            statusElement.classList.add("warn");
+            statusElement.innerHTML = "You are not logged in on <b>this</b> device!";
+            signButtonElement.classList.add("hide");
+        }
+
+
+        if(status == "Already logged in!"){
+            statusElement.classList.add("already");
+            statusElement.classList.add("inform");
+            statusElement.textContent = "The call is coming... from inside the house.";
+        }
+        
+        document.querySelector('.button:nth-child(1)').onclick = function() {
+            alert('Sign in confirmed!');
+        };
+
+        document.querySelector('.button:nth-child(2)').onclick = function() {
+            close()
+        };
+    </script>
+</body>
+</html>

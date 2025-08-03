@@ -12,14 +12,25 @@ function createQRCode(){
         correctLevel : QRCode.CorrectLevel.H
     });
 
-    socket.on("connect", () => { // make sure to disable this after no longer needed
+    function handleQRCodeSocket() {
+        if (socket.connected) {
+            emitQRCode();
+        } else {
+            socket.once("connect", emitQRCode);
+        }
+    }
+
+    function emitQRCode() {
         socket.emit("qrcode", null, (data) => {
-            if(Object.keys(data)[0] == "code"){
-                QRLoader.remove();
+            if (Object.keys(data)[0] === "code") {
+                QRLoader.remove();    
+                qrcode.makeCode(`${WriteNoteServer}/code/${data.code}`);
             }
         });
-    });
-    qrcode.makeCode(`${WriteNoteServer}/?code=sadafewf3ffef`);
+    }
+
+    handleQRCodeSocket();
+    qrcode.makeCode(`${WriteNoteServer}/code/unloaded`);
     socket.on("qrcode", (data) => {
         console.log(data);
         console.log("logged in!!!!!");
