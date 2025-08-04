@@ -43,15 +43,6 @@
             text-align: center;
         }
 
-        .status{
-            color: #fff;
-            font-size: 1.2em;
-            text-align: center;
-            margin-bottom: 20px;
-            
-            /* height: 120px; */
-        }
-
         .button{
             cursor: pointer;
 
@@ -75,6 +66,13 @@
         }
 
         .status{
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            
+            /* height: 120px; */
+
             border-radius: 12px;
             padding: 12px;
             max-width: 400px;
@@ -82,8 +80,14 @@
             margin: 0 auto;
         }
         .status.inform{
+            /* color: #908432; */
             background-color: #9084321a;
             border: 2px solid #908432;
+        }
+        .status.warn{
+            /* color: #903232; */
+            background-color: #9032321a;
+            border: 2px solid #903232;
         }
 
         .already{
@@ -112,7 +116,8 @@
         
         .status,
         .title,
-        .buttons
+        .buttons,
+        .account
         {
             z-index: 2;
         }
@@ -120,6 +125,39 @@
         .hide{
             visibility: hidden;
             pointer-events: none;
+        }
+
+        a{
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .account{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 12px;
+            background-color: #22222222;
+
+            width: auto;
+            margin: 0 auto;
+            gap: 6px;
+        }
+
+        .account img{
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+        }
+
+        .account .name{
+            text-align: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
     </style>
 </head>
@@ -131,11 +169,13 @@
             <h1>WriteNote</h1>
             <p>Confirm <b>Sign In</b> to WriteNote on that device?</p>
         </div>
+
+        <div class="account"></div>
     
         <div class="status"></div>
     
         <div class="buttons">
-            <div class="button">Sign In</div>
+            <a href="?confirm"><div class="button">Sign In</div></a>
             <div class="button">Cancel</div>
         </div>
     </div>
@@ -143,8 +183,13 @@
     <script>
         const status = {$status},
             statusElement = document.querySelector('.status'),
-            signButtonElement = document.querySelector(".button");
+            signButtonElement = document.querySelector(".button"),
+            account = document.querySelector(".account");
 
+        var clientInfo;
+        try {
+            clientInfo = {$clientInfo}
+        } catch (ok) {}
         // Update the status message based on the QR code status
         // if(status == "Already logged in!"){
         //     statusElement.textContent = "You are already logged in on another device.";
@@ -170,6 +215,12 @@
         //     statusElement.textContent = "Status: " + status;
         // }
 
+        if(status == "Invalid code!"){
+            statusElement.classList.add("warn");
+            statusElement.textContent = "Invalid or expired QR code.";
+            signButtonElement.classList.add("hide");
+        }
+
         if(status == "Unlogged!"){
             statusElement.classList.add("warn");
             statusElement.innerHTML = "You are not logged in on <b>this</b> device!";
@@ -182,10 +233,39 @@
             statusElement.classList.add("inform");
             statusElement.textContent = "The call is coming... from inside the house.";
         }
+
+        if(status == "IP mismatch!"){
+            statusElement.classList.add("warn");
+            statusElement.innerHTML = "The device you're trying to <b>Sign In</b> is on a <u>different network</u>. Make sure you're signing in your own device.";
+        }
+
+        if(clientInfo){
+            if(clientInfo.Avatar){
+                const avatarElement = document.createElement("img");
+                avatarElement.src = `/./avatar/${clientInfo.Avatar}.jpg`;
+                account.appendChild(avatarElement);
+            }
+
+            const nameElement = document.createElement("div");
+            nameElement.className = "name";
+            account.appendChild(nameElement);
+
+            const usernameElement = document.createElement("p");
+            usernameElement.textContent = clientInfo.Username;
+            nameElement.appendChild(usernameElement);
+            
+            const emailElement = document.createElement("p");
+            emailElement.textContent = clientInfo.Email;
+            nameElement.appendChild(emailElement);
+
+        }
+        else{
+            account.classList.add("hide");
+        }
         
-        document.querySelector('.button:nth-child(1)').onclick = function() {
-            alert('Sign in confirmed!');
-        };
+        // document.querySelector('.button:nth-child(1)').onclick = function() {
+        //     alert('Sign in confirmed!');
+        // };
 
         document.querySelector('.button:nth-child(2)').onclick = function() {
             close()

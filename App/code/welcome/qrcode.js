@@ -9,7 +9,7 @@ function createQRCode(){
         height: 200,
         colorDark : "#222248",
         colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+        correctLevel : QRCode.CorrectLevel.L
     });
 
     function handleQRCodeSocket() {
@@ -25,6 +25,16 @@ function createQRCode(){
             if (Object.keys(data)[0] === "code") {
                 QRLoader.remove();    
                 qrcode.makeCode(`${WriteNoteServer}/code/${data.code}`);
+                
+                mdutils.ButtonEvent(QRCodeElement, () => {
+                    navigator.clipboard.writeText(`${WriteNoteServer}/code/${data.code}`)
+                        .then(() => {
+                            // mdutils.showToast(locale.copied_to_clipboard);
+                        })
+                        .catch(() => {
+                            // mdutils.showToast(locale.copy_failed);
+                        });
+                });
             }
         });
     }

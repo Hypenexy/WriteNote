@@ -63,6 +63,8 @@ catch (error) {
 
 const optionsServer = {};
 
+optionsServer.withCredentials = true;
+
 if(configuration){
     if(configuration['ssl.key']){
         optionsServer.key = fs.readFileSync(configuration['ssl.key']);
@@ -90,6 +92,8 @@ else{
 
 // QR Codes
 const QRCodes = require("./code/user/QRCodes");
+const cookie = require("cookie");
+const { v4 } = require('uuid');
 
 server = http.createServer(optionsServer, async function (req, res) {
     const headers = {
@@ -98,6 +102,23 @@ server = http.createServer(optionsServer, async function (req, res) {
       'Access-Control-Max-Age': 2592000,
       'Access-Control-Allow-Credentials': "true",
     };
+    
+    if(req.url.startsWith("/code/")){
+        const cookies = cookie.parse(req.headers.cookie || '');
+        if (!cookies["MDSess"]) {
+            const sessionId = v4();
+            // const isHttps = configuration && configuration['ssl.key'] && configuration["ssl.cert"];
+            const sessionCookie = cookie.serialize("MDSess", sessionId, {
+                sameSite: "none",
+                secure: true,
+                httpOnly: true,
+                maxAge: 60 * 60 * 24 * 7,
+                path: '/'
+            });
+            headers["Set-Cookie"] = sessionCookie;
+            req.headers.cookie = `MDSess=${sessionId}`;
+        }
+    }
 
     if(req.url.startsWith("/avatar/")){
         images.getAvatar(headers, req, res);
@@ -169,9 +190,6 @@ function initiateServer(){
     
     const adminStats = require("./code/admin/stats")(io);
     
-    const { v4 } = require('uuid');
-    const cookie = require("cookie");
-    
     io.engine.on("initial_headers", (headers, request) => {
         const cookies = cookie.parse(request.headers.cookie || '');
         
@@ -181,7 +199,8 @@ function initiateServer(){
                 sameSite: "none", // Change this cookie to same site only later
                 secure: true,
                 httpOnly: true,
-                maxAge: 60 * 60 * 24 * 7
+                maxAge: 60 * 60 * 24 * 7,
+                path: '/'
             });
     
             headers["set-cookie"] = sessionCookie;
