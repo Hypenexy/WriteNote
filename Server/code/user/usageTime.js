@@ -8,7 +8,7 @@ const sql = require("./../databases/mysql");
 //         \`clientStartDate\` bigint DEFAULT NULL,
 //         \`connectDate\` bigint DEFAULT NULL,
 //         \`disconnectDate\` bigint DEFAULT NULL
-//     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+//     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 // `);
 
 function newUsageTime(socketID, UID, Session, clientDate, connectDate, reconnectDate){ // if this slows down performance make it async?

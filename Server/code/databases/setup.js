@@ -19,7 +19,7 @@ sql.midelightDB.query(`
         PRIMARY KEY (\`UID\`),
         UNIQUE KEY \`Username\` (\`Username\`),
         UNIQUE KEY \`Email\` (\`Email\`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -27,7 +27,7 @@ sql.midelightDB.query(`
         \`UID\` varchar(36) NOT NULL,
         \`Key\` text NOT NULL,
         \`Date\` bigint NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -38,7 +38,7 @@ sql.midelightDB.query(`
         \`Priority\` tinyint(1) DEFAULT NULL,
         \`Fixed\` tinyint(1) NOT NULL,
         \`Time\` bigint DEFAULT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -48,7 +48,7 @@ sql.midelightDB.query(`
         \`Type\` tinytext,
         \`Content\` mediumtext,
         \`Date\` bigint DEFAULT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -60,7 +60,7 @@ sql.midelightDB.query(`
         \`connectDate\` bigint DEFAULT NULL,
         \`disconnectDate\` bigint DEFAULT NULL,
         \`reconnectDate\` bigint DEFAULT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -69,7 +69,7 @@ sql.midelightDB.query(`
         \`startDate\` bigint DEFAULT NULL,
         \`exitDate\` bigint DEFAULT NULL,
         PRIMARY KEY (\`LaunchID\`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 
@@ -79,7 +79,7 @@ sql.midelightDB.query(`
         \`UID\` varchar(36) DEFAULT NULL,
         \`Date\` bigint DEFAULT NULL,
         PRIMARY KEY (\`ID\`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -101,7 +101,7 @@ sql.midelightDB.query(`
         \`TemperatureMax\` smallint NOT NULL,
         \`WeatherType\` varchar(40) NOT NULL,
         PRIMARY KEY (\`ID\`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.midelightDB.query(`
@@ -113,7 +113,7 @@ sql.midelightDB.query(`
         \`Longitude\` varchar(10) NOT NULL,
         \`UID\` varchar(36) NOT NULL,
         \`City\` varchar(168) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 `);
 
 sql.writenoteDB.query(`
