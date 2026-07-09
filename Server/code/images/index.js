@@ -1,25 +1,26 @@
 const log = require('./../interface/log');
 const fs = require('fs');
 
-const weather_assetsDir = "./assets/images/weather/";
+const weather_assetsDir = "./assets/images/weather/compressed/";
+const weatherFull_assetsDir = "./assets/images/weather/full/";
 
 fs.readdir(weather_assetsDir, (err, list) => {
-    list.shift();
-    list.pop();
+    // list.shift();
+    // list.pop();
     list.sort(
         (a, b) => a.substring(0, a.length - 4) - b.substring(0, b.length - 4)
     );
-    console.log(list); // On linux its weird
+    console.log(list); // On linux its weird -- Attempting to fix this shit
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
         weatherAssets[element] = fs.readFileSync(`${weather_assetsDir}${element}`);
     }
 });
-fs.readdir(`${weather_assetsDir}/fullResolution`, (err, list) => {
-    list.pop();
+fs.readdir(`${weatherFull_assetsDir}`, (err, list) => {
+    // list.pop();
     for (let i = 0; i < list.length; i++) {
         const element = list[i];
-        weatherFullAssets[element] = fs.readFileSync(`${weather_assetsDir}/fullResolution/${element}`);
+        weatherFullAssets[element] = fs.readFileSync(`${weatherFull_assetsDir}/${element}`);
     }
 });
 
