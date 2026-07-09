@@ -68,9 +68,7 @@ async function initiateSQLConnection(){
     log("s", "MySQL Databases online");
     module.exports.midelightDB = midelightDB;
     module.exports.writenoteDB = writenoteDB;
-    if(global.databaseCreated == true){
-        require("./setup");
-    }
+    await require("./setup")();
     for (let i = 0; i < onLoadActions.length; i++) {
         onLoadActions[i]();
     }
