@@ -12,7 +12,7 @@ function getRandomArbitrary(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
-const weatherFolder = "./assets/images/weather";
+const weatherFolder = "./assets/images/weather/compressed";
 const filenames = fs.readdirSync(weatherFolder);
 
 async function getWeatherImage(data) {
@@ -26,7 +26,7 @@ async function getWeather(userIP, UID){
     }
     var lat, lon;
     if(userIP){
-        const ipServer = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKeys["geo.api"]}&ip=${userIP}`;
+        const ipServer = `https://api.ipinfo.io/lite/${userIP}?token=${apiKeys["ipinfo.token"]}`;
         const response = await fetch(ipServer)
         .catch((error) => {
             return false;
@@ -35,6 +35,8 @@ async function getWeather(userIP, UID){
         const geolocation = await response.json();// change ip location provider, maybe
         lat = geolocation.latitude;
         lon = geolocation.longitude;
+        console.log("User location:", lat, lon);
+        console.log("User geo:", geolocation);
     }
     else{
         lat = "42.1354";
