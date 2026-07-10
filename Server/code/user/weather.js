@@ -26,17 +26,16 @@ async function getWeather(userIP, UID){
     }
     var lat, lon;
     if(userIP){
-        const ipServer = `https://api.ipinfo.io/lite/${userIP}?token=${apiKeys["ipinfo.token"]}`;
+        const ipServer = `http://ip-api.com/json/${userIP}`;
         const response = await fetch(ipServer)
-        .catch((error) => {
-            return false;
+            .catch((error) => {
+                console.error("Error fetching IP location:", error);
+                return false;
         });
         
         const geolocation = await response.json();// change ip location provider, maybe
-        lat = geolocation.latitude;
-        lon = geolocation.longitude;
-        console.log("User location:", lat, lon);
-        console.log("User geo:", geolocation);
+        lat = geolocation.lat;
+        lon = geolocation.lon;
     }
     else{
         lat = "42.1354";
