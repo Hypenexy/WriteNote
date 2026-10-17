@@ -2,6 +2,10 @@ const sql = require("./../databases/mysql");
 const bcrypt = require('bcrypt');
 
 async function key(clientInfo, data, callback, socket){
+    if(typeof data.Key != "string" || data.Key.length == 0 || data.Key.length > 500){
+        callback({error: true});
+        return false;
+    }
     const adminResult = await sql.midelightDB.query(`SELECT \`Key\` FROM admins WHERE UID = ${sql.midelightDB.escape(clientInfo.UID)}`);
     if(adminResult[0].length > 0){
         const match = bcrypt.compareSync(data.Key, adminResult[0][0].Key);
@@ -20,9 +24,10 @@ async function key(clientInfo, data, callback, socket){
     }
 }
 
-module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {
+module.exports.protocol = async (data, callback, socket, clientInfo, clientsReference, io) => {
     if(data.type == "key"){
-        key(clientInfo, data, callback, socket);
+        await key(clientInfo, data, callback, socket);
+        return; // key() already answered; the admin switch below would answer a second time
     }
 
     if(clientInfo.admin == true){

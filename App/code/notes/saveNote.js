@@ -35,7 +35,7 @@ async function saveNote(NID){
         const key = localStorage.getItem(NID);
         localStorage.removeItem(key);
 
-        var encryptedData = CryptoJS.AES.encrypt(content, logonData.user.Password);
+        var encryptedData = CryptoJS.AES.encrypt(content, logonData.user.CacheKey);
         
         // Create new cache
         localStorage.setItem(NID, hash);

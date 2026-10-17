@@ -22,8 +22,8 @@ function newUsageTime(socketID, UID, Session, clientDate, connectDate, reconnect
     var escape_reconnectDate = sql.midelightDB.escape(reconnectDate);
     sql.midelightDB.query(`
         INSERT INTO usageTime (SocketID, UID, Session, clientStartDate, connectDate, reconnectDate)
-        VALUES (${escape_sockedID}, '${UID}', ${escape_Session}, ${escape_clientDate}, ${escape_connectDate}, ${escape_reconnectDate})
-    `);
+        VALUES (${escape_sockedID}, ${sql.midelightDB.escape(UID)}, ${escape_Session}, ${escape_clientDate}, ${escape_connectDate}, ${escape_reconnectDate})
+    `).catch((error) => console.error("usageTime insert failed:", error.code));
 }
 
 function endUsageTime(socketID, UID, Session, disconnectDate){
@@ -33,13 +33,15 @@ function endUsageTime(socketID, UID, Session, disconnectDate){
     }
     var escape_Session = sql.midelightDB.escape(Session);
     var escape_disconnectDate = sql.midelightDB.escape(disconnectDate);
+    // Session is the client's MDSess cookie value, so it must be escaped. The escaped
+    // variables above were computed but the raw values were pasted in (SQL injection).
     sql.midelightDB.query(`
         UPDATE usageTime
-        SET disconnectDate = '${disconnectDate}'
-        WHERE SocketID = '${socketID}'
-        AND UID = '${UID}'
-        AND Session = '${Session}'
-    `);
+        SET disconnectDate = ${escape_disconnectDate}
+        WHERE SocketID = ${escape_sockedID}
+        AND UID = ${sql.midelightDB.escape(UID)}
+        AND Session = ${escape_Session}
+    `).catch((error) => console.error("usageTime update failed:", error.code));
 }
 
 module.exports.newUsageTime = newUsageTime;

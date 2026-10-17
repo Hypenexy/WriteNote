@@ -46,6 +46,32 @@ function setUptime(){
     const uptime = require("./code/admin/uptime");
     uptime.newUptime(startDate);
 }
+// Safety net: log unexpected errors to a file instead of letting one bad request stop the server.
+// This is a stopgap, the handlers should still validate their input.
+const errorLogDir = "./serverdata";
+const errorLogFile = errorLogDir + "/errors.log";
+
+function logErrorToFile(type, error){
+    const text = (error && error.stack) ? error.stack : String(error);
+    const line = `[${new Date().toISOString()}] ${type}: ${text}\n`;
+    console.error(line.trim());
+    try {
+        fs.mkdirSync(errorLogDir, { recursive: true }); // does nothing if it already exists
+        fs.appendFileSync(errorLogFile, line);
+    } catch (writeError) {
+        // Never let the logger itself throw inside an error handler
+        console.error("Could not write to " + errorLogFile + ":", writeError.message);
+    }
+}
+
+process.on("unhandledRejection", (reason) => {
+    logErrorToFile("Unhandled promise rejection", reason);
+    console.error("Unhandled promise rejection:", reason);
+});
+process.on("uncaughtException", (error) => {
+    logErrorToFile("Uncaught exception", error);
+    console.error("Uncaught exception:", error);
+});
 
 var http, server;
 
@@ -179,7 +205,9 @@ mysql.onLoadActions.push(initInterface);
 const clients = [];
 
 const io = require("socket.io")(server, {
-    maxHttpBufferSize: 1e9,
+    // Was 1e9 (1 GB) per message, which lets any client (logged in or not) exhaust
+    // memory with one packet. 25 MB covers notes and avatars. Raise it if you need to.
+    maxHttpBufferSize: 25e6,
     cors: {
         origin: allowURL,
         credentials: true,
@@ -230,12 +258,16 @@ function initiateServer(){
     
         const cookies = cookie.parse(socket.handshake.headers.cookie || '');
         const sessionId = cookies["MDSess"];
-    
-        if(sessionId.length != 36){
-            // handle invalid session
+
+        // A client that connects over websocket only has no cookie, so sessionId can be undefined.
+        if(typeof sessionId != "string" || sessionId.length != 36){
+            // Invalid session: drop the socket and forget it. Before, this returned and left the
+            // entry in `clients` forever (the disconnect handler was never registered).
+            clients.splice(clients.indexOf(clientInfo), 1);
+            socket.disconnect(true);
             return;
         }
-    
+
         var UID = await session.getSessionUID(sessionId);
         clientInfo.UID = UID;
 
@@ -246,12 +278,19 @@ function initiateServer(){
         }
 
         function logout(){
-            socket.leave(UID);
+            // Leave every room this socket joined while logged in (the user room, the
+            // "admin" room and any open-note rooms), otherwise it keeps receiving events.
+            for (const room of Array.from(socket.rooms)) {
+                if(room != socket.id){
+                    socket.leave(room);
+                }
+            }
             UID = -1;
             clientInfo.UID = UID;
             var clientInfoKeys = Object.keys(clientInfo);
             for (let i = 0; i < clientInfoKeys.length; i++) {
-                if(clientInfoKeys[i] != "socketId" && clientInfoKeys != "UID"){
+                // Was `clientInfoKeys != "UID"` (array vs string, always true), which deleted UID as well.
+                if(clientInfoKeys[i] != "socketId" && clientInfoKeys[i] != "UID"){
                     delete clientInfo[clientInfoKeys[i]];
                 }
             }

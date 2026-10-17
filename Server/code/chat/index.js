@@ -1,6 +1,13 @@
 const collection = global.chatCollection;
 const sql = require("../databases/mysql");
 
+// Every value that ends up in a query goes through escape(), including values that
+// came from the database or from the session. Never put raw text inside quotes.
+const esc = (value) => sql.midelightDB.escape(value);
+
+// Usernames are at most 30 characters (see account registration).
+const isUsername = (value) => typeof value == "string" && value.length > 0 && value.length <= 30;
+
 function sendMessage(UID, CID, Body){
     
 }
@@ -10,6 +17,10 @@ function loadChat(UID){
 }
 
 async function sendFriendRequest(data, callback, socket, clientInfo, clientsReference, io){
+    if(typeof data.Username != "string"){
+        callback({error: "Empty username"});
+        return;
+    }
     if(data.Username == clientInfo.Username){
         callback({error: "You can't friend yourself silly"});
         return;
@@ -39,10 +50,9 @@ async function sendFriendRequest(data, callback, socket, clientInfo, clientsRefe
 
     var friendCheck = await sql.writenoteDB.query(`
         SELECT COUNT(*) FROM friends
-        WHERE Friend1 = '${toUID}' AND Friend2 = '${clientInfo.UID}'
-        OR Friend1 = '${clientInfo.UID}' AND Friend2 = '${toUID}'
+        WHERE Friend1 = ${esc(toUID)} AND Friend2 = ${esc(clientInfo.UID)}
+        OR Friend1 = ${esc(clientInfo.UID)} AND Friend2 = ${esc(toUID)}
     `)
-    console.log(friendCheck); // test this
     if(friendCheck[0][0]["COUNT(*)"] > 0){
         callback({error: "Already friends"});
         return;
@@ -52,7 +62,7 @@ async function sendFriendRequest(data, callback, socket, clientInfo, clientsRefe
     try{
         result = await sql.writenoteDB.query(`
             INSERT INTO friendrequests (\`From\`, \`To\`, \`Date\`)
-            VALUES ('${clientInfo.UID}', '${toUID}', '${date}')
+            VALUES (${esc(clientInfo.UID)}, ${esc(toUID)}, ${esc(date)})
         `);
     }
     catch(error){
@@ -71,13 +81,21 @@ async function sendFriendRequest(data, callback, socket, clientInfo, clientsRefe
 }
 
 async function acceptFriendRequest(data, callback, clientInfo, clientsReference, io){
+    if(!isUsername(data.from)){
+        callback({error: "No such friend request found"});
+        return;
+    }
     const onlineCheckIndex = onlineCheck(data.from, null, clientsReference);
     var acceptedUID = await UsernameToUID(data.from, clientsReference, onlineCheckIndex);
+    if(!acceptedUID){
+        callback({error: "No such friend request found"});
+        return;
+    }
 
     const result = await sql.writenoteDB.query(`
         DELETE FROM friendrequests
-        WHERE \`From\` = '${acceptedUID}'
-        AND \`To\` = '${clientInfo.UID}'
+        WHERE \`From\` = ${esc(acceptedUID)}
+        AND \`To\` = ${esc(clientInfo.UID)}
     `);
 
     if(result[0].affectedRows == 0){
@@ -87,7 +105,7 @@ async function acceptFriendRequest(data, callback, clientInfo, clientsReference,
 
     const date = Date.now();
 
-    await sql.writenoteDB.query(`INSERT INTO friends VALUES ('${acceptedUID}', '${clientInfo.UID}', ${date})`);
+    await sql.writenoteDB.query(`INSERT INTO friends VALUES (${esc(acceptedUID)}, ${esc(clientInfo.UID)}, ${esc(date)})`);
 
     if(onlineCheckIndex != -1){
         io.to(clientsReference[onlineCheckIndex].socketId).emit("chat", {type: "friendAccepted", from: clientInfo.Username});
@@ -97,23 +115,31 @@ async function acceptFriendRequest(data, callback, clientInfo, clientsReference,
 }
 
 async function cancelFriendRequest(data, callback, clientInfo, clientsReference, io) {
+    if(!isUsername(data.from)){
+        callback({error: "No such friend request found"});
+        return;
+    }
     const onlineCheckIndex = onlineCheck(data.from, null, clientsReference);
     var foreignUID = await UsernameToUID(data.from, clientsReference, onlineCheckIndex);
+    if(!foreignUID){
+        callback({error: "No such friend request found"});
+        return;
+    }
 
     var result;
 
     if(data.self == true){
         result = await sql.writenoteDB.query(`
             DELETE FROM friendrequests
-            WHERE \`From\` = '${clientInfo.UID}'
-            AND \`To\` = '${foreignUID}'
+            WHERE \`From\` = ${esc(clientInfo.UID)}
+            AND \`To\` = ${esc(foreignUID)}
         `);
     }
     else{
         result = await sql.writenoteDB.query(`
             DELETE FROM friendrequests
-            WHERE \`From\` = '${foreignUID}'
-            AND \`To\` = '${clientInfo.UID}'
+            WHERE \`From\` = ${esc(foreignUID)}
+            AND \`To\` = ${esc(clientInfo.UID)}
         `);
     }
 
@@ -160,7 +186,12 @@ async function UsernameToUID(Username, clientsReference, onlineCheckIndex) {
         return clientsReference[onlineCheckIndex].UID;
     }
     else{
-        var result = await sql.midelightDB.query(`SELECT UID from accounts WHERE Username = '${Username}'`);
+        // Username comes straight from the client: it MUST be escaped (it used to be
+        // pasted into the query, which allowed SQL injection).
+        var result = await sql.midelightDB.query("SELECT UID from accounts WHERE Username = " + esc(Username));
+        if(result[0].length == 0){
+            return undefined; // unknown user
+        }
         return result[0][0].UID;
     }
 }
@@ -175,7 +206,10 @@ async function UIDtoUsername(UID, clientsReference, onlineCheckIndex){
         return clientsReference[onlineCheckIndex].Username;
     }
     else{
-        var result = await sql.midelightDB.query(`SELECT Username from accounts WHERE UID = '${UID}'`);
+        var result = await sql.midelightDB.query("SELECT Username from accounts WHERE UID = " + esc(UID));
+        if(result[0].length == 0){
+            return "[deleted user]";
+        }
         return result[0][0].Username;
     }
 }
@@ -186,7 +220,7 @@ async function load(callback, clientInfo, clientsReference){
     data.friends = new Array;
     var friendCheckResult = await sql.writenoteDB.query(`
         SELECT Friend1, Friend2 FROM friends
-        WHERE Friend1 = '${clientInfo.UID}' OR Friend2 = '${clientInfo.UID}'
+        WHERE Friend1 = ${esc(clientInfo.UID)} OR Friend2 = ${esc(clientInfo.UID)}
     `);
     var friendCheck = friendCheckResult[0];
     if(friendCheck.length > 0){
@@ -204,7 +238,7 @@ async function load(callback, clientInfo, clientsReference){
 
     var friendRequestsResult = await sql.writenoteDB.query(`
         SELECT \`From\` FROM friendrequests
-        WHERE \`To\` = '${clientInfo.UID}'
+        WHERE \`To\` = ${esc(clientInfo.UID)}
     `);
     
     var friendRequests = friendRequestsResult[0];
@@ -219,10 +253,9 @@ async function load(callback, clientInfo, clientsReference){
 
     var friendRequestsOutgoingResult = await sql.writenoteDB.query(`
         SELECT \`To\` FROM friendrequests
-        WHERE \`From\` = '${clientInfo.UID}'
+        WHERE \`From\` = ${esc(clientInfo.UID)}
     `);
 
-    console.log(friendRequestsOutgoingResult);
     
     var friendRequestsOutgoing = friendRequestsOutgoingResult[0];
     if(friendRequestsOutgoing.length > 0){
@@ -237,16 +270,26 @@ async function load(callback, clientInfo, clientsReference){
 
 
 module.exports = (data, callback, socket, clientInfo, clientsReference, io) => {
+    // Handlers are async: an error thrown inside one is an unhandled promise rejection,
+    // which stops the whole server on modern Node. Catch it per request instead.
+    const guarded = (fn, ...args) => {
+        Promise.resolve()
+            .then(() => fn(...args))
+            .catch((error) => {
+                console.error("chat protocol error:", error);
+                try { callback({error: "Internal server error"}); } catch(e) {}
+            });
+    };
     if(data.type == "friendRequest"){
-        sendFriendRequest(data, callback, socket, clientInfo, clientsReference, io);
+        guarded(sendFriendRequest, data, callback, socket, clientInfo, clientsReference, io);
     }
     if(data.type == "friendAccept"){
-        acceptFriendRequest(data, callback, clientInfo, clientsReference, io)
+        guarded(acceptFriendRequest, data, callback, clientInfo, clientsReference, io);
     }
     if(data.type == "friendCancel"){
-        cancelFriendRequest(data, callback, clientInfo, clientsReference, io)
+        guarded(cancelFriendRequest, data, callback, clientInfo, clientsReference, io);
     }
     if(data.type == "load"){
-        load(callback, clientInfo, clientsReference);
+        guarded(load, callback, clientInfo, clientsReference);
     }
 };

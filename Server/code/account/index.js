@@ -10,21 +10,28 @@ module.exports = (socket, sessionId, clientInfo, loginUID, logoutReference) => {
         if(!protocolCheck.checkDataAndCallback(data, callback)){ // This ain't work with null data
             return;
         }
-        if(!data.type){
+        if(!data || !data.type){
             callback(null, "Invalid request, type isn't specified");
             return;
         }
-        if(data.type == "register"){
-            callback(await register(data, sessionId, loginUID));
-        }
-        if(data.type == "login"){
-            callback(await login(data, sessionId, loginUID));
-        }
-        if(data.type == "Update avatar"){
-            require("./avatars")(data, callback, clientInfo);
-        }
-        if(data.type == "logout"){
-            callback(await logout(sessionId, logoutReference));
+        // An error thrown in this async handler (for example a missing field) used to be
+        // an unhandled promise rejection, which stops the whole server. Catch it per request.
+        try {
+            if(data.type == "register"){
+                callback(await register(data, sessionId, loginUID));
+            }
+            if(data.type == "login"){
+                callback(await login(data, sessionId, loginUID));
+            }
+            if(data.type == "Update avatar"){
+                require("./avatars")(data, callback, clientInfo);
+            }
+            if(data.type == "logout"){
+                callback(await logout(sessionId, logoutReference));
+            }
+        } catch (error) {
+            console.error("account protocol error:", error);
+            try { callback({error: "Internal server error"}); } catch(e) {}
         }
     });
 }
@@ -58,6 +65,10 @@ const validatePassword = (password) => {
 }
 async function register(data, sessionId, loginUID){
     const response = {};
+    if(typeof data.username != "string" || typeof data.password != "string"){
+        response.error = "Invalid request";
+        return response;
+    }
     var email_validated = validateEmail(data.email);
     if(!email_validated){
         response.error = "Invalid email";
@@ -98,8 +109,16 @@ async function register(data, sessionId, loginUID){
             if(error.sqlMessage.endsWith("Username'")){
                 response.error = "Username already taken";
             }
+            if(!response.error){
+                response.error = "Account already exists";
+            }
             return response;
         }
+        // Any other failure: stop here. Before, execution continued and the user was
+        // logged in to an account that does not exist.
+        console.error("register failed:", error);
+        response.error = "Internal server error";
+        return response;
     }
 
     await session.createSession(sessionId, UID, data.device);
@@ -112,6 +131,10 @@ async function register(data, sessionId, loginUID){
 
 async function login(data, sessionId, loginUID){
     const response = {};
+    if(typeof data.identity != "string" || typeof data.password != "string" || data.password.length > 500){
+        response.error = "Wrong username or password";
+        return response;
+    }
 
     const username = sql.midelightDB.escape(data.identity.trim());
     // const dateNow = sql.midelightDB.escape(Date.now());
@@ -147,12 +170,16 @@ async function logout(sessionId, logoutReference){
     const response = {};
     const sessionResult = await sql.midelightDB.query(`DELETE FROM sessions WHERE ID = ${sql.midelightDB.escape(sessionId)}`);
 
-    if(sessionResult.affectedRows == 1){
+    // Log this socket out whether or not a session row was found. This used to run only
+    // when the delete FAILED, so a normal logout left the socket (and any admin rights)
+    // fully active. mysql2 returns [ResultSetHeader, ...], so affectedRows is on [0].
+    logoutReference();
+
+    if(sessionResult[0].affectedRows >= 1){
         response.status = "success";
     }
     else{
         response.error = true;
-        logoutReference();
     }
 
     return response;

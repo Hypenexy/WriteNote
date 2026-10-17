@@ -171,10 +171,33 @@ async function getNoteRecord(UID, NID) {
 }
 
 const devices = require("./../devices/devices");
-async function openNote(UID, data, callback, socket){
-    const result = getNoteRecord(UID, data.NID);
 
-    if(!result.toString().length > 0){
+// Upper bound for a single saved note (characters). Prevents one request from filling the disk.
+const MAX_NOTE_CHARS = 10 * 1000 * 1000;
+
+// Note IDs are created as the first 6 hex characters of a uuid (see createNote).
+// Anything else must never reach a file path or a MongoDB field path.
+const NID_REGEX = /^[a-f0-9]{6}$/;
+// Versions look like "1.0", "1.12" (see saveNote).
+const VERSION_REGEX = /^\d{1,6}\.\d{1,6}$/;
+
+function isValidNID(NID){
+    return typeof NID == "string" && NID_REGEX.test(NID);
+}
+
+async function openNote(UID, data, callback, socket){
+    if(!isValidNID(data.NID)){
+        callback({error: "Invalid note ID"});
+        return;
+    }
+    if(typeof data.version != "undefined" && !(typeof data.version == "string" && VERSION_REGEX.test(data.version))){
+        callback({error: "Invalid version"});
+        return;
+    }
+
+    // Must be awaited, and an empty result means the note doesn't exist for this user.
+    const result = await getNoteRecord(UID, data.NID);
+    if(result.length == 0){
         callback({error: "Not found"});
         return;
     }
@@ -206,24 +229,39 @@ async function openNote(UID, data, callback, socket){
     else{
         callback({error: "Note empty"});
     }
-
-    callback("success");
+    // (A second callback("success") used to be here. Socket.IO acknowledgements
+    // only fire once, so it was dead code.)
 }
 
 function closeNote(UID, Data, socket){
+    if(!isValidNID(Data.NID)){
+        return;
+    }
     socket.leave(Data.NID);
     devices.updateNote(UID, Data.NID, socket);
     // socket.broadcast.to(UID).emit('notesInfo', {type: "closed", NID: NID});
 }
 
 async function openMultipleNotes(UID, data, callback, socket){
+    if(!Array.isArray(data.NIDs) || data.NIDs.length > 100 || !data.NIDs.every(isValidNID)){
+        callback([]);
+        return;
+    }
     var contents = [];
+    var pending = data.NIDs.length;
+    if(pending == 0){
+        callback(contents);
+        return;
+    }
     for (let i = 0; i < data.NIDs.length; i++) {
         const NID = data.NIDs[i];
+        // Count completed notes instead of checking only the last index, so the
+        // callback fires exactly once even if responses finish out of order.
         openNote(UID, {NID: NID}, (response) => {
             response.NID = NID;
             contents.push(response);
-            if(i == data.NIDs.length - 1){
+            pending--;
+            if(pending == 0){
                 callback(contents);
             }
         }, socket);
@@ -251,6 +289,18 @@ async function openMultipleNotes(UID, data, callback, socket){
 // }
 
 async function saveNote(UID, data, callback, socket) {
+    if(!isValidNID(data.NID)){
+        callback({error: "Invalid note ID"});
+        return;
+    }
+    if(typeof data.content != "string"){
+        callback({error: "Invalid content"});
+        return;
+    }
+    if(data.content.length > MAX_NOTE_CHARS){
+        callback({error: "Note is too large"});
+        return;
+    }
     const result = await getNoteRecord(UID, data.NID);
     if(!result.toString().length > 0){
         callback({error: "Not found"});
@@ -317,54 +367,82 @@ async function saveNote(UID, data, callback, socket) {
 }
 
 async function binNote(UID, data, callback, socket) {
+    if(!isValidNID(data.NID)){
+        callback({error: "Invalid note ID"});
+        return;
+    }
     updateNoteProperty(UID, data.NID, "binned", true);
     callback({status: true});
 }
 async function binMultipleNotes(UID, data, callback, socket) {
-    data[NIDs].forEach(NID => {
+    // Was `data[NIDs]`, which threw a ReferenceError (NIDs is not a variable).
+    if(!Array.isArray(data.NIDs) || data.NIDs.length > 1000 || !data.NIDs.every(isValidNID)){
+        callback({error: "Invalid note IDs"});
+        return;
+    }
+    data.NIDs.forEach(NID => {
         updateNoteProperty(UID, NID, "binned", true);
     });
     callback({status: true});
 }
 
 async function unbinNote(UID, data, callback, socket) {
+    if(!isValidNID(data.NID)){
+        callback({error: "Invalid note ID"});
+        return;
+    }
     deleteNoteProperty(UID, data.NID, "binned");
     callback({status: true});
 }
 async function unbinMultipleNotes(UID, data, callback, socket) {
-    data[NIDs].forEach(NID => {
+    if(!Array.isArray(data.NIDs) || data.NIDs.length > 1000 || !data.NIDs.every(isValidNID)){
+        callback({error: "Invalid note IDs"});
+        return;
+    }
+    data.NIDs.forEach(NID => {
         deleteNoteProperty(UID, NID, "binned");
     });
     callback({status: true});
 }
 
 module.exports.protocol = (data, callback, socket, clientInfo, clientsReference, io) => {
+    // Every handler below is async. A thrown error inside one becomes an unhandled
+    // promise rejection, which stops the whole server on modern Node. Route them
+    // through one place so a bad request only fails that request.
+    const guarded = (fn, ...args) => {
+        Promise.resolve()
+            .then(() => fn(...args))
+            .catch((error) => {
+                console.error("notes protocol error:", error);
+                try { callback({error: "Internal server error"}); } catch(e) {}
+            });
+    };
     if(data.type == "createNote"){
-        createNote(clientInfo.UID, data.options, callback, socket);
+        guarded(createNote, clientInfo.UID, data.options, callback, socket);
     }
     if(data.type == "open"){
-        openNote(clientInfo.UID, data, callback, socket);
+        guarded(openNote, clientInfo.UID, data, callback, socket);
     }
     if(data.type == "openMultiple"){
-        openMultipleNotes(clientInfo.UID, data, callback, socket);
+        guarded(openMultipleNotes, clientInfo.UID, data, callback, socket);
     }
     if(data.type == "save"){
-        saveNote(clientInfo.UID, data, callback, socket);
+        guarded(saveNote, clientInfo.UID, data, callback, socket);
     }
     if(data.type == "close"){
-        closeNote(clientInfo.UID, data, socket);
+        guarded(closeNote, clientInfo.UID, data, socket);
     }
     if(data.type == "bin"){
-        binNote(clientInfo.UID, data, callback, socket);
+        guarded(binNote, clientInfo.UID, data, callback, socket);
     }
     if(data.type == "binMultiple"){
-        binMultipleNotes(clientInfo.UID, data, callback, socket);
+        guarded(binMultipleNotes, clientInfo.UID, data, callback, socket);
     }
     if(data.type == "unbin"){
-        unbinNote(clientInfo.UID, data, callback, socket);
+        guarded(unbinNote, clientInfo.UID, data, callback, socket);
     }
     if(data.type == "unbinMultiple"){
-        unbinMultipleNotes(clientInfo.UID, data, callback, socket);
+        guarded(unbinMultipleNotes, clientInfo.UID, data, callback, socket);
     }
 }
 

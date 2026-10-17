@@ -1,7 +1,15 @@
 const fs = require("fs");
 
 function getAvatar(headers, req, res){
-    var ImageID = req.url.toString().split('/avatar/')[1];
+    // Strip any query string, then only allow the exact filename format that
+    // avatars.js creates (32 hex characters + .jpg). Anything else, including
+    // "../" sequences, is rejected before touching the filesystem.
+    var ImageID = (req.url.toString().split('/avatar/')[1] || "").split('?')[0];
+    if(!/^[a-f0-9]{32}\.jpg$/.test(ImageID)){
+        res.writeHead(404, headers);
+        res.end("Not found :(");
+        return;
+    }
 
     var filepath = `./userdata/images/${ImageID}`;
     var s = fs.createReadStream(filepath);

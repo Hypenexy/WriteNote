@@ -25,6 +25,9 @@ async function getWeather(userIP, UID){
         return;
     }
     var lat, lon;
+    if(userIP && !/^[0-9a-fA-F:.]{3,45}$/.test(userIP)){
+        userIP = undefined; // x-forwarded-for is client-controlled; never put arbitrary text in a URL
+    }
     if(userIP){
         const ipServer = `http://ip-api.com/json/${userIP}`;
         const response = await fetch(ipServer)
@@ -33,15 +36,24 @@ async function getWeather(userIP, UID){
                 return false;
         });
         
+        if(!response){
+            return;
+        }
         const geolocation = await response.json();// change ip location provider, maybe
         lat = geolocation.lat;
         lon = geolocation.lon;
+        if(!lat || !lon){
+            return;
+        }
     }
     else{
-        lat = "42.1354";
-        lon = "24.7453";
-        // lat = "42.08393";
-        // lon = "24.44551";
+        // No hardcoded coordinates in source: set "weather.defaultLatitude" and
+        // "weather.defaultLongitude" in APIKeys.json if you want a fallback location.
+        lat = apiKeys["weather.defaultLatitude"];
+        lon = apiKeys["weather.defaultLongitude"];
+        if(!lat || !lon){
+            return;
+        }
     }
 
     const cacheResult = await mysql.midelightDB.query(`SELECT WeatherData, Time FROM weatherlogs WHERE Latitude=${mysql.midelightDB.escape(lat)} AND Longitude=${mysql.midelightDB.escape(lon)} AND Time > ${mysql.midelightDB.escape(Date.now() - (1000 * 60 * 30))}`);
@@ -62,11 +74,18 @@ async function getWeather(userIP, UID){
         console.log(error);
         return false;
     })
+    if(!responseWeather){
+        return false;
+    }
     const weatherData = await responseWeather.json();
     
     if(weatherData.message == 'Invalid API key. Please see https://openweathermap.org/faq#error401 for more info.'){
         log("f", "Invalid openweathermap key! Check (Server/code/user/APIKeys.json) (clicking it opens the .example for some reason)");
         return false;
+    }
+
+    if(!weatherData.main){
+        return false; // API error response, nothing to store or show
     }
 
     await mysql.midelightDB.query(`

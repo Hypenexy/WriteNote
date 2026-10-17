@@ -16,14 +16,20 @@ function openNote(NID, note){
         offlineLoad = false;
 
     if(hash){
-        offlineLoad = true;
-        var encryptedData = localStorage.getItem(hash);
-        var decryptedData = CryptoJS.AES.decrypt(encryptedData, logonData.user.Password);
-        var content = decryptedData.toString(CryptoJS.enc.Utf8);
-        if(content){
-            content = JSON.parse(content);
+        // Old caches (made with a different key), a missing entry or corrupt data
+        // must fall back to loading from the server instead of throwing.
+        try {
+            var encryptedData = localStorage.getItem(hash);
+            var decryptedData = CryptoJS.AES.decrypt(encryptedData, logonData.user.CacheKey);
+            var content = decryptedData.toString(CryptoJS.enc.Utf8);
+            if(content){
+                content = JSON.parse(content);
+                writenote.setData(content, note.type);
+                offlineLoad = true;
+            }
+        } catch (error) {
+            console.warn("Local note cache unreadable, loading from server", error);
         }
-        writenote.setData(content, note.type);
     }
 
     socket.emit("notes", {

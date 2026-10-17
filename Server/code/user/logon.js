@@ -19,9 +19,20 @@ module.exports = async (socket, UID, notes, weather, clientInfo, devices, handsh
         // log('server', 'user', socket.id, "added an init record", insertResult);
     }
 
-    // Get user details
-    const result = await sql.midelightDB.query("SELECT Avatar, Banner, Date, Email, Username, Password FROM accounts WHERE UID="+sql.midelightDB.escape(UID));
+    // Get user details. The password hash must never be selected here: this object
+    // is sent to the browser in full.
+    const result = await sql.midelightDB.query("SELECT Avatar, Banner, Date, Email, Username FROM accounts WHERE UID="+sql.midelightDB.escape(UID));
     data.user = result[0][0];
+
+    // Per-account random key the client uses to encrypt its offline note cache.
+    // It replaces the old behaviour of using the bcrypt password hash as the key.
+    var userDoc = await collection.findOne({_id: UID}, {projection: {cacheKey: true}});
+    var cacheKey = userDoc && userDoc.cacheKey;
+    if(!cacheKey){
+        cacheKey = require("crypto").randomBytes(32).toString("hex");
+        await collection.updateOne({_id: UID}, {$set: {cacheKey: cacheKey}});
+    }
+    data.user.CacheKey = cacheKey;
     clientInfo.Username = result[0][0].Username;
     if(result[0][0].Avatar){
         clientInfo.Avatar = result[0][0].Avatar;
@@ -34,7 +45,13 @@ module.exports = async (socket, UID, notes, weather, clientInfo, devices, handsh
 
     data.notes = await notes.getNotes(UID);
     data.devices = await devices.deviceList.getDevices(UID);
-    devices.deviceList.updateDevices(UID, socket, true, userIP, JSON.parse(handshakeData.device));
+    var deviceInfo;
+    try {
+        deviceInfo = JSON.parse(handshakeData.device);
+    } catch (error) {
+        deviceInfo = {}; // missing or malformed device info must not stop the logon
+    }
+    devices.deviceList.updateDevices(UID, socket, true, userIP, deviceInfo);
 
     data.weather = await weather.getWeather(userIP, UID);
 
